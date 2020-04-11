@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/new_main"
+    >
+
+        <include layout="@layout/a_view_actionbar" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <RadioGroup
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/rg_choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_unread"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:text="所有配对"
+                            android:textColor="@drawable/notice_tab"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rb_readmessage"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="聊天"
+                            android:textColor="@drawable/notice_tab"
+                            android:textSize="14sp" />
+
+                </RadioGroup>
+        </LinearLayout>
+        <com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer
+            android:id="@+id/myNavigationLayoutContainer"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone">
+
+                <View
+
+                    android:id="@+id/myNavigationView"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:background="#FC607E" />
+        </com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer>
+        <com.xfyyim.cn.nocsroll.NoScrollViewPager
+            android:id="@+id/vp_message_tab"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </com.xfyyim.cn.nocsroll.NoScrollViewPager>
+
+
+</LinearLayout>

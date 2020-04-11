@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_above="@+id/info"
+        android:id="@+id/img_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        >
+    </ImageView>
+
+    <FrameLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_like"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/like" />
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/delete1" />
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:padding="10dp"
+android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+        <TextView
+            android:id="@+id/t1"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="星辰"
+            android:textColor="#FD9E14"
+            android:textSize="15sp"
+
+            />
+
+        <TextView
+
+            android:id="@+id/t2"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/share_sign_pink"
+            android:gravity="center"
+            android:text="19"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        <TextView
+
+            android:id="@+id/t3"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/share_sign_zise"
+            android:gravity="center"
+            android:text="金牛座"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+
+        <TextView
+
+            android:id="@+id/t4"
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/share_sign_yellow"
+            android:gravity="center"
+            android:text="VIP"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="早安大家，希望疫情早点结束，武汉加油。"
+            android:textColor="@color/text_black_333"
+            android:textSize="14sp"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="卢湾  (100m)"
+            android:textColor="@color/text_black_666"
+            android:textSize="10sp"
+
+            />
+    </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

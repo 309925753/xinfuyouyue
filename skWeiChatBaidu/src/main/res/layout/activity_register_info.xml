@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    android:orientation="vertical"
+
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottpom"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="基本信息"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+
+            />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/avatar_img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+
+            android:layout_marginTop="60dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_normal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="#fff"
+            app:riv_border_width="2dip"
+            app:riv_oval="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@mipmap/lg_user"
+                    android:tint="@color/white"
+
+                    />
+
+                <com.xfyyim.cn.view.ClearEditText
+                    android:id="@+id/name_edit"
+                    style="@style/IMTbleLine_TextValue"
+                    android:layout_toLeftOf="@+id/name_arrow_img"
+                    android:layout_toRightOf="@+id/name_text"
+                    android:background="@null"
+                    android:hint="昵称"
+                    android:inputType="text"
+                    android:maxLength="50" />
+
+                <View
+                    android:layout_width="0.5dip"
+                    android:layout_height="20dp"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_prefix"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:text="+86"
+
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_13_text_size" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/white" />
+
+
+        <LinearLayout
+            android:id="@+id/sex_select_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="@dimen/dp25"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/sex" />
+
+            <TextView
+                android:id="@+id/sex_tv"
+                style="@style/IMTbleLine_TextValue"
+                android:layout_toLeftOf="@+id/sex_arrow_img"
+                android:layout_toRightOf="@+id/sex_text"
+                android:text="性别" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/birthday_select_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/calener" />
+
+            <TextView
+                android:id="@+id/birthday_tv"
+                style="@style/IMTbleLine_TextValue"
+                android:layout_toLeftOf="@+id/birthday_arrow_img"
+                android:layout_toRightOf="@+id/birthday_text"
+                android:text="出生日期" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/white" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_bottpom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp30"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/next_step_btn"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/shape_btn_white"
+            android:gravity="center"
+            android:text="完成"
+            android:textColor="#FC607E"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

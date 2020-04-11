@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_modify_qiestion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_q"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_14_text_size"
+        android:textColor="@color/text_black_333"
+        tools:text="最近在追的剧是什么？"
+        android:padding="3dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_a"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_14_text_size"
+        android:textColor="@color/text_black_666"
+        tools:text="甄嬛传"
+        android:padding="3dp"
+        />
+</LinearLayout>

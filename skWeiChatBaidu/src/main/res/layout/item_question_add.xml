@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_add_question"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:id="@+id/tv_add_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/me_add_red"
+        android:drawablePadding="5dp"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:maxLines="1"
+        android:text="添加问题"
+        android:textColor="@color/text_black_999"
+        android:textSize="12sp" />
+</LinearLayout>

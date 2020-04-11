@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/normal_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:paddingRight="15dp"
+        android:visibility="visible">
+
+        <!--            android:drawableStart="@drawable/search"
+                    android:drawableEnd="@drawable/search_clear"
+
+-->
+        <TextView
+            android:id="@+id/search_edit"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/et_search_bg"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="9dp"
+            android:gravity="center_vertical"
+            android:hint="@string/search_friend"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:textColor="@color/dark_grey"
+            android:textColorHint="@color/grey"
+            android:textSize="@dimen/message_search_size"
+            tools:ignore="RtlSymmetry" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        >
+
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:id="@+id/new_friend_rl"
+            android:layout_height="57dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/new_friend"
+                android:layout_width="@dimen/contacts_head_image_size"
+                android:layout_height="@dimen/contacts_head_image_size"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                app:riv_border_color="#333333"
+                app:riv_border_width="0dip"
+                app:riv_corner_radius="6dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp"
+                android:background="@drawable/friend_fragment1"
+
+                />
+
+            <TextView
+                android:layout_toRightOf="@+id/new_friend"
+                android:layout_marginLeft="10dp"
+                style="@style/ContactsGridItemText"
+                android:layout_centerVertical="true"
+                android:text="@string/new_friend" />
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/num_tv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/tab_unread_bg"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="2"
+                tools:visibility="visible" />
+        </RelativeLayout>
+        <View
+            style="@style/Line_hor"
+            />
+        <RelativeLayout
+            android:id="@+id/group_rl"
+            android:layout_width="match_parent"
+            android:layout_height="57dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/group"
+                android:layout_width="@dimen/contacts_head_image_size"
+                android:layout_centerVertical="true"
+                android:layout_height="@dimen/contacts_head_image_size"
+                android:scaleType="fitXY"
+                app:riv_border_color="#333333"
+                app:riv_border_width="0dip"
+                app:riv_corner_radius="6dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp"
+                android:background="@drawable/friend_fragment5" />
+
+            <TextView
+                android:layout_toRightOf="@+id/group"
+                android:layout_marginLeft="10dp"
+                style="@style/ContactsGridItemText"
+                android:layout_centerVertical="true"
+                android:text="@string/group" />
+        </RelativeLayout>
+
+        <View
+            style="@style/Line_hor"
+            />
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:id="@+id/contacts_rl"
+            android:layout_height="57dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/contacts"
+                android:layout_width="@dimen/contacts_head_image_size"
+                android:layout_height="@dimen/contacts_head_image_size"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                app:riv_border_color="#333333"
+                app:riv_border_width="0dip"
+                app:riv_corner_radius="6dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp"
+                android:background="@drawable/friend_fragment3" />
+
+            <TextView
+                android:layout_toRightOf="@+id/contacts"
+                android:layout_marginLeft="10dp"
+                style="@style/ContactsGridItemText"
+                android:layout_centerVertical="true"
+                android:text="@string/phone_contact" />
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/num_tv2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/tab_unread_bg"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="2"
+                tools:visibility="visible" />
+        </RelativeLayout>
+        <View
+            style="@style/Line_hor"
+            />
+        <RelativeLayout
+
+            android:id="@+id/notice_rl"
+            android:layout_width="match_parent"
+            android:layout_height="57dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/notice_number"
+                android:layout_width="@dimen/contacts_head_image_size"
+                android:layout_height="@dimen/contacts_head_image_size"
+                android:scaleType="fitXY"
+                android:layout_centerVertical="true"
+                app:riv_border_color="#333333"
+                app:riv_border_width="0dip"
+                app:riv_corner_radius="6dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp"
+                android:background="@drawable/friend_fragment4" />
+
+            <TextView
+                android:layout_toRightOf="@+id/notice_number"
+                android:layout_marginLeft="10dp"
+                style="@style/ContactsGridItemText"
+                android:layout_centerVertical="true"
+                android:text="@string/service_number" />
+        </RelativeLayout>
+
+        <View
+            style="@style/Line_hor"
+            />
+        <RelativeLayout
+
+            android:id="@+id/black_rl"
+            android:layout_width="match_parent"
+            android:layout_height="57dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/black_iv"
+                android:layout_width="@dimen/contacts_head_image_size"
+                android:layout_height="@dimen/contacts_head_image_size"
+                android:scaleType="fitXY"
+                android:layout_centerVertical="true"
+                app:riv_border_color="#333333"
+                app:riv_border_width="0dip"
+                app:riv_corner_radius="6dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp"
+                android:background="@drawable/friend_fragment6" />
+
+            <TextView
+                android:layout_toRightOf="@+id/black_iv"
+                android:layout_marginLeft="10dp"
+                style="@style/ContactsGridItemText"
+                android:layout_centerVertical="true"
+                android:text="@string/black_list" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

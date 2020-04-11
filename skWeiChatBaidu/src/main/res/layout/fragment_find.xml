@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_main"
+    android:orientation="vertical"
+
+    >
+
+    <RelativeLayout
+        android:paddingTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/main_color_red"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        >
+
+        <ImageView
+            android:id="@+id/img_near"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/f_topic" />
+
+        <RadioGroup
+            android:id="@+id/rg_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_care"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="关注"
+                android:textColor="@drawable/tab_find"
+                android:textSize="@dimen/sp_18_text_size" />
+
+            <RadioButton
+                android:id="@+id/rb_near"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:button="@null"
+                android:gravity="center"
+                android:text="附近"
+                android:textColor="@drawable/tab_find"
+                android:textSize="@dimen/sp_16_text_size" />
+        </RadioGroup>
+
+        <ImageView
+            android:id="@+id/img_camera"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/f_camera"
+
+            />
+    </RelativeLayout>
+
+    <com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer
+        android:id="@+id/myNavigationLayoutContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="gone">
+
+        <View
+
+            android:id="@+id/myNavigationView"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="#FC607E" />
+    </com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer>
+
+    <com.xfyyim.cn.nocsroll.NoScrollViewPager
+        android:id="@+id/vp_findtab"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1">
+
+    </com.xfyyim.cn.nocsroll.NoScrollViewPager>
+
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/tab_notice_blue" android:drawable="@color/tab_notice_blue" android:state_checked="true"></item>
+    <item android:color="@color/tab_notice_normal" android:drawable="@color/tab_notice_normal" android:state_checked="false"></item>
+</selector>

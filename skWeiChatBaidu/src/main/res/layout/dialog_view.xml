@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fillet_dialog_bg"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/padding"
+            android:text="title"
+            android:textSize="@dimen/sp_16_text_size" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_start_live"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_live_head"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:alpha="0.7"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="@dimen/dp5">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="0dp"
+            android:background="@color/white">
+
+            <AutoCompleteTextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13dp"
+                android:background="@null"
+                android:maxLength="12"
+                android:singleLine="true"
+                android:textColor="@color/text_black_333"
+                android:textSize="18sp"
+                tools:hint="@string/please_input_nicname" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+    <!-- <attr
+           name="sb_shadow_radius"
+           format="reference|dimension"/>
+       阴影半径
+
+       <attr
+           name="sb_shadow_offset"
+           format="reference|dimension"/>
+       阴影偏移
+
+       <attr
+           name="sb_shadow_color"
+           format="reference|color"/>
+       阴影颜色
+
+       <attr
+           name="sb_uncheck_color"
+           format="reference|color"/>
+       关闭颜色
+
+       <attr
+           name="sb_checked_color"
+           format="reference|color"/>
+       开启颜色
+
+       <attr
+           name="sb_border_width"
+           format="reference|dimension"/>
+       边框宽度
+
+       <attr
+           name="sb_checkline_color"
+           format="reference|color"/>
+       开启指示器颜色
+
+       <attr
+           name="sb_checkline_width"
+           format="reference|dimension"/>
+       开启指示器线宽
+
+       <attr
+           name="sb_uncheckcircle_color"
+           format="reference|color"/>
+       关闭指示器颜色
+
+       <attr
+           name="sb_uncheckcircle_width"
+           format="reference|dimension"/>
+       关闭指示器线宽
+
+       <attr
+           name="sb_uncheckcircle_radius"
+           format="reference|dimension"/>关闭指示器半径
+
+       <attr
+           name="sb_checked"
+           format="reference|boolean"/>
+       是否选中
+
+       <attr
+           name="sb_shadow_effect"
+           format="reference|boolean"/>
+       是否启用阴影
+
+       <attr
+           name="sb_effect_duration"
+           format="reference|integer"/>
+       动画时间，默认300ms
+
+       <attr
+           name="sb_button_color"
+           format="reference|color"/>
+       按钮颜色
+
+       <attr
+           name="sb_show_indicator"
+           format="reference|boolean"/>
+       是否显示指示器，默认true：显示
+
+       <attr
+           name="sb_background"
+           format="reference|color"/>
+       背景色，默认白色
+
+       <attr
+           name="sb_enable_effect"
+           format="reference|boolean"/>
+       是否启用特效，默认true-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="#FC687C"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/sure_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="好"
+            android:textColor="#FC687C"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

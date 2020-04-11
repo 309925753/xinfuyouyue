@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.me.DescriptionActivity">
+
+    <include
+        android:id="@id/tb"
+        layout="@layout/a_view_actionbar" />
+
+    <EditText
+        android:id="@+id/et_desc"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp15"
+        android:background="@drawable/grop_dialog_bg"
+        android:paddingLeft="@dimen/dp5"
+        android:paddingRight="@dimen/dp5"
+        android:paddingTop="10dp"
+        android:gravity="top|left"
+        android:maxLength="30"
+        android:textColor="@color/text_black_333"
+        android:textCursorDrawable="@drawable/a_edit_cursor"
+        android:textSize="@dimen/sp_14_text_size" />
+    <TextView
+        android:id="@+id/tv_textcount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="30"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:gravity="right"
+        android:textColor="@color/text_black_999"
+        android:background="@color/white"
+        android:paddingRight="5dp"
+
+        />
+
+</LinearLayout>

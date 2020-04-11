@@ -1,0 +1,10 @@
+include ':pullToRefershLibraryMy', ':swiperecyclerview'
+include ':jcvideoplayer-lib'
+include ':YZxing-lib'
+//include ':cameralibrary-lib'
+//include ':filterlibrary-lib'
+include ':OpenGLlibrary'
+include ':liveLibrary'
+include ':meeting'
+include ':skWeiChatBaidu'
+
