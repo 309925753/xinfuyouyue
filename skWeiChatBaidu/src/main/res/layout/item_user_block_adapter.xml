@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEF7F8"
+    android:orientation="vertical">
+    <View style="@style/View_Line" />
+    <RelativeLayout
+        android:id="@+id/select_ll"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="#FEF7F8"
+        android:padding="10dp">
+        <ImageView
+            android:id="@+id/ivUserHead"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_launcher_round"
+            />
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宇宙的点"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_18_text_size"
+            android:layout_toRightOf="@+id/ivUserHead"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp10"
+            />
+        <TextView
+            android:id="@+id/tvShowType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="显示"
+            android:textColor="#fffc607e"
+            android:textSize="@dimen/sp_12_text_size"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp5"
+            />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

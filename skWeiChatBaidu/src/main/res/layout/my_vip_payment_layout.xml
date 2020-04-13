@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp20">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpVip"
+            android:clipChildren="false"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp300"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp20"
+            android:layout_marginTop="@dimen/margin_screen_old"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp25"
+            android:layout_marginTop="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp25"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/rlPrItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp45">
+                <LinearLayout
+                    android:id="@+id/rLVipYellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_new_my_wallet_pay_red">
+                    <TextView
+                        android:id="@+id/tvMember"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="普通会员"
+                        android:textColor="@color/text_black_666"
+                        android:textSize="@dimen/sp_12_text_size"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        />
+                    <TextView
+                        android:id="@+id/Tvmonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="  ￥9.9/月"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_10_text_size" />
+                    <TextView
+                    android:id="@+id/TvVipMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:text="      ￥9.9"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="8sp" />
+                    <TextView
+                        android:id="@+id/tvVipLow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="低至￥0.29/天"
+                        android:textColor="@color/color_white"
+                        android:background="@drawable/bg_new_my_vip_red"
+                        android:textSize="8sp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvVipProvince"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="13dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/red_my_button"
+                    android:gravity="center"
+                    android:text="省3.7元"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                     />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlPrItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10">
+                <LinearLayout
+                    android:id="@+id/rLVipYellow2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_new_my_pure_lightyellow">
+                    <TextView
+                        android:id="@+id/tvMember2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="白银会员"
+                        android:textColor="@color/text_black_666"
+                        android:textSize="@dimen/sp_12_text_size"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        />
+                    <TextView
+                        android:id="@+id/Tvmonth2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="  ￥8.7/年"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_10_text_size" />
+                    <TextView
+                        android:id="@+id/TvVipMoney2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:layout_marginBottom="@dimen/dp10"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="      ￥9.9"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="8sp" />
+                    <TextView
+                        android:id="@+id/tvVipLow2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="低至￥0.29/天"
+                        android:textColor="@color/color_white"
+                        android:background="@drawable/bg_new_my_vip_red"
+                        android:visibility="invisible"
+                        android:textSize="8sp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvVipProvince2"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="13dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/red_my_button"
+                    android:gravity="center"
+                    android:text="省3.7元"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:visibility="invisible"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlPrItem3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10">
+                <LinearLayout
+                    android:id="@+id/rLVipYellow3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_new_my_pure_lightyellow">
+                    <TextView
+                        android:id="@+id/tvMember3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="黄金会员"
+                        android:textColor="@color/text_black_666"
+                        android:textSize="@dimen/sp_12_text_size"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        />
+                    <TextView
+                        android:id="@+id/Tvmonth3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="  ￥7.92/年"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_10_text_size" />
+                    <TextView
+                        android:id="@+id/TvVipMoney3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:layout_marginBottom="@dimen/dp10"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="      ￥9.9"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="8sp" />
+                    <TextView
+                        android:id="@+id/tvVipLow3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="低至￥0.29/天"
+                        android:textColor="@color/color_white"
+                        android:visibility="invisible"
+                        android:background="@drawable/bg_new_my_vip_red"
+                        android:textSize="8sp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvVipProvince3"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="13dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/red_my_button"
+                    android:gravity="center"
+                    android:text="省3.7元"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:visibility="invisible"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlPrItem4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10">
+                <LinearLayout
+                    android:id="@+id/rLVipYellow4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_new_my_pure_lightyellow">
+                    <TextView
+                        android:id="@+id/tvMember4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="铂金会员"
+                        android:textColor="@color/text_black_666"
+                        android:textSize="@dimen/sp_12_text_size"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        />
+                    <TextView
+                        android:id="@+id/Tvmonth4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="  ￥7.92/年"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_10_text_size" />
+                    <TextView
+                        android:id="@+id/TvVipMoney4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:layout_marginBottom="@dimen/dp10"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="      ￥9.9"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="8sp" />
+                    <TextView
+                        android:id="@+id/tvVipLow4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:text="低至￥0.29/天"
+                        android:visibility="invisible"
+                        android:textColor="@color/color_white"
+                        android:background="@drawable/bg_new_my_vip_red"
+                        android:textSize="8sp" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvVipProvince4"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="13dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/red_my_button"
+                    android:gravity="center"
+                    android:text="省3.7元"
+                    android:textColor="@color/white"
+                    android:visibility="invisible"
+                    android:textSize="8sp"
+                    />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llPrerogativeSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp10">
+
+            <ImageView
+                android:id="@+id/ivPrerogativeSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/my_prerogative_check" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp10"
+                android:text="开通3月自动续费，再享8.7折优惠"
+                android:textColor="@color/text_black_999"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlAlipay"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp20"
+            android:background="@drawable/bg_new_my_wallet_alipay">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:background="@drawable/bg_new_my_pure_rightwhite">
+
+                <ImageView
+                    android:id="@+id/ivZf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/my_prerogative_zf" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_toRightOf="@+id/ivZf"
+                    android:paddingRight="@dimen/dp5"
+                    android:text="支付宝"
+                    android:textColor="#1296DB"
+                    android:textSize="8sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp50"
+                android:layout_marginRight="@dimen/dp50"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingTop="@dimen/dp10"
+                android:paddingRight="@dimen/dp5"
+                android:paddingBottom="@dimen/dp10"
+                android:text="立即成为VIP会员"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_12_text_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlWx"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp5"
+            android:background="@drawable/bg_new_my_wallet_wx">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:background="@drawable/bg_new_my_pure_rightwhite">
+
+                <ImageView
+                    android:id="@+id/ivWx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/my_prerogative_wx" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_toRightOf="@+id/ivWx"
+                    android:paddingRight="@dimen/dp5"
+                    android:text="微信"
+                    android:textColor="#14CF00"
+                    android:textSize="8sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp50"
+                android:layout_marginRight="@dimen/dp50"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingTop="@dimen/dp10"
+                android:paddingRight="@dimen/dp5"
+                android:paddingBottom="@dimen/dp10"
+                android:text="立即成为VIP会员"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_12_text_size"  />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp5"
+            android:background="@drawable/bg_new_my_wallet_balance">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:background="@drawable/bg_new_my_pure_rightwhite">
+
+                <ImageView
+                    android:id="@+id/ivMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/my_prerogative_money" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_toRightOf="@+id/ivMoney"
+                    android:paddingRight="@dimen/dp5"
+                    android:text="余额"
+                    android:textColor="#FC607E"
+                    android:textSize="8sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp50"
+                android:layout_marginRight="@dimen/dp50"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingTop="@dimen/dp10"
+                android:paddingRight="@dimen/dp5"
+                android:paddingBottom="@dimen/dp10"
+                android:text="立即成为VIP会员"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_12_text_size" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

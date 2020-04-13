@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:layerType="software"
+    >
+    <include layout="@layout/a_view_actionbar" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/my_vp"
+        android:clipChildren="false"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_below="@+id/mergerStatus"
+        android:layout_marginTop="@dimen/margin_screen_old"
+
+        />
+
+</RelativeLayout>

@@ -872,6 +872,28 @@
         <activity android:name=".ui.me.redpacket.MyWalletActivity" />
         <activity android:name=".ui.yeepay.YeepayRecordActivity" />
         <activity android:name=".ui.me_new.PersonInfoActivity" />
+
+        <activity android:name=".ui.me.CertificationCenterActivity" />
+        <activity android:name=".ui.me.CheckLikesMeActivity" />
+        <activity android:name=".ui.me.MyAboutActivity" />
+        <activity android:name=".ui.me.MyAddAccountActivity" />
+        <activity android:name=".ui.me.MySwitchAccountActivity" />
+        <activity android:name=".ui.me.MyUpdatePassWordActivity" />
+        <activity android:name=".ui.me.MyUpdateMobileActivity" />
+        <activity android:name=".ui.me.AccountSafeActivity" />
+        <activity android:name=".ui.me.MyDatCacheActivity" />
+        <activity android:name=".ui.me.MyRemindersChatsActivity" />
+        <activity android:name=".ui.me.MyUserBlockedActivity" />
+        <activity android:name=".ui.me.MyPrivacyActivity" />
+        <activity android:name=".ui.me.MyPersonalInformationActivity" />
+        <activity
+            android:name=".ui.me.NewSettingsActivity"
+          />
+        <activity android:name=".ui.me.MyWalletBillDetailsActivity" />
+        <activity android:name=".ui.me.MyCashWithdrawalActivity" />
+        <activity android:name=".ui.me.MyPrerogativeActivity" />
+        <activity android:name=".ui.me.MyNewWalletActivity"/>
+
     </application>
 
 </manifest>

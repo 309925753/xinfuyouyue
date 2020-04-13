@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEF7F8"
+    android:orientation="vertical">
+    <View style="@style/View_Line" />
+    <LinearLayout
+        android:id="@+id/select_ll"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="#FEF7F8"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvBuyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提现"
+                android:textColor="@color/text_black_333"
+                android:textSize="15sp"
+                android:layout_marginLeft="@dimen/dp15"
+                />
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2020-03-14  09:12"
+                android:textColor="@color/text_black_999"
+                android:textSize="@dimen/sp_10_text_size"
+                android:layout_below="@+id/tvBuyName"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                />
+            <TextView
+                android:id="@+id/tvPayType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="＋120RMB"
+                android:textColor="#FC607E"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/sp_14_text_size"
+                />
+            <TextView
+                android:id="@+id/tvMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手续费：1RMB"
+                android:textColor="@color/text_black_999"
+                android:textSize="@dimen/sp_10_text_size"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvPayType"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginRight="10dp"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

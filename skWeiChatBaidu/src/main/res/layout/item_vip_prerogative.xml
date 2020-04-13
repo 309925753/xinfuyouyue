@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_19_text_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp15"
+        android:textColor="@color/text_black_333"
+        android:drawableLeft="@mipmap/my_vip_polygon"
+        android:drawablePadding="@dimen/dp10"
+        android:text="VIP会员" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="（5项特权）"
+        android:textColor="@color/text_black_999"
+        android:textSize="@dimen/sp_10_text_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp5"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="102dp"
+        android:layout_marginTop="@dimen/dp10"
+        >
+
+        <ImageView
+            android:id="@+id/ivLeft"
+            android:layout_width="100dp"
+            android:layout_height="102dp"
+            android:layout_marginRight="-23dp"
+            android:layout_toLeftOf="@+id/ivCenter"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <ImageView
+            android:id="@+id/ivCenter"
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp30"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/my_super_love"
+            />
+
+        <ImageView
+            android:id="@+id/ivRight"
+            android:layout_width="100dp"
+            android:layout_height="102dp"
+            android:layout_marginLeft="-22dp"
+            android:layout_toRightOf="@+id/ivCenter"
+            android:src="@mipmap/ic_launcher_round" />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_18_text_size"
+        android:textColor="@color/text_black_333"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp10"
+        android:text="每天5个“超级喜欢”"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12_text_size"
+        android:textColor="@color/text_black_999"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp5"
+        android:text="喜欢更有分量，配对飙升5倍！"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp10"
+        android:src="@mipmap/my_prerogative_point_one"
+        android:layout_marginLeft="@dimen/dp60"
+        android:layout_marginRight="@dimen/dp60"
+        android:layout_marginTop="@dimen/dp30"
+        android:layout_gravity="center_horizontal"
+        />
+
+</LinearLayout>

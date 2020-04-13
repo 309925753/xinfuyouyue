@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/my_prerogative_city_bg"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_19_text_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp15"
+        android:textColor="@color/text_black_333"
+        android:text="任意更改定位" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/dp60"
+        android:layout_marginTop="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp60"
+        android:background="@mipmap/my_prerogative_city"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="91dp"
+            android:layout_height="91dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="102dp"
+            android:src="@mipmap/ic_launcher_round" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_13_text_size"
+        android:textColor="@color/text_black_333"
+        android:layout_gravity="center_horizontal"
+        android:text="任意修改自己的位置"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12_text_size"
+        android:textColor="@color/text_black_999"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp5"
+        android:text="与世界各地朋友配对，足不出户，认识全球的朋友"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp10"
+        android:src="@mipmap/my_prerogative_point_four"
+        android:layout_marginLeft="@dimen/dp60"
+        android:layout_marginRight="@dimen/dp60"
+        android:layout_marginTop="@dimen/dp30"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:id="@+id/tvPayLocation"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/red_my_button"
+        android:text="￥9.9获取VIP会员"
+        android:textColor="@color/white"
+        android:paddingHorizontal="@dimen/dp15"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp80"
+        />
+
+</LinearLayout>

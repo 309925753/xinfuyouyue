@@ -15,7 +15,12 @@ import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.me.CertificationCenterActivity;
+import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.EditInfoActivity;
+import com.xfyyim.cn.ui.me.MyNewWalletActivity;
+import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
+import com.xfyyim.cn.ui.me.NewSettingsActivity;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -97,6 +102,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         rl_pyq.setOnClickListener(this);
         rl_mytequan.setOnClickListener(this);
         rl_likeme.setOnClickListener(this);
+        rl_wallet.setOnClickListener(this::onClick);
         rl_renzheng.setOnClickListener(this);
         rl_set.setOnClickListener(this);
         rl_guide.setOnClickListener(this);
@@ -118,18 +124,22 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
               intent.putExtra("FriendId",coreManager.getSelf().getUserId());
               startActivity(intent);
                 break;
-
             case R.id.rl_pyq:
                 break;
             case R.id.rl_mytequan:
+                startActivity(new Intent(getActivity(), MyPrerogativeActivity.class));
                 break;
             case R.id.rl_likeme:
+                startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
                 break;
             case R.id.rl_wallet:
+                startActivity(new Intent(getActivity(), MyNewWalletActivity.class));
                 break;
             case R.id.rl_renzheng:
+                startActivity(new Intent(getActivity(), CertificationCenterActivity.class));
                 break;
             case R.id.rl_set:
+                startActivity(new Intent(getActivity(), NewSettingsActivity.class));
                 break;
             case R.id.rl_guide:
                 break;

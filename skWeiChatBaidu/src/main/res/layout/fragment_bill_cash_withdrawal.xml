@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FEF7F8"
+    android:orientation="vertical"
+   >
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableAutoLoadMore="true"
+        app:srlEnableLoadMore="true">
+    <com.xfyyim.cn.view.PullRefreshHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_srlSpinnerStyle="FixedBehind"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rclBillWithdrawal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FEF7F8"
+        />
+    <View style="@style/View_Line" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <LinearLayout
+        android:id="@+id/rlEmpt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp80"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/my_wallet_empt"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无充值记录"
+            android:textColor="@color/text_black_999"
+            android:textSize="@dimen/sp_12_text_size"
+            android:layout_marginTop="@dimen/dp15"
+            android:layout_marginLeft="@dimen/dp10"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

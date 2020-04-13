@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FEF7F8"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当你喜欢一个也喜欢你的人，就\n                  会得到配对！"
+        android:textColor="@color/text_black_999"
+        android:textSize="@dimen/sp_18_text_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp30"
+        />
+        <ImageView
+            android:id="@+id/ivLeft"
+            android:layout_marginTop="@dimen/dp20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/my_set_switchaccount1" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="@dimen/dp5"
+                android:layout_height="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp25"
+                android:src="@drawable/red_my_button"/>
+            <ImageView
+                android:layout_width="@dimen/dp5"
+                android:layout_height="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp25"
+                android:src="@drawable/shape_e5e5e5_10"/>
+            <ImageView
+                android:layout_width="@dimen/dp5"
+                android:layout_height="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp25"
+                android:src="@drawable/shape_e5e5e5_10"/>
+
+        </LinearLayout>
+
+</LinearLayout>

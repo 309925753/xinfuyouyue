@@ -46,6 +46,7 @@
     <dimen name="NormalTextSize">13sp</dimen>
     <dimen name="SmallerTextSize">12sp</dimen>
 
+    <dimen name="sp_10_text_size">10sp</dimen>
     <dimen name="sp_20_text_size">20sp</dimen>
     <dimen name="sp_19_text_size">19sp</dimen>
     <dimen name="sp_18_text_size">18sp</dimen>

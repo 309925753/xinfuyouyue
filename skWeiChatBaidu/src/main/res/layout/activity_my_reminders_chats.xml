@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FEF7F8"
+   >
+    <include layout="@layout/a_view_actionbar" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sp_15_text_size"
+        android:layout_marginTop="@dimen/sp_15_text_size"
+        android:text="推送通知"
+        android:textColor="#FC697B"
+        android:textSize="@dimen/sp_10_text_size" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:id="@+id/tvRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="显示消息预览"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_12_text_size" />
+
+
+        <com.xfyyim.cn.view.SwitchButton
+            android:id="@+id/sbShowMessagePreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp5"
+            app:sb_background="@color/app_white"
+            app:sb_checked_color="@color/main_color_red"
+            app:sb_effect_duration="100"
+            app:sb_shadow_radius="4dp"
+            app:sb_show_indicator="false" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:visibility="gone"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="朋友圈得到“赞”用私信通知"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_12_text_size" />
+
+
+        <com.xfyyim.cn.view.SwitchButton
+            android:id="@+id/sbSLetterNotice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp5"
+            app:sb_background="@color/app_white"
+            app:sb_checked_color="@color/main_color_red"
+            app:sb_effect_duration="100"
+            app:sb_shadow_radius="4dp"
+            app:sb_show_indicator="false" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="振动"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_12_text_size" />
+
+
+        <com.xfyyim.cn.view.SwitchButton
+            android:id="@+id/sbVibration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp5"
+            app:sb_background="@color/app_white"
+            app:sb_checked_color="@color/main_color_red"
+            app:sb_effect_duration="100"
+            app:sb_shadow_radius="4dp"
+            app:sb_show_indicator="false" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="声音"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_12_text_size" />
+
+
+        <com.xfyyim.cn.view.SwitchButton
+            android:id="@+id/sbVoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp5"
+            app:sb_background="@color/app_white"
+            app:sb_checked_color="@color/main_color_red"
+            app:sb_effect_duration="100"
+            app:sb_shadow_radius="4dp"
+            app:sb_show_indicator="false" />
+    </RelativeLayout>
+    <View style="@style/View_Line"
+        android:layout_margin="@dimen/dp15"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sp_15_text_size"
+        android:layout_marginTop="@dimen/sp_15_text_size"
+        android:text="聊天"
+        android:textColor="#FC697B"
+        android:visibility="gone"
+        android:textSize="@dimen/sp_10_text_size" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:visibility="gone"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按回车键发送消息"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_12_text_size" />
+
+        <com.xfyyim.cn.view.SwitchButton
+            android:id="@+id/sbSendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp5"
+            app:sb_background="@color/app_white"
+            app:sb_checked_color="@color/main_color_red"
+            app:sb_effect_duration="100"
+            app:sb_shadow_radius="4dp"
+            app:sb_show_indicator="false" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp15"
+        android:visibility="gone"
+        android:layout_marginTop="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开启推荐表情"
+            android:textColor="@color/text_black_333"
+            android:textSize="@dimen/sp_12_text_size" />
+
+        <com.xfyyim.cn.view.SwitchButton
+            android:id="@+id/sbOpenExpression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp5"
+            app:sb_background="@color/app_white"
+            app:sb_checked_color="@color/main_color_red"
+            app:sb_effect_duration="100"
+            app:sb_shadow_radius="4dp"
+            app:sb_show_indicator="false" />
+    </RelativeLayout>
+
+</LinearLayout>
