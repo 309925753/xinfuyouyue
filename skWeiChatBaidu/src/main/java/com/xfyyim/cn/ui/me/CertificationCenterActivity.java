@@ -81,7 +81,6 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
         ivTitleLeft.setOnClickListener(this);
         tvTitleCenter.setText("认证中心");
 
-
     }
 
     private void initView() {
@@ -148,7 +147,7 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("image", base64);
         params.put("userId", coreManager.getSelf().getUserId());
-        HttpUtils.post().url(coreManager.getConfig().MSG_COMMENT_ADD)
+        HttpUtils.post().url(coreManager.getConfig().USER_FACE_VERIFY)
                 .params(params)
                 .build()
                 .execute(new BaseCallback<String>(String.class) {
