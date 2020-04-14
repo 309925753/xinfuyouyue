@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,14 +29,22 @@
         android:layout_height="102dp"
         android:layout_marginTop="@dimen/dp10"
         >
-
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivLeft"
             android:layout_width="100dp"
             android:layout_height="102dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head"
+            android:visibility="visible"
+            app:riv_border_color="#fff"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="6dp"
+            app:riv_oval="true"
             android:layout_marginRight="-23dp"
             android:layout_toLeftOf="@+id/ivCenter"
-            android:src="@mipmap/ic_launcher_round" />
+            />
+
 
         <ImageView
             android:id="@+id/ivCenter"
@@ -45,14 +53,22 @@
             android:layout_centerHorizontal="true"
             android:src="@mipmap/my_super_love"
             />
-
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivRight"
             android:layout_width="100dp"
             android:layout_height="102dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head"
+            android:visibility="visible"
+            app:riv_border_color="#fff"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="6dp"
+            app:riv_oval="true"
             android:layout_marginLeft="-22dp"
             android:layout_toRightOf="@+id/ivCenter"
-            android:src="@mipmap/ic_launcher_round" />
+            />
+
 
     </RelativeLayout>
     <TextView

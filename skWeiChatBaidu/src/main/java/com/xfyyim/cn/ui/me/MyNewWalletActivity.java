@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.view.MergerStatus;
+import com.xfyyim.cn.view.MyWalletPopupWindow;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
@@ -365,6 +367,7 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
         this.getWindow().setAttributes(lp);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -384,15 +387,21 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                 startActivity(new Intent(this, CheckLikesMeActivity.class));
                 break;
             case R.id.rlChat://在线闪聊
-                // showPopupWindow();认证中心
-                startActivity(new Intent(this, CertificationCenterActivity.class));
+             //    showPopupWindow();
+                MyWalletPopupWindow   myWalletPopupWindow=new MyWalletPopupWindow(this);
+                myWalletPopupWindow.setBtnOnClice(new MyWalletPopupWindow.BtnOnClick() {
+                    @Override
+                    public void btnOnClick(String type, int vip) {
+                        LogUtil.e("type =  " +type +"-------------vip = " +vip);
+                    }
+                });
+               // startActivity(new Intent(this, CertificationCenterActivity.class));
                 break;
             case R.id.rlToPeek://闪聊偷看
                 //   showPopupWindow();
               /*  Intent intent = new Intent(this, FaceLivenessExpActivity.class);
                 startActivityForResult(intent, 100);*/
                 break;
-
         }
     }
 

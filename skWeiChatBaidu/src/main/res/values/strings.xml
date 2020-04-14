@@ -1,4 +1,42 @@
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" tools:ignore="MissingTranslation">
+    <array name="filter_effect">
+        <item>正常</item>
+        <item>阳光</item>
+        <item>古风</item>
+        <item>热力</item>
+        <item>黑白</item>
+        <item>暖色</item>
+        <item>冬季</item>
+        <item>冷色</item>
+        <item>清脆</item>
+        <item>清冷</item>
+        <item>淡黄</item>
+        <item>深黄</item>
+        <item>自然</item>
+        <item>浪漫</item>
+        <item>印花</item>
+        <item>素描</item>
+        <item>日落</item>
+    </array>
+    <array name="friend_from_type">
+        <item>二维码</item>
+        <item>名片</item>
+        <item>群组</item>
+        <item>手机号搜索</item>
+        <item>昵称搜索</item>
+        <item>其他</item>
+    </array>
+    <array name="yeepay_record_type">
+        <item>充值</item>
+        <item>提现</item>
+        <item>转账</item>
+        <item>接收转账</item>
+        <item>发一对一红包</item>
+        <item>发群普通红包</item>
+        <item>发拼手气红包</item>
+        <item>收红包</item>
+        <item>提现服务费</item>
+    </array>
     <string name="app_name">幸福有约</string>
     <string name="data_exception">数据异常，请稍后重试</string>
     <string name="net_exception">网络异常，请稍后重试</string>
@@ -8,16 +46,16 @@
     <string name="no">否</string>
     <string name="no_data">暂无数据</string>
     <string name="saveing">保存中&#8230;</string>
+    <!-- 调用系统拍照的字符串 -->
     <string name="save_success">保存成功</string>
     <string name="save_failed">保存失败</string>
     <string name="add">新增</string>
-    <!-- 调用系统拍照的字符串 -->
     <string name="c_take_picture">拍照</string>
     <string name="c_take_picture_failed">拍照失败</string>
+    <!-- 城市选择 -->
     <string name="c_photo_album">相册</string>
     <string name="c_photo_album_failed">选择失败</string>
     <string name="c_crop_failed">裁减失败</string>
-    <!-- 城市选择 -->
     <string name="locationing">正在定位</string>
     <string name="current_location">当前位置</string>
     <string name="hot_city">热门城市</string>
@@ -26,79 +64,79 @@
     <string name="location_city">所在城市</string>
     <string name="select">选择</string>
     <string name="country">国家</string>
+    <!-- 时间显示 -->
     <string name="province">省份</string>
     <string name="city">城市</string>
     <string name="county">县区</string>
-    <!-- 时间显示 -->
     <string name="to_this_day">至今</string>
     <string name="friendly_time_just_now">刚刚</string>
     <string name="friendly_time_before_seconds">秒前</string>
+
+    <!-- //////////////// EditText hint text ////////////////////// -->
     <string name="friendly_time_before_minute">分钟前</string>
     <string name="friendly_time_yesterday">昨天</string>
     <string name="friendly_time_before_yesterday">前天</string>
-
-    <!-- //////////////// EditText hint text ////////////////////// -->
     <string name="please_input_phone_number">请输入手机号码</string>
     <string name="please_input_auth_code">请输入验证码</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_confirm_password">请确认密码</string>
     <string name="please_input_name">请输入昵称</string>
-    <string name="please_input_new_password">请输入新密码</string>
-    <string name="please_confirm_new_password">请确认新密码</string>
-    <string name="please_input_keyword">请输入昵称或手机号</string>
 
     <!-- SpalshActivity -->
+    <string name="please_input_new_password">请输入新密码</string>
+    <string name="please_confirm_new_password">请确认新密码</string>
+    <!-- LoginActivity -->
+    <string name="please_input_keyword">请输入昵称或手机号</string>
     <string name="login">登录</string>
     <string name="register">用户注册</string>
-    <!-- LoginActivity -->
     <string name="user_telphone_login">使用手机号登录</string>
     <string name="register_account">注册用户</string>
+    <!-- LoginHistoryActivity -->
     <string name="forget_password">忘记密码</string>
+    <!-- DataDownloadActivity -->
     <string name="login_failed">登陆失败</string>
     <string name="connected_failed">连接失败</string>
-    <!-- LoginHistoryActivity -->
+    <!-- RegisterActivity -->
     <string name="switch_account">切换账号</string>
-    <!-- DataDownloadActivity -->
     <string name="data_update">数据更新</string>
     <string name="data_not_update_exit">用户数据尚未更新完毕，退出将放弃登陆，您是否要退出？</string>
-    <!-- RegisterActivity -->
     <string name="register_step_one">1、输入手机号</string>
     <string name="phone_number_format_error">手机号码格式错误</string>
     <string name="telphone_already_rigister">手机号已经被注册</string>
     <string name="phone_number_not_be_empty">手机号码不能为空</string>
+    <!-- after add -->
     <string name="get_auth_code_failed">获取验证码失败，请重新发送</string>
     <string name="auth_code_error">验证码错误</string>
     <string name="auth_code_overdue">验证码失效</string>
-    <!-- after add -->
+    <!-- RegisterPasswordActivity -->
     <string name="Get_Verification_Code">获取验证码</string>
     <string name="Password_Login">密码登录</string>
     <string name="Verification_Code_Login">验证码登录</string>
-    <!-- RegisterPasswordActivity -->
     <string name="register_step_two">2、填写密码</string>
     <string name="password_empty_error">密码不允许为空，且长度大于6个字符</string>
+    <!-- RegisterUserBasicInfoActivity (3、基本资料) -->
     <string name="confirm_password_empty_error">确认密码不允许为空，且长度大于6个字符</string>
     <string name="password_confirm_password_not_match">密码和确认密码不一致</string>
     <string name="cancel_register_prompt">是否退出该次注册？</string>
-    <!-- RegisterUserBasicInfoActivity (3、基本资料) -->
+    <!-- UserCheckedActivity -->
     <string name="register_step_three">3、基本资料</string>
     <string name="register_error">注册出错，请重试</string>
     <string name="register_success">注册成功</string>
-    <!-- UserCheckedActivity -->
     <string name="exit">退出</string>
     <string name="login_again">重新登陆</string>
     <string name="overdue_title">过期通知</string>
     <string name="token_overdue_des">本地访问令牌已过期，是否立即重新登陆？</string>
     <string name="deficiency_data_des">本地数据已过期，是否立即重新登陆？</string>
+    <!-- MainActivity -->
     <string name="logout_title">下线通知</string>
     <string name="logout_des">您的账号在另外一台设备上登录，是否立即重新登陆？</string>
     <string name="you_are_offline">您已经离线，是否重新连接</string>
-    <!-- MainActivity -->
     <string name="message">消息</string>
+
+    <!-- MessageFragment -->
     <string name="find">发现</string>
     <string name="nearby">附近</string>
     <string name="group_chat">群聊</string>
-
-    <!-- MessageFragment -->
     <string name="welcome_user_software">欢迎使用酷聊</string>
     <string name="msg_picture">[图片]</string>
     <string name="msg_voice">[语音]</string>
@@ -132,18 +170,18 @@
     <string name="motalk_voice_chat_tip_1">按住 说话</string>
     <string name="motalk_voice_chat_tip_2">松开 发送</string>
     <string name="motalk_voice_chat_tip_3">手指上滑，取消发送</string>
-    <string name="motalk_voice_chat_tip_4">松开手指，取消发送</string>
-    <string name="motalk_voice_chat_tip_5">重新录制</string>
-    <string name="motalk_voice_chat_tip_6">松开结束</string>
     <!-- after add -->
-    <string name="read_burn">阅后即焚</string>
+    <string name="motalk_voice_chat_tip_4">松开手指，取消发送</string>
 
     <!-- 发现模块 -->
+    <string name="motalk_voice_chat_tip_5">重新录制</string>
+    <string name="motalk_voice_chat_tip_6">松开结束</string>
+    <string name="read_burn">阅后即焚</string>
     <string name="newest">互相关注</string>
+    <!-- 加好友 -->
     <string name="hotest">单向关注</string>
     <string name="nearest">关注房间</string>
     <string name="bisniss">我的朋友</string>
-    <!-- 加好友 -->
     <string name="remark_name_format_error">备注名不合法，只允许中文、英文、字母和下划线，且长度为3至10个字符</string>
     <string name="unilateral_attention">单向关注</string>
     <string name="focus_on_each_other">互相关注</string>
@@ -183,26 +221,26 @@
     <string name="simple_data_error">数据错误</string>
     <string name="send_failed">发送失败，请稍后重试</string>
     <string name="say_hello_dialog_title">验证消息</string>
+
+    <!-- 附近模块 -->
     <string name="say_hello_dialog_hint">亲，给我个加你的理由吧！</string>
     <string name="say_hello_default">嘿，你好！</string>
     <string name="refused_request">对方拒绝了你的好友请求!</string>
-
-    <!-- 附近模块 -->
     <string name="keyword">关键字</string>
     <string name="sex">性别</string>
     <string name="min_age">最小年龄</string>
     <string name="max_age">最大年龄</string>
     <string name="show_time">出现时间</string>
     <string name="all_date">所有日期</string>
+    <!-- after add -->
     <string name="all">全部</string>
     <string name="reset">重置</string>
     <string name="select_date">选择日期</string>
-    <!-- after add -->
+
+    <!-- 商务圈 -->
     <string name="add_friend">添加好友</string>
     <string name="instance_person">距离</string>
     <string name="instance_">米</string>
-
-    <!-- 商务圈 -->
     <string name="send_myspace">发表到朋友圈</string>
     <string name="send_text">发布文字</string>
     <string name="send_image">发布图片</string>
@@ -220,10 +258,10 @@
     <string name="upload_failed">上传失败</string>
     <string name="pictures">图片</string>
     <string name="level_inner"><xliff:g id="level">%1$d</xliff:g>级</string>
+    <!-- 商务圈发布界面 -->
     <string name="give_gift">送礼物</string>
     <string name="my_business_circle">我的职业圈</string>
     <string name="check_praise">查看点赞</string>
-    <!-- 商务圈发布界面 -->
     <string name="play_failed">播放失败</string>
     <string name="audio_file_not_exist">录音文件不存在</string>
     <string name="circle_release">发布</string>
@@ -231,15 +269,15 @@
     <string name="circle_add_voice">添加录音</string>
     <string name="circle_select_voice">选择录音，最多1个</string>
     <string name="circle_add_image">添加图片</string>
-    <string name="circle_select_image">选择图片，最多9张</string>
-    <string name="circle_select_video">选择视频，最多1个</string>
-    <string name="circle_add_video">添加视频</string>
 
     <!-- 消息详情界面 -->
-    <string name="message_detail">说说详情</string>
-    <string name="comment_count">评论数(<xliff:g id="count">%1$d</xliff:g>)</string>
+    <string name="circle_select_image">选择图片，最多9张</string>
+    <string name="circle_select_video">选择视频，最多1个</string>
 
     <!-- 群聊 -->
+    <string name="circle_add_video">添加视频</string>
+    <string name="message_detail">说说详情</string>
+    <string name="comment_count">评论数(<xliff:g id="count">%1$d</xliff:g>)</string>
     <string name="add_chat_ok_btn">确定(<xliff:g id="count">%1$s</xliff:g>)</string>
     <string name="select_contacts">选择联系人</string>
     <string name="please_input_room_name">请输入群组名</string>
@@ -248,16 +286,16 @@
     <string name="service_start_failed">服务启动失败</string>
     <string name="create_room">创建群组</string>
     <string name="room_name_empty_error">群组名不能为空</string>
+    <!-- MeFragment -->
     <string name="room_des_empty_error">群组描述不能为空</string>
     <string name="create_room_failed">创建群组失败</string>
     <string name="voice_hint">1.点击录制按钮介绍一下自己吧!\n2.60秒倒计时哦。\n3.可以先打个招呼。\n4.生日、爱好、性格、星座都可以说说。</string>
-    <!-- MeFragment -->
     <string name="my_data">我的资料</string>
     <string name="my_friend">我的朋友</string>
+    <!-- RoomInfoActivity -->
     <string name="my_space">我的空间</string>
     <string name="local_video">选择视频</string>
     <string name="setting">设置</string>
-    <!-- RoomInfoActivity -->
     <string name="room_info">群组信息</string>
     <string name="notice">群内公告</string>
     <string name="room_name">群组名称</string>
@@ -274,33 +312,33 @@
     <string name="update_success">更新成功</string>
     <string name="update_success_restart">更新成功,需要重启APP方能生效</string>
     <string name="change_room_name">修改群组名</string>
+    <!-- after add -->
     <string name="change_room_des">修改群组说明</string>
     <string name="change_my_nickname">修改我的群昵称</string>
     <string name="add_notice">添加公告</string>
-    <!-- after add -->
     <string name="banned_succ">禁言成功</string>
+
+    <!-- SettingActivity -->
     <string name="canle_banned_succ">取消禁言成功</string>
     <string name="no_shiele">未屏蔽</string>
     <string name="yes_shiele">已屏蔽</string>
-
-    <!-- SettingActivity -->
     <string name="clear_cache">清除缓存</string>
     <string name="use_help">使用帮助</string>
     <string name="about_us">关于我们</string>
     <string name="privacy_setting">隐私设置</string>
     <string name="vioce_audio_chat_setting">语音视频通话设置</string>
     <string name="exit_tips">确定要退出此账号吗？</string>
+
+    <!-- PrivacySettingActivity -->
     <string name="exit_current_account">退出当前账号</string>
     <string name="deleteing">删除中&#8230;</string>
     <string name="clear_completed">清除完毕</string>
-
-    <!-- PrivacySettingActivity -->
     <string name="allow_attention">允许关注</string>
+
+    <!-- LocalVideoActivity -->
     <string name="allow_greet">允许打招呼</string>
     <string name="friends_verify">加好友验证</string>
     <string name="update_sccuess">修改成功</string>
-
-    <!-- LocalVideoActivity -->
     <string name="size">大小</string>
     <string name="time_len">时长</string>
     <string name="create_time">创建时间</string>
@@ -308,11 +346,11 @@
     <string name="hour">小时</string>
     <string name="minute">分</string>
     <string name="second">秒</string>
+
+    <!-- BasicInfo -->
     <string name="video_file_not_exist">视频文件不存在</string>
     <string name="delete_failed">删除失败</string>
     <string name="select_failed">选取失败</string>
-
-    <!-- BasicInfo -->
     <string name="basic_info">基本资料</string>
     <string name="name_align">昵&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;称</string>
     <string name="rename_align">备注</string>
@@ -329,15 +367,15 @@
     <string name="cancel_edit_prompt">你还没有保存当前内容，确定要退出吗？</string>
     <string name="upload_avataring">上传头像&#8230;</string>
     <string name="upload_avatar_success">上传头像成功</string>
+    <!-- after add -->
     <string name="upload_avatar_failed">上传头像失败，请稍后重试</string>
     <string name="look_friend_location"> 查看好友地理位置</string>
     <string name="look_friend_circle">查看朋友圈</string>
-    <!-- after add -->
+
+    <!-- VideoRecordActivity -->
     <string name="data_of_birth">亲!您的出生日期已经超过现在了哦!</string>
     <string name="this_friend_not_open_position">该好友未公开位置信息!</string>
     <string name="diy_name">个性签名</string>
-
-    <!-- VideoRecordActivity -->
     <string name="start_failed">启动失败</string>
     <string name="record_failed">录制失败</string>
     <string name="record_succ">录制成功</string>
@@ -347,11 +385,11 @@
     <string name="chooser_title">选择发送文件</string>
     <string name="empty_directory">空文件夹</string>
     <string name="storage_removed">没有找到存储卡</string>
+
+    <!-- 视频、语音通话 -->
     <string name="choose_file">选择文件</string>
     <string name="error_selecting_file">选择文件错误</string>
     <string name="internal_storage">网络存储设备</string>
-
-    <!-- 视频、语音通话 -->
     <string name="doubango_revision" translatable="false">1231</string>
     <string name="spinner_ipversion">选择IP版本号</string>
     <string name="spinner_pcscf_discovery" translatable="false">选择PCSCF发现模式</string>
@@ -385,19 +423,19 @@
     <string name="registration_ok">已连接</string>
     <string name="registration_inprogress">连接中&#8230;</string>
     <string name="unregistration_inprogress">断开连接中&#8230;</string>
+
+    <!-- 我的余额 -->
     <string name="unregistration_nok">断开失败&#8230;</string>
     <string name="audio_conference_info">和朋友输入 3000 &#8211; 3999 范围内的四个数字，点击"开始会议",即可开始语音会议</string>
     <string name="start_audio_conference">开始语音会议</string>
-
-    <!-- 我的余额 -->
     <string name="input_error">输入的数字有误!</string>
     <string name="records_of_consumption">消费记录</string>
     <string name="recharge_success">充值成功</string>
+
+    <!-- 企业通讯录 -->
     <string name="recharge_amount">充值金额为(0.01~500.00)</string>
     <string name="recharge_amount_not">充值金额不能为0!</string>
     <string name="please_enter_a_value">请输入值!</string>
-
-    <!-- 企业通讯录 -->
     <string name="company_txl">企业通讯录</string>
     <string name="create_company">创建公司</string>
     <string name="create_company_succ">创建公司成功</string>
@@ -456,36 +494,36 @@
     <string name="sure_delete_company">确定删除该公司吗？</string>
     <string name="connot_del_company">非公司创建者，不能删除该公司!</string>
     <string name="sure_exit_company">确定退出该公司吗？</string>
+
     <string name="have_person_connot_del">该部门内有人，不能被删除</string>
     <string name="connot_del_self">不能删除自己</string>
     <string name="create_connot_dels">公司创建者不能被删除</string>
-
     <string name="new_apk_download">有最新的软件包，请下载！</string>
+
     <string name="application_version_update_down">修复了已知问题，提升了用户体验。</string>
     <string name="application_update">软件版本更新</string>
     <string name="download">下载</string>
-
     <string name="empty">清空</string>
     <string name="you_have_one_live_room">你已经有一个直播间了</string>
+
     <string name="name_cannot_ull">名字不能为空</string>
     <string name="notice_cannot_null">公告不能为空</string>
-    <string name="top_tv">置顶</string>
 
+    <string name="top_tv">置顶</string>
     <string name="str_input_code">图形码</string>
     <string name="input_code_iamge">图形验证码错误</string>
-
     <string name="name_course_error">课件名称不能为空</string>
     <string name="please_input_course_desc">请输入课件名称</string>
     <string name="create_course">创建课件</string>
+
     <string name="switch_language">切换语言</string>
     <string name="change_tip">切换语言成功,请重新登录</string>
     <string name="pay_result_callback_msg">微信支付结果：%s</string>
 
+    <!-- Todo Create by 2018/5/23 -->
     <string name="set_chat_bg">聊天背景</string>
     <string name="cover_chat_bg">还原</string>
     <string name="allow_exit_app_revice">允许退出APP后可以收到消息</string>
-
-    <!-- Todo Create by 2018/5/23 -->
     <string name="mass_messaging">群发消息</string>
     <string name="select_recipient">选择收信人</string>
     <string name="select_all">全选</string>
@@ -493,19 +531,19 @@
     <string name="next_step">下一步</string>
     <string name="search">搜索</string>
     <string name="mass">群发</string>
+
     <string name="you_will_send_a_message_to">你将发消息给</string>
+
     <string name="bit">位</string>
     <string name="friend">朋友</string>
-
     <string name="perceptual_pink">感性粉</string>
-
     <string name="chat_font">聊天字体</string>
+
     <string name="font_size">字体大小</string>
+
     <string name="finish">完成</string>
     <string name="standard">标准</string>
-
     <string name="turn_on_vibration">消息来时振动</string>
-
     <string name="my_purse">我的钱包</string>
     <string name="expenses_record">消费记录</string>
     <string name="my_change">我的零钱</string>
@@ -518,20 +556,20 @@
     <string name="withdrawal_instructions">提现说明</string>
     <string name="arrival_micro_signal">到账微信号</string>
     <string name="withdrawal_fee_rate">提现手续费率0.1%</string>
+
     <string name="withdrawal_amount">提现金额</string>
     <string name="change_balance">零钱余额￥</string>
     <string name="all_withdrawals">全部提现</string>
-
     <string name="modify_job">修改员工职位</string>
     <string name="delete">删除</string>
     <string name="most_recent_contact">最近联系人</string>
     <string name="create_new_chat">创建新聊天</string>
+
     <string name="recent_chat">最近聊天</string>
+
     <string name="select_group_chat_instant">选择一个群</string>
     <string name="determine_send_to">确定发送给:</string>
-
     <string name="sure">确定</string>
-
     <string name="location">所在位置</string>
     <string name="who_can_see">谁可以看</string>
     <string name="publics">公开</string>
@@ -541,24 +579,25 @@
     <string name="partially_visible">部分可见</string>
     <string name="selected_friends_are_visible">选中的朋友可见</string>
     <string name="not_to_see_who">不给谁看</string>
+
     <string name="selected_friends_are_not_visible">选中的朋友不可见</string>
     <string name="remind_who_to_see">提醒谁看</string>
-    <string name="ban_pinlun">禁止Ta人评论</string>
 
+    <string name="ban_pinlun">禁止Ta人评论</string>
     <string name="look_over">查看</string>
     <string name="collection">收藏</string>
-
     <string name="group_qr_code">群二维码</string>
     <string name="via_invitations">群主已开启进群验证，只可通过邀请进群</string>
     <string name="group_creator">群创建者</string>
     <string name="not_disturb">消息免打扰</string>
     <string name="news_push">开启后将不再收到该群组的消息推送</string>
     <string name="receive_messages">屏蔽后将不再收到该群组的消息</string>
+
     <string name="group_management">群管理</string>
     <string name="invitation_confirmation">群组邀请确认</string>
     <string name="need_to_be_confirmed">启用后，群成员需群主确认才能邀请朋友进群。</string>
-
     <string name="chat_settings">聊天设置</string>
+
     <string name="start_group_chat">发起群聊</string>
     <string name="chat_background">聊天背景</string>
     <string name="reselection">重选</string>
@@ -566,17 +605,16 @@
     <string name="prompt_title">提示</string>
     <string name="moments">朋友圈</string>
     <string name="my_moments">我的动态</string>
-
     <string name="create_group">发起群聊</string>
+
     <string name="add_friends">添加朋友</string>
     <string name="scanning">扫一扫</string>
     <string name="near_person">附近的人</string>
-
     <string name="near_male">只看男</string>
+
     <string name="near_famale">只看女</string>
     <string name="near_all">不限性别</string>
     <string name="near_cancel">取消</string>
-
     <string name="contacts">通讯录</string>
     <string name="me">我</string>
     <string name="phone_number">手机号</string>
@@ -1151,10 +1189,10 @@
     <string name="tip_been_kick_place_holder">你已被%s踢出了群组</string>
     <string name="tip_been_cancel_ban_place_holder">已被%s取消禁言</string>
     <string name="self">自己</string>
+
     <string name="tip_receive_red_packet_place_holder">%s领取了%s的红包</string>
     <string name="tip_red_back">红包已过期，余额已退回零钱</string>
     <string name="system_public_number_welcome">欢迎使用本软件！</string>
-
     <string name="intent_wrapper_reason">核心服务的持续运行</string>
     <string name="intent_wrapper_need">需要</string>
     <string name="intent_wrapper_need_open">需要打开</string>
@@ -1192,10 +1230,10 @@
     <string name="intent_wrapper_27">的后台自启、后台 GPS 和后台运行。</string>
     <string name="intent_wrapper_28">请点击『确定』，在弹出的『后台管理』中，分别找到『后台自启』、『后台 GPS』和『后台运行』，将</string>
     <string name="intent_wrapper_29">的后台耗电优化</string>
+
     <string name="intent_wrapper_30">请点击『确定』，在弹出的『后台耗电优化』中，将 </string>
     <string name="intent_wrapper_31">的状态改为『已允许』。</string>
     <string name="intent_wrapper_32">添加到白名单。</string>
-
     <string name="live_demo">直播演示</string>
     <string name="trill_demo">抖音演示</string>
     <string name="trill_share">分享</string>
@@ -1211,23 +1249,23 @@
     <string name="is_create">是否创建我的手机联系人群组</string>
     <string name="my_phone_contact_group">我的手机联系人群组</string>
     <string name="is_empty_all_chat">确定清空所有聊天记录</string>
+
     <string name="find_friend_chat_history_place_holder">查找与%s的聊天内容</string>
+
     <string name="find_room_chat_history_place_holder">查找%s内的聊天内容</string>
     <string name="record_video">录制视频</string>
-
     <string name="new_contact">新联系人</string>
-
     <string name="public_a_file">发布文件</string>
+
     <string name="circle_select_file">添加文件</string>
     <string name="tip_has_file_no_public">您已经选择好了文件，确认不发布吗?</string>
     <string name="btn_no_auth_code">收不到验证码？</string>
-
     <string name="send_course_wait">请等待上一个课件发送完成在发送本课件</string>
     <string name="added_black">已加入黑名单</string>
+
     <string name="select_meeting_type">选择会议类型</string>
     <string name="chat_video_conference">视频会议</string>
     <string name="must_select_avatar_can_register">必须选择头像后才能注册</string>
-
     <string name="btn_change_pay_password">修改支付密码</string>
     <string name="btn_set_pay_password">设置支付密码</string>
     <string name="tip_change_pay_password_input_old">请输入支付密码，以验证身份</string>
@@ -1239,25 +1277,26 @@
     <string name="tip_no_user_id">登录异常，请重新登录</string>
     <string name="tip_change_pay_password_success">修改支付密码成功</string>
     <string name="tip_change_pay_password_failed">支付密码修改失败，内部异常</string>
+
     <string name="tip_wrong_pay_password">密码有误</string>
     <string name="tip_no_pay_password">请先设置支付密码</string>
     <string name="tip_read_contacts_failed">手机联系人读取失败</string>
-
     <string name="msg_card">[名片]</string>
     <string name="msg_system">[系统消息]</string>
+
     <string name="msg_image_text">[图文]</string>
     <string name="msg_link">[链接]</string>
-    <string name="download_error">下载失败</string>
 
+    <string name="download_error">下载失败</string>
     <string name="tip_shut_all">该群已开启全体禁言</string>
     <string name="tip_server_error">内部服务器错误</string>
-
     <string name="sure_add_friend_blacklist">确定将该好友加入黑名单？</string>
     <string name="delete_friend">删除好友</string>
     <string name="sure_delete_friend">确定删除该好友？</string>
     <string name="sure_remove_member_for_group">确定将%s移出群组？</string>
     <string name="sure_exit_account">退出后不会删除任何历史数据，\n下次登录依然可以使用本账号。</string>
     <string name="password_error">密码错误</string>
+
     <string name="apply_to_add_me_as_a_friend">申请添加我为好友</string>
     <string name="agree_with_my_plus_friend_request">同意了我的加好友请求</string>
     <string name="added_me_as_a_friend">已添加我为好友</string>
@@ -1265,18 +1304,17 @@
     <string name="tip_send_video_limit">最多发送 %d 个</string>
     <string name="btn_send_video_place_holder">完成(%d/%d)</string>
     <string name="tip_disable_multi_login">没有开启该服务</string>
-
     <string name="set_remark_for_room_member">对群成员备注</string>
+
     <string name="can_not_remark_self">你不能对自己备注</string>
     <string name="select_county_area">选择国家/地区</string>
     <string name="tip_get_config_failed">连接服务器失败，请稍后再试</string>
-
     <string name="msg_word">[文本]</string>
     <string name="no_executable_intent">无可执行的跳转</string>
+
     <string name="title_replay_place_holder">快速回复：%s</string>
     <string name="hint_replay">内容</string>
     <string name="tip_replay_empty">回复内容不能为空</string>
-
     <string name="skin_light_green">浅浅绿</string>
     <string name="skin_sea_blue">大海蓝</string>
     <string name="skin_elegant_black">高雅黑</string>
@@ -1289,22 +1327,22 @@
     <string name="skin_leaf_green">粉叶绿</string>
     <string name="skin_business_blue">商务蓝</string>
     <string name="skin_blue_gray">蓝灰色</string>
+
     <string name="skin_burnt_umber">深茶色</string>
     <string name="skin_orange">橘黄色</string>
     <string name="skin_new">新皮肤</string>
-
     <string name="square">广场</string>
+
     <string name="life_circle">社交圈</string>
     <string name="live_chat">视频直播</string>
     <string name="douyin">短视频</string>
-
     <string name="is_send_ing">正在发送&#8230;</string>
+
     <string name="is_send_ok">已发送</string>
+
     <string name="back_app">返回%s</string>
     <string name="stay_here">留在幸福有约</string>
-
     <string name="tip_get_life_circle_number_failed">获取社交圈新消息数量失败</string>
-
     <string name="all_image">所有图片</string>
     <string name="confirm_to_delete">确认删除？</string>
     <string name="deleted_a_photo">删除了一张图片</string>
@@ -1315,58 +1353,58 @@
     <string name="msg_amount_limit">已经达到最高选择数量</string>
     <string name="msg_no_camera">无法启用系统相机</string>
     <string name="preview">预览</string>
+
     <string name="undo">撤销</string>
     <string name="original_image">原图</string>
     <string name="search_contact_group">查找好友/群组</string>
-
     <string name="me_tab_friend">好友</string>
     <string name="tip_me_query_friend_failed">获取好友数量失败</string>
+
     <string name="tip_me_query_group_failed">获取群组数量失败</string>
     <string name="send_image_text">发送图文</string>
     <string name="skin_classy_gray">质感灰</string>
-
     <string name="tip_live_locking">你的直播间已被锁定，请联系客服解锁</string>
     <string name="remove_member_notify">群组减员通知</string>
     <string name="tip_exit_group_notify">关闭后，当群内成员被踢出群组或主动退群时，群组内不进行通知</string>
     <string name="example_title">标题</string>
+
+    <!--短视频模块-->
     <string name="tip_no_login_permission">没有登录权限</string>
     <string name="tip_no_share_permission">没有分享权限</string>
     <string name="tip_incomplete_information">信息不完整，请检查昵称是否为空</string>
 
-    <!--短视频模块-->
-    <string name="text_comment_num">条评论</string>
-    <string name="text_no_comment">暂无评论,来抢沙发</string>
-    <string name="leave_you_comment">留下你的精彩评论吧</string>
-
     <!-- Add a Sound -->
-    <string name="select_music">选择音乐</string>
+    <string name="text_comment_num">条评论</string>
 
-    <string name="select_cover">选择封面</string>
+    <string name="text_no_comment">暂无评论,来抢沙发</string>
 
     <!--flip-->
+    <string name="leave_you_comment">留下你的精彩评论吧</string>
+    <string name="select_music">选择音乐</string>
+    <string name="select_cover">选择封面</string>
     <string name="camera_flip">翻转</string>
+    <!--Original Sound-->
     <string name="filters">滤镜</string>
+    <!--Adjust video speed-->
     <string name="effects">特效</string>
     <string name="cover">封面</string>
-    <!--Original Sound-->
     <string name="Original_Sound">原生音效</string>
-    <!--Adjust video speed-->
     <string name="video_speed">调节视频速度</string>
     <string name="compressed">压缩中</string>
+
     <string name="modified">修改中</string>
     <string name="music">音乐</string>
     <string name="volume">音量</string>
 
+    <!--Very slow-->
     <string name="compre_success">压缩成功</string>
     <string name="compre_failure">压缩失败</string>
     <string name="flatten_failure">拼合失败</string>
-
-    <!--Very slow-->
     <string name="video_speed_0">极慢</string>
+
     <string name="video_speed_1">慢</string>
     <string name="video_speed_2">快</string>
     <string name="video_speed_3">极快</string>
-
     <string name="tip_collection_canceled">取消收藏成功</string>
     <string name="search_public_number">搜索公众号</string>
     <string name="tip_search_public_number">公众号</string>
@@ -1374,11 +1412,11 @@
     <string name="delete_public_number">取消关注</string>
     <string name="ask_delete_public_number">是否取消关注？</string>
     <string name="tip_delete_public_number_success">取消关注成功</string>
+
+
     <string name="has_delete_public_number_place_holder">已经取消关注: %s</string>
     <string name="tip_get_friends_failed">加载好友列表失败</string>
     <string name="delete_public_number_error">取消关注失败</string>
-
-
     <string name="hint_invisible">隐身人不能发言</string>
     <string name="tip_set_invisible_place_holder">%s设置%s为隐身人</string>
     <string name="tip_cancel_invisible_place_holder">%s取消%s的隐身人</string>
@@ -1393,10 +1431,10 @@
     <string name="tip_cancel_invisible_success">取消隐身人成功</string>
     <string name="tip_cancel_guardian_success">取消监控人成功</string>
     <string name="role_invisible">隐身人</string>
+
     <string name="role_guardian">监控人</string>
     <string name="delete_some">请去删除一些</string>
     <string name="record_frist_video">请先去录制视频</string>
-
     <string name="message_channel_name">消息</string>
     <string name="tip_opposite_offline_end_call">对方异常断线，是否结束此次通话</string>
     <string name="tip_query_file_error_place_holder">查询文件失败，%s</string>
@@ -1405,10 +1443,10 @@
     <string name="tip_query_document_error_place_holder">查询文档失败，%s</string>
     <string name="tip_query_application_error_place_holder">查询应用失败，%s</string>
     <string name="tip_query_other_error_place_holder">查询其他失败，%s</string>
+
     <string name="tip_opposite_busy_call">对方忙线中</string>
     <string name="tip_version_disabled">当前版本已禁用，请下载最新版本。</string>
     <string name="tip_cannot_set_self_role">不能修改自己的身份</string>
-
     <string name="hint_invitation_code">填写邀请码</string>
     <string name="hint_input_phone_number">请输入手机号</string>
     <string name="hint_input_username">请输入用户名</string>
@@ -1429,28 +1467,28 @@
     <string name="tip_load_more">点击加载更多</string>
     <string name="tip_comment_load_error">评论列表加载失败</string>
     <string name="tip_friend_account_removed_place_holder">%s账号已经被删除</string>
+
     <string name="tip_group_disable_by_service">该群组已被后台锁定</string>
     <string name="tip_group_manager_close_conference_features">群主已关闭普通成员发起会议功能</string>
     <string name="member_limit">人数上限</string>
-
     <string name="chat_camera_record">拍摄</string>
     <string name="me_title">个人中心</string>
     <string name="square_title_first">热门应用</string>
     <string name="tip_more_action">更多应用敬请期待！</string>
+
     <string name="square_title_second">精彩活动</string>
     <string name="tip_public_number_list_failed">获取公众号列表失败</string>
     <string name="hot_public_number">热门公众号</string>
-
     <string name="tip_alipay_failed">启动支付宝失败</string>
     <string name="tip_alipay_auth_failed">支付宝授权失败</string>
     <string name="tip_withdraw_success">提现成功</string>
     <string name="tip_withdraw_empty">请输入提现金额</string>
     <string name="tip_withdraw_too_little">提现金额至少为1元</string>
     <string name="tip_balance_not_enough">当前余额不足</string>
+
     <string name="withdraw_wechat">提现到微信</string>
     <string name="withdraw_alipay">提现到支付宝</string>
     <string name="tip_withdraw_cost">提现手续费为0.6%,最低提现金额为1元</string>
-
     <string name="test_listen_voice">试听</string>
     <string name="open_auto_launcher">\n检测到当前手机为OPPO手机，后台运行时如收到音视频来电不会自动弹起来电界面，可至"手机管家-权限隐私-自启动管理"内将该应用自启动开启</string>
     <string name="tip_handing_up">正在挂断</string>
@@ -1458,10 +1496,10 @@
     <string name="tip_opposite_offline_auto__end_call">对方异常断线，此次通话结束</string>
     <string name="tip_share_type_not_supported">不支持的分享类型</string>
     <string name="name_third_tool">第三方工具</string>
+
     <string name="tip_file_cache_failed">文件打开失败</string>
     <string name="send_to_life_circle">发送到社交圈</string>
     <string name="tip_confirm_send">确定发送收藏消息？</string>
-
     <string name="floating_window">浮窗</string>
     <string name="floating_window_cancel">取消浮窗</string>
     <string name="share_to_life_circle">分享到社交圈</string>
@@ -1479,10 +1517,10 @@
     <string name="complaint_reason_5">网页包含在收集个人隐私信息（如：钓鱼链接）</string>
     <string name="complaint_reason_6">网页包含诱导分享/关注性质的内容</string>
     <string name="complaint_reason_7">网页可能包含谣言信息</string>
+
     <string name="complaint_reason_8">网页包含赌博信息</string>
     <string name="tip_file_not_supported">不支持该文件</string>
     <string name="search_chat_content">查找聊天记录</string>
-
     <string name="sk_pay">支付公众号</string>
     <string name="transfer_money">转账</string>
     <string name="tip_transfer_money">[转账]</string>
@@ -1512,10 +1550,10 @@
     <string name="transfer_received">转账已被对方领取</string>
     <string name="transfer_backed">转账已退回</string>
     <string name="notification_praise_me_life_circle">点赞了与我相关的[社交圈]</string>
+
     <string name="notification_comment_me_life_circle">评论了与我相关的[社交圈]</string>
     <string name="notification_at_me_life_circle">提到了你[社交圈]</string>
     <string name="notification_refresh_life_circle">更新了一条动态[社交圈]</string>
-
     <string name="receipt_payment">收付款</string>
     <string name="rp_payment">付款</string>
     <string name="rp_payment_tip1">付款数字码</string>
@@ -1532,10 +1570,10 @@
     <string name="qr_code_synthesis_fail">收款码合成失败</string>
     <string name="receipt_money_num">收款金额</string>
     <string name="receipt_add_desc">添加收钱说明</string>
+
     <string name="receipt_pay_single">付款给个人</string>
     <string name="receipt_add_remake">添加备注</string>
     <string name="receipt_set_money">设置金额</string>
-
     <string name="transfer_back_notify">转账过期退还通知</string>
     <string name="transfer_back_num">退还金额：</string>
     <string name="transfer_back_type">退款方式：</string>
@@ -1553,42 +1591,42 @@
     <string name="receipt_get_num">收款金额</string>
     <string name="receipt_payment_user">付款方&#160;&#160;&#160;&#160;</string>
     <string name="receipt_remark">备注&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+
     <string name="receipt_remark_reason">收款成功，已存入零钱。</string>
     <string name="payment">%s已付款</string>
     <string name="receipted">%s已收款</string>
-
     <string name="open_screen_lock_show">开启"锁屏显示"权限</string>
     <string name="open_screen_lock_show_for_audio">开启"锁屏显示"权限，在锁屏时也能弹出音视频来电界面</string>
+
     <string name="tip_disallow_invite_role_place_holder">%s不能邀请好友</string>
     <string name="group_manager">管理员</string>
     <string name="tip_not_allow_delete">该公众号不允许删除</string>
-
     <string name="bind_account_set">账号和绑定设置</string>
     <string name="band_phone">绑定手机</string>
     <string name="other_login_way">其他登录方式</string>
     <string name="wechat">微信</string>
+
     <string name="banded">已绑定</string>
     <string name="no_band">未绑定</string>
     <string name="band">绑定</string>
-
     <string name="video_all">全部</string>
     <string name="video_food">美食</string>
     <string name="video_scenery">景点</string>
     <string name="video_culture">文化</string>
     <string name="video_recreation">玩乐</string>
+
+    <!--"确定要解除微信绑定?""将前往微信绑定账号"前往绑定-->
     <string name="video_sport">运动</string>
     <string name="video_hotel">酒店</string>
     <string name="video_shopping">购物</string>
-
-    <!--"确定要解除微信绑定?""将前往微信绑定账号"前往绑定-->
     <string name="tip_bind_third_place_holder">确定要解除%s绑定?</string>
-    <string name="tip_unbind_third_place_holder">将前往%s绑定账号</string>
-    <string name="dialog_Relieve">解除绑定</string>
-    <string name="dialog_go">前往绑定</string>
 
     <!--Filter -->
-    <string name="video_filter">滤镜</string>
+    <string name="tip_unbind_third_place_holder">将前往%s绑定账号</string>
     <!--tv_whiten-->
+    <string name="dialog_Relieve">解除绑定</string>
+    <string name="dialog_go">前往绑定</string>
+    <string name="video_filter">滤镜</string>
     <string name="tv_whiten">美白</string>
     <string name="tv_skin">磨皮</string>
     <string name="centent_bar">%s登录</string>
@@ -1647,30 +1685,11 @@
     <string name="sk_account_set">设置%s号</string>
     <string name="sk_account_single">%s号是账号的唯一凭证，只能设置一次</string>
     <string name="sk_account_exist">当前账号已存在</string>
+
     <string name="send_contacts">联系人</string>
+
     <string name="replay_button">回复</string>
     <string name="replay_label">回复 </string>
-
-    <array name="filter_effect">
-        <item>正常</item>
-        <item>阳光</item>
-        <item>古风</item>
-        <item>热力</item>
-        <item>黑白</item>
-        <item>暖色</item>
-        <item>冬季</item>
-        <item>冷色</item>
-        <item>清脆</item>
-        <item>清冷</item>
-        <item>淡黄</item>
-        <item>深黄</item>
-        <item>自然</item>
-        <item>浪漫</item>
-        <item>印花</item>
-        <item>素描</item>
-        <item>日落</item>
-    </array>
-
     <string name="screening_condit">筛选</string>
     <string name="switch_account_way">切换验证方式</string>
     <string name="privacy_allow_none">所有人不允许</string>
@@ -1682,24 +1701,16 @@
     <string name="tip_allow_message">允许别人给我发消息</string>
     <string name="tip_show_phone">谁可以看到我的手机号码</string>
     <string name="tip_show_last_login_time">谁可以看到我的上线时间</string>
+
     <string name="privacy_whitelist">白名单</string>
     <string name="privacy_blacklist">黑名单</string>
-
     <string name="tip_allow_phone_search">允许通过手机号搜索我</string>
+
     <string name="tip_allow_name_search">允许通过昵称搜索我</string>
     <string name="tip_friend_from">允许加我的方式</string>
-
     <string name="friend_from_allow_none">全部不允许</string>
-    <string name="friend_from_allow_all">全部允许</string>
-    <array name="friend_from_type">
-        <item>二维码</item>
-        <item>名片</item>
-        <item>群组</item>
-        <item>手机号搜索</item>
-        <item>昵称搜索</item>
-        <item>其他</item>
-    </array>
 
+    <string name="friend_from_allow_all">全部允许</string>
     <string name="face_to_face_group">面对面建群</string>
     <string name="face_to_face_group_tip1">和身边的朋友输入同样的四个数字，\n进入同一个群聊</string>
     <string name="face_to_face_group_tip2">这些朋友也将进入群聊</string>
@@ -1709,8 +1720,8 @@
     <string name="red_packet_has_received_place_holder">，红包于%s内被领完</string>
     <string name="red_best_lucky">手气最佳</string>
     <string name="tip_remote_screenshot">对方在聊天中截图</string>
-    <string name="label_online_time">上次在线时间</string>
 
+    <string name="label_online_time">上次在线时间</string>
     <string name="set_remark_and_label">设置备注和标签</string>
     <string name="tip_input_describe">请输入描述</string>
     <string name="sava_video">保存视频</string>
@@ -1722,11 +1733,11 @@
     <string name="setting_nickname">设置备注和标签</string>
     <string name="nick_name">昵称：</string>
     <string name="communication">通讯号：</string>
+
     <string name="describe">描述</string>
-
     <string name="sync_friend">同步好友</string>
-    <string name="sync_group">同步群组</string>
 
+    <string name="sync_group">同步群组</string>
     <string name="sync_chat_history_clean">清空双方的聊天记录</string>
     <string name="tip_sync_chat_history_clean">确认清除与该人的聊天记录（对方设备上的聊天记录也会被清空）？</string>
     <string name="tip_sync_chat_history_clean_to">对方进行了双向清空聊天记录的操作</string>
@@ -1743,8 +1754,8 @@
     <string name="reply_content">回复内容</string>
     <string name="please_edit_reply_content">回复内容</string>
     <string name="developer">开发者：%s</string>
-    <string name="disclaimer">免责声明：本服务由%s提供。相关服务和责任将由该公司承担。如有问题请咨询该公司客服。</string>
 
+    <string name="disclaimer">免责声明：本服务由%s提供。相关服务和责任将由该公司承担。如有问题请咨询该公司客服。</string>
     <string name="sure_pay">确认付款</string>
     <string name="order_info">订单信息</string>
     <string name="pay_method">付款方式</string>
@@ -1759,22 +1770,22 @@
     <string name="tip_permission_phone">·手机状态权限，仅获取设备的状态，不监控通话记录</string>
     <string name="tip_permission_storage">·存储权限，用于保存文件</string>
     <string name="tip_permission_location">·定位权限，用于发送位置</string>
-    <string name="tip_permission_contacts">·读取联系人权限，用于找到联系人中的好友</string>
 
+    <string name="tip_permission_contacts">·读取联系人权限，用于找到联系人中的好友</string>
     <string name="suffix_invite_you_voice_meeting">邀请您语音会议</string>
     <string name="suffix_invite_you_video_meeting">邀请您视频会议</string>
     <string name="suffix_invite_you_talk">邀请您对讲机</string>
     <string name="tip_invite_talk_meeting">邀请您对讲机</string>
-    <string name="name_talk">对讲机</string>
 
+    <string name="name_talk">对讲机</string>
     <string name="tip_talk_free">对讲机闲</string>
     <string name="title_talk_online_list">会话人员</string>
     <string name="tip_talk_press_in">按住说话</string>
     <string name="tip_talk_connecting">连接中</string>
     <string name="label_last_request_talk_time">上次抢麦：</string>
     <string name="label_last_talk_length">发言时间：</string>
-    <string name="tip_talker_ping_failed">网络异常</string>
 
+    <string name="tip_talker_ping_failed">网络异常</string>
     <string name="pay_certificate">支付凭证</string>
     <string name="tip_cannot_edit_bulletin">群主或管理员才可编辑公告</string>
     <string name="btn_privacy_disagree">不同意</string>
@@ -1798,20 +1809,20 @@
     <string name="tip_receive_chat_history_failed">导入聊天记录失败</string>
     <string name="tip_migrate_chat_history_wrong_user">请登录相同账号迁移聊天记录</string>
     <string name="start_edit">编辑</string>
-    <string name="tip_web_login_success">登录成功</string>
 
+    <string name="tip_web_login_success">登录成功</string>
     <string name="filter_none">原图</string>
     <string name="filter_antique">复古</string>
     <string name="filter_emerald">祖母绿</string>
     <string name="filter_healthy">健康</string>
     <string name="filter_nostalgia">怀旧</string>
-    <string name="filter_crayon">蜡笔</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="filter_crayon">蜡笔</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tip_group_owner_update_msg_auto_destroy_time">群主设置群消息过期销毁时间为%s</string>
-    <string name="copy_sure">确定复制</string>
-    <string name="tip_notification_open_url_failed">打开网页失败</string>语音通话
+    <string name="copy_sure">确定复制</string>语音通话
+    <string name="tip_notification_open_url_failed">打开网页失败</string>
     <string name="skin_minimalism_red">极简红</string>
     <string name="tip_location_xy_null">经纬度为空</string>
     <string name="skin_minimalism_green">极简绿</string>
@@ -1843,8 +1854,8 @@
     <string name="tip_pay_secure">支付安全错误</string>
     <string name="tip_pay_secure_place_holder">支付错误:%s</string>
     <string name="tip_login_secure_place_holder">登录错误:%s</string>
-    <string name="tip_broken_private_key">私钥错误</string>
 
+    <string name="tip_broken_private_key">私钥错误</string>
     <string name="voice_chat">语音通话</string>
     <string name="error_network">网络好像有点问题：</string>
     <string name="Input_11_phoneNumber">请输入至少11位的手机号码</string>
@@ -2013,8 +2024,8 @@
     <string name="delete_file">删除文件</string>
     <string name="delete_group">删除群文件</string>
     <string name="delete_local">删除本地</string>
-    <string name="remove_by_loval">删除本地将会删除本地文件</string>
-    <string name="audiorecorder_pause_recorder">点击暂停</string>f
+    <string name="remove_by_loval">删除本地将会删除本地文件</string>f
+    <string name="audiorecorder_pause_recorder">点击暂停</string>
     <string name="audiorecorder_continue_recorder">继续录制</string>
     <string name="play">播放</string>
     <string name="selected">已选</string>
@@ -2076,8 +2087,8 @@
     <string name="ban_to_male">不让他看我</string>
     <string name="ban_to_female">不让她看我</string>
     <string name="ban_from_male">不看他</string>
-    <string name="ban_from_female">不看她</string>
 
+    <string name="ban_from_female">不看她</string>
     <string name="cancel_collection">取消收藏</string>
     <string name="unread">未读</string>
     <string name="sure_cancel_collection">确定要取消收藏吗</string>
@@ -2155,8 +2166,8 @@
     <string name="label_live_send_message">说点什么&#8230;</string>
     <string name="main_page_ta">Ta主页</string>
     <string name="end_live">结束直播</string>
-    <string name="live_set_manager">设为管理员</string>
 
+    <string name="live_set_manager">设为管理员</string>
     <string name="tip_edit_max_input_length">最多输入%d的字符</string>
     <string name="play_voice_speaker_auto_switch">播放语音时扬声器听筒自动切换</string>
     <string name="edit_group_notice">编辑了群公告：</string>
@@ -2193,8 +2204,8 @@
     <string name="month">%d月</string>
     <string name="search_history">历史记录</string>
     <string name="clear_search_history">清空历史记录</string>
-    <string name="remove_some_group">已过滤掉被禁言，为隐身人等其他原因禁止群发消息的群组</string>
 
+    <string name="remove_some_group">已过滤掉被禁言，为隐身人等其他原因禁止群发消息的群组</string>
     <string name="tip_long_click_record">长按摄像</string>
     <string name="tip_short_click_take_photo">轻触拍照</string>
     <string name="tip_collect_allow_type">选中消息中，文字 / 语音 / 图片 / 视频 / 文件 消息才能被收藏</string>
@@ -2250,8 +2261,8 @@
     <string name="suffix_live_room_locked"> 直播间已经被锁定</string>
     <string name="suffix_join_live_room"> 进入了直播间</string>
     <string name="keep_live_title">IM核心</string>
-    <string name="keep_live_description">进程守护中</string>
 
+    <string name="keep_live_description">进程守护中</string>
     <string name="tip_wait_voice">正在等待语音接听&#8230;</string>
     <string name="tip_wait_video">正在等待视频接听&#8230;</string>
     <string name="praise_list">点赞列表</string>
@@ -2298,17 +2309,6 @@
     <string name="tip_yeepay_withdraw_charge">手续费从余额中扣</string>
     <string name="bank_card">银行卡</string>
     <string name="yeepay_record_type_5">发一对一红包</string>
-    <array name="yeepay_record_type">
-        <item>充值</item>
-        <item>提现</item>
-        <item>转账</item>
-        <item>接收转账</item>
-        <item>发一对一红包</item>
-        <item>发群普通红包</item>
-        <item>发拼手气红包</item>
-        <item>收红包</item>
-        <item>提现服务费</item>
-    </array>
     <string name="PrivacyPosition">是否公开个人位置</string>
     <string name="red_tail">查看红包领取详情 ></string>
     <string name="request_exception">请求异常，请稍后重试</string>

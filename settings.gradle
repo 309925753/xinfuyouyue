@@ -7,4 +7,6 @@ include ':OpenGLlibrary'
 include ':liveLibrary'
 include ':meeting'
 include ':skWeiChatBaidu'
-
+include ':ocr_ui'
+include ':faceplatform'
+include ':faceplatform-ui'

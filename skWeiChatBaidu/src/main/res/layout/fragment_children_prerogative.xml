@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@mipmap/my_privilege_vip_bg"
->
+    android:background="@mipmap/my_privilege_vip_bg">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,15 +24,23 @@
         android:elevation="@dimen/dp5"
         >
 
-        <ImageView
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/ivHead"
             android:layout_width="220dp"
             android:layout_height="193dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@mipmap/my_online_chat"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head"
+            android:visibility="visible"
+            app:riv_border_color="#fff"
+            app:riv_border_width="1dip"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
             android:layout_marginTop="@dimen/dp15"
+            android:layout_gravity="center_horizontal"
             />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

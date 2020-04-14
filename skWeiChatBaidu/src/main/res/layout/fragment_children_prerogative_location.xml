@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@mipmap/my_prerogative_city_bg"
-    >
+    android:background="@mipmap/my_prerogative_city_bg">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,12 +24,29 @@
         android:background="@mipmap/my_prerogative_city"
         android:orientation="vertical">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/avatar_img"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="#fff"
+            app:riv_border_width="1dip"
+            app:riv_corner_radius="6dp"
+            app:riv_oval="true"
             android:layout_width="91dp"
             android:layout_height="91dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="102dp"
-            android:src="@mipmap/ic_launcher_round" />
+            />
+
+
+
+
     </LinearLayout>
 
     <TextView

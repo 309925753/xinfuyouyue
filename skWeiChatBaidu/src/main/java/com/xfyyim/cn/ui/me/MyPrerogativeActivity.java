@@ -1,7 +1,10 @@
 package com.xfyyim.cn.ui.me;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -12,22 +15,64 @@ import com.xfyyim.cn.adapter.ViewPageFragmentAdapter;
 import com.xfyyim.cn.fragmentnew.MyPrerogativeFragment;
 import com.xfyyim.cn.fragmentnew.MyPrerogativeLikeFragment;
 import com.xfyyim.cn.fragmentnew.myOnlineChatFragment;
+import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.view.MergerStatus;
+import com.xfyyim.cn.view.SkinImageView;
+import com.xfyyim.cn.view.SkinTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPrerogativeActivity extends FragmentActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
+public class MyPrerogativeActivity extends BaseActivity implements View.OnClickListener {
+
+    @BindView(R.id.iv_title_left)
+    SkinImageView ivTitleLeft;
+    @BindView(R.id.tv_title_left)
+    SkinTextView tvTitleLeft;
+    @BindView(R.id.pb_title_center)
+    ProgressBar pbTitleCenter;
+    @BindView(R.id.tv_title_center)
+    SkinTextView tvTitleCenter;
+    @BindView(R.id.iv_title_center)
+    ImageView ivTitleCenter;
+    @BindView(R.id.iv_title_right)
+    SkinImageView ivTitleRight;
+    @BindView(R.id.iv_title_right_right)
+    SkinImageView ivTitleRightRight;
+    @BindView(R.id.tv_title_right)
+    SkinTextView tvTitleRight;
+    @BindView(R.id.mergerStatus)
+    MergerStatus mergerStatus;
     //页卡视图集合
     private List<Fragment> mFragmentList = new ArrayList<>();
     private ViewPager mViewPager;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_prerogative);
-
+        unbinder=ButterKnife.bind(this);
         ininView();
+        initActionBar();
+    }
+
+    private void initActionBar() {
+        getSupportActionBar().hide();
+        ivTitleLeft.setVisibility(View.VISIBLE);
+        ivTitleLeft.setOnClickListener(this);
+        tvTitleCenter.setText("我的特权");
+        mergerStatus.setBackground(getDrawable(R.drawable.bg_new_my_wallet_red));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tvTitleRight.setTextColor(getColor(R.color.white));
+        }
+       /* ivTitleRight.setVisibility(View.VISIBLE);
+        ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
+
     }
 
 
@@ -89,5 +134,21 @@ public class MyPrerogativeActivity extends FragmentActivity {
             }
         });
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_title_left:
+                finish();
+                break;
+        }
     }
 }

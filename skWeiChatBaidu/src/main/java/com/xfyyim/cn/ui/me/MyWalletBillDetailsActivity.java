@@ -1,10 +1,13 @@
 package com.xfyyim.cn.ui.me;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -12,12 +15,38 @@ import androidx.viewpager.widget.ViewPager;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.fragmentnew.BillCashWithdrawalFragment;
 import com.xfyyim.cn.fragmentnew.BillConsumptionFragment;
+import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.view.MergerStatus;
+import com.xfyyim.cn.view.SkinImageView;
+import com.xfyyim.cn.view.SkinTextView;
 import com.xfyyim.cn.view.XRadioGroup;
 
 import java.util.ArrayList;
 
-public class MyWalletBillDetailsActivity extends FragmentActivity implements ViewPager.OnPageChangeListener, XRadioGroup.OnCheckedChangeListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
+public class MyWalletBillDetailsActivity extends BaseActivity implements ViewPager.OnPageChangeListener, XRadioGroup.OnCheckedChangeListener , View.OnClickListener {
+
+    @BindView(R.id.iv_title_left)
+    SkinImageView ivTitleLeft;
+    @BindView(R.id.tv_title_left)
+    SkinTextView tvTitleLeft;
+    @BindView(R.id.pb_title_center)
+    ProgressBar pbTitleCenter;
+    @BindView(R.id.tv_title_center)
+    SkinTextView tvTitleCenter;
+    @BindView(R.id.iv_title_center)
+    ImageView ivTitleCenter;
+    @BindView(R.id.iv_title_right)
+    SkinImageView ivTitleRight;
+    @BindView(R.id.iv_title_right_right)
+    SkinImageView ivTitleRightRight;
+    @BindView(R.id.tv_title_right)
+    SkinTextView tvTitleRight;
+    @BindView(R.id.mergerStatus)
+    MergerStatus mergerStatus;
     private ArrayList<Object> items = new ArrayList<Object>();
     private ViewPagerAdapter adapter;
     private ViewPager viewPager;
@@ -25,13 +54,30 @@ public class MyWalletBillDetailsActivity extends FragmentActivity implements Vie
     private RadioButton radioBack;
     private RadioButton radioClose;
 
+    private Unbinder  unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_wallet_bill_details);
+        unbinder =  ButterKnife.bind(this);
         initView();
+        initActionBar();
     }
 
+    private void initActionBar() {
+        getSupportActionBar().hide();
+        ivTitleLeft.setVisibility(View.VISIBLE);
+        ivTitleLeft.setOnClickListener(this);
+        tvTitleCenter.setText("帐单明细");
+        mergerStatus.setBackground(getDrawable(R.drawable.bg_new_my_wallet_red));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tvTitleRight.setTextColor(getColor(R.color.white));
+        }
+       /* ivTitleRight.setVisibility(View.VISIBLE);
+        ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
+
+    }
     private void initView() {
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -84,6 +130,15 @@ public class MyWalletBillDetailsActivity extends FragmentActivity implements Vie
                 break;
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_title_left:
+                finish();
+                break;
+        }
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {

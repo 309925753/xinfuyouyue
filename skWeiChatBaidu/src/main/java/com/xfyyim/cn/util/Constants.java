@@ -109,4 +109,7 @@ public class Constants {
     public static String PRIVACY_AGREE_STATUS = "PRIVACY_AGREE_STATUS";
     // 保存在sp的deviceId的key,
     public static String KEY_DEVICE_ID = "KEY_DEVICE_ID";
+    public static String     lICENSE_ID="xfyy-cn-test-face-android";//百度人脸识别 licenseID
+    public static String     lICENSE_FILE_NAME="idl-license.face-android";//百度人脸识别licenseFileName
+
 }

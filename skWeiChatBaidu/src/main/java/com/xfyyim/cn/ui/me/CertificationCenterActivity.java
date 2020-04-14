@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -10,13 +11,24 @@ import android.widget.TextView;
 
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.base.CoreManager;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
+import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
+import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
+import com.xuan.xuanhttplibrary.okhttp.result.Result;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
 
 public class CertificationCenterActivity extends BaseActivity implements View.OnClickListener {
@@ -47,13 +59,15 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
     RelativeLayout rlCertificationImmediately;
     @BindView(R.id.tvPrivacyPolicy)
     TextView tvPrivacyPolicy;
+    @BindView(R.id.tvCertification)
+    TextView tvCertification;
     private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certification_center);
-        unbinder=ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         initView();
         initActionBar();
@@ -66,22 +80,22 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
         ivTitleLeft.setVisibility(View.VISIBLE);
         ivTitleLeft.setOnClickListener(this);
         tvTitleCenter.setText("认证中心");
-       /* ivTitleRight.setVisibility(View.VISIBLE);
-        ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
+
 
     }
+
     private void initView() {
-        findViewById(R.id.rlCertificationImmediately).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //立即认证
-            }
-        });
+        findViewById(R.id.rlCertificationImmediately).setOnClickListener(this::onClick);
         TextView tvPrivacyPolicy = (TextView) findViewById(R.id.tvPrivacyPolicy);
         String title1 = "认证用户可以提升信用度、推荐值。认证中将采集您的面部信息，通过旷世科技和陌陌科技的人脸识别技术进行对比，详见" + "<font color=\"#FF0000\">" + "隐私政策" + " " + "</font>" + "";
         tvPrivacyPolicy.setText(Html.fromHtml(title1));
+        LogUtil.e("-----------------------getFaceIdentity---------------------" +CoreManager.getSelf(this).getFaceIdentity());
+        if(CoreManager.getSelf(this).getFaceIdentity()==1){
+            tvCertification.setText("认证成功");
+        }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -96,6 +110,63 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
             case R.id.iv_title_left:
                 finish();
                 break;
+            case R.id.rlCertificationImmediately:
+                if(CoreManager.getSelf(this).getFaceIdentity()==1){
+                  return;
+                }
+             Intent intent = new Intent(this, FaceLivenessExpActivity.class);
+                startActivityForResult(intent, 100);
+                break;
         }
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 100:
+                if (data != null) {
+                    final String image = data.getStringExtra("image");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                          postCerifcalion(image);
+                        }
+                    }).start();
+                }
+                break;
+        }
+    }
+
+    /**
+     * 百度返回图片数据并请求后台
+     * @param base64
+     */
+    private void postCerifcalion(String base64) {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("image", base64);
+        params.put("userId", coreManager.getSelf().getUserId());
+        HttpUtils.post().url(coreManager.getConfig().MSG_COMMENT_ADD)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<String>(String.class) {
+                    @Override
+                    public void onResponse(ObjectResult<String> result) {
+                        // 人脸在线活体检测
+                        if (Result.checkSuccess(CertificationCenterActivity.this, result)) {
+                            tvCertification.setText("认证成功");
+                            ToastUtil.showLongToast(CertificationCenterActivity.this, "认证成功");
+                        } else {
+                            ToastUtil.showLongToast(CertificationCenterActivity.this, "认证失败请重新认证");
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        ToastUtil.showErrorNet(CertificationCenterActivity.this);
+                    }
+                });
+    }
+
 }
