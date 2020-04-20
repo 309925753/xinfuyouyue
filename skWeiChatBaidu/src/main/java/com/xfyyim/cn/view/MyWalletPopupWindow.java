@@ -23,7 +23,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 
 import java.util.ArrayList;
@@ -38,12 +40,17 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
     private View mMenuView;
     private MyWalletPopupWindow.BtnOnClick btnOnClick;
     private   String  inputMoney=null;
-
+    private UserVIPPrivilegePrice userVIPPrivilegePrice = new UserVIPPrivilegePrice();
+    private  int  functionType;
+    private  int  Frequency10More;
+    private  int  Frequency10MorePrice;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public MyWalletPopupWindow(Activity context) {
+    public MyWalletPopupWindow(Activity context,UserVIPPrivilegePrice _userVIPPrivilegePrice,int functionType) {
         super(context);
         this.context = context;
+        this.userVIPPrivilegePrice=_userVIPPrivilegePrice;
+        this.functionType=functionType;
             //加载弹出框的布局
             mMenuView = context.getLayoutInflater().inflate(
                     R.layout.dialog_mywallet_layout, null);
@@ -92,11 +99,39 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
             LinearLayout rlBuyTimes = (LinearLayout) mMenuView.findViewById(R.id.rlBuyTimes);
             LinearLayout rlBuyTimes2 = (LinearLayout) mMenuView.findViewById(R.id.rlBuyTimes2);
 
+        /**
+         * 功能类型
+         */
+        switch (functionType){
+                case 2:
+                    tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency1())+"RMB");
+                    tvBuyMoney2.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency2())+"RMB");
+                    tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10())+"RMB");
+                    tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10More())+"RMB");
+                    Frequency10MorePrice=userVIPPrivilegePrice.getSuperLikeByFrequency10More();
+                    break;
+                case 3:
+                    tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency1())+"RMB");
+                    tvBuyMoney2.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency2())+"RMB");
+                    tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency10())+"RMB");
+                    tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency10More())+"RMB");
+                    Frequency10MorePrice=userVIPPrivilegePrice.getChatByFrequency10More();
+                    break;
+                case 4:
+                    tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency1())+"RMB");
+                    tvBuyMoney2.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency2())+"RMB");
+                    tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency10())+"RMB");
+                    tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency10More())+"RMB");
+                    Frequency10MorePrice=userVIPPrivilegePrice.getChatPeekByFrequency10More();
+                    break;
+
+            }
 
             rlBuyTimes.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    Frequency10More=0;
                     isBuyTimes = false;
                     isBuyTimes2 = true;
                     isBuyTimes3 = true;
@@ -123,6 +158,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    Frequency10More=0;
                     isBuyTimes = true;
                     isBuyTimes2 = false;
                     isBuyTimes3 = true;
@@ -148,6 +184,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
+                    Frequency10More=0;
                     isBuyTimes = true;
                     isBuyTimes2 = true;
                     isBuyTimes3 = false;
@@ -202,6 +239,13 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                                     return;
                                 }
                                 inputMoney=text;
+                                if(!TextUtils.isEmpty(text)){
+                                    Frequency10More=Integer.parseInt(text);
+                                    tvBuyTimes4.setText("购买"+Frequency10More+"次");
+                                    tvBuyMoney4.setText(ArithUtils.round1(Frequency10MorePrice*Frequency10More)+"RMB");
+
+
+                                }
                                 tvBuyTimes4.setText("购买" + text + "次");
                             });
                 }
@@ -219,7 +263,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
         this.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         //	        this.setWidth(ViewPiexlUtil.dp2px(context,200));
         //设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+        this.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
         //设置SelectPicPopupWindow弹出窗体动画效果
@@ -229,11 +273,6 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
         //设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
         this.setFocusable(true);// 取得焦点
-        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
-        //设置SelectPicPopupWindow弹出窗体的背景
-        this.setBackgroundDrawable(context.getDrawable(R.drawable.dialog_style_bg));
-        //点击外部消失
-        this.setOutsideTouchable(true);
 
             this.setFocusable(true);// 取得焦点
             //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
@@ -244,10 +283,12 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
 
             //从底部显示
         this.setTouchable(true);
-            int width = (int) getContext().getResources().getDisplayMetrics().widthPixels; // 宽度
-            int height = (int) getContext().getResources().getDisplayMetrics().heightPixels / 2 + ((int) getContext().getResources().getDisplayMetrics().heightPixels / 10); // 高度
+        /*    int width = (int) getContext().getResources().getDisplayMetrics().widthPixels; // 宽度
+            int height = (int) getContext().getResources().getDisplayMetrics().heightPixels / 2 ; // 高度
         this.setWidth(width);
-        this.setHeight(height);
+        this.setHeight(height);*/
+
+        this.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
 
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
         lp.alpha = 0.7f;
@@ -256,16 +297,19 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
         this.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
+                    WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+                    lp.alpha = 1f;
+                    context.getWindow().setAttributes(lp);
                     dismiss();
                 }
             });
 
         }
 
-
     public interface BtnOnClick {
-        void btnOnClick(String type, int vip);
+        void btnOnClick(String payType, int selectType,int functionType,int  Frequency10More,int  Frequency10MorePrice);
     }
+
 
     public void setBtnOnClice(MyWalletPopupWindow.BtnOnClick btnOnClick) {
         this.btnOnClick = btnOnClick;
@@ -277,18 +321,15 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case  R.id.tvWalletAlipay:
-                SWitchSatus();
-                btnOnClick.btnOnClick("2",SWitchSatus());
+                btnOnClick.btnOnClick("2",SWitchSatus(),functionType,Frequency10More,Frequency10MorePrice);
                 dismiss();
                 break;
             case  R.id.tvWalletWx:
-                SWitchSatus();
-                btnOnClick.btnOnClick("0",SWitchSatus());
+                btnOnClick.btnOnClick("0",SWitchSatus(),functionType,Frequency10More,Frequency10MorePrice);
                 dismiss();
                 break;
             case  R.id.tvWalletBalance:
-                SWitchSatus();
-                btnOnClick.btnOnClick("1",SWitchSatus());
+                btnOnClick.btnOnClick("1",SWitchSatus(),functionType,Frequency10More,Frequency10MorePrice);
                 dismiss();
                 break;
         }

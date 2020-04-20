@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -17,7 +16,6 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.CertificationCenterActivity;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
-import com.xfyyim.cn.ui.me.EditInfoActivity;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
 import com.xfyyim.cn.ui.me.NewSettingsActivity;
@@ -87,6 +85,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @BindView(R.id.avatar_img)
     ImageView avatar_img;
     User user;
+    @BindView(R.id.tv2)
+    TextView tv2;
 
     @Override
     protected int inflateLayoutId() {
@@ -96,6 +96,13 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState, boolean createView) {
         initView();
+        initData();
+    }
+
+    private void initData() {
+        if(!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount()+"")){
+            tv2.setText(coreManager.getSelf().getLikeMeCount()+"人喜欢我");
+        }
     }
 
     public void initView() {
@@ -111,8 +118,6 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         ll_showdt.setOnClickListener(this);
         tv_history.setOnClickListener(this);
         rlInfoBackground.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -120,9 +125,9 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         super.onClick(v);
         switch (v.getId()) {
             case R.id.rlInfoBackground:
-              Intent intent=new Intent(getActivity(),PersonInfoActivity.class);
-              intent.putExtra("FriendId",coreManager.getSelf().getUserId());
-              startActivity(intent);
+                Intent intent = new Intent(getActivity(), PersonInfoActivity.class);
+                intent.putExtra("FriendId", coreManager.getSelf().getUserId());
+                startActivity(intent);
                 break;
             case R.id.rl_pyq:
                 break;
@@ -152,7 +157,6 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
             case R.id.tv_history:
                 ToastUtil.showToast(getActivity(), "查看历史");
                 break;
-
         }
     }
 
@@ -184,8 +188,6 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                         if (result.getResultCode() == 1 && result.getData() != null) {
                             user = result.getData();
                             setUserDate(user);
-
-
                         }
                     }
 

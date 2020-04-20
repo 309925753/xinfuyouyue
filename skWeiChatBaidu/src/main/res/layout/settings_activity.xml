@@ -55,213 +55,213 @@
         android:textColor="#ffa26262"
         android:textSize="@dimen/sp_10_text_size" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/color_white"
-        android:layout_marginTop="@dimen/dp10"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/rlCurrentLocation"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@color/color_white"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-
-            <TextView
-                android:id="@+id/tvCurrentLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:text="我的当前定位"
-                android:textColor="#fffc607e"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvCurrentLocation"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_marginRight="@dimen/dp25"
-                android:text="上海市"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="位置"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlCurrentDistance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="35dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="范围"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-
-            <TextView
-                android:id="@+id/tvCurrentDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:text="100km+"
-                android:textColor="#FC607E"
-                android:textSize="@dimen/sp_12_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="35dp">
-
-            <ImageView
-                android:id="@+id/ivBicycle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/my_set_bicycle" />
-
-            <ImageView
-                android:id="@+id/ivPlane"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:src="@mipmap/my_set_plane" />
-
-            <SeekBar
-                android:id="@+id/sbDistance"
+            <RelativeLayout
+                android:id="@+id/rlCurrentLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_toLeftOf="@+id/ivPlane"
-                android:layout_toRightOf="@+id/ivBicycle"
-                android:max="100"
-                android:maxHeight="2dp"
-                android:progress="30"
-                android:progressDrawable="@drawable/bg_new_my_set_seek_line"
-                android:thumb="@drawable/bg_new_my_set_seek_bar" />
-        </RelativeLayout>
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="18dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="25dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp5"
+                    android:src="@mipmap/my_set_return" />
 
-            <TextView
-                android:id="@+id/tvRange"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvCurrentLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:text="我的当前定位"
+                    android:textColor="#fffc607e"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/tvSetCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvCurrentLocation"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:text="上海市"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="位置"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="@dimen/sp_15_text_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlCurrentDistance"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="自动扩大范围"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="35dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="范围"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="@dimen/sp_15_text_size" />
+
+                <TextView
+                    android:id="@+id/tvCurrentDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:text="100km+"
+                    android:textColor="#FC607E"
+                    android:textSize="@dimen/sp_12_text_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvRange"
-                android:text="如果用户较少，自动适量扩大范围"
-                android:textColor="@color/text_black_999"
-                android:textSize="@dimen/sp_10_text_size" />
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="35dp">
 
-            <com.xfyyim.cn.view.SwitchButton
-                android:id="@+id/sbBExpandScope"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/ivBicycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/my_set_bicycle" />
+
+                <ImageView
+                    android:id="@+id/ivPlane"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:src="@mipmap/my_set_plane" />
+
+                <SeekBar
+                    android:id="@+id/sbDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_toLeftOf="@+id/ivPlane"
+                    android:layout_toRightOf="@+id/ivBicycle"
+                    android:max="100"
+                    android:maxHeight="2dp"
+                    android:progress="30"
+                    android:progressDrawable="@drawable/bg_new_my_set_seek_line"
+                    android:thumb="@drawable/bg_new_my_set_seek_bar" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dp5"
-                app:sb_background="@color/app_white"
-                app:sb_checked_color="@color/main_color_red"
-                app:sb_effect_duration="100"
-                app:sb_shadow_radius="4dp"
-                app:sb_show_indicator="false" />
-        </RelativeLayout>
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="25dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="35dp">
+                <TextView
+                    android:id="@+id/tvRange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自动扩大范围"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="@dimen/sp_15_text_size" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvRange"
+                    android:text="如果用户较少，自动适量扩大范围"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="@dimen/sp_10_text_size" />
+
+                <com.xfyyim.cn.view.SwitchButton
+                    android:id="@+id/sbBExpandScope"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp5"
+                    app:sb_background="@color/app_white"
+                    app:sb_checked_color="@color/main_color_red"
+                    app:sb_effect_duration="100"
+                    app:sb_shadow_radius="4dp"
+                    app:sb_show_indicator="false" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="显示性别"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="35dp">
 
-            <TextView
-                android:id="@+id/tvCurrentSex"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="显示性别"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="@dimen/sp_15_text_size" />
+
+                <TextView
+                    android:id="@+id/tvCurrentSex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:text="女"
+                    android:textColor="#FC607E"
+                    android:textSize="@dimen/sp_12_text_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:text="女"
-                android:textColor="#FC607E"
-                android:textSize="@dimen/sp_12_text_size" />
-        </RelativeLayout>
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="35dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="35dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="年龄"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="@dimen/sp_15_text_size" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tvCurrentAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:text="18-30"
+                    android:textColor="#FC607E"
+                    android:textSize="@dimen/sp_12_text_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="年龄"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginTop="35dp"
+                android:paddingBottom="@dimen/dp30">
 
-            <TextView
-                android:id="@+id/tvCurrentAge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:text="18-30"
-                android:textColor="#FC607E"
-                android:textSize="@dimen/sp_12_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="35dp"
-            android:paddingBottom="@dimen/dp30">
-
-            <ImageView
-                android:id="@+id/ivSetMin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/my_set_age_min" />
-<!--
+                <ImageView
+                    android:id="@+id/ivSetMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/my_set_age_min" />
+                <!--
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -275,40 +275,41 @@
                     />
             </LinearLayout>
 -->
-            <SeekBar
-                android:id="@+id/seekbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_toRightOf="@+id/ivSetMin"
-                android:layout_toLeftOf="@+id/ivSetMax"
-                android:max="60"
-                android:maxHeight="2dp"
-                android:progress="30"
-                android:min="18"
-                android:progressDrawable="@drawable/bg_new_my_set_seek_line"
-                android:thumb="@drawable/bg_new_my_set_seek_bar" />
+                <ImageView
+                    android:id="@+id/ivSetMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp25"
+                    android:src="@mipmap/my_set_age_max" />
 
 
-            <View
-                android:layout_width="wrap_content"
-                    android:layout_height="2dp"
-                    android:layout_toRightOf="@+id/ivSetMin"
+                <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
                     android:layout_toLeftOf="@+id/ivSetMax"
-                    android:layout_marginTop="13dp"
-                     android:background="#FC607E"
-                android:visibility="gone"
-                />
-            <ImageView
-                android:id="@+id/ivSetMax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:src="@mipmap/my_set_age_max" />
-        </RelativeLayout>
-    </LinearLayout>
-    <TextView
+                    android:layout_toRightOf="@+id/ivSetMin"
+                    android:max="60"
+                    android:maxHeight="2dp"
+                    android:min="18"
+                    android:progress="30"
+                    android:progressDrawable="@drawable/bg_new_my_set_seek_line"
+                    android:thumb="@drawable/bg_new_my_set_seek_bar" />
+
+                <View
+                    android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_toLeftOf="@+id/ivSetMax"
+                        android:layout_toRightOf="@+id/ivSetMin"
+                    android:background="#FC607E"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sp_15_text_size"

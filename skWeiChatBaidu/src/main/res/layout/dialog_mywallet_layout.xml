@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/dp15"
     >
     <ImageView
         android:layout_width="64dp"
@@ -42,7 +43,7 @@
         >
         <LinearLayout
             android:id="@+id/rlBuyTimes"
-            android:layout_width="62dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_white"
             android:orientation="vertical"
@@ -54,7 +55,8 @@
                 android:text="购买1次"
                 android:textColor="@color/text_black_999"
                 android:textSize="@dimen/sp_10_text_size"
-                android:layout_marginLeft="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 />
             <TextView
@@ -64,14 +66,15 @@
                 android:text="1RMB"
                 android:textColor="@color/text_black_666"
                 android:textSize="@dimen/sp_15_text_size"
-                android:layout_marginLeft="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp15"
                 />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rlBuyTimes2"
-            android:layout_width="62dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_pay_red"
             android:orientation="vertical"
@@ -94,14 +97,15 @@
                 android:text="2RMB"
                 android:textColor="#FB7A7A"
                 android:textSize="@dimen/sp_15_text_size"
-                android:layout_marginLeft="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp15"
                 />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rlBuyTimes3"
-            android:layout_width="62dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_white"
             android:orientation="vertical"
@@ -124,14 +128,15 @@
                 android:text="10RMB"
                 android:textColor="@color/text_black_666"
                 android:textSize="@dimen/sp_15_text_size"
-                android:layout_marginLeft="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp15"
                 />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rlBuyTimes4"
-            android:layout_width="62dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_white"
             android:orientation="vertical"
@@ -144,7 +149,8 @@
                 android:text="10次以上"
                 android:textColor="@color/text_black_999"
                 android:textSize="@dimen/sp_10_text_size"
-                android:layout_marginLeft="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 />
             <TextView
@@ -154,7 +160,8 @@
                 android:text="9折"
                 android:textColor="@color/text_black_666"
                 android:textSize="@dimen/sp_15_text_size"
-                android:layout_marginLeft="@dimen/dp10"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp15"
                 />

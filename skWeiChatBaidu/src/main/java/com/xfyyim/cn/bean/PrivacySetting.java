@@ -56,6 +56,43 @@ public class PrivacySetting {
     private int isSkidRemoveHistoryMsg; // 首页侧滑删除服务器聊天记录  1：开启 0：关闭
     private int isShowMsgState; // 首页侧滑删除服务器聊天记录  1：开启 0：关闭
     private int isOpenPrivacyPosition; // 是否开启个人位置相关服务  1：开启 0：关闭
+    private int distance;//范围设置（km）
+    private int isAutoExpandRange;//是否开启自动扩大范围,1:开启，0:关闭
+    private int displaySex;//显示性别,0 女 1:男
+    private int ageDistance;//年龄范围
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public int getIsAutoExpandRange() {
+        return isAutoExpandRange;
+    }
+
+    public void setIsAutoExpandRange(int isAutoExpandRange) {
+        this.isAutoExpandRange = isAutoExpandRange;
+    }
+
+    public int getDisplaySex() {
+        return displaySex;
+    }
+
+    public void setDisplaySex(int displaySex) {
+        this.displaySex = displaySex;
+    }
+
+    public int getAgeDistance() {
+        return ageDistance;
+    }
+
+    public void setAgeDistance(int ageDistance) {
+        this.ageDistance = ageDistance;
+    }
+
 
     public List<String> getThroughoutShowLastLoginTimeList() {
         return throughoutShowLastLoginTimeList;

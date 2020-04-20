@@ -108,6 +108,16 @@ public class User implements Parcelable, Cloneable {
     private String myBookAndComic;
     private String myTravel;
     private int faceIdentity; // 0 - 未认证， 1 - 已认证
+    private int likeMeCount;// 喜欢我的人数
+    public int getLikeMeCount() {
+        return likeMeCount;
+    }
+
+    public void setLikeMeCount(int likeMeCount) {
+        this.likeMeCount = likeMeCount;
+    }
+
+
 
     public int getFaceIdentity() {
         return faceIdentity;
@@ -209,7 +219,27 @@ public class User implements Parcelable, Cloneable {
     private String dhMsgPrivateKey;
     private String rsaMsgPublicKey;
     private String rsaMsgPrivateKey;
+    private UserVIPPrivilege userVIPPrivilege;// 用户vip特权信息
+    private UserVIPPrivilegePrice userVIPPrivilegeConfig;// 用户vip特权配置
 
+
+    public UserVIPPrivilegePrice getUserVIPPrivilegeConfig() {
+        return userVIPPrivilegeConfig;
+    }
+
+    public void setUserVIPPrivilegeConfig(UserVIPPrivilegePrice userVIPPrivilegeConfig) {
+        this.userVIPPrivilegeConfig = userVIPPrivilegeConfig;
+    }
+
+
+
+
+    public UserVIPPrivilege getUserVIPPrivilege() {
+        return userVIPPrivilege;
+    }
+    public void setUserVIPPrivilege(UserVIPPrivilege userVIPPrivilege) {
+        this.userVIPPrivilege = userVIPPrivilege;
+    }
     // 无参构造函数
     public User() {
     }

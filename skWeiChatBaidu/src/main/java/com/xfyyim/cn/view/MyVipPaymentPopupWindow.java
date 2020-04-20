@@ -1,5 +1,6 @@
 package com.xfyyim.cn.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -19,7 +20,12 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.util.ArithUtils;
+import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 
 import java.util.ArrayList;
@@ -38,42 +44,36 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
     private TextView   tvVipLow,tvVipLow2,tvVipLow3,tvVipLow4;
     private TextView   tvVipProvince,tvVipProvince2,tvVipProvince3,tvVipProvince4;
     private int vip1=1,vip2,vip3,vip4;
+    private UserVIPPrivilegePrice   vipPrivilegePriceList=new UserVIPPrivilegePrice();
+    private String  _vipLevel;
 
 
-
+    @SuppressLint("WrongViewCast")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public MyVipPaymentPopupWindow(FragmentActivity context) {
+    public MyVipPaymentPopupWindow(FragmentActivity context,UserVIPPrivilegePrice   _vipPrivilegePriceList,String UserId,String  UserName,String  vipLevel) {
         super(context);
         this.context = context;
+        this.vipPrivilegePriceList=_vipPrivilegePriceList;
+        this._vipLevel=vipLevel;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.my_vip_payment_layout, null);
 
         ViewPager mViewPager = (ViewPager) mMenuView.findViewById(R.id.vpVip);
-        ImageView ivPrerogativeSelect = (ImageView) mMenuView.findViewById(R.id.ivPrerogativeSelect);
-
-        mMenuView.findViewById(R.id.llPrerogativeSelect).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectChecked) {
-                    selectChecked = false;
-                    ivPrerogativeSelect.setImageResource(R.mipmap.my_prerogative_checked);
-                    LogUtil.e("**************selectChecked=" + selectChecked);
-                } else {
-                    selectChecked = true;
-                    ivPrerogativeSelect.setImageResource(R.mipmap.my_prerogative_check);
-                    LogUtil.e("**************selectChecked=" + selectChecked);
-                }
-            }
-        });
 
         //VIP会员权益
         View children_prerogative = context.getLayoutInflater().inflate(
                 R.layout.item_vip_prerogative, null);
+        AvatarHelper.getInstance().displayAvatar(UserId, children_prerogative.findViewById(R.id.ivLeft), true);
 
         //每天5个超级喜欢
         View children_prerogative_like = context.getLayoutInflater().inflate(
                 R.layout.item_vip_prerogative_like, null);
+        TextView tvUserName=(TextView) children_prerogative_like.findViewById(R.id.tvUserName);
+        tvUserName.setText(UserName);
+        AvatarHelper.getInstance().displayAvatar(UserId, children_prerogative_like.findViewById(R.id.ivHead), true);
+
+
 
         //滑错无限反悔
         View children_online_chat = context.getLayoutInflater().inflate(
@@ -108,6 +108,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         viewList.add(children_online_chat);
         viewList.add(children_prerogative_location);
         viewList.add(children_prerogative_times);
+
 
         mViewPager.setCurrentItem(1);
         mViewPager.setOffscreenPageLimit(viewList.size() - 1);
@@ -149,6 +150,20 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
            tvVipLow4=(TextView)mMenuView.findViewById(R.id.tvVipLow4);
 
 
+        Tvmonth.setText("  ￥"+ ArithUtils.round1(vipPrivilegePriceList.getV0Price()) +"/月");
+        TvVipMoney.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV0DayPrice())+"/天");
+
+        Tvmonth2.setText("￥"+ ArithUtils.round1(vipPrivilegePriceList.getV1Price()) +"/年");
+        TvVipMoney2.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV1DayPrice())+"/天");
+
+        Tvmonth3.setText("￥"+ ArithUtils.round1(vipPrivilegePriceList.getV2Price()) +"/年");
+        TvVipMoney3.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV2DayPrice())+"/天");
+
+        Tvmonth4.setText("￥"+ ArithUtils.round1(vipPrivilegePriceList.getV3Price()) +"/年");
+        TvVipMoney4.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV3DayPrice())+"/天");
+
+
+
         rLVipYellow.setOnClickListener(this::onClick);
         rLVipYellow2.setOnClickListener(this::onClick);
         rLVipYellow3.setOnClickListener(this::onClick);
@@ -184,7 +199,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         this.setTouchable(true);
         this.setFocusable(true);
         int width = (int) context.getResources().getDisplayMetrics().widthPixels; // 宽度
-        int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2 + ((int) context.getResources().getDisplayMetrics().heightPixels / 4); // 高度
+        int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2 + ((int) context.getResources().getDisplayMetrics().heightPixels /8); // 高度
         this.setWidth(width - 100);
         this.setHeight(height);
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
@@ -231,46 +246,55 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
                 dismiss();
                 break;
             case R.id.rLVipYellow://
-                setSelectrLVipYellow();
-                setrLVipYellow2();
-                setrLVipYellow3();
-                setrLVipYellow4();
-                vip1=1;
-                vip2=0;
-                vip3=0;
-                vip4=0;
-                break;
+                if(_vipLevel.equals("v0")||_vipLevel.equals("-1")){
+                    setSelectrLVipYellow();
+                    setrLVipYellow2();
+                    setrLVipYellow3();
+                    setrLVipYellow4();
+                    vip1=1;
+                    vip2=0;
+                    vip3=0;
+                    vip4=0;
+                    break;
+                }
             case R.id.rLVipYellow2://
-                setrLVipYellow();
-                setSelectrLVipYellow2();
-                setrLVipYellow3();
-                setrLVipYellow4();
-                vip1=0;
-                vip2=1;
-                vip3=0;
-                vip4=0;
-                break;
-            case R.id.rLVipYellow3://
-                setrLVipYellow();
-                setrLVipYellow2();
-                setSelectrLVipYellow3();
-                setrLVipYellow4();
-                vip1=0;
-                vip2=0;
-                vip3=1;
-                vip4=0;
-                break;
-            case R.id.rLVipYellow4://
-                setrLVipYellow();
-                setrLVipYellow3();
-                setrLVipYellow3();
-                setSelectrLVipYellow4();
-                vip1=0;
-                vip2=0;
-                vip3=0;
-                vip4=1;
-                break;
+                if(_vipLevel.equals("v0")||_vipLevel.equals("v1")||_vipLevel.equals("-1")){
+                    setrLVipYellow();
+                    setSelectrLVipYellow2();
+                    setrLVipYellow3();
+                    setrLVipYellow4();
+                    vip1=0;
+                    vip2=1;
+                    vip3=0;
+                    vip4=0;
+                    break;
+                }
 
+            case R.id.rLVipYellow3://
+                if(_vipLevel.equals("v0")||_vipLevel.equals("v1")||_vipLevel.equals("v2")||_vipLevel.equals("-1")){
+                    setrLVipYellow();
+                    setrLVipYellow2();
+                    setSelectrLVipYellow3();
+                    setrLVipYellow4();
+                    vip1=0;
+                    vip2=0;
+                    vip3=1;
+                    vip4=0;
+                    break;
+                }
+
+            case R.id.rLVipYellow4://
+                if(_vipLevel.equals("v0")||_vipLevel.equals("v1")||_vipLevel.equals("v2")||_vipLevel.equals("v3")||_vipLevel.equals("-1")){
+                    setrLVipYellow();
+                    setrLVipYellow2();
+                    setrLVipYellow3();
+                    setSelectrLVipYellow4();
+                    vip1=0;
+                    vip2=0;
+                    vip3=0;
+                    vip4=1;
+                    break;
+                }
         }
 
     }
@@ -282,7 +306,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
             vip=2;
         }else if(vip3==1){
             vip=3;
-        }else {
+        }else if(vip4==1){
             vip=4;
         }
         return vip;

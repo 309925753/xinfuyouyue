@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_15_text_size"
-                    android:text="VIP会员（2020-03-24到期）"
+                    android:text=""
                     android:textColor="@color/color_white"
                     android:layout_marginLeft="@dimen/dp10"
                     />

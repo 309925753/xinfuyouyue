@@ -10,6 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.broadcast.OtherBroadcast;
+import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.util.ToastUtil;
@@ -86,7 +89,7 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
     private void initView() {
         findViewById(R.id.rlCertificationImmediately).setOnClickListener(this::onClick);
         TextView tvPrivacyPolicy = (TextView) findViewById(R.id.tvPrivacyPolicy);
-        String title1 = "认证用户可以提升信用度、推荐值。认证中将采集您的面部信息，通过旷世科技和陌陌科技的人脸识别技术进行对比，详见" + "<font color=\"#FF0000\">" + "隐私政策" + " " + "</font>" + "";
+        String title1 = "认证用户可以提升信用度、推荐值。认证中将采集您的面部信息，通过百度科技人脸识别技术进行对比，详见" + "<font color=\"#FF0000\">" + "隐私政策" + " " + "</font>" + "";
         tvPrivacyPolicy.setText(Html.fromHtml(title1));
         LogUtil.e("-----------------------getFaceIdentity---------------------" +CoreManager.getSelf(this).getFaceIdentity());
         if(CoreManager.getSelf(this).getFaceIdentity()==1){
@@ -156,6 +159,7 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
                         // 人脸在线活体检测
                         if (Result.checkSuccess(CertificationCenterActivity.this, result)) {
                             tvCertification.setText("认证成功");
+                            updateSelfData();
                             ToastUtil.showLongToast(CertificationCenterActivity.this, "认证成功");
                         } else {
                             ToastUtil.showLongToast(CertificationCenterActivity.this, "认证失败请重新认证");
@@ -167,5 +171,36 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
                     }
                 });
     }
+
+    private void updateSelfData() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+
+        HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                                // 通知MeFragment更新
+                                sendBroadcast(new Intent(OtherBroadcast.SYNC_SELF_DATE_NOTIFY));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+                });
+    }
+
 
 }

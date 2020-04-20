@@ -66,8 +66,6 @@ public class AccountSafeActivity extends BaseActivity implements View.OnClickLis
         RlMobile.setOnClickListener(this);
         rlPassword.setOnClickListener(this);
         rlManageRenewal.setOnClickListener(this);
-
-
     }
 
     @Override

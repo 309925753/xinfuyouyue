@@ -2,23 +2,41 @@ package com.xfyyim.cn.ui.me;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.PrivacySetting;
+import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.broadcast.OtherBroadcast;
+import com.xfyyim.cn.db.dao.UserDao;
+import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.helper.PrivacySettingHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
 import com.xfyyim.cn.view.SwitchButton;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
+import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
+import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
+import com.xuan.xuanhttplibrary.okhttp.result.Result;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
 
 public class NewSettingsActivity extends BaseActivity implements View.OnClickListener {
@@ -120,6 +138,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.tvVersionNumber)
     TextView tvVersionNumber;
     private Unbinder unbinder;
+    private  boolean  isAutoExpandRange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +147,57 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         unbinder = ButterKnife.bind(this);
         inintView();
         initActionBar();
+        updateSelfData();
+    }
+
+    private void initData() {
+        if(TextUtils.isEmpty(coreManager.getSelf().getSettings().getIsAutoExpandRange()+"")){
+            sbBExpandScope.setChecked(true);
+        }else {
+            sbBExpandScope.setChecked(false);
+        }
+
+        sbBExpandScope.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                isAutoExpandRange=isChecked;
+            }
+        });
+
+        sbDistance.setProgress(coreManager.getSelf().getSettings().getDistance());
+        tvCurrentDistance.setText(coreManager.getSelf().getSettings().getDistance()+"km+");
+        //范围
+        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvCurrentDistance.setText(progress+"km+");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        seekbar.setProgress(coreManager.getSelf().getSettings().getAgeDistance());
+        //年龄
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvCurrentAge.setText("18-"+progress);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
 
@@ -141,9 +211,37 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
 
     }
+    private void updateSelfData() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+
+        HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                                initData();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+                });
+    }
+
 
     private void inintView() {
-
         findViewById(R.id.tvLoginOut).setOnClickListener(this::onClick);
         findViewById(R.id.tvSwitchAccount).setOnClickListener(this::onClick);
         findViewById(R.id.rlAbout).setOnClickListener(this::onClick);
@@ -154,6 +252,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.rlNews).setOnClickListener(this::onClick);
         findViewById(R.id.rlPersonal).setOnClickListener(this::onClick);
 
+
     }
 
 
@@ -161,6 +260,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_title_left:
+                update();
                 finish();
                 break;
             case R.id.tvLoginOut:
@@ -209,5 +309,39 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+    private void update(){
+
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+        params.put("distance", sbDistance.getProgress()+"");
+        params.put("ageDistance", seekbar.getProgress()+"");
+        params.put("displaySex", 0+"");
+        if(isAutoExpandRange){
+            params.put("isAutoExpandRange", "1");
+        }else {
+            params.put("isAutoExpandRange", "0");
+        }
+
+        HttpUtils.get().url(coreManager.getConfig().USER_SET_PRIVACY_SETTING)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        DialogHelper.dismissProgressDialog();
+                        if (Result.checkSuccess(NewSettingsActivity.this, result)) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                        ToastUtil.showErrorNet(mContext);
+                    }
+                });
     }
 }

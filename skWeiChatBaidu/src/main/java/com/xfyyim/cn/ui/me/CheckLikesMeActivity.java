@@ -18,20 +18,38 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.BillCashBean;
+import com.xfyyim.cn.bean.LikeMeBean;
+import com.xfyyim.cn.bean.UserVIPPrivilege;
+import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.util.ArithUtils;
+import com.xfyyim.cn.util.DateUtils;
+import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
+import com.xfyyim.cn.view.SuperSolarizePopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
+import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
+import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
+import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
+import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
+import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
-public class CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
+public class
+
+CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.iv_title_left)
     SkinImageView ivTitleLeft;
@@ -54,6 +72,8 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
     private SmartRefreshLayout mRefreshLayout;
     private CheckLikesMeAdapter checkLikesMeAdapter;
     private Unbinder unbinder;
+    private List<LikeMeBean>   likeMeBeanList=new ArrayList<LikeMeBean>();
+    private boolean more=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +97,13 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
 
         mRefreshLayout = findViewById(R.id.refreshLayout);
 
+
         RecyclerView rclBill = (RecyclerView) findViewById(R.id.rclCheck);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 2);
         linearLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         rclBill.setLayoutManager(linearLayoutManager);
         checkLikesMeAdapter = new CheckLikesMeAdapter(this);
-        List<BillCashBean> deviceBeanList = new ArrayList<>();
-        deviceBeanList.add(new BillCashBean("2020-01-14  09:12", "于晓，24", "1", "1", "购买超级曝光"));
-        deviceBeanList.add(new BillCashBean("2020-01-17  09:12", "孙子，12", "3", "2", "购买闪聊偷看"));
-        deviceBeanList.add(new BillCashBean("2020-02-14  09:12", "太孙子，2", "4", "3", "购买超级喜欢"));
-        deviceBeanList.add(new BillCashBean("2020-03-15  09:12", "欧阳，12", "5", "4", "购买闪聊次数"));
-        checkLikesMeAdapter.deviceBeanList = deviceBeanList;
+         checkLikesMeAdapter.likeMeBeanList = likeMeBeanList;
         rclBill.setAdapter(checkLikesMeAdapter);
         checkLikesMeAdapter.notifyDataSetChanged();
 
@@ -95,6 +111,7 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 //爆光
+                swithSuperSolarize(1);
             }
         });
 
@@ -108,28 +125,23 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                LogUtil.e("*******************刷新2******************");
-                deviceBeanList.add(new BillCashBean("2020-01-14  09:12", "于晓，24", "1", "1", "购买超级曝光"));
-                deviceBeanList.add(new BillCashBean("2020-03-15  09:12", "欧阳，12", "5", "4", "购买闪聊次数"));
-                deviceBeanList.add(new BillCashBean("2020-01-14  09:12", "于晓，24", "1", "1", "购买超级曝光"));
-                checkLikesMeAdapter.notifyDataSetChanged();
-                mRefreshLayout.finishLoadMore();
+                more=true;
+
+                pageIndex++;
+                getWhoLikeMe();
 
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtil.e("*******************刷新3******************");
-                deviceBeanList.add(new BillCashBean("2020-01-14  09:12", "于晓，24", "1", "1", "购买超级曝光"));
-                deviceBeanList.add(new BillCashBean("2020-01-17  09:12", "孙子，12", "3", "2", "购买闪聊偷看"));
-                deviceBeanList.add(new BillCashBean("2020-02-14  09:12", "太孙子，2", "4", "3", "购买超级喜欢"));
-                deviceBeanList.add(new BillCashBean("2020-03-15  09:12", "欧阳，12", "5", "4", "购买闪聊次数"));
-                deviceBeanList.add(new BillCashBean("2020-01-14  09:12", "于晓，24", "1", "1", "购买超级曝光"));
-                checkLikesMeAdapter.notifyDataSetChanged();
-                mRefreshLayout.finishRefresh();
+                more=false;
+                pageIndex++;
+                getWhoLikeMe();
+
             }
         });
 
+        getWhoLikeMe();
     }
 
     /**
@@ -138,6 +150,40 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
     private void OpenSolarize() {
 
 
+    }
+    private int pageIndex=0;
+    private  void  getWhoLikeMe(){
+     Map<String, String> params = new HashMap<>();
+      params.put("access_token", coreManager.getSelfStatus().accessToken);
+      params.put("userId", coreManager.getSelf().getUserId());
+      params.put("pageIndex", pageIndex+"");
+      params.put("pageSize", 10+"");
+
+            HttpUtils.post().url(coreManager.getConfig().USER_WHO_LIKE_ME)
+                    .params(params)
+                    .build()
+                    .execute(new ListCallback<LikeMeBean>(LikeMeBean.class) {
+                        @Override
+                        public void onResponse(ArrayResult<LikeMeBean> result) {
+                            if (Result.checkSuccess(getApplicationContext(), result)) {
+                               ;
+                                LogUtil.e("likeMeBeanList = " +likeMeBeanList.size());
+                                likeMeBeanList.addAll(result.getData());
+                                checkLikesMeAdapter.likeMeBeanList.addAll(result.getData());
+                                tvTitleCenter.setText("谁喜欢我人("+likeMeBeanList.size()+")");
+                                checkLikesMeAdapter.notifyDataSetChanged();
+                                if(more){
+                                    mRefreshLayout.finishLoadMore();
+                                }else {
+                                    mRefreshLayout.finishRefresh();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Call call, Exception e) {
+                        }
+                    });
     }
 
     @Override
@@ -160,7 +206,7 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
     public class CheckLikesMeAdapter extends RecyclerView.Adapter<CheckLikesMeAdapter.ViewHolder> {
         private LayoutInflater mInflater;
         private Context context;
-        public List<BillCashBean> deviceBeanList = new ArrayList<>();
+        private List<LikeMeBean>   likeMeBeanList=new ArrayList<LikeMeBean>();
 
         public CheckLikesMeAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
@@ -188,17 +234,32 @@ public class CheckLikesMeActivity extends BaseActivity implements View.OnClickLi
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            if (deviceBeanList != null && deviceBeanList.size() > 0) {
-                final BillCashBean billCashBean = deviceBeanList.get(position);
-                holder.tvLikeName.setText("" + billCashBean.getBillMoney() + "");
-                holder.ivlike.setImageResource(R.mipmap.my_vip_regrets);
+            if (likeMeBeanList != null && likeMeBeanList.size() > 0) {
+                final LikeMeBean likeMeBean = likeMeBeanList.get(position);
+                holder.tvLikeName.setText("" + likeMeBean.getNickname() + "");
+
+                String url = AvatarHelper.getAvatarUrl(likeMeBean.getUserId()+","+likeMeBean.getAge(), false);
+
+             //   GlideImageUtils.setImageView(context, url, holder.ivlike);
+                GlideImageUtils.setImageDrawableCirCle(mContext, url,  holder.ivlike);
+
+
             }
         }
 
         @Override
         public int getItemCount() {
-            return deviceBeanList.size();
+            return likeMeBeanList.size();
         }
     }
+    private void swithSuperSolarize(int switchType){
+        SuperSolarizePopupWindow RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(this,switchType);
+        RegretsUnLikePopupWindow.setBtnOnClice(new SuperSolarizePopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(int sumbitType) {
 
+
+            }
+        });
+    }
 }

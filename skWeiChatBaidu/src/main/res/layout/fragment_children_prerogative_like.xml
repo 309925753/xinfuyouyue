@@ -57,7 +57,7 @@
         android:gravity="center"
         android:layout_marginRight="@dimen/dp15"
         android:layout_marginLeft="@dimen/dp15"
-        android:layout_marginTop="@dimen/dp80"
+        android:layout_marginTop="@dimen/dp15"
         />
 
 </LinearLayout>

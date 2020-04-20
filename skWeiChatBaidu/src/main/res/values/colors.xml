@@ -95,6 +95,8 @@
     <color name="color_role5">#f23744</color>
     <color name="color_role6">#EBEBEB</color>
 
+
+    <color name="com_bg">#FFFEF7F8</color>
     <color name="wx_bg">#22CC06</color>
     <color name="alipay_bg">#3E98FF</color>
     <color name="redpacket_bg_new">#FD7070</color>

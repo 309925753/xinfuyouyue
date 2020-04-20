@@ -31,6 +31,7 @@
         android:layout_height="2dp"
         />
     <TextView
+        android:id="@+id/tvPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="请输入您的密码以继续修改您的电话号码"
@@ -40,8 +41,41 @@
         android:layout_below="@+id/vLine"
         android:layout_marginLeft="@dimen/dp15"
         />
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:hint="请输入手机号码"
+        android:textColorHint="@color/text_black_999"
+        android:textColor="@color/text_black_333"
+        android:shadowColor="#FC697B"
+        android:background="@null"
+        android:layout_below="@+id/tvPhone"
+        />
+    <View style="@style/View_Line"
+        android:id="@+id/vLinePhone"
+        android:layout_below="@+id/etPhone"
+        android:layout_marginTop="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:background="#FC697B"
+        android:layout_height="2dp"
 
-        <RelativeLayout
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请输入您的密码以继续修改您的电话号码"
+        android:textColor="@color/text_black_999"
+        android:textSize="@dimen/sp_10_text_size"
+        android:layout_marginTop="@dimen/dp25"
+        android:layout_below="@+id/vLine"
+        android:layout_marginLeft="@dimen/dp15"
+        />
+
+    <RelativeLayout
             android:id="@+id/rlNext"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50"
@@ -54,7 +88,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_15_text_size"
                 android:background="@drawable/bg_new_my_wallet_red"
-                android:text="继续"
+                android:text="提交"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp20"
                 />

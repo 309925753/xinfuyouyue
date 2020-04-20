@@ -24,4 +24,5 @@
     <external-cache-path
         name="name"
         path="path" />
+        <external-path path="demo" name="camera_photos" />
 </paths>

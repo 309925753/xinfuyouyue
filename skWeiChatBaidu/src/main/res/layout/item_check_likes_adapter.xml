@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:paddingLeft="@dimen/dp10"
+    android:paddingRight="@dimen/dp10"
     android:background="#FEF7F8"
     android:orientation="vertical">
     <LinearLayout
         android:id="@+id/select_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp250"
+        android:layout_width="168dp"
+        android:layout_height="@dimen/dp220"
         android:orientation="vertical"
         android:background="@drawable/shape_1aff3f63_10_my"
         android:layout_marginTop="@dimen/dp10"
-        android:layout_marginLeft="@dimen/dp5"
-        android:layout_marginRight="@dimen/dp5"
-        android:padding="10dp">
+        >
         <ImageView
             android:id="@+id/ivlike"
-            android:layout_width="wrap_content"
+            android:layout_width="168dp"
             android:layout_height="185dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/my_vip_regrets"/>
+            android:src="@mipmap/my_vip_regrets"
+            android:layout_marginTop="-10dp"
+            />
         <TextView
             android:id="@+id/tvLikeName"
             android:layout_width="wrap_content"

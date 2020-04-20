@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@mipmap/my_prerogative_city_bg">
@@ -85,7 +85,7 @@
         android:gravity="center"
         android:layout_marginRight="@dimen/dp15"
         android:layout_marginLeft="@dimen/dp15"
-        android:layout_marginTop="@dimen/dp80"
+        android:layout_marginTop="@dimen/dp15"
         />
 
 </LinearLayout>

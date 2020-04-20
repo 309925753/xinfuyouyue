@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -42,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp50"
-            android:layout_marginTop="@dimen/dp50"
+            android:layout_marginTop="@dimen/dp20"
             android:layout_marginRight="@dimen/dp50"
             android:orientation="horizontal">
 
@@ -54,7 +55,7 @@
 
                 <RelativeLayout
                     android:id="@+id/rLlightYellow"
-                    android:layout_width="62dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp20"
                     android:layout_centerHorizontal="true"
@@ -79,7 +80,7 @@
                         android:layout_marginTop="@dimen/dp15"
                         android:paddingLeft="@dimen/dp10"
                         android:paddingRight="@dimen/dp10"
-                        android:text="￥10"
+                        tools:text="￥10"
                         android:textColor="@color/text_black_333"
                         android:textSize="@dimen/sp_15_text_size" />
 
@@ -95,6 +96,7 @@
                         android:paddingRight="@dimen/dp15"
                         android:text="原价￥48"
                         android:textColor="@color/text_black_999"
+                        android:visibility="gone"
                         android:textSize="8sp" />
                 </RelativeLayout>
 
@@ -106,14 +108,14 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="限时2折"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="invisible" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="62dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp15">
 
@@ -132,7 +134,7 @@
                         android:layout_marginTop="@dimen/dp15"
                         android:paddingLeft="@dimen/dp15"
                         android:paddingRight="@dimen/dp15"
-                        android:text="1个月"
+                        android:text="3个月"
                         android:textColor="@color/text_black_fb7a7a"
                         android:textSize="@dimen/sp_10_text_size" />
 
@@ -144,7 +146,7 @@
                         android:layout_marginTop="@dimen/dp15"
                         android:paddingLeft="@dimen/dp10"
                         android:paddingRight="@dimen/dp10"
-                        android:text="￥10"
+                        tools:text="￥10"
                         android:textColor="@color/text_black_fb7a7a"
                         android:textSize="@dimen/sp_15_text_size" />
 
@@ -159,6 +161,7 @@
                         android:paddingRight="@dimen/dp10"
                         android:text="原价￥48"
                         android:textColor="@color/text_black_fb7a7a"
+                        android:visibility="gone"
                         android:textSize="8sp" />
                 </RelativeLayout>
 
@@ -170,7 +173,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="限时2折"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="invisible"
@@ -184,7 +187,7 @@
 
                 <RelativeLayout
                     android:id="@+id/rLlightYellow3"
-                    android:layout_width="62dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp20"
                     android:layout_centerHorizontal="true"
@@ -198,7 +201,7 @@
                         android:layout_marginTop="@dimen/dp15"
                         android:paddingLeft="@dimen/dp15"
                         android:paddingRight="@dimen/dp15"
-                        android:text="1个月"
+                        android:text="12个月"
                         android:textColor="@color/text_black_666"
                         android:textSize="@dimen/sp_10_text_size" />
 
@@ -208,9 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvDay3"
                         android:layout_marginTop="@dimen/dp15"
-                        android:paddingLeft="@dimen/dp10"
-                        android:paddingRight="@dimen/dp10"
-                        android:text="￥10"
+                        tools:text="￥10"
                         android:textColor="@color/text_black_333"
                         android:textSize="@dimen/sp_15_text_size" />
 
@@ -224,6 +225,7 @@
                         android:paddingLeft="@dimen/dp10"
                         android:paddingRight="@dimen/dp15"
                         android:text="原价￥48"
+                        android:visibility="gone"
                         android:textColor="@color/text_black_999"
                         android:textSize="8sp" />
                 </RelativeLayout>
@@ -236,34 +238,13 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="限时2折"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:visibility="invisible"
                     android:textSize="8sp" />
             </RelativeLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/llIvprerogativeCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp10">
-
-            <ImageView
-                android:id="@+id/ivPrerogativeCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/my_prerogative_check" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp10"
-                android:text="开通3月自动续费，再省30元"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rlAlipay"
@@ -318,7 +299,7 @@
             android:layout_height="@dimen/dp40"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/dp5"
-            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
             android:background="@drawable/bg_new_my_pure_yellow">
 
             <RelativeLayout
@@ -365,7 +346,7 @@
             android:layout_height="@dimen/dp40"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/dp5"
-            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
             android:background="@drawable/bg_new_my_pure_yellow">
 
             <RelativeLayout

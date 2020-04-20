@@ -320,7 +320,7 @@
                 <TextView
                     android:id="@+id/tv2"
                     style="@style/IMTbleLine_TextName"
-                    android:text="1人喜欢了我"
+                    android:text="喜欢了我"
                     android:textColor="@color/text_black_333" />
 
                 <TextView

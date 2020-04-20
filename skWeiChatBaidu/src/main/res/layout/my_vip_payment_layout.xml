@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,17 +14,15 @@
             android:id="@+id/vpVip"
             android:clipChildren="false"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp300"
+            android:layout_height="@dimen/dp270"
             android:layout_marginLeft="@dimen/dp20"
             android:layout_marginRight="@dimen/dp20"
             android:layout_marginTop="@dimen/margin_screen_old"
             />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp25"
-            android:layout_marginTop="@dimen/dp30"
             android:layout_marginRight="@dimen/dp25"
             android:orientation="horizontal">
             <RelativeLayout
@@ -57,7 +56,7 @@
                         android:layout_marginTop="@dimen/dp5"
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
-                        android:text="  ￥9.9/月"
+                        tools:text="  ￥9.9/月"
                         android:textColor="@color/text_black_333"
                         android:textSize="@dimen/sp_10_text_size" />
                     <TextView
@@ -69,6 +68,7 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:text="      ￥9.9"
+                        android:visibility="gone"
                     android:textColor="@color/text_black_999"
                     android:textSize="8sp" />
                     <TextView
@@ -91,7 +91,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="省3.7元"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                      />
@@ -127,7 +127,7 @@
                         android:layout_marginTop="@dimen/dp5"
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
-                        android:text="  ￥8.7/年"
+                        tools:text="  ￥8.7/年"
                         android:textColor="@color/text_black_333"
                         android:textSize="@dimen/sp_10_text_size" />
                     <TextView
@@ -138,6 +138,7 @@
                         android:layout_marginBottom="@dimen/dp10"
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
+                        android:visibility="gone"
                         android:text="      ￥9.9"
                         android:textColor="@color/text_black_999"
                         android:textSize="8sp" />
@@ -162,7 +163,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="省3.7元"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="invisible"
@@ -199,7 +200,7 @@
                         android:layout_marginTop="@dimen/dp5"
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
-                        android:text="  ￥7.92/年"
+                        tools:text="  ￥7.92/年"
                         android:textColor="@color/text_black_333"
                         android:textSize="@dimen/sp_10_text_size" />
                     <TextView
@@ -211,6 +212,7 @@
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
                         android:text="      ￥9.9"
+                        android:visibility="gone"
                         android:textColor="@color/text_black_999"
                         android:textSize="8sp" />
                     <TextView
@@ -234,7 +236,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="省3.7元"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="invisible"
@@ -271,9 +273,10 @@
                         android:layout_marginTop="@dimen/dp5"
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
-                        android:text="  ￥7.92/年"
+                        tools:text="  ￥7.92/年"
                         android:textColor="@color/text_black_333"
                         android:textSize="@dimen/sp_10_text_size" />
+
                     <TextView
                         android:id="@+id/TvVipMoney4"
                         android:layout_width="wrap_content"
@@ -283,8 +286,10 @@
                         android:paddingLeft="@dimen/dp5"
                         android:paddingRight="@dimen/dp5"
                         android:text="      ￥9.9"
+                        android:visibility="gone"
                         android:textColor="@color/text_black_999"
                         android:textSize="8sp" />
+
                     <TextView
                         android:id="@+id/tvVipLow4"
                         android:layout_width="wrap_content"
@@ -306,7 +311,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/red_my_button"
                     android:gravity="center"
-                    android:text="省3.7元"
+                    android:text="优惠"
                     android:textColor="@color/white"
                     android:visibility="invisible"
                     android:textSize="8sp"
@@ -316,27 +321,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/llPrerogativeSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp10">
-
-            <ImageView
-                android:id="@+id/ivPrerogativeSelect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/my_prerogative_check" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp10"
-                android:text="开通3月自动续费，再享8.7折优惠"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rlAlipay"
@@ -393,7 +377,7 @@
             android:layout_height="@dimen/dp40"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/dp5"
-            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
             android:background="@drawable/bg_new_my_wallet_wx">
 
             <RelativeLayout
@@ -442,7 +426,7 @@
             android:layout_height="@dimen/dp40"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/dp5"
-            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
             android:background="@drawable/bg_new_my_wallet_balance">
 
             <RelativeLayout

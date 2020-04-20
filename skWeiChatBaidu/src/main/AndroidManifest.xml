@@ -819,6 +819,7 @@
         <service
             android:name="com.fanjun.keeplive.service.RemoteService"
             android:process=":remote" />
+
     </application>
     <permission
         android:name="${APP_ID}.permission.MIPUSH_RECEIVE"
@@ -892,5 +893,6 @@
     <uses-permission android:name="${APP_ID}.permission.C2D_MESSAGE" />
 
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+
 
 </manifest>

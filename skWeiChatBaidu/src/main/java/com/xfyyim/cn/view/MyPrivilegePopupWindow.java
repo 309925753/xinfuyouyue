@@ -18,6 +18,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 
 
@@ -27,33 +29,17 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
     private Context context;
     private boolean selectChecked = true;
     private int vip1,vip2=1,vip3;
+    private  UserVIPPrivilegePrice  userVIPPrivilegePrice=new UserVIPPrivilegePrice();
 
-    public MyPrivilegePopupWindow(FragmentActivity context, String privilageTitle, String privilageNumber) {
+    public MyPrivilegePopupWindow(FragmentActivity context,int type, String privilageTitle,String privilageNumber, UserVIPPrivilegePrice  _userVIPPrivilegePrice) {
         super(context);
         this.context = context;
+        this.userVIPPrivilegePrice=_userVIPPrivilegePrice;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.my_privilege_payment_layout, null);
         RelativeLayout rLlightYellow = (RelativeLayout) mMenuView.findViewById(R.id.rLlightYellow);
 
-
-        ImageView ivPrerogativeCheck = (ImageView) mMenuView.findViewById(R.id.ivPrerogativeCheck);
-
-        mMenuView.findViewById(R.id.llIvprerogativeCheck).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectChecked) {
-                    selectChecked = false;
-                    ivPrerogativeCheck.setImageResource(R.mipmap.my_prerogative_checked);
-                    LogUtil.e("**************selectChecked=" + selectChecked);
-                } else {
-                    selectChecked = true;
-                    ivPrerogativeCheck.setImageResource(R.mipmap.my_prerogative_check);
-                    LogUtil.e("**************selectChecked=" + selectChecked);
-                }
-
-            }
-        });
 
         TextView tvDiscount = (TextView) mMenuView.findViewById(R.id.tvDiscount);
         TextView tvDay = (TextView) mMenuView.findViewById(R.id.tvDay);
@@ -78,7 +64,17 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
         TextView tvDay3 = (TextView) mMenuView.findViewById(R.id.tvDay3);
         TextView TvMoney3 = (TextView) mMenuView.findViewById(R.id.TvMoney3);
         TextView TvOriginalMoney3 = (TextView) mMenuView.findViewById(R.id.TvOriginalMoney3);
-
+        //在线喜欢我
+        if(type==1){
+            TvMoney.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getLikePrivilegePrice1()));
+            TvMoney2.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getLikePrivilegePrice2()));
+            TvMoney3.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getLikePrivilegePrice3()));
+        }else {
+            TvMoney.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice1()));
+            TvMoney2.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice2()));
+            TvMoney3.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice3()));
+        }
+        tvDiscount2.setVisibility(View.VISIBLE);
 
         //类型选择
         rLlightYellow.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +161,6 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
 
                 //判断有没有折扣
                 tvDiscount3.setVisibility(View.VISIBLE);
-
                 tvDay3.setTextColor((context.getColor(R.color.text_black_fb7a7a)));
                 TvMoney3.setTextColor((context.getColor(R.color.text_black_fb7a7a)));
                 TvOriginalMoney3.setTextColor((context.getColor(R.color.text_black_fb7a7a)));
@@ -219,7 +214,7 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
         this.setTouchable(true);
         this.setFocusable(true);
         int width = (int) context.getResources().getDisplayMetrics().widthPixels; // 宽度
-        int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2 + ((int) context.getResources().getDisplayMetrics().heightPixels / 4); // 高度
+        int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2+((int) context.getResources().getDisplayMetrics().heightPixels / 11); // 高度
         this.setWidth(width - 100);
         this.setHeight(height);
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
