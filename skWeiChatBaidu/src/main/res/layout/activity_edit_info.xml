@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:background="@color/new_main"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -38,6 +39,7 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
+                        android:id="@+id/ll_head"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
@@ -45,8 +47,10 @@
                         android:background="@color/gray_bg_e4">
 
                         <ImageView
+                            android:id="@+id/img_header"
+                            android:scaleType="centerCrop"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp" />
+                            android:layout_height="match_parent" />
 
                         <ImageView
                             android:layout_width="15dp"
@@ -357,12 +361,14 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="添加行业信息"
-                        android:textColor="@color/text_black_999"
+                        android:hint="添加行业信息"
+                        android:textColorHint="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_work"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -385,8 +391,10 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="添加工作领域信息"
-                        android:textColor="@color/text_black_999"
+                        android:hint="添加工作领域信息"
+
+                        android:textColorHint="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -413,8 +421,9 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="添加公司信息"
-                        android:textColor="@color/text_black_999"
+                        android:hint="添加公司信息"
+                        android:textColorHint="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -441,8 +450,9 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="添加你的家乡信息"
-                        android:textColor="@color/text_black_999"
+                        android:hint="添加你的家乡信息"
+                        android:textColorHint="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -469,9 +479,9 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="添加你常去的地点"
-                        android:textColor="@color/text_black_999"
-                        android:textSize="12sp" />
+                        android:hint="添加你常去的地点"
+                        android:textColorHint="@color/text_black_999"
+                        android:textColor="@color/text_black_333"                        android:textSize="12sp" />
                 </LinearLayout>
 
 
@@ -489,6 +499,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_add_sign"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -522,7 +533,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -548,6 +558,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_add_support"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -580,7 +591,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -593,6 +603,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_add_music"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -625,7 +636,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -638,6 +648,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_add_food"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -670,7 +681,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -683,6 +693,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_add_movie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -715,7 +726,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -728,6 +738,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_add_book"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -760,7 +771,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -773,6 +783,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_add_travel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -805,7 +816,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"
@@ -828,14 +838,15 @@
                     android:layout_marginTop="20dp"
                     android:text="我的问答"
                     android:textColor="@color/text_black_999"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_question"
-    android:layout_marginTop="14dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_question"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
 
 
             </LinearLayout>

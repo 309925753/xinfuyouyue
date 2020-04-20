@@ -141,10 +141,10 @@ public class RegisterActivity extends BaseActivity {
         mNextStepBtn =  findViewById(R.id.login_btn);
         UsernameHelper.initEditText(mPhoneNumEdit, coreManager.getConfig().registerUsername);
 
-        if (coreManager.getConfig().registerInviteCode > 0) {
-            // 启用邀请码，
-            findViewById(R.id.llInvitationCode).setVisibility(View.VISIBLE);
-        }
+//        if (coreManager.getConfig().registerInviteCode > 0) {
+//            // 启用邀请码，
+//            findViewById(R.id.llInvitationCode).setVisibility(View.VISIBLE);
+//        }
 
 
         findViewById(R.id.main_content).setOnClickListener(v -> {

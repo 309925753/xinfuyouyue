@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me_new;
 
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,9 +11,10 @@ import android.widget.TextView;
 import androidx.core.view.ViewCompat;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.sp.UserSp;
+import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
-import com.xfyyim.cn.ui.me.DescriptionActivity;
-import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -54,6 +56,10 @@ public class EditActivity extends BaseActivity {
         type=getIntent().getStringExtra("type");
         title=getIntent().getStringExtra("title");
         textContent=getIntent().getStringExtra("context");
+
+        if(textContent!=null&&!TextUtils.isEmpty(textContent)){
+            et_desc.setHint(textContent);
+        }
         initActionBar();
 
     }
@@ -67,15 +73,14 @@ public class EditActivity extends BaseActivity {
         }
         tvTitle.setText(title);
 
-        tv_title_right.setAlpha(0.6f);
-        tv_title_right.setBackground(mContext.getResources().getDrawable(R.drawable.bg_btn_grey_circle));
         ViewCompat.setBackgroundTintList(tv_title_right, ColorStateList.valueOf(SkinUtils.getSkin(this).getAccentColor()));
         tv_title_right.setTextColor(getResources().getColor(R.color.white));
         tv_title_right.setText(getResources().getString(R.string.save));
         tv_title_right.setOnClickListener(v -> {
             textContent = et_desc.getText().toString().trim();
             if (TextUtils.isEmpty(textContent)) {
-                ToastUtil.showToast(mContext, getString(R.string.name_connot_null));
+                ToastUtil.showToast(mContext, "输入信息不能为空");
+                et_desc.requestFocus();
                 return;
             }
             loadDescription(textContent);
@@ -85,8 +90,10 @@ public class EditActivity extends BaseActivity {
 
 
     private void loadDescription(String description) {
+        DialogHelper.showDefaulteMessageProgressDialog(EditActivity.this);
         Map<String, String> params = new HashMap<>();
-        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("access_token", UserSp.getInstance(EditActivity.this).getAccessToken());
+        params.put("userId", coreManager.getSelf().getUserId());
         params.put(type, textContent);
 
         HttpUtils.get().url(coreManager.getConfig().UPDATE_USERINFO)
@@ -96,6 +103,7 @@ public class EditActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(ObjectResult<Void> result) {
+                        DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(mContext, result)) {
                             ToastUtil.showToast(EditActivity.this, getString(R.string.save_success));
                             finish();
@@ -104,6 +112,7 @@ public class EditActivity extends BaseActivity {
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
                         ToastUtil.showErrorNet(EditActivity.this);
                     }
                 });

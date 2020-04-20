@@ -335,4 +335,15 @@ public class StringUtils {
         return array;
     }
 
+
+    public static List<String> getListString(String mString){
+        List<String> list=new ArrayList<>();
+        String arr[]=mString.split(",");
+
+        for (String s:arr){
+            list.add(s);
+        }
+        return  list;
+    }
+
 }

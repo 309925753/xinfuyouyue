@@ -1,6 +1,8 @@
 package com.xfyyim.cn.bean;
 
-public class QuestEntity  {
+import java.io.Serializable;
+
+public class QuestEntity implements Serializable {
     String question;
     String answer;
 

@@ -37,10 +37,12 @@ public Context context;
                   list.add(s);
               }
             initSkill(list,item.getBackground_type(),helper.flowLayout_tags);
+              helper.img_icon.setBackgroundResource(item.getResoure());
+
     }
 
     private void initSkill(final List<String> mTagData,int bgtype,FlowLayout flowLayout_tags) {
-
+flowLayout_tags.removeAllViews();
         if (mTagData != null) {
             for (int i = 0; i < mTagData.size(); i++) {
                 String signName = mTagData.get(i);
@@ -64,27 +66,28 @@ public Context context;
         skillTextView.setTextSize(10);
         skillTextView.setEnabled(false);
         skillTextView.setChecked(false);
+
         switch (type) {
             case 1:
-                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_support));
                 break;
             case 2:
-                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_music));
                 break;
             case 3:
-                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_food));
                 break;
             case 4:
-                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_movie));
                 break;
             case 5:
-                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_book));
                 break;
             case 6:
-                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+                skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_travel));
                 break;
         }
-        skillTextView.setBackground(context.getResources().getDrawable(R.drawable.share_sign_zise));
+
         int leftRightPadding = ScreenUtils.dip2px(8, mContext);
         int topBottomPadding = ScreenUtils.dip2px(4, mContext);
         skillTextView.setPadding(leftRightPadding, topBottomPadding, leftRightPadding, topBottomPadding);

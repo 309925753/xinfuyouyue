@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <include layout="@layout/a_view_actionbar"/>
 
 
@@ -36,3 +41,17 @@
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_fabu"
+        android:layout_width="70dp"
+        android:layout_height="32dp"
+        android:background="@drawable/shape_fc607e_10"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="参与"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        />
+</RelativeLayout>

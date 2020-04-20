@@ -109,8 +109,9 @@ public class DescriptionActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("description", description);
+        params.put("userId", coreManager.getSelf().getUserId());
 
-        HttpUtils.get().url(coreManager.getConfig().USER_DESCRIPTION)
+        HttpUtils.get().url(coreManager.getConfig().UPDATE_USERINFO)
                 .params(params)
                 .build()
                 .execute(new BaseCallback<Void>(Void.class) {

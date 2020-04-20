@@ -55,6 +55,9 @@
                     android:scheme="sk" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.me_new.EditListChooseActivity"/>
+        <activity android:name=".ui.me_new.EditSignChooseActivity"/>
+        <activity android:name=".ui.me_new.EditListQuestionActivity"/>
         <activity
             android:name=".ui.notification.NotificationProxyActivity"
             android:theme="@style/SplashTheme">
@@ -71,6 +74,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.account.ChangePasswordActivity" />
+
+        <activity android:name=".ui.circle.range.TopicDetailActivity"/>
         <activity android:name=".ui.me.PrivacyWhitelistActivity" />
         <activity android:name=".ui.groupchat.FaceToFaceGroup" />
         <activity android:name=".ui.me.GuanyuActivity" />

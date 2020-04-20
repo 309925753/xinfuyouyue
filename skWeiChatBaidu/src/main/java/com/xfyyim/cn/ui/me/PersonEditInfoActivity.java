@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.RegisterUserBasicInfoActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
@@ -99,6 +100,9 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.iv_title_left:
+                finish();
+                break;
             case R.id.tv_sex:
                 showSelectSexDialog();
                 break;
@@ -175,6 +179,7 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
 
 
     private void requestData() {
+        DialogHelper.showDefaulteMessageProgressDialog(PersonEditInfoActivity.this);
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(PersonEditInfoActivity.this).getAccessToken());
         params.put("userId", coreManager.getSelf().getUserId());
@@ -190,6 +195,7 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
                .execute(new BaseCallback<Void>(Void.class) {
                    @Override
                    public void onResponse(ObjectResult<Void> result) {
+                       DialogHelper.dismissProgressDialog();
                        if (Result.checkSuccess(mContext, result)) {
                            Toast.makeText(PersonEditInfoActivity.this,"修改成功", Toast.LENGTH_SHORT).show();
                        }
@@ -198,11 +204,13 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
 
                    @Override
                    public void onError(Call call, Exception e) {
-
+                       DialogHelper.dismissProgressDialog();
                    }
 
                    @Override
                    public void onFailure(Call call, IOException e) {
+
+                       DialogHelper.dismissProgressDialog();
                        super.onFailure(call, e);
                    }
                });
@@ -215,7 +223,7 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
         if (unbinder != null)
             unbinder.unbind();
 
-        if (  dialogView!=null|| dialogView.getDialog().isShowing()){
+        if (  dialogView!=null){
             dialogView.getDialog().dismiss();
         }
     }

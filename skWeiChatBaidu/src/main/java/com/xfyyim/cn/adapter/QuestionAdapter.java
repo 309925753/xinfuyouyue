@@ -18,7 +18,7 @@ import java.util.List;
 public class QuestionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static int TYPE_ADD = 0;//添加问题
     private static int TYPE_COMMON = 1;
-    private int mMaxAlbum=9;//最大选择问题数量
+    private int mMaxAlbum=4;//最大选择问题数量
     List<QuestEntity> list;
     private LayoutInflater mLayoutInflater;
 Context context;
@@ -68,6 +68,7 @@ Context context;
 
             itemView = ((ItemViewHolderCommon) holder).itemView;
         }
+
         if (onItemClickListener != null && null != itemView) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

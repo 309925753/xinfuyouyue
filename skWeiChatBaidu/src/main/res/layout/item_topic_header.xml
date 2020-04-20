@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    >
+
+    <ImageView
+        android:id="@+id/img_topic_bg"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/friendbg"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/pic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/tpoic_pic" />
+
+        <TextView
+            android:id="@+id/tv_topic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/pic"
+            android:textColor="@color/text_black_333"
+            android:textSize="20sp"
+            tools:text="幸福有约话题" />
+
+        <TextView
+            android:id="@+id/tv_topic_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+
+            android:textColor="@color/text_black_999"
+            android:textSize="10sp"
+            tools:text="1天前" />
+
+        <TextView
+            android:id="@+id/tv_topic_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pic"
+            android:layout_alignLeft="@+id/tv_topic_name"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="3dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/text_black_999"
+            android:textSize="14sp"
+            tools:text="为你提供海量正版高品质音乐,权威的音乐榜单,新歌速递,契合你的主题电台,人性化的歌曲搜索" />
+    </RelativeLayout>
+</LinearLayout>

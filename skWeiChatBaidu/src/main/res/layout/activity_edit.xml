@@ -18,9 +18,10 @@
         android:background="@drawable/grop_dialog_bg"
         android:paddingLeft="@dimen/dp5"
         android:paddingRight="@dimen/dp5"
-        android:paddingTop="10dp"
+       android:padding="@dimen/dp10"
         android:gravity="top|left"
+        android:hint="请输入"
         android:textColor="@color/text_black_333"
         android:textCursorDrawable="@drawable/a_edit_cursor"
-        android:textSize="@dimen/sp_12_text_size" />
+        android:textSize="@dimen/sp_13_text_size" />
 </LinearLayout>
