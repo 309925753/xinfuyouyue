@@ -169,18 +169,22 @@ public class EditListQuestionActivity extends BaseActivity {
 
     public void getList(SginBean.DataBean dateEntity) {
         List<String> mlist = new ArrayList<>();
+        List<String> mlist1 = new ArrayList<>();
 
         if (dateEntity.getQuestionsConfig() != null && !TextUtils.isEmpty(dateEntity.getQuestionsConfig())) {
             String content[] = dateEntity.getQuestionsConfig().split(",");
 
             for (String s : content) {
                 mlist.add(s);
+                mlist1.add(s);
+
             }
 
-            for (int i = 0; i < mlist.size(); i++) {
-              for(int j=0;j<entities.size();j++){
-                   if (mlist.get(i).contains(entities.get(j).getQuestion())){
+            for (int i = 0; i < mlist1.size(); i++) {
+              for(int j=0;j<2;j++){
+                   if (mlist1.get(i).contains(entities.get(j).getQuestion())){
                        mlist.remove(i);
+
                    }
               }
             }

@@ -540,7 +540,9 @@
                         app:flow_equally="false"
                         app:flow_horizontalSpacing="10dp"
                         app:flow_maxSelectNum="8"
-                        app:flow_verticalSpacing="5dp" />
+                        app:flow_verticalSpacing="5dp"
+                        android:clickable="false"
+                        />
 
                 </LinearLayout>
 
