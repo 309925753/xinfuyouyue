@@ -220,6 +220,7 @@ public class DataDownloadActivity extends BaseActivity {
     private void downloadUserInfo() {
         HashMap<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
 
         HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
                 .params(params)

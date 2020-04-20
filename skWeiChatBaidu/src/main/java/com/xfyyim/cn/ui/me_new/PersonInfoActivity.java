@@ -17,9 +17,12 @@ import com.j256.ormlite.stmt.query.In;
 import com.stx.xhb.xbanner.XBanner;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.MyInAdapter;
+import com.xfyyim.cn.adapter.QuestionAdapter;
+import com.xfyyim.cn.adapter.QuestionInfoAdapter;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.MyInEntity;
 import com.xfyyim.cn.bean.Photo;
+import com.xfyyim.cn.bean.QuestEntity;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.customer.FlowLayout;
 import com.xfyyim.cn.customer.SkillTextView;
@@ -31,6 +34,7 @@ import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.me.EditInfoActivity;
 import com.xfyyim.cn.ui.me.PersonEditInfoActivity;
 import com.xfyyim.cn.util.DateFormatUtil;
+import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
@@ -38,6 +42,7 @@ import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,13 +126,22 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
     @BindView(R.id.tv_my_sign)
     TextView tv_my_sign;
+
+    @BindView(R.id.tv_myquestion)
+    TextView tv_myquestion;
+    @BindView(R.id.rv_question)
+    RecyclerView rv_question;
+
     @BindView(R.id.line_info)
     View line_info;
+    @BindView(R.id.line_question)
+    View line_question;
     @BindView(R.id.line_sign)
     View line_sign;
     User user;
     MyInAdapter adapter;
     String usrId;
+    QuestionInfoAdapter questionAdapter;
 
 
     @Override
@@ -294,7 +308,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
 
         //我的信息
-        if (user.getMyPlayground() != null || user.getMyHometown() != null || user.getMyWork() != null || user.getMyCompany() != null || user.getMyIndustry() != null) {
+        if (user.getMyFrequentLocations() != null || user.getMyHometown() != null || user.getMyWork() != null || user.getMyCompany() != null || user.getMyIndustry() != null) {
             my_info.setVisibility(View.VISIBLE);
             line_info.setVisibility(View.VISIBLE);
 
@@ -330,9 +344,9 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         } else {
             ll_home_town.setVisibility(View.GONE);
         }
-        if (user.getMyPlayground() != null && !TextUtils.isEmpty(user.getMyPlayground())) {
+        if (user.getMyFrequentLocations() != null && !TextUtils.isEmpty(user.getMyFrequentLocations())) {
             ll_place.setVisibility(View.VISIBLE);
-            tv_place.setText(user.getMyPlayground());
+            tv_place.setText(user.getMyFrequentLocations());
         } else {
             ll_place.setVisibility(View.GONE);
         }
@@ -340,20 +354,17 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
         //我的标签
 
-        if (user.getMyCharacter() != null && !TextUtils.isEmpty(user.getMyCharacter())) {
+        if (user.getMyTag() != null && !TextUtils.isEmpty(user.getMyTag())) {
 
             ll_mysign.setVisibility(View.VISIBLE);
             tv_my_sign.setVisibility(View.VISIBLE);
             line_sign.setVisibility(View.VISIBLE);
 
             List<String> list = new ArrayList<>();
-            if (user.getMyCharacter().contains(",")) {
-                String sign[] = user.getMyCharacter().split(",");
-                for (String si : sign) {
-                    list.add(si);
-                }
+            if (user.getMyTag().contains(",")) {
+                list= StringUtils.getListString(user.getMyTag());
             } else {
-                list.add(user.getMyCharacter());
+                list.add(user.getMyTag());
             }
             initSkill(list);
 
@@ -370,58 +381,90 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         //我的兴趣
 
         List<MyInEntity> myInEntityList = new ArrayList<>();
-        MyInEntity entity = new MyInEntity();
-        if (user.getMySports() != null && !TextUtils.isEmpty(user.getMySports())) {
+
+        if (user.getMyTastes() != null && !TextUtils.isEmpty(user.getMyTastes())) {
+            MyInEntity entity = new MyInEntity();
             entity.setResoure(R.drawable.me_intrest_1);
-            entity.setContextName(user.getMySports());
+            entity.setContextName(user.getMyTastes());
             entity.setBackground_type(1);
             myInEntityList.add(entity);
         }
 
         if (user.getMyMusic() != null && !TextUtils.isEmpty(user.getMyMusic())) {
+            MyInEntity entity = new MyInEntity();
             entity.setResoure(R.drawable.me_intrest_2);
             entity.setContextName(user.getMyMusic());
             entity.setBackground_type(2);
             myInEntityList.add(entity);
         }
         if (user.getMyFood() != null && !TextUtils.isEmpty(user.getMyFood())) {
+            MyInEntity entity = new MyInEntity();
             entity.setResoure(R.drawable.me_intrest_3);
             entity.setContextName(user.getMyFood());
             entity.setBackground_type(3);
             myInEntityList.add(entity);
         }
         if (user.getMyMovie() != null && !TextUtils.isEmpty(user.getMyMovie())) {
+            MyInEntity entity = new MyInEntity();
             entity.setResoure(R.drawable.me_intrest_4);
             entity.setContextName(user.getMyMovie());
             entity.setBackground_type(4);
             myInEntityList.add(entity);
         }
         if (user.getMyBookAndComic() != null && !TextUtils.isEmpty(user.getMyBookAndComic())) {
+            MyInEntity entity = new MyInEntity();
             entity.setResoure(R.drawable.me_intrest_5);
             entity.setContextName(user.getMyBookAndComic());
             entity.setBackground_type(5);
             myInEntityList.add(entity);
         }
-        if (user.getMyTravel() != null && !TextUtils.isEmpty(user.getMyTravel())) {
+        if (user.getMySports() != null && !TextUtils.isEmpty(user.getMySports())) {
+            MyInEntity entity = new MyInEntity();
             entity.setResoure(R.drawable.me_intrest_6);
-            entity.setContextName(user.getMyTravel());
+            entity.setContextName(user.getMySports());
             entity.setBackground_type(6);
             myInEntityList.add(entity);
         }
 
         if (myInEntityList != null && myInEntityList.size() > 0) {
             my_intresting.setVisibility(View.GONE);
-            myInEntityList.add(entity);
             setMyInAdapter(myInEntityList);
-
         } else {
             my_intresting.setVisibility(View.GONE);
         }
 
 
+        if (user.getUserQuestions()!=null&&user.getUserQuestions().size()>0){
+            line_question.setVisibility(View.VISIBLE);
+            rv_question.setVisibility(View.VISIBLE);
+            tv_myquestion.setVisibility(View.VISIBLE);
+            List<QuestEntity> entities=new ArrayList<>();
+            for (int i=0;i<user.getUserQuestions().size();i++){
+                QuestEntity entity=new QuestEntity();
+                entity.setQuestion(user.getUserQuestions().get(i).getQuestion());
+                entity.setAnswer(user.getUserQuestions().get(i).getUserQuestionAnswer().getAnswer());
+                entities.add(entity);
+            }
+            setAdapter(entities);
+        }else{
+            rv_question.setVisibility(View.GONE);
+            line_question.setVisibility(View.GONE);
+            tv_myquestion.setVisibility(View.GONE);
+        }
+
     }
 
+    public void setAdapter(List<QuestEntity> entities) {
+        if (questionAdapter == null) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PersonInfoActivity.this);
+            rv_question.setLayoutManager(linearLayoutManager);
+            questionAdapter = new QuestionInfoAdapter(PersonInfoActivity.this, entities);
+            rv_question.setAdapter(questionAdapter);
 
+        } else {
+            questionAdapter.notifyDataSetChanged();
+        }
+    }
     public void setMyInAdapter(List<MyInEntity> list) {
         if (adapter == null) {
             LinearLayoutManager linearLayout = new LinearLayoutManager(PersonInfoActivity.this);
@@ -444,7 +487,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
 
     private void initSkill(final List<String> mTagData) {
-
+        flowLayoutTags.removeAllViews();
         if (mTagData != null) {
             for (int i = 0; i < mTagData.size(); i++) {
                 String signName = mTagData.get(i);

@@ -14,12 +14,14 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.SendTopicAdapter;
 import com.xfyyim.cn.bean.Area;
 import com.xfyyim.cn.bean.UploadFileResult;
+import com.xfyyim.cn.helper.ChoosePop;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.helper.ImageLoadHelper;
 import com.xfyyim.cn.helper.LoginHelper;
@@ -44,11 +47,14 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.util.SendTextFilter;
+import com.xfyyim.cn.ui.dialog.DialogView;
+import com.xfyyim.cn.ui.me.LocalVideoActivity;
 import com.xfyyim.cn.ui.tool.MultiImagePreviewActivity;
 import com.xfyyim.cn.util.DeviceInfoUtil;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.video.EasyCameraActivity;
 import com.xfyyim.cn.video.MessageEventGpu;
+import com.xfyyim.cn.video.VideoRecorderActivity;
 import com.xfyyim.cn.view.SquareCenterFrameLayout;
 import com.xfyyim.cn.view.photopicker.PhotoPickerActivity;
 import com.xfyyim.cn.view.photopicker.SelectModel;
@@ -80,6 +86,11 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     private static final int REQUEST_CODE_CAPTURE_PHOTO = 1;  // 拍照
     private static final int REQUEST_CODE_PICK_PHOTO = 2;     // 图库
     private static final int REQUEST_CODE_SELECT_LOCATE = 3;  // 位置
+
+    public boolean isSelectPic = false;
+
+    @BindView(R.id.rl_main)
+    RelativeLayout rl_main;
     Unbinder unbinder;
     @BindView(R.id.tv_title_right)
     TextView tv_title_right;
@@ -101,15 +112,19 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.img_locotion)
     ImageView img_locotion;
     @BindView(R.id.tv)
-       TextView tv;
+    TextView tv;
 
     @BindView(R.id.rv_add_topic)
     RecyclerView rv_add_topic;
 
 
     @BindView(R.id.et_content)
-            EditText editText;
+    EditText editText;
 
+    private ChoosePop mChoosePop;
+    private ChoosePop mChoosePop1;
+    private int mSelectedId;
+    private int takepictype;// 1 图库： 照片   2 图库： 视频  3拍照：图片  4 拍照：视频
 
 
     PostArticleImgAdapter postArticleImgAdapter;
@@ -134,7 +149,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         postArticleImgAdapter = new PostArticleImgAdapter(this, mPhotoList);
         initRcv();
         EventBus.getDefault().register(this);
-
 
 
         // 解决EditText与ScrollView嵌套的问题
@@ -199,21 +213,69 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                     sendShuoshuo();
                 } else {
                     // 发布图片+文字
-                    new  UploadPhoto().execute();
+                    new UploadPhoto().execute();
                 }
                 break;
 
             case R.id.img_blum:
-                selectPhoto();
+
+                showDialog();
                 break;
             case R.id.img_camera:
-                takePhoto();
+                showDialog();
                 break;
             case R.id.img_locotion:
                 break;
         }
     }
 
+    private void selectVideo() {
+        Intent intent = new Intent(SendTextPicActivity.this, LocalVideoActivity.class);
+        intent.putExtra(AppConstant.EXTRA_ACTION, AppConstant.ACTION_SELECT);
+        // 这里选择视频不支持多选，
+        intent.putExtra(AppConstant.EXTRA_MULTI_SELECT, false);
+        if (mSelectedId != 0) {
+            intent.putExtra(AppConstant.EXTRA_SELECT_ID, mSelectedId);
+        }
+        SendTextPicActivity.this.startActivityForResult(intent, 1);
+    }
+
+    public void takeVideo() {
+        VideoRecorderActivity.start(this, true);
+
+
+    }
+
+
+    View.OnClickListener choose = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.takePic:
+                    if (takepictype == 3) {
+                        takePhoto();
+                    } else if (takepictype == 4) {
+                        takeVideo();
+
+                    }
+
+                    mChoosePop.dismiss();
+                    break;
+                case R.id.choosepic:
+                    if (takepictype == 1) {
+                        selectPhoto();
+                    } else if (takepictype == 4) {
+                        selectVideo();
+                    }
+
+                    mChoosePop1.dismiss();
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
 
     // 发布一条说说
     public void sendShuoshuo() {
@@ -256,7 +318,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             params.put("images", mImageData);
         }
 
-        params.put("isAllowComment",  String.valueOf(1) );
+        params.put("isAllowComment", String.valueOf(1));
         /**
          * 所在位置
          */
@@ -391,15 +453,14 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-
     private void initRcv() {
         rcvImg.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         rcvImg.setAdapter(postArticleImgAdapter);
-       MyCallBack myCallBack = new MyCallBack(tv, postArticleImgAdapter, mPhotoList, null);
+        MyCallBack myCallBack = new MyCallBack(tv, postArticleImgAdapter, mPhotoList, null);
         itemTouchHelper = new ItemTouchHelper(myCallBack);
         itemTouchHelper.attachToRecyclerView(rcvImg);//绑定RecyclerView
         //事件监听
-        rcvImg.addOnItemTouchListener(new  OnRecyclerItemClickListener(rcvImg) {
+        rcvImg.addOnItemTouchListener(new OnRecyclerItemClickListener(rcvImg) {
 
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
@@ -416,7 +477,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        myCallBack.setDragListener(new  DragListener() {
+        myCallBack.setDragListener(new DragListener() {
             @Override
             public void deleteState(boolean delete) {
                 if (delete) {
@@ -443,6 +504,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             }
         });
     }
+
     public static class MyCallBack extends ItemTouchHelper.Callback {
 
         private int dragFlags;
@@ -625,7 +687,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-
     /**
      * 相册
      * 可以多选的图片选择器
@@ -650,8 +711,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     public void helloEventBus(final MessageEventGpu message) {
         photograph(new File(message.event));
     }
-
-
 
 
     private void showPictureActionDialog(final int position) {
@@ -687,7 +746,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         Intent intent = new Intent(this, EasyCameraActivity.class);
         startActivity(intent);
     }
-
 
 
     @Override
@@ -726,7 +784,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 //                ToastUtil.showToast(mContext, getString(R.string.loc_startlocnotice));
 //            }
 //        }
-
 
 
     }
@@ -827,9 +884,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-
-
-
     class PostArticleImgAdapter extends RecyclerView.Adapter<PostArticleImgAdapter.MyViewHolder> {
         private final LayoutInflater mLayoutInflater;
         private final Context mContext;
@@ -848,14 +902,14 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(final PostArticleImgAdapter.MyViewHolder holder, final int position) {
-                holder.squareCenterFrameLayout.setVisibility(View.GONE);
-                ImageLoadHelper.showImageWithSizeError(
-                        mContext,
-                        mDatas.get(position),
-                        R.drawable.pic_error,
-                        150, 150,
-                        holder.imageView
-                );
+            holder.squareCenterFrameLayout.setVisibility(View.GONE);
+            ImageLoadHelper.showImageWithSizeError(
+                    mContext,
+                    mDatas.get(position),
+                    R.drawable.pic_error,
+                    150, 150,
+                    holder.imageView
+            );
         }
 
         @Override
@@ -863,7 +917,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             if (mDatas.size() >= 9) {
                 return 9;
             }
-            return mDatas.size() ;
+            return mDatas.size();
         }
 
 
@@ -878,7 +932,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             }
         }
     }
-
 
 
     public abstract class OnRecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
@@ -955,6 +1008,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
          */
         void clearView();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -968,20 +1022,26 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        if (unbinder!=null)
-          unbinder.unbind();
     }
 
-   public void  setTopicAdapter(List<String > list){
-       LinearLayoutManager linearLayoutManager=new LinearLayoutManager(SendTextPicActivity.this);
-       linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-       rv_add_topic.setLayoutManager(linearLayoutManager);
+    public void setTopicAdapter(List<String> list) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SendTextPicActivity.this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rv_add_topic.setLayoutManager(linearLayoutManager);
 
-       SendTopicAdapter adapter=new SendTopicAdapter(list);
+        SendTopicAdapter adapter = new SendTopicAdapter(list);
 
     }
 
 
+    public void showDialog() {
+        mChoosePop = new ChoosePop(SendTextPicActivity.this, choose, 1);
+        mChoosePop.showAtLocation(rl_main, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+    }
 
+    public void showDialog1() {
+        mChoosePop1 = new ChoosePop(SendTextPicActivity.this, choose, 1);
+        mChoosePop1.showAtLocation(rl_main, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+    }
 
 }

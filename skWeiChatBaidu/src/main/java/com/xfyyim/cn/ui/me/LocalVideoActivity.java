@@ -121,6 +121,12 @@ public class LocalVideoActivity extends BaseActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tv_title_center);
         tvTitle.setText(R.string.local_video);
         tvRight = findViewById(R.id.tv_title_right);
+        if (mMultiSelect){
+            tvRight.setVisibility(View.VISIBLE);
+        }else {
+            tvRight.setVisibility(View.GONE);
+        }
+
         if (mMultiSelect) {
             tvRight.setOnClickListener(new NoDoubleClickListener() {
                 @Override

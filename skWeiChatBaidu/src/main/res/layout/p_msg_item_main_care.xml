@@ -279,7 +279,7 @@
     </LinearLayout>
 
     <View
-        style="@style/View_Line"
+        style="@style/Line_hor_e6"
         android:layout_marginTop="14dp" />
 
 </LinearLayout>

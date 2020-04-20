@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.CertificationCenterActivity;
@@ -174,10 +175,10 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
 
     private void getUserInfo() {
-
+        DialogHelper.showDefaulteMessageProgressDialog(getActivity());
         Map<String, String> params = new HashMap<>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
-        params.put("userId", "10000022");
+        params.put("userId", coreManager.getSelf().getUserId());
 
         HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
                 .params(params)
@@ -185,6 +186,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 .execute(new BaseCallback<User>(User.class) {
                     @Override
                     public void onResponse(ObjectResult<User> result) {
+                        DialogHelper.dismissProgressDialog();
                         if (result.getResultCode() == 1 && result.getData() != null) {
                             user = result.getData();
                             setUserDate(user);
@@ -193,6 +195,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
                         ToastUtil.showErrorNet(getActivity());
                     }
                 });

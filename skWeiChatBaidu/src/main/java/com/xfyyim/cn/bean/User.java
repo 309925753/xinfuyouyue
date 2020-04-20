@@ -94,19 +94,33 @@ public class User implements Parcelable, Cloneable {
     private List<Photo> photo;
 
     private int age; // 年龄
+    private String starSign;
     //我的兴趣爱好
     private String myIndustry;
     private String myWork;
     private String myCompany;
     private String myHometown;
-    private String myPlayground;
-    private String myCharacter;
-    private String mySports;
+    private String myFrequentLocations;
+
+
+    private String myTag;
+    private String myTastes;
     private String myMusic;
     private String myFood;
     private String myMovie;
     private String myBookAndComic;
-    private String myTravel;
+    private String mySports;
+    private List<QuestionEntity> userQuestions;
+
+
+    public String getStarSign() {
+        return starSign;
+    }
+
+    public void setStarSign(String starSign) {
+        this.starSign = starSign;
+    }
+
     private int faceIdentity; // 0 - 未认证， 1 - 已认证
     private int likeMeCount;// 喜欢我的人数
     public int getLikeMeCount() {
@@ -143,21 +157,15 @@ public class User implements Parcelable, Cloneable {
         this.photo = photo;
     }
 
-    public String getMyCharacter() {
-        return myCharacter;
+    public String getMyTag() {
+        return myTag;
     }
 
-    public void setMyCharacter(String myCharacter) {
-        this.myCharacter = myCharacter;
+    public void setMyTag(String myTag) {
+        this.myTag = myTag;
     }
 
-    public String getMySports() {
-        return mySports;
-    }
 
-    public void setMySports(String mySports) {
-        this.mySports = mySports;
-    }
 
     public String getMyMusic() {
         return myMusic;
@@ -191,13 +199,31 @@ public class User implements Parcelable, Cloneable {
         this.myBookAndComic = myBookAndComic;
     }
 
-    public String getMyTravel() {
-        return myTravel;
+
+    public String getMyTastes() {
+        return myTastes;
     }
 
-    public void setMyTravel(String myTravel) {
-        this.myTravel = myTravel;
+    public List<QuestionEntity> getUserQuestions() {
+        return userQuestions;
     }
+
+    public void setUserQuestions(List<QuestionEntity> userQuestions) {
+        this.userQuestions = userQuestions;
+    }
+
+    public void setMyTastes(String myTastes) {
+        this.myTastes = myTastes;
+    }
+
+    public String getMySports() {
+        return mySports;
+    }
+
+    public void setMySports(String mySports) {
+        this.mySports = mySports;
+    }
+
 
     private Loc loc;
     private String myInviteCode;
@@ -434,16 +460,7 @@ public class User implements Parcelable, Cloneable {
         this.myHometown = myHometown;
     }
 
-    public String getMyPlayground() {
-        return myPlayground;
-    }
 
-    public void setMyPlayground(String myPlayground) {
-        if (myPlayground == null) {
-            myPlayground = "";
-        }
-        this.myPlayground = myPlayground;
-    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -830,61 +847,15 @@ public class User implements Parcelable, Cloneable {
         this.walletUserNo = walletUserNo;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", userType=" + userType +
-                ", nickName='" + nickName + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", password='" + password + '\'' +
-                ", description='" + description + '\'' +
-                ", birthday=" + birthday +
-                ", showLastLoginTime=" + showLastLoginTime +
-                ", sex=" + sex +
-                ", countryId=" + countryId +
-                ", provinceId=" + provinceId +
-                ", cityId=" + cityId +
-                ", areaId=" + areaId +
-                ", integral=" + integral +
-                ", integralTotal=" + integralTotal +
-                ", level=" + level +
-                ", money=" + money +
-                ", moneyTotal=" + moneyTotal +
-                ", vip=" + vip +
-                ", friendsCount=" + friendsCount +
-                ", fansCount=" + fansCount +
-                ", attCount=" + attCount +
-                ", isAuth=" + isAuth +
-                ", status=" + status +
-                ", offlineTime=" + offlineTime +
-                ", company=" + company +
-                ", msgBackGroundUrl='" + msgBackGroundUrl + '\'' +
-                ", account='" + account + '\'' +
-                ", setAccountCount=" + setAccountCount +
-                ", friends=" + friends +
-                ", myIndustry='" + myIndustry + '\'' +
-                ", myWork='" + myWork + '\'' +
-                ", myCompany='" + myCompany + '\'' +
-                ", myHometown='" + myHometown + '\'' +
-                ", myPlayground='" + myPlayground + '\'' +
-                ", loc=" + loc +
-                ", myInviteCode='" + myInviteCode + '\'' +
-                ", balance=" + balance +
-                ", role=" + role +
-                ", offlineNoPushMsg=" + offlineNoPushMsg +
-                ", onlinestate=" + onlinestate +
-                ", createTime=" + createTime +
-                ", notSeeHim=" + notSeeHim +
-                ", notLetSeeHim=" + notLetSeeHim +
-                ", payPassword='" + payPassword + '\'' +
-                ", walletUserNo=" + walletUserNo +
-                ", settings=" + settings +
-                ", dhMsgPublicKey='" + dhMsgPublicKey + '\'' +
-                ", dhMsgPrivateKey='" + dhMsgPrivateKey + '\'' +
-                ", rsaMsgPublicKey='" + rsaMsgPublicKey + '\'' +
-                ", rsaMsgPrivateKey='" + rsaMsgPrivateKey + '\'' +
-                '}';
+    public String getMyFrequentLocations() {
+        return myFrequentLocations;
+    }
+
+    public void setMyFrequentLocations(String myFrequentLocations) {
+        if (myFrequentLocations == null) {
+            myFrequentLocations = "";
+        }
+        this.myFrequentLocations = myFrequentLocations;
     }
 
     @Override

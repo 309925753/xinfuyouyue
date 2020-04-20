@@ -288,7 +288,7 @@ public class SendVideoActivity extends BaseActivity implements View.OnClickListe
                 if (mSelectedId != 0) {
                     intent.putExtra(AppConstant.EXTRA_SELECT_ID, mSelectedId);
                 }
-                startActivityForResult(intent, 1);
+                SendVideoActivity.this.startActivityForResult(intent, 1);
             }
         });
     }

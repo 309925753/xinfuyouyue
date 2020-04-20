@@ -1,34 +1,31 @@
 package com.xfyyim.cn.ui.circle.range;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.TopicAdapter;
-import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.circle.TopicEntity;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
-import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
-import org.bouncycastle.LICENSE;
-
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,16 +46,30 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
 
+    private View mHeadView;
+
+
     Unbinder unbinder;
     TopicAdapter adapter;
+
+    private TextView tv_topic_name;
+    private TextView tv_topic_desc;
+    private TextView tv_topic_time;
+    private ImageView img_bg;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
-        unbinder= ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         initActionBar();
+        initview();
+    }
+
+
+    public void initview() {
+
 
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
             getTopicList();
@@ -66,9 +77,10 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
 
         });
         mRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
-           getTopicList();
-           mRefreshLayout.finishLoadMore(true);
+            getTopicList();
+            mRefreshLayout.finishLoadMore(true);
         });
+
     }
 
 
@@ -77,7 +89,6 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
         super.onResume();
         getTopicList();
     }
-
 
 
     private void initActionBar() {
@@ -94,38 +105,41 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_title_left:
                 finish();
                 break;
         }
     }
-   public void  setTopicAdapter(List<TopicEntity.DataBean.TopicsBean> list){
-        if (adapter==null){
-            rv_topic.setLayoutManager(new LinearLayoutManager(TopicActivity.this));
-            adapter=new TopicAdapter(list,TopicActivity.this);
-            rv_topic.setAdapter(adapter);
-            adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                @Override
-                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
+    public void csetTopicAdapter(List<TopicEntity.DataBean> list) {
+        if (adapter == null) {
+            rv_topic.setLayoutManager(new LinearLayoutManager(TopicActivity.this));
+            adapter = new TopicAdapter(list, TopicActivity.this);
+            rv_topic.setAdapter(adapter);
+
+
+            adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    Intent intent=new Intent(TopicActivity.this,TopicDetailActivity.class);
+                    intent.putExtra("Topic",(Serializable) list.get(position));
+                    startActivity(intent);
                 }
             });
-        }else{
+
+        } else {
             adapter.notifyDataSetChanged();
         }
 
 
+    }
 
-   }
-
-    public void getTopicList(){
+    public void getTopicList() {
 
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(this).getAccessToken());
-        params.put("pageIndex", "0");
-        params.put("pageSize", "20");
 
         DialogHelper.showDefaulteMessageProgressDialog(this);
 
@@ -137,14 +151,8 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
                     public void onResponse(ArrayResult<TopicEntity.DataBean> result) {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(TopicActivity.this, result)) {
-                            List<TopicEntity.DataBean> datas = result.getData();
-                            if (datas != null && datas.size() > 0) {
-                               List<TopicEntity.DataBean.TopicsBean> list=datas.get(0).getTopics();
-                                setTopicAdapter(list);
-
-
-                            }
-
+                            List<TopicEntity.DataBean> list=result.getData();
+                            csetTopicAdapter(list);
                         }
                     }
 
@@ -155,7 +163,6 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
                     }
                 });
     }
-
 
 
     /**
@@ -172,12 +179,10 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (unbinder!=null){
+        if (unbinder != null) {
             unbinder.unbind();
         }
     }

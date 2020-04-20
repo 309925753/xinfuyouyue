@@ -15,6 +15,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="20dp"
         >
 
         <LinearLayout
@@ -515,6 +516,33 @@
 
 
             </LinearLayout>
+
+
+            <View
+                android:id="@+id/line_question"
+                style="@style/Line_hor"
+                android:layout_marginTop="10dp" />
+
+
+            <TextView
+                android:id="@+id/tv_myquestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="我的问答"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/text_black_999"
+                android:textSize="12sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_question"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

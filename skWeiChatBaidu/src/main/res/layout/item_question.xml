@@ -4,27 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+
     xmlns:tools="http://schemas.android.com/tools"
     >
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/tv_q"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/sp_14_text_size"
+        android:textSize="@dimen/sp_13_text_size"
         android:textColor="@color/text_black_333"
         tools:text="最近在追的剧是什么？"
-        android:padding="3dp"
         />
 
     <TextView
         android:id="@+id/tv_a"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/sp_14_text_size"
-        android:textColor="@color/text_black_666"
+        android:textSize="11sp"
+        android:textColor="@color/text_black_999"
         tools:text="甄嬛传"
         android:padding="3dp"
         />
