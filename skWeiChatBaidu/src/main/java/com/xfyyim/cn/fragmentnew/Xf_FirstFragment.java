@@ -382,8 +382,8 @@ public class Xf_FirstFragment extends EasyFragment {
 
     private void requestData() {
         mUsers = new ArrayList<>();
-        double latitude = 1.0;
-        double longitude = 1.0;
+        double latitude =31.2351;
+        double longitude =121.5276;
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
