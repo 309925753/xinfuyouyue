@@ -93,7 +93,6 @@ public class myOnlineChatFragment extends EasyFragment {
 
 
     private void initView() {
-            EventBusHelper.register(this);
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
         findViewById(R.id.rlGetChat).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

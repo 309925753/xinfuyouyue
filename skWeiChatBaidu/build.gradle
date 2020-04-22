@@ -363,6 +363,7 @@ dependencies {
     implementation project(path: ':faceplatform')
     implementation project(path: ':faceplatform-ui')
 
+
 }
 
 configurations {
