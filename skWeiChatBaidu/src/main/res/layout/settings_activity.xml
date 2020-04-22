@@ -158,7 +158,7 @@
                     android:layout_marginTop="@dimen/dp5"
                     android:layout_toLeftOf="@+id/ivPlane"
                     android:layout_toRightOf="@+id/ivBicycle"
-                    android:max="100"
+                    android:max="1000"
                     android:maxHeight="2dp"
                     android:progress="30"
                     android:progressDrawable="@drawable/bg_new_my_set_seek_line"

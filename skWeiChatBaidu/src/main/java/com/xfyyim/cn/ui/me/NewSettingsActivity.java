@@ -11,20 +11,28 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.helper.LoginHelper;
 import com.xfyyim.cn.helper.PrivacySettingHelper;
+import com.xfyyim.cn.sp.UserSp;
+import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.lock.DeviceLockHelper;
+import com.xfyyim.cn.util.Md5Util;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MergerStatus;
+import com.xfyyim.cn.view.SelectionFrame;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
 import com.xfyyim.cn.view.SwitchButton;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xfyyim.cn.view.window.WindowShowService;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
@@ -151,7 +159,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-        if(TextUtils.isEmpty(coreManager.getSelf().getSettings().getIsAutoExpandRange()+"")){
+        if(coreManager.getSelf().getSettings().getIsAutoExpandRange()==1){
             sbBExpandScope.setChecked(true);
         }else {
             sbBExpandScope.setChecked(false);
@@ -265,6 +273,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tvLoginOut:
                 //退出登录
+                showExitDialog();
                 break;
             case R.id.tvSwitchAccount:
                 //切换账号
@@ -325,7 +334,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             params.put("isAutoExpandRange", "0");
         }
 
-        HttpUtils.get().url(coreManager.getConfig().USER_SET_PRIVACY_SETTING)
+        HttpUtils.get().url(coreManager.getConfig().USER_UPDATE_SETTINGS_CORE)
                 .params(params)
                 .build()
                 .execute(new BaseCallback<Void>(Void.class) {
@@ -344,4 +353,55 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+    // 退出当前账号
+    private void showExitDialog() {
+        SelectionFrame mSF = new SelectionFrame(this);
+        mSF.setSomething(null, getString(R.string.sure_exit_account), new SelectionFrame.OnSelectionFrameClickListener() {
+            @Override
+            public void cancelClick() {
+
+            }
+
+            @Override
+            public void confirmClick() {
+                stopService(new Intent(mContext, WindowShowService.class));
+                logout();
+                // 退出时清除设备锁密码，
+                DeviceLockHelper.clearPassword();
+                UserSp.getInstance(mContext).clearUserInfo();
+                MyApplication.getInstance().mUserStatus = LoginHelper.STATUS_NO_USER;
+                coreManager.logout();
+                LoginHelper.broadcastLogout(mContext);
+                LoginActivity.start(NewSettingsActivity.this);
+                finish();
+            }
+        });
+        mSF.show();
+    }
+    private void logout() {
+        HashMap<String, String> params = new HashMap<String, String>();
+        // 得到电话
+        String phoneNumber = coreManager.getSelf().getTelephone();
+        String digestTelephone = Md5Util.toMD5(phoneNumber);
+        params.put("telephone", digestTelephone);
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        // 默认为86
+        params.put("areaCode", String.valueOf(86));
+        params.put("deviceKey", "android");
+
+        HttpUtils.get().url(coreManager.getConfig().USER_LOGOUT)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<String>(String.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<String> result) {
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
+
 }
