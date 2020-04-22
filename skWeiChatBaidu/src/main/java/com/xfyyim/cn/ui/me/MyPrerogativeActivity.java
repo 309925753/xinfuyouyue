@@ -90,18 +90,16 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
         mFragmentList.add(new MyPrerogativeLikeFragment());
         mFragmentList.add(new myOnlineChatFragment());
 
-        mFragmentList.add(new MyPrerogativeFragment());
+     /*   mFragmentList.add(new MyPrerogativeFragment());
         mFragmentList.add(new MyPrerogativeLikeFragment());
-        mFragmentList.add(new myOnlineChatFragment());
+        mFragmentList.add(new myOnlineChatFragment());*/
 
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(2);
-        String[] titles = new String[5];
+        String[] titles = new String[3];
         titles[0] = "1";
         titles[1] = "1";
         titles[2] = "1";
-        titles[3] = "1";
-        titles[4] = "1";
 
         mViewPager.setAdapter(new ViewPageFragmentAdapter(getSupportFragmentManager(), mFragmentList, titles));
 /*
