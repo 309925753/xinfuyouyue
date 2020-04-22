@@ -139,6 +139,37 @@ public class Friend implements Serializable {
     @DatabaseField
     private int isLostChatKeyGroup;// 标记我已丢失当前私密群组的chatKey
 
+    private int age;
+    private int sex;
+    private  String  myTastes;
+
+    public String getMyTastes() {
+        return myTastes;
+    }
+
+    public void setMyTastes(String myTastes) {
+        this.myTastes = myTastes;
+    }
+
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+
+
     public boolean isCheck() {
         return isCheck;
     }

@@ -1,6 +1,7 @@
 package com.xfyyim.cn.fragmentnew;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,8 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
+import com.xfyyim.cn.broadcast.OtherBroadcast;
+import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
@@ -21,7 +28,10 @@ import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
 import com.xfyyim.cn.ui.me.NewSettingsActivity;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
+import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
@@ -30,6 +40,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 public class MeNewFragment extends EasyFragment implements View.OnClickListener {
@@ -101,9 +113,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     }
 
     private void initData() {
-        if(!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount()+"")){
-            tv2.setText(coreManager.getSelf().getLikeMeCount()+"人喜欢我");
-        }
+         tv2.setText(coreManager.getSelf().getLikeMeCount()+"人喜欢我");
     }
 
     public void initView() {
@@ -119,8 +129,15 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         ll_showdt.setOnClickListener(this);
         tv_history.setOnClickListener(this);
         rlInfoBackground.setOnClickListener(this);
+        EventBusHelper.register(this);
+    }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        getUserInfo();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -136,7 +153,11 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 startActivity(new Intent(getActivity(), MyPrerogativeActivity.class));
                 break;
             case R.id.rl_likeme:
-                startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
+                if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v0") ||coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v1") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v2") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v3")) {
+                    startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
+                }else {
+                    BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                }
                 break;
             case R.id.rl_wallet:
                 startActivity(new Intent(getActivity(), MyNewWalletActivity.class));
@@ -190,9 +211,15 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                         if (result.getResultCode() == 1 && result.getData() != null) {
                             user = result.getData();
                             setUserDate(user);
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
                         }
                     }
-
                     @Override
                     public void onError(Call call, Exception e) {
                         DialogHelper.dismissProgressDialog();
@@ -218,6 +245,44 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
 //        if (user.getVip())
 
+    }
+    //购买会员
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void BuyMember(UserVIPPrivilegePrice  userVIPPrivilegePrice) {
+        //显示VIP购买会员
+        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), userVIPPrivilegePrice, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(),coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
+        //谁喜欢我，在线聊天  购买
+        //   MyPrivilegePopupWindow  my=new MyPrivilegePopupWindow(getActivity());
+        LogUtil.e("BuyMember  BuyMember");
+        myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type, int vip) {
+                payType(type,vip);
+                LogUtil.e("*********************************type = " + type + "-------------vip = " + vip);
+            }
+        });
+    }
+
+    /**
+     * 转支付类型返回支付签名数据
+     * @param type
+     * @param vip
+     */
+    private void  payType(String type, int vip){
+        UserVIPPrivilegePrice  vipPrivilegePriceList= coreManager.getSelf().getUserVIPPrivilegeConfig();
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("paytype", type);
+        params.put("vipLevel", coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
+        if(vip==1){
+            params.put("vipPrice",vipPrivilegePriceList.getV0Price()+"");
+        }else if(vip==2){
+            params.put("vipPrice",vipPrivilegePriceList.getV1Price()+"");
+        }else if(vip==3){
+            params.put("vipPrice", vipPrivilegePriceList.getV2Price()+"");
+        }else if(vip==4){
+            params.put("vipPrice", vipPrivilegePriceList.getV3Price()+"");
+        }
     }
 }
 

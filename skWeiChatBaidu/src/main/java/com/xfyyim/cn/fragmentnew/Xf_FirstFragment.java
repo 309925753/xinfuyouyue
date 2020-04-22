@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.event.EventNotifyByTag;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.customer.AngleTransformer;
 import com.xfyyim.cn.customer.MyAlphaTransformer;
@@ -28,8 +31,12 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.me.MyNewWalletActivity;
+import com.xfyyim.cn.ui.me.redpacket.WxPayAdd;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.ui.message.ChatActivity;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
@@ -52,6 +59,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 public class Xf_FirstFragment extends EasyFragment {
@@ -69,6 +78,7 @@ public class Xf_FirstFragment extends EasyFragment {
     private  int pageIndex=0;
     private  int pageSize=25;
     private boolean  isSliding=false;
+    private  int payFunction=0;//判断支付回调功能类型
 
     @Override
     protected int inflateLayoutId() {
@@ -94,6 +104,7 @@ public class Xf_FirstFragment extends EasyFragment {
         findViewById(R.id.ll_superLight).setOnClickListener(this::onClick);
         findViewById(R.id.llUserLike).setOnClickListener(this::onClick);
         findViewById(R.id.llSuperLike).setOnClickListener(this::onClick);
+        EventBusHelper.register(this);
 
     }
     private void  openSuperCritcal(){
@@ -139,7 +150,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     userLike(list.get(selectItem));
                  //   ToastUtil.showToast(getActivity(),"喜欢接口");
                 }
-                if (itemLeft==0){
+                if (mUsers.size()==3){
                     requestData();
                 }
             }
@@ -215,11 +226,23 @@ public class Xf_FirstFragment extends EasyFragment {
         HttpUtils.post().url(coreManager.getConfig().USER_OPEN_SUPEREXPOSURE)
                 .params(params)
                 .build()
-                .execute(new BaseCallback<String>(String.class) {
+                .execute(new BaseCallback<User>(User.class) {
                     @Override
-                    public void onResponse(ObjectResult<String> result) {
+                    public void onResponse(ObjectResult<User> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
+                            if(coreManager.getSelf().getUserVIPPrivilege().getOutFlag()==1){
+                                swithSuperSolarize(1);
+
+                            }
                             LogUtil.e("result = " +result.getData());
+
                         }
                     }
                     @Override
@@ -412,8 +435,8 @@ public class Xf_FirstFragment extends EasyFragment {
                     unLike(mUsers.get(selectItem));
                     break;
                 case R.id.ll_superLight:
-                    // superLight(mUsers.get(selectItem));
-                    swithSuperSolarize(1);
+                    payFunction=1;
+                    openSuperSolarize();
                     break;
                 case R.id.llUserLike:
                     userLike(mUsers.get(selectItem));
@@ -478,17 +501,19 @@ public class Xf_FirstFragment extends EasyFragment {
             public void btnOnClick(String type, int vip) {
 
                 LogUtil.e("********************************* pay type = " + type + "-------------vip = " + vip);
+                Intent intent = new Intent(getActivity(), WxPayAdd.class);
+                startActivity(intent);
             }
         });
     }
     private void swithSuperSolarize(int switchType){
-        SuperSolarizePopupWindow  RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(getActivity(),switchType);
+        SuperSolarizePopupWindow  RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(getActivity(),switchType,true);
         RegretsUnLikePopupWindow.setBtnOnClice(new SuperSolarizePopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(int sumbitType) {
                 //超级爆光再来一次
                 if(switchType==1&&sumbitType==1){
-                    superLight(userSelect);
+                    openSuperSolarize();
                 //超级爆光滑动卡片
                 }else if(switchType==1&&sumbitType==0) {
                  //无法反悔
@@ -498,5 +523,36 @@ public class Xf_FirstFragment extends EasyFragment {
 
             }
         });
+    }
+
+    /**
+     * 开启超级级爆光
+     * 支付成功回调同时再弹出超级爆光页面
+     */
+    private void openSuperSolarize(){
+        SuperCriticalLightWindow superCriticalLightWindow = new SuperCriticalLightWindow(getActivity(), coreManager.getSelf().getUserVIPPrivilegeConfig());
+        superCriticalLightWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type) {
+                LogUtil.e("type =  " + type);
+                        /*Intent intent = new Intent(MyNewWalletActivity.this, WxPayAdd.class);
+                        startActivity(intent);*/
+              //   AlipayHelper.recharge(getActivity(), coreManager, userVIPPrivilegePrice.getOutPrice()+"");
+                //
+
+            }
+        });
+    }
+
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        switch (payFunction){
+            //超级爆光回调
+            case 1:
+                superLight(userSelect);
+                break;
+        }
     }
 }

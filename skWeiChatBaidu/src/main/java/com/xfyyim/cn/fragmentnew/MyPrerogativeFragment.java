@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -20,10 +21,13 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.UserVIPPrivilege;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.DateUtils;
+import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.CenterPairingLoveDialog;
 import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
@@ -32,13 +36,19 @@ import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
+
+import static com.xfyyim.cn.MyApplication.getContext;
 
 
 public class MyPrerogativeFragment extends EasyFragment {
@@ -71,7 +81,6 @@ public class MyPrerogativeFragment extends EasyFragment {
         findViewById(R.id.tvBuyVipPerogative).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //买会员 或者续费
                 getUserPrivilegeConfigInfo();
             }
         });
@@ -81,8 +90,15 @@ public class MyPrerogativeFragment extends EasyFragment {
         findViewById(R.id.llChangePosition).setOnClickListener(this::onClick);
         findViewById(R.id.llLikeTimes).setOnClickListener(this::onClick);
         getUserPrivilegeInfo();
-
+        EventBusHelper.register(this);
     }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功
+        ToastUtil.showLongToast(getContext(),"支付成功");
+    }
+
     private void getUserPrivilegeConfigInfo() {
         LogUtil.e("into  getUserPrivilegeConfigInfo");
         Map<String, String> params = new HashMap<>();
@@ -227,6 +243,11 @@ public class MyPrerogativeFragment extends EasyFragment {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+        //	        this.setWidth(ViewPiexlUtil.dp2px(context,200));
+        //设置SelectPicPopupWindow弹出窗体的高
+        popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+
         mViewPager = (ViewPager) contentView.findViewById(R.id.vp_Privilege);
         //VIP会员权益
         View children_prerogative = getActivity().getLayoutInflater().inflate(
@@ -237,7 +258,6 @@ public class MyPrerogativeFragment extends EasyFragment {
                 switchType(1);
             }
         });
-        AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), children_prerogative.findViewById(R.id.ivHead), true);
 
         //每天5个超级喜欢
         View children_prerogative_like = getActivity().getLayoutInflater().inflate(
@@ -245,9 +265,7 @@ public class MyPrerogativeFragment extends EasyFragment {
         children_prerogative_like.findViewById(R.id.tvGetVip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtil.e(" into  bottomAnimDialog");
-
-                switchType(2);
+                switchType(1);
             }
         });
         //滑错无限反悔
@@ -308,13 +326,34 @@ public class MyPrerogativeFragment extends EasyFragment {
         popupWindow.setTouchable(true);
         popupWindow.setFocusable(true);
         int width = (int) getContext().getResources().getDisplayMetrics().widthPixels; // 宽度
-        int height = (int) getContext().getResources().getDisplayMetrics().heightPixels / 2 + ((int) getContext().getResources().getDisplayMetrics().heightPixels / 10); // 高度
+      int height = (((int) getContext().getResources().getDisplayMetrics().heightPixels / 10)*7)+50; // 高度
         popupWindow.setWidth(width);
-        popupWindow.setHeight(height);
+       popupWindow.setHeight(height);
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         lp.alpha = 0.7f;
         getActivity().getWindow().setAttributes(lp);
         popupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+        TextView  tvPayLikes=(TextView)children_prerogative_times.findViewById(R.id.tvPayLikes);
+        TextView  tvPayLocation=(TextView)children_prerogative_location.findViewById(R.id.tvPayLocation);
+        TextView  tvPaySlip=(TextView) children_online_chat.findViewById(R.id.tvPaySlip);
+        TextView  tvGetVip=(TextView) children_prerogative_like.findViewById(R.id.tvGetVip);
+        TextView  tvPayVip=(TextView)children_prerogative.findViewById(R.id.tvPayVip);
+
+
+        //买会员 或者续费
+        if (privilegeBean.getVipLevel().equals("v0") || privilegeBean.getVipLevel().equals("v1") || privilegeBean.getVipLevel().equals("v2") || privilegeBean.getVipLevel().equals("v3")) {
+            tvPayLikes.setText("续费VIP会员");
+            tvPayLocation.setText("续费VIP会员");
+            tvPaySlip.setText("续费VIP会员");
+            tvGetVip.setText("续费VIP会员");
+            tvPayVip.setText("续费VIP会员");
+        } else {
+            tvPayLikes.setText("￥" + ArithUtils.round1(privilegeBean.getVipPrice()) + "获取VIP会员");
+            tvPayLocation.setText("￥" + ArithUtils.round1(privilegeBean.getVipPrice()) + "获取VIP会员");
+            tvPaySlip.setText("￥" + ArithUtils.round1(privilegeBean.getVipPrice()) + "获取VIP会员");
+            tvGetVip.setText("￥" + ArithUtils.round1(privilegeBean.getVipPrice()) + "获取VIP会员");
+            tvPayVip.setText("￥" + ArithUtils.round1(privilegeBean.getVipPrice()) + "获取VIP会员");
+        }
     }
 
     /**
@@ -326,7 +365,7 @@ public class MyPrerogativeFragment extends EasyFragment {
         popupWindow.dismiss();
         if (type == 2) {
             //弹框显示是配对喜欢
-            showBottomDialog();
+         //   showBottomDialog();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                getUserPrivilegeConfigInfo();

@@ -185,8 +185,7 @@
         android:layout_width="wrap_content"
         android:layout_height="105dp"
         android:layout_marginTop="@dimen/dp15"
-        android:layout_marginLeft="@dimen/dp20"
-        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginLeft="@dimen/dp5"
         android:layout_gravity="center_horizontal"
         >
         <RelativeLayout

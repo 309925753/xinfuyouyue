@@ -9,6 +9,7 @@ public class EventNotifyByTag {
     public static final String Interrupt = "Interrupt_Call";
     public static final String Speak = "Speaker_Earpiece";
     public static final String Withdraw = "Withdraw_Success";
+    public static final String SuperLight = "Super_light";//超级爆光
 
     public final String tag;
 

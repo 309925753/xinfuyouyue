@@ -19,15 +19,21 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.BillCashBean;
 import com.xfyyim.cn.bean.LikeMeBean;
+import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilege;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
+import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.DateUtils;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
+import com.xfyyim.cn.view.SuperCriticalLightWindow;
 import com.xfyyim.cn.view.SuperSolarizePopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -45,6 +51,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 public class
@@ -74,6 +82,7 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
     private Unbinder unbinder;
     private List<LikeMeBean>   likeMeBeanList=new ArrayList<LikeMeBean>();
     private boolean more=true;
+    private  int payFunction;//支付功能类型回调
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +91,7 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         unbinder=ButterKnife.bind(this);
         initView();
         initActionBar();
+
     }
 
     private void initActionBar() {
@@ -95,9 +105,8 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
     }
     private void initView() {
 
+        EventBusHelper.register(this);
         mRefreshLayout = findViewById(R.id.refreshLayout);
-
-
         RecyclerView rclBill = (RecyclerView) findViewById(R.id.rclCheck);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 2);
         linearLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
@@ -111,7 +120,9 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 //爆光
-                swithSuperSolarize(1);
+             //   superLight(coreManager.getSelf());
+                openSuperSolarize();
+
             }
         });
 
@@ -143,14 +154,17 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
 
         getWhoLikeMe();
     }
-
-    /**
-     * 打开超级爆光页面
-     */
-    private void OpenSolarize() {
-
-
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        switch (payFunction){
+            //超级爆光回调
+            case 1:
+                superLight(coreManager.getSelf());
+                break;
+        }
     }
+
     private int pageIndex=0;
     private  void  getWhoLikeMe(){
      Map<String, String> params = new HashMap<>();
@@ -253,12 +267,60 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         }
     }
     private void swithSuperSolarize(int switchType){
-        SuperSolarizePopupWindow RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(this,switchType);
+        SuperSolarizePopupWindow RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(this,switchType,false);
         RegretsUnLikePopupWindow.setBtnOnClice(new SuperSolarizePopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(int sumbitType) {
-
-
+                superLight(coreManager.getSelf());
+            }
+        });
+    }
+    /**
+     * 超级爆光
+     * @param user
+     */
+    private  void superLight(User user){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+        params.put("likeUserId",user.getUserId());
+        params.put("nickname",user.getNickName());
+        params.put("age",user.getAge()+"");
+        HttpUtils.post().url(coreManager.getConfig().USER_OPEN_SUPEREXPOSURE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (Result.checkSuccess(CheckLikesMeActivity.this,result)) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
+                            if(coreManager.getSelf().getUserVIPPrivilege().getOutFlag()==1){
+                                swithSuperSolarize(1);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
+    /**
+     * 打开超级爆光支付页面
+     */
+    private void  openSuperSolarize(){
+        SuperCriticalLightWindow superCriticalLightWindow = new SuperCriticalLightWindow(this, coreManager.getSelf().getUserVIPPrivilegeConfig());
+        superCriticalLightWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type) {
+                LogUtil.e("type =  " + type);
+                payFunction=1;
+                AlipayHelper.recharge(CheckLikesMeActivity.this, coreManager, coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice()+"");
             }
         });
     }

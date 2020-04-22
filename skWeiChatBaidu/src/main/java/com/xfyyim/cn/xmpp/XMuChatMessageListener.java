@@ -14,6 +14,7 @@ import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.MsgRoamTask;
 import com.xfyyim.cn.bean.RoomMember;
 import com.xfyyim.cn.bean.event.EventNewNotice;
+import com.xfyyim.cn.bean.event.EventNotifyByTag;
 import com.xfyyim.cn.bean.message.ChatMessage;
 import com.xfyyim.cn.bean.message.XmppMessage;
 import com.xfyyim.cn.broadcast.MsgBroadcast;
@@ -34,6 +35,7 @@ import com.xfyyim.cn.ui.mucfile.XfileUtils;
 import com.xfyyim.cn.util.Constants;
 import com.xfyyim.cn.util.DateFormatUtil;
 import com.xfyyim.cn.util.PreferenceUtils;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.xmpp.listener.ChatMessageListener;
 import com.xfyyim.cn.xmpp.util.XmppStringUtil;
 
@@ -132,8 +134,10 @@ public class XMuChatMessageListener implements MessageListener {
         if (!chatMessage.validate()) {
             return;
         }
+
         ChatMessageDao.getInstance().decrypt(true, chatMessage);// 解密
         int type = chatMessage.getType();
+
 
         chatMessage.setGroup(true);
         chatMessage.setMessageState(ChatMessageListener.MESSAGE_SEND_SUCCESS);
@@ -144,6 +148,13 @@ public class XMuChatMessageListener implements MessageListener {
             packetId = UUID.randomUUID().toString().replaceAll("-", "");
         }
         chatMessage.setPacketId(packetId);
+
+        //超级爆光的信息
+        if(type==XmppMessage.TYPE_SUPER_LIGHT){
+            LogUtil.e("XMuChatMessageListener .TYPE_SUPER_LIGHT = " +XmppMessage.TYPE_SUPER_LIGHT);
+            EventBus.getDefault().post(new EventNotifyByTag(EventNotifyByTag.SuperLight));
+            return;
+        }
 
         // 生成漫游任务
         if (isDelay) {

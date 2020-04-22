@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@mipmap/my_privilege_vip_bg">
@@ -13,33 +13,17 @@
         android:layout_marginTop="@dimen/dp15"
         android:textColor="@color/text_black_333"
         android:text="会员身份标识" />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="230dp"
         android:layout_height="@dimen/dp300"
         android:orientation="vertical"
-        android:background="@drawable/bg_new_my_shadowpure_white"
+        android:background="@mipmap/my_vip_slip"
         android:layout_marginLeft="@dimen/dp80"
         android:layout_marginRight="@dimen/dp80"
         android:layout_marginTop="@dimen/dp15"
         android:elevation="@dimen/dp5"
+        android:layout_gravity="center_horizontal"
         >
-
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/ivHead"
-            android:layout_width="220dp"
-            android:layout_height="193dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_head"
-            android:visibility="visible"
-            app:riv_border_color="#fff"
-            app:riv_border_width="1dip"
-            android:layout_marginLeft="@dimen/dp10"
-            android:layout_marginRight="@dimen/dp10"
-            android:layout_marginTop="@dimen/dp15"
-            android:layout_gravity="center_horizontal"
-            />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -47,6 +31,8 @@
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginTop="@dimen/dp15"
             android:layout_marginBottom="@dimen/dp30"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/dp40"
             >
             <TextView
                 android:id="@+id/tvUserName"
@@ -67,27 +53,8 @@
                 android:paddingRight="@dimen/dp10"
                 android:paddingLeft="@dimen/dp10"
                 android:text="Vip"/>
-            <Button
-                android:id="@+id/btEmpt"
-            android:layout_width="@dimen/dp40"
-            android:layout_height="@dimen/dp20"
-            android:text="          "
-            android:layout_below="@+id/tvUserName"
-                android:layout_marginTop="@dimen/dp10"
-                android:background="#E8E8E8"
-            />
-            <Button
-                android:layout_width="@dimen/dp40"
-                android:layout_height="@dimen/dp20"
-                android:text="          "
-                android:layout_below="@+id/tvUserName"
-                android:layout_toRightOf="@+id/btEmpt"
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_marginLeft="@dimen/dp5"
-                android:background="#E8E8E8"
-                />
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

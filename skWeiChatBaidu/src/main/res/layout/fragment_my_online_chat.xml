@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/new_main">
     <RelativeLayout
@@ -132,7 +132,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_below="@+id/ivChat"
-            android:layout_marginTop="250dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="125dp"
             >
             <TextView
                 android:id="@+id/tvFlashChat"

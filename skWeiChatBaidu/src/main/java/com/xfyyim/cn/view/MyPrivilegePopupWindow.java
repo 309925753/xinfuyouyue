@@ -195,7 +195,7 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
         this.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         //	        this.setWidth(ViewPiexlUtil.dp2px(context,200));
         //设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+        this.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
         //设置SelectPicPopupWindow弹出窗体动画效果
@@ -214,9 +214,9 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
         this.setTouchable(true);
         this.setFocusable(true);
         int width = (int) context.getResources().getDisplayMetrics().widthPixels; // 宽度
-        int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2+((int) context.getResources().getDisplayMetrics().heightPixels / 11); // 高度
+     //   int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2+((int) context.getResources().getDisplayMetrics().heightPixels / 11); // 高度
         this.setWidth(width - 100);
-        this.setHeight(height);
+    //    this.setHeight(height);
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
         lp.alpha = 0.7f;
         context.getWindow().setAttributes(lp);
@@ -247,15 +247,15 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlAlipay://支付宝
-                btnOnClick.btnOnClick("0",swichVip());
+                btnOnClick.btnOnClick("2",swichVip());
                 dismiss();
                 break;
             case R.id.rlWx://微信
-                btnOnClick.btnOnClick("1",swichVip());
+                btnOnClick.btnOnClick("0",swichVip());
                 dismiss();
                 break;
             case R.id.rlBalance://余额
-                btnOnClick.btnOnClick("2",swichVip());
+                btnOnClick.btnOnClick("1",swichVip());
                 dismiss();
                 break;
           /*  case R.id.rLlightYellow://

@@ -104,6 +104,7 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
         titles[4] = "1";
 
         mViewPager.setAdapter(new ViewPageFragmentAdapter(getSupportFragmentManager(), mFragmentList, titles));
+/*
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             int currentPosition;
 
@@ -133,6 +134,7 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
                 }
             }
         });
+*/
 
     }
     @Override

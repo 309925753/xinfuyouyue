@@ -12,10 +12,13 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.UserVIPPrivilege;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.util.ArithUtils;
+import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MyPrivilegePopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -27,6 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 
@@ -69,6 +74,13 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
             }
         });
         getUserPrivilegeInfo();
+        EventBusHelper.register(this);
+    }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功
+        ToastUtil.showLongToast(getContext(),"支付成功");
     }
 
     /**

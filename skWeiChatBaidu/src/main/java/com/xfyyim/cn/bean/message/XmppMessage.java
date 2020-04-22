@@ -111,6 +111,8 @@ public abstract class XmppMessage {
     public static final int TYPE_BACK_BLACK = 513;// 好友用户被后台拉黑，用于客户端更新本地数据 ，from是系统管理员 to是被删除人的userId，
     public static final int TYPE_BACK_REFUSED = 514;// 好友用户被后台取消拉黑，用于客户端更新本地数据 ，from是系统管理员 to是自己的userId，objectId中有拉黑双方Id,
     public static final int TYPE_BACK_DELETE = 515;// 好友用户被后台删除，是删除好友关系 ，from是系统管理员 to是自己的userId，objectId中有删除双方Id,
+    public static final int TYPE_SUPER_LIGHT = 516;// 在线闪聊发起方
+    public static final int TYPE_WAIT_CHAT = 517;// 在线闪聊待接收方
 
     // 未用到
     public static final int TYPE_NEWSEE = 503;// 新关注

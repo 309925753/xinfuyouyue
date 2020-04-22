@@ -151,16 +151,16 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
 
 
         Tvmonth.setText("  ￥"+ ArithUtils.round1(vipPrivilegePriceList.getV0Price()) +"/月");
-        TvVipMoney.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV0DayPrice())+"/天");
+        tvVipLow.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV0DayPrice())+"/天");
 
         Tvmonth2.setText("￥"+ ArithUtils.round1(vipPrivilegePriceList.getV1Price()) +"/年");
-        TvVipMoney2.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV1DayPrice())+"/天");
+        tvVipLow2.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV1DayPrice())+"/天");
 
         Tvmonth3.setText("￥"+ ArithUtils.round1(vipPrivilegePriceList.getV2Price()) +"/年");
-        TvVipMoney3.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV2DayPrice())+"/天");
+        tvVipLow3.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV2DayPrice())+"/天");
 
         Tvmonth4.setText("￥"+ ArithUtils.round1(vipPrivilegePriceList.getV3Price()) +"/年");
-        TvVipMoney4.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV3DayPrice())+"/天");
+        tvVipLow4.setText("低至￥"+ArithUtils.round1(vipPrivilegePriceList.getV3DayPrice())+"/天");
 
 
 
@@ -180,7 +180,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         this.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         //	        this.setWidth(ViewPiexlUtil.dp2px(context,200));
         //设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+        this.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
         //设置SelectPicPopupWindow弹出窗体动画效果
@@ -199,9 +199,9 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         this.setTouchable(true);
         this.setFocusable(true);
         int width = (int) context.getResources().getDisplayMetrics().widthPixels; // 宽度
-        int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2 + ((int) context.getResources().getDisplayMetrics().heightPixels /8); // 高度
-        this.setWidth(width - 100);
-        this.setHeight(height);
+       /* int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2 + ((int) context.getResources().getDisplayMetrics().heightPixels /8); // 高度
+        */this.setWidth(width - 100);
+       // this.setHeight(height);
         WindowManager.LayoutParams lp = context.getWindow().getAttributes();
         lp.alpha = 0.7f;
         context.getWindow().setAttributes(lp);
@@ -232,17 +232,17 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlAlipay://支付宝
-                 btnOnClick.btnOnClick("0", swichVip());
+                 btnOnClick.btnOnClick("2", swichVip());
                 dismiss();
                 break;
             case R.id.rlWx://微信
                 swichVip();
-                 btnOnClick.btnOnClick("1",swichVip());
+                 btnOnClick.btnOnClick("0",swichVip());
                 dismiss();
                 break;
             case R.id.rlBalance://余额
                 swichVip();
-                   btnOnClick.btnOnClick("2",swichVip());
+                   btnOnClick.btnOnClick("1",swichVip());
                 dismiss();
                 break;
             case R.id.rLVipYellow://

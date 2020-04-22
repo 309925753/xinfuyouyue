@@ -9,18 +9,29 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.alibaba.fastjson.JSON;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.UserVIPPrivilege;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventNotifyByTag;
+import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
+import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
+import com.xfyyim.cn.bean.message.XmppMessage;
 import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.ArithUtils;
+import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.ImmediateiyChatPopupWindow;
 import com.xfyyim.cn.view.MyPrivilegePopupWindow;
+import com.xfyyim.cn.view.WaitingChatPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -31,6 +42,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 
@@ -59,26 +72,40 @@ public class myOnlineChatFragment extends EasyFragment {
         initView();
 
     }
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyOnlineChat message) {
+         Friend friend = JSON.parseObject(message.MessageData, Friend.class);
+        ImmediateiyChatPopupWindow immediateiyChatPopupWindow=new ImmediateiyChatPopupWindow(getActivity(),coreManager.getSelf().getUserId());
+        immediateiyChatPopupWindow.setBtnOnClice(new ImmediateiyChatPopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick() {
+                if(friend!=null && (!TextUtils.isEmpty(friend.getUserId()+""))){
+                    LogUtil.e("friend information  = " + friend.toString());
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.setClass(getActivity(), ChatActivity.class);
+                    intent.putExtra(ChatActivity.FRIEND, friend);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+
 
     private void initView() {
-
-
+            EventBusHelper.register(this);
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
-
-
         findViewById(R.id.rlGetChat).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                //
                 if (userVIPPrivilege.getIsChatByMonthQuantity() == 1) {
                     //进行闪聊操作
-                    openOnlineChat();
+                    OnlineChat();
                 } else {
                     //开通喜欢我的无限次数
                     getUserPrivilegeConfigInfo();
                 }
-
             }
         });
         tvImmediatelyChat.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +116,13 @@ public class myOnlineChatFragment extends EasyFragment {
             }
         });
         getUserPrivilegeInfo();
+        EventBusHelper.register(this);
+    }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功
+        ToastUtil.showLongToast(getContext(),"支付成功");
     }
 
     /**
@@ -172,7 +206,7 @@ public class myOnlineChatFragment extends EasyFragment {
         immediateiyChatPopupWindow.setBtnOnClice(new ImmediateiyChatPopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick() {
-                OnlineChat();
+
             }
         });
 
@@ -186,26 +220,32 @@ public class myOnlineChatFragment extends EasyFragment {
         params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");*/
         params.put("longitude",  1.0+"");
         params.put("latitude",  1.0+"");
+        params.put("type",  "0");//type 类型（0-爸爸发起 1-儿子接收）
+        params.put("fromUserId","0");
+        DialogHelper.showDefaulteMessageProgressDialog(getActivity());
         HttpUtils.post().url(coreManager.getConfig().USER_CHAT_ONLINE)
                 .params(params)
                 .build()
-                .execute(new BaseCallback<Friend>(Friend.class) {
+                .execute(new BaseCallback<String>(String.class) {
                     @Override
-                    public void onResponse(ObjectResult<Friend> result) {
-
+                    public void onResponse(ObjectResult<String> result) {
+                        DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(getActivity(), result)) {
-                            Friend friend = result.getData();
+                          /*  Friend friend = result.getData();
                             if(friend!=null && (!TextUtils.isEmpty(friend.getUserId()+""))){
+                                openOnlineChat( friend);
                                 LogUtil.e("friend information  = " + friend.toString());
                                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                                 intent.setClass(getActivity(), ChatActivity.class);
                                 intent.putExtra(ChatActivity.FRIEND, friend);
                                 startActivity(intent);
-                            }
+                            }*/
                         }
                     }
                     @Override
                     public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                        ToastUtil.showLongToast(getActivity(),"暂时没有配对人，请再试一下");
                     }
                 });
     }
@@ -218,6 +258,14 @@ public class myOnlineChatFragment extends EasyFragment {
         my.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type, int vip) {
+                //判断月份
+                if(vip==1){
+                    vip= 1;
+                }else if(vip==2){
+                    vip=2;
+                }else if(vip==3){
+                    vip=3;
+                }
                 LogUtil.e("**********************************************************");
                 LogUtil.e("type = " + type + "---vip = " + vip);
                 LogUtil.e("**********************************************************");

@@ -42,8 +42,10 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
     private   String  inputMoney=null;
     private UserVIPPrivilegePrice userVIPPrivilegePrice = new UserVIPPrivilegePrice();
     private  int  functionType;
-    private  int  Frequency10More;
-    private  int  Frequency10MorePrice;
+    private  int  Frequency10More;//10次以上
+    private  int  Frequency10MorePrice;//10次以上总价
+    private  int oncePrice=userVIPPrivilegePrice.getV2Price();   //选中的单价
+    private int selectCounts=2; //选中的数量
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public MyWalletPopupWindow(Activity context,UserVIPPrivilegePrice _userVIPPrivilegePrice,int functionType) {
@@ -109,6 +111,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10())+"RMB");
                     tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getSuperLikeByFrequency10More();
+                    oncePrice=userVIPPrivilegePrice.getSuperLikeByFrequency2();
                     break;
                 case 3:
                     tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency1())+"RMB");
@@ -116,6 +119,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency10())+"RMB");
                     tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getChatByFrequency10More();
+                    oncePrice=userVIPPrivilegePrice.getChatByFrequency2();
                     break;
                 case 4:
                     tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency1())+"RMB");
@@ -123,6 +127,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency10())+"RMB");
                     tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getChatPeekByFrequency10More();
+                    oncePrice=userVIPPrivilegePrice.getChatPeekByFrequency2();
                     break;
 
             }
@@ -132,6 +137,18 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     Frequency10More=0;
+                    switch (functionType){
+                        case 2:
+                            oncePrice=userVIPPrivilegePrice.getSuperLikeByFrequency1();
+                            break;
+                        case 3:
+                            oncePrice=userVIPPrivilegePrice.getChatByFrequency1();
+                            break;
+                        case 4:
+                            oncePrice=userVIPPrivilegePrice.getChatPeekByFrequency1();
+                            break;
+                    }
+                    selectCounts=1;
                     isBuyTimes = false;
                     isBuyTimes2 = true;
                     isBuyTimes3 = true;
@@ -163,6 +180,20 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     isBuyTimes2 = false;
                     isBuyTimes3 = true;
                     isBuyTimes4 = true;
+
+                    switch (functionType){
+                        case 2:
+                            oncePrice=userVIPPrivilegePrice.getSuperLikeByFrequency2();
+                            break;
+                        case 3:
+                            oncePrice=userVIPPrivilegePrice.getChatByFrequency2();
+                            break;
+                        case 4:
+                            oncePrice=userVIPPrivilegePrice.getChatPeekByFrequency2();
+                            break;
+                    }
+                    selectCounts=2;
+
                     rlBuyTimes2.setBackground(getContext().getDrawable(R.drawable.bg_new_my_wallet_pay_red));
                     tvBuyTimes2.setTextColor((getContext().getColor(R.color.text_black_ff9b9b)));
                     tvBuyMoney2.setTextColor((getContext().getColor(R.color.text_black_fb7a7a)));
@@ -189,6 +220,19 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     isBuyTimes2 = true;
                     isBuyTimes3 = false;
                     isBuyTimes4 = true;
+                    switch (functionType){
+                        case 2:
+                            oncePrice=userVIPPrivilegePrice.getSuperLikeByFrequency10();
+                            break;
+                        case 3:
+                            oncePrice=userVIPPrivilegePrice.getChatByFrequency10();
+                            break;
+                        case 4:
+                            oncePrice=userVIPPrivilegePrice.getChatPeekByFrequency10();
+                            break;
+                    }
+                    selectCounts=10;
+
                     rlBuyTimes3.setBackground(getContext().getDrawable(R.drawable.bg_new_my_wallet_pay_red));
                     tvBuyTimes3.setTextColor((getContext().getColor(R.color.text_black_ff9b9b)));
                     tvBuyMoney3.setTextColor((getContext().getColor(R.color.text_black_fb7a7a)));
@@ -307,7 +351,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
         }
 
     public interface BtnOnClick {
-        void btnOnClick(String payType, int selectType,int functionType,int  Frequency10More,int  Frequency10MorePrice);
+        void btnOnClick(String payType, int selectCounts,int oncePrice,int  Frequency10More,int  Frequency10MorePrice);
     }
 
 
@@ -321,30 +365,18 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case  R.id.tvWalletAlipay:
-                btnOnClick.btnOnClick("2",SWitchSatus(),functionType,Frequency10More,Frequency10MorePrice);
+                btnOnClick.btnOnClick("2",selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
                 dismiss();
                 break;
             case  R.id.tvWalletWx:
-                btnOnClick.btnOnClick("0",SWitchSatus(),functionType,Frequency10More,Frequency10MorePrice);
+                btnOnClick.btnOnClick("0",selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
                 dismiss();
                 break;
             case  R.id.tvWalletBalance:
-                btnOnClick.btnOnClick("1",SWitchSatus(),functionType,Frequency10More,Frequency10MorePrice);
+                btnOnClick.btnOnClick("1",selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
                 dismiss();
                 break;
         }
     }
-    private int SWitchSatus(){
-        int status=0;
-        if(isBuyTimes){
-            status=0;
-        }else if(isBuyTimes2){
-            status=1;
-        }else if(isBuyTimes3){
-            status=2;
-        }else if(isBuyTimes4){
-            status=3;
-        }
-        return  status;
-    }
+
 }

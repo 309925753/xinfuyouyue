@@ -22,7 +22,7 @@ public class SuperSolarizePopupWindow extends PopupWindow implements View.OnClic
     private Context context;
     private int functionType;
 
-    public SuperSolarizePopupWindow(FragmentActivity context,int switchType) {
+    public SuperSolarizePopupWindow(FragmentActivity context,int switchType,boolean isShow) {
         super(context);
         this.context = context;
         this.functionType=switchType;
@@ -44,8 +44,10 @@ public class SuperSolarizePopupWindow extends PopupWindow implements View.OnClic
             tvForget.setText("超级曝光已完成");
             tvHint.setText("刚刚你身边9.2倍数的用户看到了\n  你快去滑动与他们配对吧");
             tvConfirm.setText("再来一次");
-            tvSlideCard.setText("滑动卡片");
-            tvSlideCard.setVisibility(View.VISIBLE);
+            if(isShow){
+                tvSlideCard.setText("滑动卡片");
+                tvSlideCard.setVisibility(View.VISIBLE);
+            }
         }else {
             llSuer.setVisibility(View.GONE);
             ivpullBack.setVisibility(View.VISIBLE);
@@ -55,6 +57,7 @@ public class SuperSolarizePopupWindow extends PopupWindow implements View.OnClic
             tvSlideCard.setVisibility(View.GONE);
 
         }
+
 
 
         //设置SelectPicPopupWindow的View

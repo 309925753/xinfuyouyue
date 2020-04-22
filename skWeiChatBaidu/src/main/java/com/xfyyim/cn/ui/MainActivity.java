@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.os.Process;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,6 +33,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.bumptech.glide.Glide;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.BuildConfig;
@@ -45,6 +47,8 @@ import com.xfyyim.cn.bean.UploadingFile;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.event.EventCreateGroupFriend;
+import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
+import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
 import com.xfyyim.cn.bean.event.EventQRCodeReady;
 import com.xfyyim.cn.bean.event.EventSendVerifyMsg;
 import com.xfyyim.cn.bean.event.MessageContactEvent;
@@ -93,6 +97,7 @@ import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.lock.DeviceLockActivity;
 import com.xfyyim.cn.ui.lock.DeviceLockHelper;
 import com.xfyyim.cn.ui.login.WebLoginActivity;
+import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.ui.message.MucChatActivity;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
 import com.xfyyim.cn.ui.other.QRcodeActivity;
@@ -117,6 +122,8 @@ import com.xfyyim.cn.util.log.LogUtils;
 import com.xfyyim.cn.view.PermissionExplainDialog;
 import com.xfyyim.cn.view.SelectionFrame;
 import com.xfyyim.cn.view.VerifyDialog;
+import com.xfyyim.cn.view.WaitingChatPopupWindow;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.xmpp.CoreService;
 import com.xfyyim.cn.xmpp.ListenerManager;
 import com.xfyyim.cn.xmpp.helloDemon.FirebaseMessageService;
@@ -235,7 +242,6 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
 
         mUserId = coreManager.getSelf().getUserId();
 
-
         initView();// 初始化控件
         initBroadcast();// 初始化广播
         initDatas();// 初始化一些数据
@@ -261,6 +267,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
 
         // 主页不要侧划返回，和ios统一，
         setSwipeBackEnable(false);
+
     }
 
     @Override
@@ -811,6 +818,60 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
             updateContactUI(mNewContactList);
         }
     }
+
+    /**
+     * 在线闪聊
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyWaitOnlineChat message) {
+
+        Friend friend = JSON.parseObject(message.MessageData, Friend.class);
+        View  root_view=findViewById(R.id.root_view);
+      WaitingChatPopupWindow  waitingChatPopupWindow=new WaitingChatPopupWindow(MainActivity.this,friend);
+        waitingChatPopupWindow.showAsDropDown(root_view, Gravity.CENTER, 0, 0);
+        waitingChatPopupWindow.setBtnOnClice(new WaitingChatPopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type) {
+                OnlineChat(friend);
+            }
+        });
+    }
+
+    private void OnlineChat(Friend  friend){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+       /* params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
+        params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");*/
+        params.put("longitude",  1.0+"");
+        params.put("latitude",  1.0+"");
+        params.put("type",  "1");//type 类型（0-爸爸发起 1-儿子接收）
+        params.put("fromUserId",  friend.getUserId());//
+        HttpUtils.post().url(coreManager.getConfig().USER_CHAT_ONLINE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<String>(String.class) {
+                    @Override
+                    public void onResponse(ObjectResult<String> result) {
+                        if (Result.checkSuccess(MainActivity.this, result)) {
+                            if(friend!=null && (!TextUtils.isEmpty(friend.getUserId()+""))){
+                                LogUtil.e("friend information  = " + friend.toString());
+                                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                                intent.setClass(MainActivity.this, ChatActivity.class);
+                                intent.putExtra(ChatActivity.FRIEND, friend);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                    }
+                });
+    }
+
+
 
     /**
      * 我方取消、挂断通话后发送XMPP消息给对方

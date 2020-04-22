@@ -64,6 +64,42 @@ public class AlipayHelper {
                 });
     }
 
+
+    /**
+     * 拉起支付宝充值，
+     */
+    public static void rechargePay(Activity activity, CoreManager coreManager, String money) {// 调用服务端接口，由服务端统一下单
+        DialogHelper.showDefaulteMessageProgressDialog(activity);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("price", money);
+        params.put("payType", "1");// 支付方式 1.支付宝 2.微信
+
+        HttpUtils.get().url(coreManager.getConfig().VX_RECHARGE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<SignResult>(SignResult.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<SignResult> result) {
+                        DialogHelper.dismissProgressDialog();
+                        if (Result.checkSuccess(activity, result)) {
+                            String orderInfo = result.getData().getOrderInfo();
+                            Log.i(TAG, "onResponse: orderInfo = " + orderInfo);
+                            callAlipay(activity, orderInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                        ToastUtil.showErrorNet(activity);
+                    }
+                });
+    }
+
+
     /**
      * 通知后台提现，
      */

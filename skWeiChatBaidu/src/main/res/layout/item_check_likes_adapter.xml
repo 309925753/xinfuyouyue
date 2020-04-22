@@ -21,6 +21,7 @@
             android:layout_height="185dp"
             android:src="@mipmap/my_vip_regrets"
             android:layout_marginTop="-10dp"
+            android:background="@drawable/shape_1aff3f63_10_myl_ike"
             />
         <TextView
             android:id="@+id/tvLikeName"

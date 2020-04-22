@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/new_main">
     <LinearLayout
@@ -154,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp45"
+            android:layout_marginTop="@dimen/dp15"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -199,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp45"
+            android:layout_marginTop="@dimen/dp15"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp45"
+            android:layout_marginTop="@dimen/dp15"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -288,7 +288,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp45"
+            android:layout_marginTop="@dimen/dp15"
             >
             <ImageView
                 android:layout_width="wrap_content"

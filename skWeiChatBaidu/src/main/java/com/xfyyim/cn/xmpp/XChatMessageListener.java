@@ -3,6 +3,7 @@ package com.xfyyim.cn.xmpp;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +28,8 @@ import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.event.EventLoginStatus;
 import com.xfyyim.cn.bean.event.EventNewNotice;
 import com.xfyyim.cn.bean.event.EventNotifyByTag;
+import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
+import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
 import com.xfyyim.cn.bean.event.EventSyncFriendOperating;
 import com.xfyyim.cn.bean.event.EventTransfer;
 import com.xfyyim.cn.bean.event.MessageContactEvent;
@@ -70,6 +73,7 @@ import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.secure.RSA;
 import com.xfyyim.cn.util.secure.chat.SecureChatUtil;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.xmpp.listener.ChatMessageListener;
 
 import org.jivesoftware.smack.chat2.Chat;
@@ -154,6 +158,7 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             return;
         }
 
+
         if ((chatMessage.getType() >= XmppMessage.TYPE_SYNC_OTHER
                 && chatMessage.getType() <= XmppMessage.TYPE_SYNC_GROUP)
                 || chatMessage.getType() == XmppMessage.TYPE_SEAL) {
@@ -168,6 +173,18 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             HandleSecureChatMessage.distributionChatMessage(chatMessage);
             return;
         }
+        //在线闪聊待接收方
+        if(type==XmppMessage.TYPE_SUPER_LIGHT){
+            EventBus.getDefault().post(new EventNotifyWaitOnlineChat(chatMessage.getFromUserName()));
+            return;
+        }
+        //发起方在线闪聊
+        if(type==XmppMessage.TYPE_WAIT_CHAT){
+            EventBus.getDefault().post(new EventNotifyOnlineChat(chatMessage.getFromUserName()));
+            return;
+        }
+
+
 
         // 单聊收到805消息，群成员发送了chatKey给我，解密存入本地，更新界面
         if (chatMessage.getType() == XmppMessage.TYPE_SECURE_SEND_KEY) {
@@ -271,6 +288,7 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             chatDiscover(body, chatMessage);
             return;
         }
+
 
         // 新朋友相关消息 500-515
         if (type >= XmppMessage.TYPE_SAYHELLO && type <= XmppMessage.TYPE_BACK_DELETE) {

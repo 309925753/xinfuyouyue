@@ -98,7 +98,7 @@ public class ImmediateiyChatPopupWindow extends PopupWindow implements View.OnCl
                 break;
             case  R.id.ivClose:
                 dismiss();
-                btnOnClick.btnOnClick();
+              //  btnOnClick.btnOnClick();
                 break;
         }
 
