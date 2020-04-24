@@ -123,7 +123,7 @@ public final class CameraUtil {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         // 不启用人脸识别
-        intent.putExtra("noFaceDetection", false);
+        intent.putExtra("noFaceDetection", true);
         activity.startActivityForResult(intent, requestCode);
     }
 

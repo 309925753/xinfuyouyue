@@ -58,7 +58,7 @@ public class EditActivity extends BaseActivity {
         textContent=getIntent().getStringExtra("context");
 
         if(textContent!=null&&!TextUtils.isEmpty(textContent)){
-            et_desc.setHint(textContent);
+            et_desc.setText(textContent);
         }
         initActionBar();
 
@@ -69,7 +69,7 @@ public class EditActivity extends BaseActivity {
         getSupportActionBar().hide();
         iv_title_left.setOnClickListener(v -> finish());
         if (TextUtils.isEmpty(title)){
-            title="个人信息修改";
+            title="个人资料修改";
         }
         tvTitle.setText(title);
 

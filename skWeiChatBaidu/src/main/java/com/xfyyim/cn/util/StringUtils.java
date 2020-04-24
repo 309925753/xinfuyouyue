@@ -304,10 +304,10 @@ public class StringUtils {
 
 
     /**
-     *      * 获取double数据小数点后两位不进行四舍五入
-     *      * @param value
-     *      * @return -1 , double
-     *     
+     *   * 获取double数据小数点后两位不进行四舍五入
+     *   * @param value
+     *   * @return -1 , double
+     *  
      */
     public static String getMoney(double value) {
         String cutString = "" + value;
@@ -336,14 +336,26 @@ public class StringUtils {
     }
 
 
-    public static List<String> getListString(String mString){
-        List<String> list=new ArrayList<>();
-        String arr[]=mString.split(",");
+    public static List<String> getListString(String mString) {
+        List<String> list = new ArrayList<>();
+        String arr[] = mString.split(",");
 
-        for (String s:arr){
+        for (String s : arr) {
             list.add(s);
         }
-        return  list;
+        return list;
+    }
+
+    /**
+     * 包含大小写字母及数字且在6-12位
+     * 是否包含
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isPawDigit(String str) {
+        String regex = "^[a-zA-Z0-9]{1,}$";
+        return str.matches(regex);
     }
 
 }

@@ -25,6 +25,8 @@ public class ChoosePop extends PopupWindow {
     /**从手机中选择*/
     private TextView choosepic;
 
+    private View hor;
+
     private View mPopVive;
     public ChoosePop(Activity context, View.OnClickListener itemsOnClick,int type) {
         super(context);
@@ -32,9 +34,24 @@ public class ChoosePop extends PopupWindow {
         mPopVive = inflater.inflate(R.layout.popchoose, null);
 
         btn_cancel =  mPopVive.findViewById(R.id.btn_cancle);
+        hor =  mPopVive.findViewById(R.id.hor);
+        takepic = mPopVive.findViewById(R.id.select_video);
+        choosepic= mPopVive.findViewById(R.id.select_pic);
 
-        takepic= mPopVive.findViewById(R.id.takePic);
-        choosepic= mPopVive.findViewById(R.id.choosepic);
+
+        if (type==1){
+            takepic.setVisibility(View.GONE);
+            hor.setVisibility(View.GONE);
+            choosepic.setVisibility(View.VISIBLE);
+        }else if (type==2){
+            hor.setVisibility(View.GONE);
+            takepic.setVisibility(View.VISIBLE);
+            choosepic.setVisibility(View.GONE);
+        }else{
+            hor.setVisibility(View.VISIBLE);
+            takepic.setVisibility(View.VISIBLE);
+            choosepic.setVisibility(View.VISIBLE);
+        }
         //取消按钮
         btn_cancel.setOnClickListener(new View.OnClickListener() {
 

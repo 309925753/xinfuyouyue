@@ -33,7 +33,7 @@ public class NoScrollViewPager extends ViewPager {
 
     /**
      * 1.dispatchTouchEvent一般情况不做处理
-     * ,如果修改了默认的返回值,子孩子都无法收到事件
+     * ,如果修改了默认的返回值,子孩子都事件
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

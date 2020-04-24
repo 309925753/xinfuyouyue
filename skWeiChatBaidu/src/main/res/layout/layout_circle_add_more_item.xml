@@ -14,7 +14,8 @@
         android:id="@+id/float_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/circle_add_float_view_bg">
+
+     >
 
         <LinearLayout
             android:layout_width="match_parent"

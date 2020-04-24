@@ -21,7 +21,6 @@
     <RelativeLayout
         android:id="@+id/rl_pic"
         android:layout_width="match_parent"
-
         android:layout_height="100dp"
         android:layout_above="@+id/btn_cancle"
         android:layout_marginBottom="10dp"
@@ -31,7 +30,7 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/takePic"
+            android:id="@+id/select_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/hor"
@@ -56,7 +55,7 @@
             />
 
         <TextView
-            android:id="@+id/choosepic"
+            android:id="@+id/select_video"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/hor"

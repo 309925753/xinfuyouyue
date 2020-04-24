@@ -6,17 +6,17 @@
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:paddingLeft="@dimen/dp15"
         android:paddingTop="14dp"
         android:paddingRight="@dimen/dp15">
 
         <RelativeLayout
+            android:id="@+id/img"
             android:layout_width="wrap_content"
-            android:layout_height="29dp">
+            android:layout_height="wrap_content">
 
             <com.xfyyim.cn.view.CircleImageView
                 android:id="@+id/avatar_img"
@@ -28,6 +28,7 @@
                 tools:src="@drawable/avatar_normal" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/img_vip"
                 android:layout_alignBottom="@+id/avatar_img"
                 android:layout_marginLeft="30dp"
@@ -38,6 +39,7 @@
 
 
         <LinearLayout
+            android:layout_toRightOf="@+id/img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp10"
@@ -59,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_bg_ff98c6"
                 android:gravity="center"
-
+                android:id="@+id/rl_img"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 >
@@ -89,7 +91,7 @@
         </LinearLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

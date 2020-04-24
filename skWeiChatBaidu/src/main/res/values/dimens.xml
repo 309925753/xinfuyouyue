@@ -207,4 +207,8 @@
     <dimen name="fragment_message_radio_button_width">120dp</dimen>
     <dimen name="fragment_message_radio_button_height">2dp</dimen>
 
+
+    <dimen name="edit_info_add">7dp</dimen>
+
+
 </resources>

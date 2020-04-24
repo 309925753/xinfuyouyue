@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/text_black_666"
+        android:textColor="@color/text_black_999"
+        android:textSize="10sp"
         tools:text="2019-09-09" />
 
     <ImageView

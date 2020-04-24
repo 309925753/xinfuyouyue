@@ -82,7 +82,7 @@ public class EditSignChooseActivity extends BaseActivity {
         textContent = getIntent().getStringExtra("context");
 
         if (textContent != null && !TextUtils.isEmpty(textContent)) {
-            tv_add_text.setHint(textContent + "标签");
+            tv_add_text.setText(textContent );
         }
         initActionBar();
         getListInfo();
@@ -101,7 +101,7 @@ public class EditSignChooseActivity extends BaseActivity {
         getSupportActionBar().hide();
         iv_title_left.setOnClickListener(v -> finish());
         if (TextUtils.isEmpty(title)) {
-            title = "个人信息修改";
+            title = "个人资料修改";
         }
         tvTitle.setText(title);
 
@@ -203,6 +203,13 @@ public class EditSignChooseActivity extends BaseActivity {
         if (type.equals("myWork")) {
             if (dateEntity.getWorkConfig() != null && !TextUtils.isEmpty(dateEntity.getWorkConfig())) {
                 String[] content = dateEntity.getWorkConfig().split(",");
+                for (String s : content) {
+                    mlist.add(s);
+                }
+            }
+        }else if (type.equals("myIndustry")){
+            if (dateEntity.getIndustryConfig() != null && !TextUtils.isEmpty(dateEntity.getIndustryConfig())) {
+                String[] content = dateEntity.getIndustryConfig().split(",");
                 for (String s : content) {
                     mlist.add(s);
                 }

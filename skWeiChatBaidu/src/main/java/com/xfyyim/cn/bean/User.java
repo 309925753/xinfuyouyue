@@ -91,10 +91,19 @@ public class User implements Parcelable, Cloneable {
     private int setAccountCount;
     /* 请求用户与该用户的关系 */
     private AttentionUser friends;
-    private List<Photo> photo;
+    private List<PhotoEntity> myPhotos;
 
     private int age; // 年龄
-    private String starSign;
+    private int vipFlag; //是否是vip
+    private String starSign; //星座
+
+
+    private String msgImgs ;//前三张图片，以逗号相隔
+    private int   distance ;//距离
+    private String onlineStatus  ;//活跃度
+    private int  praiseCount  ;//点赞次数
+    private int  msgCount ;// 个人发布动态数
+
     //我的兴趣爱好
     private String myIndustry;
     private String myWork;
@@ -112,6 +121,46 @@ public class User implements Parcelable, Cloneable {
     private String mySports;
     private List<QuestionEntity> userQuestions;
 
+
+    public String getMsgImgs() {
+        return msgImgs;
+    }
+
+    public void setMsgImgs(String msgImgs) {
+        this.msgImgs = msgImgs;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
+    public int getPraiseCount() {
+        return praiseCount;
+    }
+
+    public void setPraiseCount(int praiseCount) {
+        this.praiseCount = praiseCount;
+    }
+
+    public int getMsgCount() {
+        return msgCount;
+    }
+
+    public void setMsgCount(int msgCount) {
+        this.msgCount = msgCount;
+    }
 
     public String getStarSign() {
         return starSign;
@@ -149,12 +198,12 @@ public class User implements Parcelable, Cloneable {
         this.age = age;
     }
 
-    public List<Photo> getPhoto() {
-        return photo;
+    public List<PhotoEntity> getMyPhotos() {
+        return myPhotos;
     }
 
-    public void setPhoto(List<Photo> photo) {
-        this.photo = photo;
+    public void setMyPhotos(List<PhotoEntity> myPhotos) {
+        this.myPhotos = myPhotos;
     }
 
     public String getMyTag() {
@@ -166,6 +215,13 @@ public class User implements Parcelable, Cloneable {
     }
 
 
+    public int getVipFlag() {
+        return vipFlag;
+    }
+
+    public void setVipFlag(int vipFlag) {
+        this.vipFlag = vipFlag;
+    }
 
     public String getMyMusic() {
         return myMusic;

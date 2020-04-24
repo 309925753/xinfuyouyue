@@ -30,6 +30,7 @@ import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventNotifyDynamic;
 import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
+import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.mucfile.UploadingHelper;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.LogUtils;
@@ -157,7 +158,6 @@ public class CareFragment extends EasyFragment {
     }
 
 
-
     private void updateBackgroundImage(String path) {
         File bg = new File(path);
         if (!bg.exists()) {
@@ -215,6 +215,15 @@ public class CareFragment extends EasyFragment {
     public void initData() {
         mAdapter = new PublicCareRecyclerAdapter(getActivity(), coreManager, mMessages);
         mListView.setAdapter(mAdapter);
+      mAdapter.setOnItemToClickListener(new PublicCareRecyclerAdapter.OnItemToClickListener() {
+          @Override
+          public void onItemClick(int position) {
+              Intent intent = new Intent(getActivity(), CircleDetailActivity.class);
+              intent.putExtra("PublicMessage",mMessages.get(position));
+              getActivity().startActivity(intent);
+          }
+      });
+
         requestData(true);
     }
 
@@ -225,7 +234,6 @@ public class CareFragment extends EasyFragment {
         }
 
         if (!more) {
-            // ToastUtil.showToast(getContext(), getString(R.string.tip_last_item));
             mRefreshLayout.setNoMoreData(true);
             refreshComplete();
             return;
@@ -298,8 +306,6 @@ public class CareFragment extends EasyFragment {
             }
         }
     }
-
-
 
 
     @Subscribe(threadMode = ThreadMode.MainThread)

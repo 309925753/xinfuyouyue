@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:gravity="left"
-           android:text="请输入添家内容"
+           android:text="创建自己的标签"
             android:textColor="@color/text_black_999"
             android:textSize="12sp" />
     </LinearLayout>

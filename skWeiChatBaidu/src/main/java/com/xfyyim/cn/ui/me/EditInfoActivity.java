@@ -3,6 +3,7 @@ package com.xfyyim.cn.ui.me;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,17 +18,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.j256.ormlite.stmt.query.In;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.QuestionAdapter;
+import com.xfyyim.cn.bean.PhotoEntity;
 import com.xfyyim.cn.bean.QuestEntity;
+import com.xfyyim.cn.bean.UploadFileResult;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.event.EventAvatarUploadSuccess;
 import com.xfyyim.cn.customer.FlowLayout;
 import com.xfyyim.cn.customer.SkillTextView;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.helper.LoginHelper;
+import com.xfyyim.cn.helper.UploadService;
 import com.xfyyim.cn.sp.UserSp;
+import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.dialog.DialogView;
 import com.xfyyim.cn.ui.me_new.EditActivity;
@@ -37,13 +45,20 @@ import com.xfyyim.cn.ui.me_new.EditSignChooseActivity;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
+import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
+import com.xfyyim.cn.view.TipDialog;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,16 +68,13 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 
 public class EditInfoActivity extends BaseActivity implements View.OnClickListener {
     Unbinder unbinder;
-
-
     @BindView(R.id.flowLayout_tags)
     FlowLayout flowLayoutTags;
-
-
     @BindView(R.id.flowLayout_tags1)
     FlowLayout flowLayoutTags1;
     @BindView(R.id.ll_add_support)
@@ -111,8 +123,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     TextView tv_add_travel;
 
 
-
-
     @BindView(R.id.tv_add_sign)
     TextView tv_add_sign;
     @BindView(R.id.ll_add_sign)
@@ -156,9 +166,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     LinearLayout ll_sex_bg;
 
 
-
-
-
     @BindView(R.id.ll_edit_personinfo)
     LinearLayout ll_edit_personinfo;
 
@@ -172,10 +179,41 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.img_header)
     ImageView img_header;
 
+    @BindView(R.id.img_blum_1)
+    ImageView img_blum_1;
+    @BindView(R.id.img_blum_2)
+    ImageView img_blum_2;
+    @BindView(R.id.img_blum_3)
+    ImageView img_blum_3;
+    @BindView(R.id.img_blum_4)
+    ImageView img_blum_4;
+    @BindView(R.id.img_blum_5)
+    ImageView img_blum_5;
 
+
+    @BindView(R.id.img_position)
+    ImageView img_position;
+    @BindView(R.id.img_work)
+    ImageView img_work;
+    @BindView(R.id.img_company)
+    ImageView img_company;
+    @BindView(R.id.img_hometown)
+    ImageView img_hometown;
+    @BindView(R.id.img_place)
+    ImageView img_place;
+
+    List<ImageView> listImage = new ArrayList<>();
     User user;
-    List<QuestEntity> allQuestion=new ArrayList<>();
+    List<QuestEntity> allQuestion = new ArrayList<>();
     QuestionAdapter adapter;
+
+
+    List<PhotoEntity> photoEntityList = new ArrayList<>();
+    HashMap<ImageView, Integer> map = new HashMap<>();
+    List<String> listPhoto;
+    private String mImageData;
+    boolean isHeader=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +221,12 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         unbinder = ButterKnife.bind(this);
         initActionBar();
         initView();
+
+        listImage.add(img_blum_1);
+        listImage.add(img_blum_2);
+        listImage.add(img_blum_3);
+        listImage.add(img_blum_4);
+        listImage.add(img_blum_5);
     }
 
 
@@ -203,6 +247,12 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         ll_add_movie.setOnClickListener(this);
         ll_add_book.setOnClickListener(this);
         ll_add_travel.setOnClickListener(this);
+        img_blum_1.setOnClickListener(this);
+        img_blum_2.setOnClickListener(this);
+        img_blum_3.setOnClickListener(this);
+        img_blum_4.setOnClickListener(this);
+        img_blum_5.setOnClickListener(this);
+        img_header.setOnClickListener(this);
 
 
     }
@@ -224,7 +274,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.tv_position:
                 String context = tv_position.getText().toString();
-                starToActivity("添加行业信息", "myIndustry", context);
+                starToSinglesListActivity("添加行业信息", "myIndustry", context);
                 break;
             case R.id.tv_hometown:
                 String home = tv_hometown.getText().toString();
@@ -268,6 +318,52 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             case R.id.ll_add_travel:
                 starToListActivity("添加标签", "mySports", user.getMySports());
                 break;
+            case R.id.img_blum_1:
+                if (map.get(img_blum_1) == 2) {
+                    showTip(photoEntityList.get(0).getId());
+                } else {
+                    selectPhoto(false);
+                }
+                break;
+            case R.id.img_blum_2:
+                if (map.get(img_blum_2) == 2) {
+                    showTip(photoEntityList.get(1).getId());
+                } else {
+                    selectPhoto(false);
+                }
+                break;
+            case R.id.img_blum_3:
+                if (map.get(img_blum_3) == 2) {
+
+                    showTip(photoEntityList.get(2).getId());
+                } else {
+                    selectPhoto(false);
+                }
+                break;
+            case R.id.img_blum_4:
+                if (map.get(img_blum_4) == 2) {
+                    showTip(photoEntityList.get(3).getId());
+                } else {
+                    selectPhoto(false);
+                }
+                break;
+            case R.id.img_blum_5:
+                if (map.get(img_blum_5) == 2) {
+                    showTip(photoEntityList.get(4).getId());
+                } else {
+                    selectPhoto(false);
+                }
+                break;
+
+            case R.id.img_header:
+                selectPhoto(true);
+
+
+
+
+
+
+                break;
 
 
             case R.id.ll_edit_personinfo:
@@ -285,14 +381,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         getSupportActionBar().hide();
         iv_title_left.setVisibility(View.VISIBLE);
         iv_title_left.setOnClickListener(this);
-        tv_title_center.setText("个人信息");
-        tv_title_right.setText("完成");
-        tv_title_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        tv_title_center.setText("个人资料修改");
 
     }
 
@@ -359,43 +448,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             tv_xingzuo.setText(user.getStarSign());
         }
 
-//        //相册
-//        List<String> imgesUrl = new ArrayList<>();
-//        if (user.getPhoto() != null && user.getPhoto().size() > 0) {
-//            for (Photo photo : user.getPhoto()) {
-//                imgesUrl.add(photo.getoUrl());
-//            }
-////            banner.setVisibility(View.VISIBLE);
-//            rl_blum.setVisibility(View.VISIBLE);
-//
-//
-//            int index = user.getPhoto().size() > 3 ? 3 : user.getPhoto().size();
-//            for (int i = 0; i < index; i++) {
-//                ImageView imageView = new ImageView(this);
-//                GlideImageUtils.setImageView(this, user.getPhoto().get(index).getoUrl(), imageView);
-//                LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(
-//                        LinearLayout.LayoutParams.WRAP_CONTENT,
-//                        LinearLayout.LayoutParams.WRAP_CONTENT);
-//
-//                ll_my_blum.addView(imageView, ls);
-//
-//            }
-//        } else {
-//            String  headUrl= AvatarHelper.getAvatarUrl(friendId,false);
-//            imgesUrl.add(headUrl);
-//
-////            banner.setVisibility(View.GONE);
-//            rl_blum.setVisibility(View.GONE);
-//        }
-//
-//        banner.setData(imgesUrl, null);
-//        banner.setmAdapter(new XBanner.XBannerAdapter() {
-//            @Override
-//            public void loadBanner(XBanner banner, Object model, View view, int position) {
-//                GlideImageUtils.setImageView(PersonInfoActivity.this, imgesUrl.get(position), (ImageView) view);
-//            }
-//        });
-
 
         //签名
         if (user.getDescription() == null || TextUtils.isEmpty(user.getDescription())) {
@@ -410,28 +462,34 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
         if (user.getMyIndustry() != null && !TextUtils.isEmpty(user.getMyIndustry())) {
             tv_position.setText(user.getMyIndustry());
+            img_position.setVisibility(View.GONE);
         }
 
         if (user.getMyCompany() != null && !TextUtils.isEmpty(user.getMyCompany())) {
             tv_company.setText(user.getMyCompany());
+            img_company.setVisibility(View.GONE);
         }
 
         if (user.getMyWork() != null && !TextUtils.isEmpty(user.getMyWork())) {
             tv_work.setText(user.getMyWork());
+            img_work.setVisibility(View.GONE);
         }
 
         if (user.getMyHometown() != null && !TextUtils.isEmpty(user.getMyHometown())) {
             tv_hometown.setText(user.getMyHometown());
+            img_hometown.setVisibility(View.GONE);
         }
         if (user.getMyFrequentLocations() != null && !TextUtils.isEmpty(user.getMyFrequentLocations())) {
             tv_place.setText(user.getMyFrequentLocations());
+            img_place.setVisibility(View.GONE);
         }
 
+        setPhotoBlum();
 
         //我的标签
 
         if (user.getMyTag() != null && !TextUtils.isEmpty(user.getMyTag())) {
-            showSign(user.getMyTag(), flowLayoutTags, tv_add_sign,0);
+            showSign(user.getMyTag(), flowLayoutTags, tv_add_sign, 0);
         }
 
 
@@ -439,48 +497,72 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
 
         if (user.getMyTastes() != null && !TextUtils.isEmpty(user.getMyTastes())) {
-            showSign(user.getMyTastes(), flowLayoutTags1, tv_add_support,1);
+            showSign(user.getMyTastes(), flowLayoutTags1, tv_add_support, 1);
         }
 
 
         if (user.getMyMusic() != null && !TextUtils.isEmpty(user.getMyMusic())) {
-            showSign(user.getMyMusic(), flowLayoutTags2, tv_add_music,2);
+            showSign(user.getMyMusic(), flowLayoutTags2, tv_add_music, 2);
         }
 
 
         if (user.getMyFood() != null && !TextUtils.isEmpty(user.getMyFood())) {
 
-            showSign(user.getMyFood(), flowLayoutTags3, tv_add_food,3);
+            showSign(user.getMyFood(), flowLayoutTags3, tv_add_food, 3);
         }
         if (user.getMyMovie() != null && !TextUtils.isEmpty(user.getMyMovie())) {
-            showSign(user.getMyMovie(), flowLayoutTags4, tv_add_movie,4);
+            showSign(user.getMyMovie(), flowLayoutTags4, tv_add_movie, 4);
 
         }
         if (user.getMyBookAndComic() != null && !TextUtils.isEmpty(user.getMyBookAndComic())) {
-            showSign(user.getMyBookAndComic(), flowLayoutTags5, tv_add_book,5);
+            showSign(user.getMyBookAndComic(), flowLayoutTags5, tv_add_book, 5);
         }
 
         if (user.getMySports() != null && !TextUtils.isEmpty(user.getMySports())) {
-            showSign(user.getMySports(), flowLayoutTags6, tv_add_travel,6);
+            showSign(user.getMySports(), flowLayoutTags6, tv_add_travel, 6);
         }
 
 
-        if (user.getUserQuestions()!=null&&user.getUserQuestions().size()>0){
+        if (user.getUserQuestions() != null && user.getUserQuestions().size() > 0) {
             allQuestion.clear();
-                List<QuestEntity> entities=new ArrayList<>();
-                for (int i=0;i<user.getUserQuestions().size();i++){
-                    QuestEntity entity=new QuestEntity();
-                    entity.setQuestion(user.getUserQuestions().get(i).getQuestion());
-                    entity.setAnswer(user.getUserQuestions().get(i).getUserQuestionAnswer().getAnswer());
-                    entities.add(entity);
-                }
-                 allQuestion.addAll(entities);
-                setAdapter(allQuestion);
+            List<QuestEntity> entities = new ArrayList<>();
+            for (int i = 0; i < user.getUserQuestions().size(); i++) {
+                QuestEntity entity = new QuestEntity();
+                entity.setQuestion(user.getUserQuestions().get(i).getQuestion());
+                entity.setAnswer(user.getUserQuestions().get(i).getUserQuestionAnswer().getAnswer());
+                entities.add(entity);
+            }
+            allQuestion.addAll(entities);
+            setAdapter(allQuestion);
         }
 
 
+    }
 
 
+    public void setPhotoBlum() {
+        photoEntityList = new ArrayList<>();
+        photoEntityList = user.getMyPhotos();
+        map.put(img_blum_1, 1);
+        map.put(img_blum_2, 1);
+        map.put(img_blum_3, 1);
+        map.put(img_blum_4, 1);
+        map.put(img_blum_5, 1);
+        if (user.getMyPhotos().size() > 0) {
+            int index = photoEntityList.size() > 5 ? 5 : photoEntityList.size();
+            for (int i = 0; i < index; i++) {
+                map.put(listImage.get(i), 2);
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            if (map.get(listImage.get(i)) == 1) {
+                GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg, listImage.get(i));
+                map.put(listImage.get(i), 1);
+            } else {
+                GlideImageUtils.setImageView(EditInfoActivity.this, photoEntityList.get(i).getPhotoUtl(), listImage.get(i));
+                map.put(listImage.get(i), 2);
+            }
+        }
     }
 
     public void setAdapter(List<QuestEntity> entities) {
@@ -490,24 +572,25 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             adapter = new QuestionAdapter(EditInfoActivity.this, entities);
             rv_question.setAdapter(adapter);
 
-         adapter.setOnItemClickListener(new QuestionAdapter.OnItemClickListener() {
-             @Override
-             public void onItemClick(View view, int position) {
+            adapter.setOnItemClickListener(new QuestionAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
 
-                 if(position==(entities.size())){
-                     Intent intent1=new Intent(EditInfoActivity.this, EditListQuestionActivity.class);
-                     intent1.putExtra("ListQuestion",(Serializable) entities);
-                     startActivity(intent1);
-                 }else{
-                     showSignleDialog(position);
+                    if (position == (entities.size())) {
+                        Intent intent1 = new Intent(EditInfoActivity.this, EditListQuestionActivity.class);
+                        intent1.putExtra("ListQuestion", (Serializable) entities);
+                        startActivity(intent1);
+                    } else {
+                        showSignleDialog(position);
 
-                 }
-             }
-         });
+                    }
+                }
+            });
         } else {
             adapter.notifyDataSetChanged();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -548,7 +631,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void initSkill(final List<String> mTagData, FlowLayout flowLayout,int type) {
+    private void initSkill(final List<String> mTagData, FlowLayout flowLayout, int type) {
         flowLayout.removeAllViews();
         if (mTagData != null) {
             for (int i = 0; i < mTagData.size(); i++) {
@@ -562,7 +645,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    public void showSign(String sign, FlowLayout fl, TextView tv,int type) {
+    public void showSign(String sign, FlowLayout fl, TextView tv, int type) {
         if (sign != null && !TextUtils.isEmpty(sign)) {
             fl.setVisibility(View.VISIBLE);
             tv.setVisibility(View.GONE);
@@ -572,7 +655,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             } else {
                 list.add(sign);
             }
-            initSkill(list, fl,type);
+            initSkill(list, fl, type);
         } else {
             fl.setVisibility(View.GONE);
             tv.setVisibility(View.VISIBLE);
@@ -596,7 +679,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             case 0:
                 skillTextView.setBackground(EditInfoActivity.this.getResources().getDrawable(R.drawable.appdes_shape_f23f8f));
                 break;
-                case 1:
+            case 1:
                 skillTextView.setBackground(EditInfoActivity.this.getResources().getDrawable(R.drawable.share_sign_support));
                 break;
             case 2:
@@ -626,7 +709,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     private File mCurrentFile;
     private Uri mNewPhotoUri;
 
-    private void selectPhoto() {
+    private void selectPhoto(boolean flag) {
+        isHeader=flag;
         CameraUtil.pickImageSimple(this, REQUEST_CODE_PICK_CROP_PHOTO);
     }
 
@@ -649,9 +733,19 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             if (resultCode == Activity.RESULT_OK) {
                 if (mNewPhotoUri != null) {
                     mCurrentFile = new File(mNewPhotoUri.getPath());
-//                   AvatarHelper.getInstance().displayUrl(mNewPhotoUri.toString(), mAvatarImg);
-//                   // 上传头像
-//                   uploadAvatar(mCurrentFile);
+                    photoUrl = mNewPhotoUri.getPath();
+
+
+                    if (isHeader) {
+                        AvatarHelper.getInstance().displayUrl(mNewPhotoUri.toString(), img_header);
+                        // 上传头像
+                        uploadAvatar(mCurrentFile);
+                    }else{
+                        listPhoto = new ArrayList<>();
+                        listPhoto.add(photoUrl);
+                        new UploadPhoto().execute();
+                    }
+
                 } else {
                     ToastUtil.showToast(this, R.string.c_crop_failed);
                 }
@@ -660,11 +754,14 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+
+    public String photoUrl;
     DialogView dialogView;
+
     public void showSignleDialog(int position) {
 
-        String title=allQuestion.get(position).getQuestion();
-        String text=allQuestion.get(position).getAnswer();
+        String title = allQuestion.get(position).getQuestion();
+        String text = allQuestion.get(position).getAnswer();
         dialogView = new DialogView(this, title, text, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -676,7 +773,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 try {
 
 
-                 allQuestion.get(position).setAnswer(name);
+                    allQuestion.get(position).setAnswer(name);
 
                     String json = JSON.toJSONString(allQuestion);
                     updateValue(json);
@@ -708,7 +805,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                     public void onResponse(ObjectResult<Void> result) {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(mContext, result)) {
-                         getUserInfo();
+                            getUserInfo();
                         }
                     }
 
@@ -718,5 +815,206 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         ToastUtil.showErrorNet(EditInfoActivity.this);
                     }
                 });
+    }
+
+
+    private void uploadPhoto(String photoUtl) {
+
+        DialogHelper.showDefaulteMessageProgressDialog(EditInfoActivity.this);
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", UserSp.getInstance(EditInfoActivity.this).getAccessToken());
+        params.put("photoUtl", photoUtl);
+
+        HttpUtils.get().url(coreManager.getConfig().UPLOADPHOTO)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<PhotoEntity>(PhotoEntity.class) {
+                    @Override
+                    public void onResponse(ObjectResult<PhotoEntity> result) {
+
+                        DialogHelper.dismissProgressDialog();
+                        if (result.getResultCode() == 1) {
+                            getUserInfo();
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+
+                        ToastUtil.showErrorNet(mContext);
+                    }
+                });
+    }
+
+    private void deletePhoto(String imageId) {
+
+//        DialogHelper.showDefaulteMessageProgressDialog(EditInfoActivity.this);
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", UserSp.getInstance(EditInfoActivity.this).getAccessToken());
+        params.put("id", imageId);
+
+        HttpUtils.get().url(coreManager.getConfig().DELETEPHOTO)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<PhotoEntity>(PhotoEntity.class) {
+                    @Override
+                    public void onResponse(ObjectResult<PhotoEntity> result) {
+
+//                        DialogHelper.dismissProgressDialog();
+                        if (result.getResultCode() == 1) {
+                            getUserInfo();
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+//                        DialogHelper.dismissProgressDialog();
+
+                        ToastUtil.showErrorNet(mContext);
+                    }
+                });
+    }
+
+    private class UploadPhoto extends AsyncTask<Void, Integer, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            DialogHelper.showDefaulteMessageProgressDialog(EditInfoActivity.this);
+        }
+
+        /**
+         * 上传的结果： <br/>
+         * return 1 Token过期，请重新登陆 <br/>
+         * return 2 上传出错<br/>
+         * return 3 上传成功<br/>
+         */
+        @Override
+        protected Integer doInBackground(Void... params) {
+            if (!LoginHelper.isTokenValidation()) {
+                return 1;
+            }
+            Map<String, String> mapParams = new HashMap<>();
+            mapParams.put("access_token", coreManager.getSelfStatus().accessToken);
+            mapParams.put("userId", coreManager.getSelf().getUserId() + "");
+            mapParams.put("validTime", "-1");// 文件有效期
+
+            String result = new UploadService().uploadFile(coreManager.getConfig().UPLOAD_URL, mapParams, listPhoto);
+            if (TextUtils.isEmpty(result)) {
+                return 2;
+            }
+
+            UploadFileResult recordResult = JSON.parseObject(result, UploadFileResult.class);
+            boolean success = Result.defaultParser(EditInfoActivity.this, recordResult, true);
+            if (success) {
+                if (recordResult.getSuccess() != recordResult.getTotal()) {
+                    // 上传丢失了某些文件
+                    return 2;
+                }
+                if (recordResult.getData() != null) {
+                    UploadFileResult.Data data = recordResult.getData();
+                    if (data.getImages() != null && data.getImages().size() > 0) {
+                        mImageData = JSON.toJSONString(data.getImages(), UploadFileResult.sImagesFilter);
+                    } else {
+                        return 2;
+                    }
+                    return 3;
+                } else {
+                    // 没有文件数据源，失败
+                    return 2;
+                }
+            } else {
+                return 2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            if (result == 1) {
+                DialogHelper.dismissProgressDialog();
+                startActivity(new Intent(EditInfoActivity.this, LoginActivity.class));
+            } else if (result == 2) {
+                DialogHelper.dismissProgressDialog();
+                ToastUtil.showToast(EditInfoActivity.this, getString(R.string.upload_failed));
+            } else {
+                try {
+
+                    JSONArray jsonArray = new JSONArray(mImageData);
+                    JSONObject jsonObject = new JSONObject(jsonArray.get(0).toString());
+                    String url = jsonObject.getString("oUrl");
+
+                    uploadPhoto(url);
+
+                } catch (Exception e) {
+
+                }
+            }
+        }
+    }
+
+
+    private void uploadAvatar(File file) {
+        if (!file.exists()) {
+            // 文件不存在
+            return;
+        }
+        // 显示正在上传的ProgressDialog
+        DialogHelper.showDefaulteMessageProgressDialog(this);
+        RequestParams params = new RequestParams();
+        final String loginUserId = coreManager.getSelf().getUserId();
+        params.put("userId", loginUserId);
+        try {
+            params.put("file1", file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(coreManager.getConfig().AVATAR_UPLOAD_URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+                DialogHelper.dismissProgressDialog();
+                boolean success = false;
+                if (arg0 == 200) {
+                    Result result = null;
+                    try {
+                        result = JSON.parseObject(new String(arg2), Result.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (result != null && result.getResultCode() == Result.CODE_SUCCESS) {
+                        success = true;
+                    }
+                }
+
+                if (success) {
+                    ToastUtil.showToast(EditInfoActivity.this, R.string.upload_avatar_success);
+                    AvatarHelper.getInstance().updateAvatar(loginUserId);// 更新时间
+                    EventBus.getDefault().post(new EventAvatarUploadSuccess(true));
+                } else {
+                    ToastUtil.showToast(EditInfoActivity.this, R.string.upload_avatar_failed);
+                }
+            }
+
+            @Override
+            public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+                DialogHelper.dismissProgressDialog();
+                ToastUtil.showToast(EditInfoActivity.this, R.string.upload_avatar_failed);
+            }
+        });
+    }
+
+    public void showTip(String ImageID) {
+        TipDialog dialog = new TipDialog(EditInfoActivity.this);
+        dialog.setmConfirmOnClickListener("是否删除该相片", new TipDialog.ConfirmOnClickListener() {
+            @Override
+            public void confirm() {
+                deletePhoto(ImageID);
+            }
+        });
+        dialog.show();
     }
 }

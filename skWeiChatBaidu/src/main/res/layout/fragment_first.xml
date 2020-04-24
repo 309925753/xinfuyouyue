@@ -6,27 +6,7 @@
     android:background="#FEF7F8"
     android:orientation="vertical">
 
-    <com.xfyyim.cn.view.MergerStatus
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp45"
-        tools:background="@color/main_color_red">
-
-
-        <TextView
-            android:id="@+id/tv_title_center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="middle"
-            android:gravity="center"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:text="幸福有约"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-
-    </com.xfyyim.cn.view.MergerStatus>
+    <include layout="@layout/a_view_actionbar" />
 
     <com.xfyyim.cn.customer.StackLayout
         android:id="@+id/stack_layout"

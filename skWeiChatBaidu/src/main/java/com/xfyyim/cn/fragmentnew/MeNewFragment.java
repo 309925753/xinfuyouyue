@@ -12,7 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.j256.ormlite.stmt.query.In;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.PhotoEntity;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
@@ -27,16 +30,24 @@ import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
 import com.xfyyim.cn.ui.me.NewSettingsActivity;
+import com.xfyyim.cn.ui.me_new.AttentionActivity;
+import com.xfyyim.cn.ui.me_new.FansActivity;
+import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
+import com.xfyyim.cn.ui.me_new.ZanActivity;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
+import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -64,6 +75,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
     @BindView(R.id.ll_showdt)
     LinearLayout ll_showdt;
+    @BindView(R.id.ll_my_blum)
+    LinearLayout ll_my_blum;
 
     @BindView(R.id.rl_pyq)
     RelativeLayout rl_pyq;
@@ -97,6 +110,14 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
     @BindView(R.id.avatar_img)
     ImageView avatar_img;
+
+    @BindView(R.id.ll_att)
+    LinearLayout ll_att;
+    @BindView(R.id.ll_fan)
+    LinearLayout ll_fan;
+    @BindView(R.id.ll_blum)
+    LinearLayout ll_blum;
+
     User user;
     @BindView(R.id.tv2)
     TextView tv2;
@@ -113,7 +134,9 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     }
 
     private void initData() {
-         tv2.setText(coreManager.getSelf().getLikeMeCount()+"人喜欢我");
+        if (!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount() + "")) {
+            tv2.setText(coreManager.getSelf().getLikeMeCount() + "人喜欢我");
+        }
     }
 
     public void initView() {
@@ -127,10 +150,14 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         rl_biaobai.setOnClickListener(this);
         rl_share.setOnClickListener(this);
         ll_showdt.setOnClickListener(this);
+        ll_att.setOnClickListener(this);
+        ll_fan.setOnClickListener(this);
+        ll_blum.setOnClickListener(this);
         tv_history.setOnClickListener(this);
         rlInfoBackground.setOnClickListener(this);
         EventBusHelper.register(this);
     }
+
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
@@ -148,14 +175,15 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 startActivity(intent);
                 break;
             case R.id.rl_pyq:
+                startToPersonBlum();
                 break;
             case R.id.rl_mytequan:
                 startActivity(new Intent(getActivity(), MyPrerogativeActivity.class));
                 break;
             case R.id.rl_likeme:
-                if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v0") ||coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v1") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v2") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v3")) {
+                if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v0") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v1") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v2") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v3")) {
                     startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
-                }else {
+                } else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
                 }
                 break;
@@ -176,12 +204,38 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
             case R.id.ll_showdt:
                 break;
+            case R.id.ll_att:
+                if (user.getAttCount() == 0) {
+                    ToastUtil.showLongToast(getActivity(), "暂无关注的人");
+                } else {
+                    Intent intent2 = new Intent(getActivity(), AttentionActivity.class);
+                    startActivity(intent2);
+                }
+                break;
+            case R.id.ll_blum:
+                startToPersonBlum();
+                break;
+            case R.id.ll_fan:
+                if (user.getFansCount() == 0) {
+                    ToastUtil.showLongToast(getActivity(), "暂无粉丝");
+                } else {
+                    Intent intent2 = new Intent(getActivity(), FansActivity.class);
+                    startActivity(intent2);
+                }
+                break;
             case R.id.tv_history:
-                ToastUtil.showToast(getActivity(), "查看历史");
+                Intent inten = new Intent(getActivity(), ZanActivity.class);
+                startActivity(inten);
                 break;
         }
     }
 
+
+    public void startToPersonBlum(){
+        Intent intentperson = new Intent(getActivity(), PersonBlumActivity.class);
+        intentperson.putExtra("FriendId", user.getUserId());
+        startActivity(intentperson);
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -211,7 +265,6 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                         if (result.getResultCode() == 1 && result.getData() != null) {
                             user = result.getData();
                             setUserDate(user);
-                            User user = result.getData();
                             boolean updateSuccess = UserDao.getInstance().updateByUser(user);
                             // 设置登陆用户信息
                             if (updateSuccess) {
@@ -220,6 +273,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                             }
                         }
                     }
+
                     @Override
                     public void onError(Call call, Exception e) {
                         DialogHelper.dismissProgressDialog();
@@ -230,6 +284,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
 
     public void setUserDate(User user) {
+
+
         if (user.getDescription() != null & !TextUtils.isEmpty(user.getDescription())) {
             tv_edit_info.setVisibility(View.VISIBLE);
             tv_edit_info.setText(user.getDescription());
@@ -240,24 +296,61 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), avatar_img, true);
         tv_fans.setText(String.valueOf(user.getFansCount()));
         tv_guanzhu.setText(String.valueOf(user.getAttCount()));
-        tv_blum.setText("0");
+        tv_blum.setText(user.getPraiseCount());
         tv_name.setText(user.getNickName());
 
-//        if (user.getVip())
+        if (user.getVipFlag() == 0) {
+
+        }
+
+
+        //相册
+
+        if (user.getMsgImgs() != null &&!TextUtils.isEmpty(user.getMsgImgs()) ) {
+            List<String > blumList=new ArrayList<>();
+            if (user.getMsgImgs().contains(",")){
+                String blums[]=user.getMsgImgs().split(",");
+                for (String s:blums){
+                    blumList.add(s);
+                }
+            }else{
+                blumList.add(user.getMsgImgs());
+            }
+
+
+            int index = blumList.size() == 3 ? 3 : user.getMyPhotos().size();
+            ll_my_blum.removeAllViews();
+            for (int i = 0; i < index; i++) {
+                ImageView imageView = new ImageView(getActivity());
+                int wid = ScreenUtils.dip2px(33, getActivity());
+                int hight = ScreenUtils.dip2px(33, getActivity());
+
+                LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(wid, hight);
+                ls.setMargins(0, 0, 10, 0);
+                imageView.setLayoutParams(ls);
+                GlideImageUtils.setImageView(getActivity(), user.getMyPhotos().get(i).getPhotoUtl(), imageView);
+                ll_my_blum.addView(imageView);
+
+            }
+        }else{
+            ll_my_blum.removeAllViews();
+        }
+
 
     }
+
     //购买会员
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void BuyMember(UserVIPPrivilegePrice  userVIPPrivilegePrice) {
+    private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
         //显示VIP购买会员
-        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), userVIPPrivilegePrice, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(),coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
+        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), userVIPPrivilegePrice, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(), coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
         //谁喜欢我，在线聊天  购买
         //   MyPrivilegePopupWindow  my=new MyPrivilegePopupWindow(getActivity());
         LogUtil.e("BuyMember  BuyMember");
         myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type, int vip) {
-                payType(type,vip);
+                payType(type, vip);
                 LogUtil.e("*********************************type = " + type + "-------------vip = " + vip);
             }
         });
@@ -265,23 +358,24 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
     /**
      * 转支付类型返回支付签名数据
+     *
      * @param type
      * @param vip
      */
-    private void  payType(String type, int vip){
-        UserVIPPrivilegePrice  vipPrivilegePriceList= coreManager.getSelf().getUserVIPPrivilegeConfig();
+    private void payType(String type, int vip) {
+        UserVIPPrivilegePrice vipPrivilegePriceList = coreManager.getSelf().getUserVIPPrivilegeConfig();
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("paytype", type);
         params.put("vipLevel", coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
-        if(vip==1){
-            params.put("vipPrice",vipPrivilegePriceList.getV0Price()+"");
-        }else if(vip==2){
-            params.put("vipPrice",vipPrivilegePriceList.getV1Price()+"");
-        }else if(vip==3){
-            params.put("vipPrice", vipPrivilegePriceList.getV2Price()+"");
-        }else if(vip==4){
-            params.put("vipPrice", vipPrivilegePriceList.getV3Price()+"");
+        if (vip == 1) {
+            params.put("vipPrice", vipPrivilegePriceList.getV0Price() + "");
+        } else if (vip == 2) {
+            params.put("vipPrice", vipPrivilegePriceList.getV1Price() + "");
+        } else if (vip == 3) {
+            params.put("vipPrice", vipPrivilegePriceList.getV2Price() + "");
+        } else if (vip == 4) {
+            params.put("vipPrice", vipPrivilegePriceList.getV3Price() + "");
         }
     }
 }
