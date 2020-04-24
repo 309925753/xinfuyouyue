@@ -83,6 +83,7 @@
             android:textSize="12sp"
             android:layout_below="@+id/tvUserPassword"
             android:layout_marginTop="@dimen/dp20"
+            android:visibility="gone"
             />
     </RelativeLayout>
     <View style="@style/View_Line"

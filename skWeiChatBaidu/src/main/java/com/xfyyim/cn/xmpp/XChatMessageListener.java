@@ -28,7 +28,9 @@ import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.event.EventLoginStatus;
 import com.xfyyim.cn.bean.event.EventNewNotice;
 import com.xfyyim.cn.bean.event.EventNotifyByTag;
+import com.xfyyim.cn.bean.event.EventNotifyMatching;
 import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
+import com.xfyyim.cn.bean.event.EventNotifyWaitMatching;
 import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
 import com.xfyyim.cn.bean.event.EventSyncFriendOperating;
 import com.xfyyim.cn.bean.event.EventTransfer;
@@ -129,7 +131,6 @@ public class XChatMessageListener implements IncomingChatMessageListener {
         ChatMessage chatMessage = new ChatMessage(body);
         String fromUserId = chatMessage.getFromUserId();
         String toUserId = chatMessage.getToUserId();
-
         if (TextUtils.isEmpty(chatMessage.getPacketId())) {
             chatMessage.setPacketId(packetID);
         }
@@ -145,7 +146,6 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             mMsgIDMap.clear();
         }
         mMsgIDMap.put(chatMessage.getPacketId(), chatMessage.getPacketId());
-
         int type = chatMessage.getType();
         if (type == 0) { // 消息过滤
             return;
@@ -157,8 +157,6 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             moreLogin(message, resource, chatMessage);
             return;
         }
-
-
         if ((chatMessage.getType() >= XmppMessage.TYPE_SYNC_OTHER
                 && chatMessage.getType() <= XmppMessage.TYPE_SYNC_GROUP)
                 || chatMessage.getType() == XmppMessage.TYPE_SEAL) {
@@ -178,14 +176,21 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             EventBus.getDefault().post(new EventNotifyWaitOnlineChat(chatMessage.getFromUserName()));
             return;
         }
-        //发起方在线闪聊
+        //    发起方在线闪聊
         if(type==XmppMessage.TYPE_WAIT_CHAT){
             EventBus.getDefault().post(new EventNotifyOnlineChat(chatMessage.getFromUserName()));
             return;
         }
-
-
-
+        //甲方匹配喜欢
+        if(type==XmppMessage.TYPE_SUPER_MATCHING){
+            EventBus.getDefault().post(new EventNotifyWaitMatching(chatMessage.getFromUserName()));
+            return;
+        }
+        //乙方匹配喜欢接收
+        if(type==XmppMessage.TYPE_WAIT_MATCHING){
+            EventBus.getDefault().post(new EventNotifyMatching(chatMessage.getFromUserName()));
+            return;
+        }
         // 单聊收到805消息，群成员发送了chatKey给我，解密存入本地，更新界面
         if (chatMessage.getType() == XmppMessage.TYPE_SECURE_SEND_KEY) {
             if (!TextUtils.equals(chatMessage.getFromUserId(), mLoginUserId)) {// 需要考虑多点登录的情况
@@ -201,7 +206,6 @@ public class XChatMessageListener implements IncomingChatMessageListener {
                 return;
             }
         }
-
         if (chatMessage.getType() == XmppMessage.TYPE_AUTH_LOGIN) {
             AuthLoginActivity.start(mService, chatMessage.getContent());
             return;

@@ -61,6 +61,16 @@ public class PrivacySetting {
     private int displaySex;//显示性别,0 女 1:男
     private int ageDistance;//年龄范围
 
+    public int getNotSeeFilterMyPhotos() {
+        return notSeeFilterMyPhotos;
+    }
+
+    public void setNotSeeFilterMyPhotos(int notSeeFilterMyPhotos) {
+        this.notSeeFilterMyPhotos = notSeeFilterMyPhotos;
+    }
+
+    private int notSeeFilterMyPhotos;//不让未配对的人看我的相册
+
     public int getDistance() {
         return distance;
     }

@@ -14,7 +14,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name, android:icon, android:roundIcon">
-        <activity android:name=".ui.me.FaceLivenessExpActivity"></activity>
+        <activity android:name=".ui.me.MatchingSuccessfulActivity"></activity>
+        <activity android:name=".ui.me.payCompleteActivity" />
+        <activity android:name=".ui.me.FaceLivenessExpActivity" />
         <activity android:name=".ui.me.PersonEditInfoActivity" />
         <activity
             android:name=".pay.new_ui.PaymentOrReceiptActivity"
@@ -55,9 +57,9 @@
                     android:scheme="sk" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.me_new.EditListChooseActivity"/>
-        <activity android:name=".ui.me_new.EditSignChooseActivity"/>
-        <activity android:name=".ui.me_new.EditListQuestionActivity"/>
+        <activity android:name=".ui.me_new.EditListChooseActivity" />
+        <activity android:name=".ui.me_new.EditSignChooseActivity" />
+        <activity android:name=".ui.me_new.EditListQuestionActivity" />
         <activity
             android:name=".ui.notification.NotificationProxyActivity"
             android:theme="@style/SplashTheme">
@@ -74,8 +76,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.account.ChangePasswordActivity" />
-
-        <activity android:name=".ui.circle.range.TopicDetailActivity"/>
+        <activity android:name=".ui.circle.range.TopicDetailActivity" />
         <activity android:name=".ui.me.PrivacyWhitelistActivity" />
         <activity android:name=".ui.groupchat.FaceToFaceGroup" />
         <activity android:name=".ui.me.GuanyuActivity" />
@@ -476,7 +477,6 @@
         <activity
             android:name=".view.photopicker.PhotoPreviewActivity"
             android:theme="@style/PhotoPickerTheme" />
-
         <activity
             android:name="com.vivo.push.sdk.LinkProxyClientActivity"
             android:exported="false"
@@ -498,9 +498,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.nearby.PublicNumberSearchActivity" />
         <activity android:name=".ui.nearby.PublicNumberListActivity" />
-
         <activity android:name=".ui.circle.range.PraiseListActivity" />
-
         <activity
             android:name=".ui.systemshare.ShareNearChatFriend"
             android:label="@string/send_to_friend">
@@ -513,9 +511,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.systemshare.ShareNewFriend" />
-
         <activity android:name=".ui.systemshare.ShareNewGroup" />
-
         <activity
             android:name=".ui.systemshare.ShareLifeCircleProxyActivity"
             android:label="@string/send_to_life_circle">
@@ -558,7 +554,6 @@
                     android:scheme="shikuimapp" />
             </intent-filter>
         </activity>
-
         <activity android:name=".call.QuickMeetingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -582,10 +577,8 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".ui.contacts.SendContactsActivity" /> <!-- VIVO 推送 -->
         <activity android:name=".ui.login.WebLoginActivity" />
-
         <activity android:name=".ui.message.multi.RoomCopyActivity" /> <!-- push应用定义消息receiver声明 -->
         <activity android:name=".ui.me.redpacket.PaymentCenterActivity" />
-
         <activity android:name=".ui.me.select.SelectRoomActivity" />
         <activity android:name=".ui.me.select.SelectColleagueActivity" /> <!-- OPPO 推送 -->
         <activity android:name=".ui.me.redpacket.ResetPayPasswordActivity" /> <!-- 华为推送 -->
@@ -599,18 +592,14 @@
         <activity android:name=".ui.yeepay.YeepayWallet" /> <!-- 4.用来接收PUSH消息的receiver： -->
         <activity android:name=".ui.yeepay.YeepayWebViewActivity" /> <!-- 5. 接收通道发来的通知栏消息： -->
         <activity android:name=".ui.yeepay.YeepayPaymentCenterActivity" />
-
         <activity android:name=".ui.yeepay.YeepayRecharge" />
         <activity android:name=".ui.yeepay.YeepayWithdraw" />
         <activity android:name=".ui.yeepay.YeepayOpenActivity" />
         <activity android:name=".ui.me.redpacket.MyWalletActivity" />
-
         <activity android:name=".ui.yeepay.YeepayRecordActivity" /> <!-- 魅族推送， -->
         <!-- 绑定进程保活 -->
         <activity android:name=".ui.me_new.PersonInfoActivity" />
-
         <activity android:name=".ui.me.CertificationCenterActivity" />
-
         <activity android:name=".ui.me.CheckLikesMeActivity" />
         <activity android:name=".ui.me.MyAboutActivity" />
         <activity android:name=".ui.me.MyAddAccountActivity" />
@@ -628,6 +617,7 @@
         <activity android:name=".ui.me.MyCashWithdrawalActivity" />
         <activity android:name=".ui.me.MyPrerogativeActivity" />
         <activity android:name=".ui.me.MyNewWalletActivity" />
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="${BAIDU_API_KEY}" />
@@ -637,21 +627,19 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.vivo.push.api_key"
             android:value="${VIVO_APP_KEY}" />
-
         <meta-data
             android:name="com.vivo.push.app_id"
             android:value="${VIVO_APP_ID}" />
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="${HUAWEI_APP_ID}" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icon_notification" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${APP_ID}.fileProvider"
@@ -666,6 +654,7 @@
             android:authorities="${APP_ID}.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true" />
+
         <receiver
             android:name=".broadcast.MyBroadcastReceiver"
             android:process=":restart">
@@ -673,7 +662,6 @@
                 <action android:name="${APP_ID}.action.broadcasttest.startActivity" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".broadcast.ShakeReceiver">
             <intent-filter>
                 <action android:name="${APP_ID}.action.shake_msg_notify" />
@@ -756,6 +744,7 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />
+
         <service
             android:name=".xmpp.CoreService"
             android:enabled="true"
@@ -824,7 +813,6 @@
         <service
             android:name="com.fanjun.keeplive.service.RemoteService"
             android:process=":remote" />
-
     </application>
     <permission
         android:name="${APP_ID}.permission.MIPUSH_RECEIVE"
@@ -832,6 +820,7 @@
     <permission
         android:name="${APP_ID}.push.permission.MESSAGE"
         android:protectionLevel="signature" />
+
     <permission
         android:name="${APP_ID}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -841,7 +830,6 @@
     <uses-feature android:name="android.hardware.microphone" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -873,31 +861,25 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 这个权限必须是applicationId开头， -->
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 这个权限必须是applicationId开头， -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 魅族推送， -->
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-
     <uses-permission
         android:name="android.permission.READ_LOGS"
-        tools:ignore="ProtectedPermissions" /> <!-- 魅族推送， -->
+        tools:ignore="ProtectedPermissions" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-
     <uses-permission android:name="${APP_ID}.permission.MIPUSH_RECEIVE" />
-    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
-
+    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" /> <!-- OPPO 推送 -->
     <uses-permission android:name="${APP_ID}.push.permission.MESSAGE" />
-
-    <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" /> <!-- OPPO 推送 -->
+    <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
     <uses-permission android:name="${APP_ID}.permission.C2D_MESSAGE" />
 
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
-
 
 </manifest>

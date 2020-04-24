@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_15_text_size"
-                android:text="5项专属特权，限身份"
+                android:text="5项专属特权，凸显身份尊贵"
                 android:textColor="@color/color_white"
                 android:layout_below="@+id/tvVip"
                 android:layout_marginLeft="@dimen/dp15"
@@ -178,7 +178,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="昵称升级香槟金，专属身份标识！"
+                    android:text="喜欢更有分量，配对飙升5倍！"
                     android:textColor="@color/text_black_999"
                     android:textSize="@dimen/sp_12_text_size"
                     android:layout_below="@+id/tvFiveLike"

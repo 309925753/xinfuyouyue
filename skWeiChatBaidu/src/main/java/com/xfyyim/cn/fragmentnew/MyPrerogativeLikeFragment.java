@@ -16,6 +16,7 @@ import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
+import com.xfyyim.cn.ui.me.payCompleteActivity;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
@@ -68,7 +70,7 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
                     //开通喜欢我的无限次数
                     getUserPrivilegeConfigInfo();
                 } else {
-                    startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
+                startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
 
                 }
             }
@@ -80,7 +82,7 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
-        ToastUtil.showLongToast(getContext(),"支付成功");
+        startActivity(new Intent(getActivity(), payCompleteActivity.class));
     }
 
     /**
@@ -178,12 +180,16 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
      * @param vip
      */
     private void payType(String type, int vip){
+
+
+
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("paytype", type);
         if(vip==1){
             params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice1()+"");
             params.put("month", "1");
+
         }else if(vip==2){
             params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice2()+"");
             params.put("month", "3");
@@ -191,7 +197,5 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
             params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice3()+"");
             params.put("month", "12");
         }
-
     }
-
 }

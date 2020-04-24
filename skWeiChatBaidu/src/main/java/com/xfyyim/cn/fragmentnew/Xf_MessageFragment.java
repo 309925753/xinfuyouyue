@@ -126,8 +126,6 @@ public class Xf_MessageFragment extends EasyFragment {
                     params.setMargins(ScreenUtils.getScreenWidth(getActivity()) / 2 - radioButtonWith, 0, 0, 0);
                     myNavigationView.setLayoutParams(params);
                 } else {
-
-
                     RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) myNavigationView.getLayoutParams();
                     params.width = (int) (radioButtonWith / 2);
                     params.height = indicatorHeight;

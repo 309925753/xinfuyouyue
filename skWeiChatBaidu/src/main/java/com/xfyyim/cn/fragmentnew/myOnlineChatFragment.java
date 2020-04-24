@@ -74,6 +74,7 @@ public class myOnlineChatFragment extends EasyFragment {
     }
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventNotifyOnlineChat message) {
+        LogUtil.e("在线闪聊发起方");
          Friend friend = JSON.parseObject(message.MessageData, Friend.class);
         ImmediateiyChatPopupWindow immediateiyChatPopupWindow=new ImmediateiyChatPopupWindow(getActivity(),coreManager.getSelf().getUserId());
         immediateiyChatPopupWindow.setBtnOnClice(new ImmediateiyChatPopupWindow.BtnOnClick() {
@@ -93,7 +94,6 @@ public class myOnlineChatFragment extends EasyFragment {
 
 
     private void initView() {
-        AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
         findViewById(R.id.rlGetChat).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -149,7 +149,6 @@ public class myOnlineChatFragment extends EasyFragment {
                         } else {
                         }
                     }
-
                     @Override
                     public void onError(Call call, Exception e) {
                     }
@@ -181,19 +180,15 @@ public class myOnlineChatFragment extends EasyFragment {
                                 }else {
                                     tvDataTime.setText("暂未开通");
                                 }
-
                                 tvFlashChat.setText("￥" + ArithUtils.round1(userVIPPrivilege.getChatByMonthPrice()) + "在线闪聊");
-
                             }
                         } else {
                         }
                     }
-
                     @Override
                     public void onError(Call call, Exception e) {
                     }
                 });
-
     }
 
     /**
@@ -253,6 +248,7 @@ public class myOnlineChatFragment extends EasyFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember() {
         MyPrivilegePopupWindow my = new MyPrivilegePopupWindow(getActivity(), 2, "每月90个闪聊配对", "每日3个蒙脸的在线配对，实时互动，畅聊无阻，\n                 通过聊天解锁对方头像", userVIPPrivilegePrice);
+
         LogUtil.e("BuyMember  BuyMember");
         my.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override

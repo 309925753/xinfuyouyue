@@ -1,5 +1,7 @@
 package com.xfyyim.cn.ui.me;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -159,6 +161,15 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
+
+        if (coreManager.getSelf().getSettings().getDisplaySex() == 1) {
+            sex=1;
+            tvCurrentSex.setText(R.string.sex_man);
+        } else {
+            sex=0;
+            tvCurrentSex.setText(R.string.sex_woman);
+        }
+
         if(coreManager.getSelf().getSettings().getIsAutoExpandRange()==1){
             sbBExpandScope.setChecked(true);
         }else {
@@ -191,6 +202,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
 
             }
         });
+        tvCurrentAge.setText("18-"+coreManager.getSelf().getSettings().getAgeDistance());
         seekbar.setProgress(coreManager.getSelf().getSettings().getAgeDistance());
         //年龄
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -259,8 +271,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.rlPrivacy).setOnClickListener(this::onClick);
         findViewById(R.id.rlNews).setOnClickListener(this::onClick);
         findViewById(R.id.rlPersonal).setOnClickListener(this::onClick);
-
-
+        findViewById(R.id.tvCurrentSex).setOnClickListener(this::onClick);
     }
 
 
@@ -274,6 +285,10 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             case R.id.tvLoginOut:
                 //退出登录
                 showExitDialog();
+                break;
+            case R.id.tvCurrentSex:
+                //选择男或者女
+                showSelectSexDialog();
                 break;
             case R.id.tvSwitchAccount:
                 //切换账号
@@ -321,13 +336,14 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void update(){
-
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
         params.put("distance", sbDistance.getProgress()+"");
         params.put("ageDistance", seekbar.getProgress()+"");
         params.put("displaySex", 0+"");
+        params.put("sex", sex+"");
+
         if(isAutoExpandRange){
             params.put("isAutoExpandRange", "1");
         }else {
@@ -403,5 +419,26 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+    int sex;
+    private void showSelectSexDialog() {
+        String[] sexs = new String[]{getString(R.string.sex_man), getString(R.string.sex_woman)};
+        new AlertDialog.Builder(this).setTitle(R.string.select_sex)
+                .setSingleChoiceItems(sexs, sex == 1 ? 0 : 1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            sex=1;
+                            tvCurrentSex.setText(R.string.sex_man);
+                        } else {
+                            sex=0;
+                            tvCurrentSex.setText(R.string.sex_woman);
+                        }
+
+                        dialog.dismiss();
+
+                    }
+                }).setCancelable(true).create().show();
+    }
+
 
 }

@@ -143,8 +143,6 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                         if (Result.checkSuccess(getContext(), result)) {
                             LogUtil.e("vipPrivilegePriceList = " + userVIPPrivilegePrice.toString());
                             if (userVIPPrivilegePrice != null) {
-
-
                                 userVIPPrivilegePrice = result.getData();
                             }
                         }

@@ -96,6 +96,10 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
             TextView tvBuyTimes4 = (TextView) mMenuView.findViewById(R.id.tvBuyTimes4);
             TextView tvBuyMoney4 = (TextView) mMenuView.findViewById(R.id.tvBuyMoney4);
 
+            TextView tvTitleType = (TextView) mMenuView.findViewById(R.id.tvTitleType);
+
+
+
             LinearLayout rlBuyTimes4 = (LinearLayout) mMenuView.findViewById(R.id.rlBuyTimes4);
             LinearLayout rlBuyTimes3 = (LinearLayout) mMenuView.findViewById(R.id.rlBuyTimes3);
             LinearLayout rlBuyTimes = (LinearLayout) mMenuView.findViewById(R.id.rlBuyTimes);
@@ -112,6 +116,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getSuperLikeByFrequency10More();
                     oncePrice=userVIPPrivilegePrice.getSuperLikeByFrequency2();
+                    tvTitleType.setText("获取超级喜欢");
                     break;
                 case 3:
                     tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency1())+"RMB");
@@ -120,6 +125,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getChatByFrequency10More();
                     oncePrice=userVIPPrivilegePrice.getChatByFrequency2();
+                    tvTitleType.setText("获取在线闪聊");
                     break;
                 case 4:
                     tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency1())+"RMB");
@@ -128,6 +134,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getChatPeekByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getChatPeekByFrequency10More();
                     oncePrice=userVIPPrivilegePrice.getChatPeekByFrequency2();
+                    tvTitleType.setText("获取闪聊偷看");
                     break;
 
             }

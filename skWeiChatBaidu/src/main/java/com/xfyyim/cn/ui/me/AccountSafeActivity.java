@@ -63,6 +63,7 @@ public class AccountSafeActivity extends BaseActivity implements View.OnClickLis
 
         TextView tvUserMobile = (TextView) findViewById(R.id.tvUserMobile);
         TextView tvUserPassword = (TextView) findViewById(R.id.tvUserPassword);
+        tvUserMobile.setText(coreManager.getSelf().getTelephone());
         RlMobile.setOnClickListener(this);
         rlPassword.setOnClickListener(this);
         rlManageRenewal.setOnClickListener(this);

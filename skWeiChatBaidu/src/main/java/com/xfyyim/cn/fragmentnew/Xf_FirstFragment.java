@@ -31,6 +31,7 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.me.MatchingSuccessfulActivity;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.redpacket.WxPayAdd;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
@@ -89,15 +90,10 @@ public class Xf_FirstFragment extends EasyFragment {
     protected void onActivityCreated(Bundle savedInstanceState, boolean createView) {
         initTitleBackground();
         initView();
-
-
     }
 
     private void initView() {
-
         mStackLayout = (StackLayout) findViewById(R.id.stack_layout);
-
-
         ll_superLigth.setOnClickListener(this::onClick);
         findViewById(R.id.llRegretsUnLike).setOnClickListener(this::onClick);
         findViewById(R.id.llUnLike).setOnClickListener(this::onClick);
@@ -105,7 +101,6 @@ public class Xf_FirstFragment extends EasyFragment {
         findViewById(R.id.llUserLike).setOnClickListener(this::onClick);
         findViewById(R.id.llSuperLike).setOnClickListener(this::onClick);
         EventBusHelper.register(this);
-
     }
     private void  openSuperCritcal(){
      /*   SuperCriticalLightWindow myWalletPopupWindow=new SuperCriticalLightWindow(getActivity());
@@ -150,7 +145,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     userLike(list.get(selectItem));
                  //   ToastUtil.showToast(getActivity(),"喜欢接口");
                 }
-                if (mUsers.size()==3){
+                if (mUsers.size()<=3){
                     requestData();
                 }
             }
@@ -307,7 +302,7 @@ public class Xf_FirstFragment extends EasyFragment {
         }else if (selectItem>=1 && mUsers.size()>=2){
             mUsers.add(0,user);
         }*/
-        if(mUsers!=null &&mUsers.size()==3){
+        if(mUsers!=null &&mUsers.size()<=3){
             requestData();
         }
          if(mUsers.size()==3){
@@ -345,8 +340,21 @@ public class Xf_FirstFragment extends EasyFragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
             String url = AvatarHelper.getAvatarUrl(mData.get(position).getUserId(), false);
-
+            LogUtil.e("user  head  url = " +url);
             GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
+            holder.tvName.setText(mData.get(position).getNickName());
+            holder.tvAge.setText(mData.get(position).getAge()+"");
+            if(!TextUtils.isEmpty(mData.get(position).getStarSign())){
+            holder.tvCnstellation.setText(mData.get(position).getStarSign());
+            }
+            if(mData.get(position).getVip()==1){
+             holder.tvVip.setText("白银会员");
+            }else  if(mData.get(position).getVip()==2){
+            holder.tvVip.setText("黄金会员");
+            }else  if(mData.get(position).getVip()==3){
+            holder.tvVip.setText("铂金会员");
+            }
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -365,10 +373,19 @@ public class Xf_FirstFragment extends EasyFragment {
 
         public class ViewHolder extends StackLayout.ViewHolder {
             ImageView img_pic;
+            TextView tvName;
+            TextView tvCnstellation;
+            TextView tvAge;
+            TextView tvVip;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_pic = itemView.findViewById(R.id.img_pic);
+                tvName = itemView.findViewById(R.id.t1);
+                tvAge = itemView.findViewById(R.id.t2);
+                tvCnstellation = itemView.findViewById(R.id.t3);
+                tvVip = itemView.findViewById(R.id.t4);
+
             }
         }
 
@@ -395,7 +412,7 @@ public class Xf_FirstFragment extends EasyFragment {
         params.put("pageIndex", pageIndex+"");
         params.put("pageSize", pageSize+"");
 //        params.put("distance", distance);
-        pageIndex++;
+        ++pageIndex;
         HttpUtils.post().url(coreManager.getConfig().USER_NEAR_BY)
                 .params(params)
                 .build()
@@ -553,6 +570,41 @@ public class Xf_FirstFragment extends EasyFragment {
             case 1:
                 superLight(userSelect);
                 break;
+            default:
+                updateSelfData();
+                break;
         }
+    }
+
+    /**
+     * 支付完成后更新用户信息
+     */
+    private void updateSelfData() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+
+        HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+                });
     }
 }

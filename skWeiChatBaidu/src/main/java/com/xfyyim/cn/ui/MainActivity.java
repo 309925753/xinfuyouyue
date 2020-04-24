@@ -47,7 +47,9 @@ import com.xfyyim.cn.bean.UploadingFile;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.event.EventCreateGroupFriend;
+import com.xfyyim.cn.bean.event.EventNotifyMatching;
 import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
+import com.xfyyim.cn.bean.event.EventNotifyWaitMatching;
 import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
 import com.xfyyim.cn.bean.event.EventQRCodeReady;
 import com.xfyyim.cn.bean.event.EventSendVerifyMsg;
@@ -97,6 +99,7 @@ import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.lock.DeviceLockActivity;
 import com.xfyyim.cn.ui.lock.DeviceLockHelper;
 import com.xfyyim.cn.ui.login.WebLoginActivity;
+import com.xfyyim.cn.ui.me.MatchingSuccessfulActivity;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.ui.message.MucChatActivity;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
@@ -825,7 +828,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
      */
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventNotifyWaitOnlineChat message) {
-
+        LogUtil.e("EventNotifyWaitOnlineChat ");
         Friend friend = JSON.parseObject(message.MessageData, Friend.class);
         View  root_view=findViewById(R.id.root_view);
       WaitingChatPopupWindow  waitingChatPopupWindow=new WaitingChatPopupWindow(MainActivity.this,friend);
@@ -836,6 +839,29 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
                 OnlineChat(friend);
             }
         });
+    }
+
+    /**
+     * 乙方匹配喜欢接收
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyMatching message) {
+        LogUtil.e("乙方匹配喜欢接收 ");
+        Friend friend = JSON.parseObject(message.MessageData, Friend.class);
+    }
+
+    /**
+     * 甲方匹配喜欢
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyWaitMatching message) {
+        LogUtil.e("匹配喜欢");
+        Friend friend = JSON.parseObject(message.MessageData, Friend.class);
+        Intent      intent=new Intent(MainActivity.this, MatchingSuccessfulActivity.class);
+        intent.putExtra("friend",friend);
+        startActivity(intent);
     }
 
     private void OnlineChat(Friend  friend){

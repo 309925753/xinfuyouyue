@@ -61,8 +61,7 @@ public class AllFragmet extends EasyFragment {
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
         params.put("userId", coreManager.getSelf().getUserId());
 
-
-        HttpUtils.post().url(coreManager.getConfig().FRIND_LIST)
+        HttpUtils.post().url(coreManager.getConfig().USER_FRIEDS_MATHLIST)
                 .params(params)
                 .build()
                 .execute(new ListCallback<FriendEntity.DataBean>(FriendEntity.DataBean.class) {
@@ -85,29 +84,20 @@ public class AllFragmet extends EasyFragment {
 
     public void setAdapter(List<FriendEntity.DataBean> list) {
         if (allPersonAdapeter == null) {
-
             LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
             rv_all.setLayoutManager(linearLayout);
-
-
             allPersonAdapeter = new AllPersonAdapeter(getActivity(), list);
             rv_all.setAdapter(allPersonAdapeter);
-
             allPersonAdapeter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     Friend friend=new Friend();
-
                     friend.setUserId(list.get(position).getToUserId()+"");
                     friend.setNickName(list.get(position).getToNickname());
                     friend.setRemarkName(list.get(position).getToNickname());
                     friend.setUnReadNum(list.get(position).getMsgNum());
                     friend.setTimeSend(list.get(position).getLastTalkTime());
                     friend.setContent(list.get(position).getToUserType()+"ceshi");
-
-
-
-
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                     intent.setClass(getActivity(), ChatActivity.class);
                     intent.putExtra(ChatActivity.FRIEND, friend);
