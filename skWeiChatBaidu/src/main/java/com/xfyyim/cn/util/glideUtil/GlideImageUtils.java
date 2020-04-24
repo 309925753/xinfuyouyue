@@ -15,7 +15,7 @@ public class GlideImageUtils {
         if (mContext != null) {
             Glide.with(mContext)
                     .load(imgUrl)
-                    .placeholder(R.mipmap.icon)
+//                    .placeholder(R.mipmap.icon)
                     .error(R.mipmap.icon)
                     .centerCrop()
                     //默认淡入淡出动画
@@ -63,9 +63,6 @@ public class GlideImageUtils {
 
             Glide.with(mContext)
                     .load(drawId)
-                    .placeholder(R.mipmap.icon)
-//            //设置加载失败后的图片显示
-                    .error(R.mipmap.icon)
                     .fitCenter()
                     //默认淡入淡出动画
                     .crossFade()

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@color/new_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_topic_hor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <RelativeLayout
+        android:layout_below="@+id/rv_topic_hor"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="25dp">
+        <ImageView
+            android:id="@+id/img_like"
+            android:layout_width="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="10dp"
+            android:src="@mipmap/near_like"
+            />
+        <TextView
+            android:id="@+id/tv_like_count"
+            android:layout_toRightOf="@+id/img_like"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_10_text_size"
+            android:textColor="#0071A9"
+            android:text="附近有0人喜欢你"
+
+            />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/avatar_img"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+android:layout_toRightOf="@+id/tv_like_count"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_normal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="#fff"
+            app:riv_corner_radius="6dp"
+            app:riv_border_width="1dip"
+            app:riv_oval="true"
+           />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

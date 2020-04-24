@@ -174,6 +174,7 @@ public class FindFriendFragment extends EasyFragment  implements View.OnClickLis
                 break;
             case R.id.img_camera:
                 Intent intent1=new Intent(getActivity(), SendTextPicActivity.class);
+                intent1.putExtra("topicType","1");
                 startActivity(intent1);
                 break;
         }

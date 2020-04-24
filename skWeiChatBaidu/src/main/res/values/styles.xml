@@ -109,11 +109,9 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">4.5dp</item>
         <item name="android:background">@null</item>
         <item name="android:button">@null</item>
-        <item name="android:gravity">bottom|center_horizontal</item>
+        <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">@dimen/tab_text_size</item>
         <item name="android:textColor">@color/main_tab_btn_text</item>
     </style>
@@ -691,5 +689,20 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="Edit_text">
+        <item name="android:textSize">@dimen/sp_12_text_size</item>
+        <item name="android:textColor">@color/text_black_333</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">left</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:textColorHint">@color/text_black_999</item>
+
+
+    </style>
 
 </resources>

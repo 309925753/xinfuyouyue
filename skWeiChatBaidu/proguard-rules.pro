@@ -88,7 +88,7 @@
 
 #xUtils(保持注解，及使用注解的Activity不被混淆，不然会影响Activity中你使用注解相关的代码无法使用)
 -keep class * extends java.lang.annotation.Annotation {*;}
--keep class cn.activity.** {*;}
+-keep class com.xfyyim.cn.activity.** {*;}
 
 # 以libaray的形式引用的图片加载框架,不想混淆（注意，此处不是jar包形式，想混淆去掉"#"）
 -keep class org.doubango.ngn.events.** { *; }
@@ -312,13 +312,13 @@ public static final int *;
 -keep class com.dou361.** {*;}
 -keep class tv.** {*;}
 
--keep class cn.AppConfig {*;}
+-keep class com.xfyyim.cn.AppConfig {*;}
 # bean类，主要用于json to bean, 不能混淆，
 -keep class com.xuan.xuanhttplibrary.okhttp.result.** { *; }
--keep class cn.util.SkinUtils.Skin { *; }
--keep class cn.bean.** { *; }
--keep class cn.ui.live.bean.** { *; }
--keep class cn.ui.mucfile.bean.** { *; }
+-keep class com.xfyyim.cn.util.SkinUtils.Skin { *; }
+-keep class com.xfyyim.cn.bean.** { *; }
+-keep class com.xfyyim.cn.ui.live.bean.** { *; }
+-keep class com.xfyyim.cn.ui.mucfile.bean.** { *; }
 
 -keep,allowobfuscation @interface com.facebook.proguard.annotations.DoNotStrip
 -keep,allowobfuscation @interface com.facebook.proguard.annotations.KeepGettersAndSetters
@@ -409,7 +409,7 @@ public static final int *;
 
 
 # 支付宝，https://docs.open.alipay.com/54/104509/
--keep class cn.ui.me.redpacket.alipay.** { *; }
+-keep class com.xfyyim.cn.ui.me.redpacket.alipay.** { *; }
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}
 -keep class com.alipay.android.app.IRemoteServiceCallback{*;}

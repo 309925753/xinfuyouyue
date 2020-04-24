@@ -262,7 +262,7 @@ public class TimeUtils {
         if (time == 0) {
             return desc;
         }
-        Date timeDate = new Date(time * 1000L);
+        Date timeDate = new Date(time*1000L);
         Date nowDate = new Date();
         long delaySeconds = nowDate.getTime() / 1000 - time;// 相差的秒数
 

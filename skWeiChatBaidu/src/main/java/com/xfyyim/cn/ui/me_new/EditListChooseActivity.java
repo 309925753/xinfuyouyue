@@ -116,7 +116,7 @@ public class EditListChooseActivity extends BaseActivity {
         getSupportActionBar().hide();
         iv_title_left.setOnClickListener(v -> finish());
         if (TextUtils.isEmpty(title)) {
-            title = "个人信息修改";
+            title = "个人资料修改";
         }
         tvTitle.setText(title);
 

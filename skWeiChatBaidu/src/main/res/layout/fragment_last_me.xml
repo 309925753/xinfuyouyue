@@ -97,7 +97,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="40dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/shape_gray_me_bg"
                     android:padding="5dp"
@@ -116,6 +115,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_blum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -148,6 +148,7 @@
                     android:background="#F2F2F2" />
 
                 <LinearLayout
+                    android:id="@+id/ll_fan"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -181,6 +182,7 @@
                     android:background="#F2F2F2" />
 
                 <LinearLayout
+                    android:id="@+id/ll_att"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -260,12 +262,14 @@
                     android:layout_centerVertical="true"
                     android:text="朋友圈" />
 
-                <ImageView
-                    style="@style/IMTbleLine_ArrowImg.Me"
+                <LinearLayout
+                    android:id="@+id/ll_my_blum"
                     android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
                     android:layout_centerVertical="true"
-                    android:background="@mipmap/me_right_arrow"
-                    android:contentDescription="@string/app_name" />
+                    android:paddingRight="10dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
 
             </RelativeLayout>
 
@@ -446,7 +450,7 @@
                     style="@style/IMTbleLine_gray"
                     android:layout_below="@+id/tv5"
                     android:layout_alignLeft="@+id/tv5"
-                    android:text="账号、个人信息与通知" />
+                    android:text="账号、个人资料与通知" />
 
                 <ImageView
                     style="@style/IMTbleLine_ArrowImg.Me"

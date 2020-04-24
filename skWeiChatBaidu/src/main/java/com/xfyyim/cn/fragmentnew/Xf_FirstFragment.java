@@ -65,8 +65,6 @@ import okhttp3.Call;
 
 public class Xf_FirstFragment extends EasyFragment {
     private TextView mTvTitle;
-    private TextView tvFriendCount;
-    private ImageView mIvTitleRight;
     private List<User> mUsers;
     @BindView(R.id.ll_superLight)
     LinearLayout ll_superLigth;
@@ -87,12 +85,17 @@ public class Xf_FirstFragment extends EasyFragment {
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState, boolean createView) {
-        initTitleBackground();
+        initActionBar();
         initView();
 
 
     }
-
+    private void initActionBar() {
+        findViewById(R.id.iv_title_left).setVisibility(View.GONE);
+        mTvTitle = findViewById(R.id.tv_title_center);
+        mTvTitle.setText("幸福有约");
+        mTvTitle.setTextColor(getResources().getColor(R.color.white));
+    }
     private void initView() {
 
         mStackLayout = (StackLayout) findViewById(R.id.stack_layout);
@@ -344,9 +347,14 @@ public class Xf_FirstFragment extends EasyFragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            String url = AvatarHelper.getAvatarUrl(mData.get(position).getUserId(), false);
+            if (mData.get(position)==null){
+                return;
+            }
+            if (mData.get(position).getUserId()!=null){
+                String url = AvatarHelper.getAvatarUrl(mData.get(position).getUserId(), false);
+                GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
+            }
 
-            GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

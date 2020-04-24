@@ -14,20 +14,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
+import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicMessageRecyclerAdapter;
+import com.xfyyim.cn.adapter.PublicNearAdapter;
+import com.xfyyim.cn.adapter.SendTopicAdapter;
+import com.xfyyim.cn.adapter.TopicAdapter;
 import com.xfyyim.cn.bean.MyZan;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.PublicMessage;
+import com.xfyyim.cn.bean.circle.TopicEntity;
 import com.xfyyim.cn.bean.event.MessageEventHongdian;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.MyZanDao;
@@ -35,16 +44,20 @@ import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.downloader.Downloader;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventNotifyDynamic;
 import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
+import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.circle.range.NewZanActivity;
 import com.xfyyim.cn.ui.circle.range.SendAudioActivity;
 import com.xfyyim.cn.ui.circle.range.SendFileActivity;
 import com.xfyyim.cn.ui.circle.range.SendShuoshuoActivity;
 import com.xfyyim.cn.ui.circle.range.SendVideoActivity;
+import com.xfyyim.cn.ui.circle.range.TopicActivity;
+import com.xfyyim.cn.ui.circle.range.TopicDetailActivity;
 import com.xfyyim.cn.ui.mucfile.UploadingHelper;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.LogUtils;
@@ -62,6 +75,8 @@ import com.xuan.xuanhttplibrary.okhttp.result.Result;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,12 +104,18 @@ public class NearFragment extends EasyFragment {
     // 页面
     private SmartRefreshLayout mRefreshLayout;
     private SwipeRecyclerView mListView;
-    private PublicMessageRecyclerAdapter mAdapter;
+    private PublicNearAdapter mAdapter;
     private List<PublicMessage> mMessages = new ArrayList<>();
     private boolean more;
     private String messageId;
     private boolean showTitle = true;
 
+    RecyclerView rv_topic_hor;
+    TextView tv_like;
+    ImageView img_likefirst;
+    private View mHeadView;
+
+    int pageIndex=0;
 
     @Override
     protected int inflateLayoutId() {
@@ -134,16 +155,28 @@ public class NearFragment extends EasyFragment {
         mUserName = coreManager.getSelf().getNickName();
         mListView = findViewById(R.id.recyclerView);
         mListView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        // ---------------------------初始化主视图-----------------------
+
+        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.header_near, mListView, false);
+        rv_topic_hor=mHeadView.findViewById(R.id.rv_topic_hor);
+        tv_like=mHeadView.findViewById(R.id.tv_like_count);
+        img_likefirst=mHeadView.findViewById(R.id.avatar_img);
+
+
+
+
         mRefreshLayout = findViewById(R.id.refreshLayout);
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            pageIndex=0;
             requestData(true);
         });
         mRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            pageIndex++;
             requestData(false);
         });
 
         EventBus.getDefault().register(this);
+
+        mListView.addHeaderView(mHeadView);
 
 
         mListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -167,64 +200,68 @@ public class NearFragment extends EasyFragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTopicList();
+    }
 
-    private void updateBackgroundImage(String path) {
-        File bg = new File(path);
-        if (!bg.exists()) {
-            LogUtils.log(path);
-            Reporter.unreachable();
-            ToastUtil.showToast(requireContext(), R.string.image_not_found);
-            return;
-        }
-        DialogHelper.showDefaulteMessageProgressDialog(requireActivity());
-        UploadingHelper.upfile(coreManager.getSelfStatus().accessToken, coreManager.getSelf().getUserId(), new File(path), new UploadingHelper.OnUpFileListener() {
-            @Override
-            public void onSuccess(String url, String filePath) {
-                Map<String, String> params = new HashMap<>();
-                params.put("access_token", coreManager.getSelfStatus().accessToken);
-                params.put("msgBackGroundUrl", url);
+    public void getTopicList() {
 
-                HttpUtils.get().url(coreManager.getConfig().USER_UPDATE)
-                        .params(params)
-                        .build()
-                        .execute(new BaseCallback<Void>(Void.class) {
 
-                            @Override
-                            public void onResponse(ObjectResult<Void> result) {
-                                DialogHelper.dismissProgressDialog();
-                                coreManager.getSelf().setMsgBackGroundUrl(url);
-                                UserDao.getInstance().updateMsgBackGroundUrl(coreManager.getSelf().getUserId(), url);
-                                if (getContext() == null) {
-                                    return;
-                                }
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
+
+        DialogHelper.showDefaulteMessageProgressDialog(getActivity());
+
+        HttpUtils.post().url(coreManager.getConfig().FILTER_TOPIC_LIST)
+                .params(params)
+                .build()
+                    .execute(new BaseCallback< TopicEntity.DataBean>(TopicEntity.DataBean.class) {
+                        @Override
+                        public void onResponse(ObjectResult<TopicEntity.DataBean> result) {
+                            DialogHelper.dismissProgressDialog();
+
+                            if (Result.checkSuccess(getActivity(), result)) {
+                                TopicEntity.DataBean bean=result.getData();
+                                tv_like.setText(String.valueOf(bean.getQuantity()));
+                                List<TopicEntity.DataBean.ListBean> list=bean.getList();
+                                setTopicAdapter(list);
                             }
+                        }
 
-                            @Override
-                            public void onError(Call call, Exception e) {
-                                DialogHelper.dismissProgressDialog();
-                                if (getContext() == null) {
-                                    return;
-                                }
-                                ToastUtil.showErrorNet(requireContext());
-                            }
-                        });
-            }
+                        @Override
+                        public void onError(Call call, Exception e) {
+                            DialogHelper.dismissProgressDialog();
+                            Toast.makeText(getActivity(), R.string.check_network, Toast.LENGTH_SHORT).show();
+                        }
 
-            @Override
-            public void onFailure(String err, String filePath) {
-                DialogHelper.dismissProgressDialog();
-                if (getContext() == null) {
-                    return;
-                }
-                ToastUtil.showErrorNet(requireContext());
-            }
-        });
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            super.onFailure(call, e);
+                            DialogHelper.dismissProgressDialog();
+                            Toast.makeText(getActivity(), R.string.check_network, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
 
     }
 
     public void initData() {
-        mAdapter = new PublicMessageRecyclerAdapter(getActivity(), coreManager, mMessages);
+        mAdapter = new PublicNearAdapter(getActivity(), coreManager, mMessages);
         mListView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemToClickListener(new PublicNearAdapter.OnItemToClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getActivity(), CircleDetailActivity.class);
+                intent.putExtra("PublicMessage",mMessages.get(position));
+                getActivity().startActivity(intent);
+            }
+        });
+
+
         requestData(true);
     }
 
@@ -235,7 +272,6 @@ public class NearFragment extends EasyFragment {
         }
 
         if (!more) {
-            // ToastUtil.showToast(getContext(), getString(R.string.tip_last_item));
             mRefreshLayout.setNoMoreData(true);
             refreshComplete();
             return;
@@ -244,11 +280,19 @@ public class NearFragment extends EasyFragment {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("pageSize", String.valueOf(PAGER_SIZE));
-        if (messageId != null) {
-            params.put("messageId", messageId);
-        }
+        params.put("pageIndex", String.valueOf(pageIndex));
+//        if (distance>0){
+//            params.put("distance", String.valueOf(distance));
+//        }
+//        if (latitude>0){
+//            params.put("distance", String.valueOf(latitude));
+//        }
+//
+//        if (longitude>0){
+//            params.put("distance", String.valueOf(longitude));
+//        }
 
-        HttpUtils.get().url(coreManager.getConfig().MSG_LIST)
+        HttpUtils.get().url(coreManager.getConfig().MSG_NEAR_LIST)
                 .params(params)
                 .build()
                 .execute(new ListCallback<PublicMessage>(PublicMessage.class) {
@@ -261,8 +305,6 @@ public class NearFragment extends EasyFragment {
                             }
                             if (data != null && data.size() > 0) {
                                 mMessages.addAll(data);
-                                // 记录最后一条说说的id
-                                messageId = data.get(data.size() - 1).getMessageId();
                                 if (data.size() == PAGER_SIZE) {
                                     more = true;
                                     mRefreshLayout.resetNoMoreData();
@@ -299,17 +341,8 @@ public class NearFragment extends EasyFragment {
             String messageId = data.getStringExtra(AppConstant.EXTRA_MSG_ID);
             CircleMessageDao.getInstance().addMessage(mUserId, messageId);
             requestData(true);
-        } else if (requestCode == REQUEST_CODE_PICK_PHOTO) {
-            if (data != null) {
-                String path = CameraUtil.parsePickImageResult(data);
-                updateBackgroundImage(path);
-            } else {
-                ToastUtil.showToast(requireContext(), R.string.c_photo_album_failed);
-            }
         }
     }
-
-
 
 
     @Subscribe(threadMode = ThreadMode.MainThread)
@@ -462,6 +495,35 @@ public class NearFragment extends EasyFragment {
                     }
                 });
     }
+
+    SendTopicAdapter adapter;
+    public void setTopicAdapter(List<TopicEntity.DataBean.ListBean> list) {
+        if (adapter == null) {
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+            rv_topic_hor.setLayoutManager(linearLayoutManager);
+            adapter = new SendTopicAdapter(list,getActivity());
+            rv_topic_hor.setAdapter(adapter);
+
+
+            adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    Intent intent=new Intent(getActivity(), TopicDetailActivity.class);
+                    intent.putExtra("Topic",(Serializable) list.get(position));
+                    startActivity(intent);
+                }
+            });
+
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+
+
+    }
+
+
+
 
     /**
      * 定位到评论位置

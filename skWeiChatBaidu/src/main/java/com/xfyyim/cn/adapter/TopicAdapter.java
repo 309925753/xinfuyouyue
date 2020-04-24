@@ -13,16 +13,16 @@ import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 
 import java.util.List;
 
-public class TopicAdapter extends BaseQuickAdapter<TopicEntity.DataBean, BaseViewHolder> {
+public class TopicAdapter extends BaseQuickAdapter<TopicEntity.DataBean.ListBean, BaseViewHolder> {
 Context context;
 
-    public TopicAdapter(@Nullable List<TopicEntity.DataBean> data, Context context) {
+    public TopicAdapter(@Nullable List<TopicEntity.DataBean.ListBean> data, Context context) {
         super(R.layout.item_topic,data);
         this.context = context;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, TopicEntity.DataBean item) {
+    protected void convert(BaseViewHolder helper, TopicEntity.DataBean.ListBean item) {
                 helper.setText(R.id.tv_topictime, TimeUtils.getFriendlyTimeDesc(mContext, (int) item.getTime()));
         GlideImageUtils.setImageView(context,item.getIconUrl(),helper.getView(R.id.img_topic));
 

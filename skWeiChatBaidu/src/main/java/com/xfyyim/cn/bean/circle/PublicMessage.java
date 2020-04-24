@@ -65,6 +65,9 @@ public class PublicMessage implements Serializable {
     private String location; // 发这条消息是在什么位置
     private int isPraise;    // 0没赞过 1赞过
     private int isCollect;    // 0没收藏过 1收藏过
+    private int faceIdentity ;     // 0 - 未认证， 1 - 已认证
+    private int age;
+    private int sex;    // 性别  0 女 1:男
     private List<Comment> comments;// 回复数组
     private List<Praise> praises;  // 赞的列表
     private List<Gift> gifts;      // 收到的礼物列表
@@ -113,6 +116,31 @@ public class PublicMessage implements Serializable {
             return count.getComment();
         }
         return 0;
+    }
+
+
+    public int getFaceIdentity() {
+        return faceIdentity;
+    }
+
+    public void setFaceIdentity(int faceIdentity) {
+        this.faceIdentity = faceIdentity;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 
     public void setCommnet(int commentCount) {
@@ -476,6 +504,8 @@ public class PublicMessage implements Serializable {
         private int type;
         private String title;// 标题
         private String text; // 文字
+        private int topicType; // 类型  0 朋友圈  1话题
+
         private List<Resource> images;
         private List<Resource> audios;
         private List<Resource> videos;

@@ -181,10 +181,9 @@ public class EditListQuestionActivity extends BaseActivity {
             }
 
             for (int i = 0; i < mlist1.size(); i++) {
-              for(int j=0;j<2;j++){
+              for(int j=0;j<entities.size();j++){
                    if (mlist1.get(i).contains(entities.get(j).getQuestion())){
-                       mlist.remove(i);
-
+                       mlist.remove(0);
                    }
               }
             }
@@ -256,9 +255,6 @@ public class EditListQuestionActivity extends BaseActivity {
 
                     String json = JSON.toJSONString(entities);
                     updateValue(json);
-//                    Intent intent = new Intent();
-//                    intent.putExtra("QuestionEnt", entity);
-//                    setResult(22, intent);
 
 
                 } catch (Exception e) {

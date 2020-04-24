@@ -25,6 +25,7 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
 import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicMessageRecyclerAdapter;
+import com.xfyyim.cn.adapter.PublicNearAdapter;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.circle.TopicEntity;
@@ -90,7 +91,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     // 页面
     private SmartRefreshLayout mRefreshLayout;
     private SwipeRecyclerView mListView;
-    private PublicCareRecyclerAdapter mAdapter;
+    private PublicNearAdapter mAdapter;
     private List<PublicMessage> mMessages = new ArrayList<>();
     private boolean more;
     private String messageId;
@@ -103,7 +104,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     private ImageView img_bg;
     private View mHeadView;
 
-    private TopicEntity.DataBean dataBean;
+    private TopicEntity.DataBean.ListBean dataBean;
     @BindView(R.id.tv_fabu)
     TextView tv_fabu;
 
@@ -112,10 +113,11 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_detail);
         unbinder = ButterKnife.bind(this);
-        initActionBar();
-        dataBean = (TopicEntity.DataBean) getIntent().getSerializableExtra("Topic");
+
+        dataBean = (TopicEntity.DataBean.ListBean) getIntent().getSerializableExtra("Topic");
         Downloader.getInstance().init(MyApplication.getInstance().mAppDir + File.separator + coreManager.getSelf().getUserId()
                 + File.separator + Environment.DIRECTORY_MOVIES);// 初始化视频下载目录
+        initActionBar();
         initViews();
         initData();
 
@@ -126,7 +128,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
         iv_title_left.setVisibility(View.VISIBLE);
         iv_title_left.setOnClickListener(this);
 
-        tv_title_center.setText("话题列表");
+        tv_title_center.setText(dataBean.getTitle());
         tv_title_center.setTextColor(getResources().getColor(R.color.white));
 
 
@@ -162,6 +164,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_fabu:
                 Intent intent = new Intent(TopicDetailActivity.this, SendTextPicActivity.class);
+                intent.putExtra("topicType", 1);
                 startActivity(intent);
                 break;
         }
@@ -283,8 +286,17 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void initData() {
-        mAdapter = new PublicCareRecyclerAdapter(TopicDetailActivity.this, coreManager, mMessages);
+        mAdapter = new PublicNearAdapter(TopicDetailActivity.this, coreManager, mMessages);
         mListView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemToClickListener(new PublicNearAdapter.OnItemToClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(TopicDetailActivity.this, CircleDetailActivity.class);
+                intent.putExtra("PublicMessage", mMessages.get(position));
+                startActivity(intent);
+            }
+        });
         requestData(true);
     }
 

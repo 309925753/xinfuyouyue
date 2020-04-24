@@ -20,8 +20,10 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
+import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
+import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
@@ -112,7 +114,7 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    public void csetTopicAdapter(List<TopicEntity.DataBean> list) {
+    public void csetTopicAdapter(List<TopicEntity.DataBean.ListBean> list) {
         if (adapter == null) {
             rv_topic.setLayoutManager(new LinearLayoutManager(TopicActivity.this));
             adapter = new TopicAdapter(list, TopicActivity.this);
@@ -146,13 +148,13 @@ public class TopicActivity extends BaseActivity implements View.OnClickListener 
         HttpUtils.post().url(coreManager.getConfig().FILTER_TOPIC_LIST)
                 .params(params)
                 .build()
-                .execute(new ListCallback<TopicEntity.DataBean>(TopicEntity.DataBean.class) {
+                .execute(new BaseCallback<TopicEntity.DataBean>(TopicEntity.DataBean.class) {
                     @Override
-                    public void onResponse(ArrayResult<TopicEntity.DataBean> result) {
+                    public void onResponse(ObjectResult<TopicEntity.DataBean> result) {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(TopicActivity.this, result)) {
-                            List<TopicEntity.DataBean> list=result.getData();
-                            csetTopicAdapter(list);
+                            List<TopicEntity.DataBean.ListBean> listBeans=result.getData().getList();
+                            csetTopicAdapter(listBeans);
                         }
                     }
 

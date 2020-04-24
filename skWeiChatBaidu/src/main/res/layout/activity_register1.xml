@@ -165,7 +165,9 @@
                 android:textColorHint="@color/white"
                 android:textSize="@dimen/sp_18_text_size" />
 
-
+            <ToggleButton
+                android:id="@+id/tbEyeConfirm"
+                style="@style/PasswordEye" />
 
 
         </LinearLayout>
@@ -260,7 +262,6 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:visibility="visible" />
-
 
 
     </LinearLayout>

@@ -303,7 +303,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                 startActivity(new Intent(this, MyRemindersChatsActivity.class));
                 break;
             case R.id.rlPersonal:
-                //个人信息
+                //个人资料
                 startActivity(new Intent(this, MyPersonalInformationActivity.class));
                 break;
             case R.id.rlCurrentLocation:

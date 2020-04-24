@@ -21,7 +21,11 @@
             android:label="@string/title_activity_payment_new_ui"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.contacts.label.LabelActivityNewUI" />
+        <activity  android:name=".ui.me_new.FansActivity" />
+        <activity  android:name=".ui.me_new.AttentionActivity" />
+        <activity  android:name=".ui.me_new.ZanActivity" />
         <activity android:name=".ui.me.DescriptionActivity" />
+        <activity android:name=".ui.me_new.PersonBlumActivity" />
         <activity android:name=".ui.backup.ReceiveChatHistoryActivity" />
         <activity android:name=".ui.circle.range.SelectCoverActivity" />
         <activity android:name=".ui.search.SearchSingleTypeActivity" />

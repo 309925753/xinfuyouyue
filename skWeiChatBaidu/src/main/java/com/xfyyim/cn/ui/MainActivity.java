@@ -379,6 +379,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
         }
 
         mTvCircleNum = (TextView) findViewById(R.id.main_tab_three_tv);
+        mTvCircleNum.setVisibility(View.GONE);
 
         mRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             hideInput();
@@ -796,17 +797,17 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
     // 更新发现模块新消息数量
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(MessageEventHongdian message) {
-        if (message.number == -1) {
-            // 好友更新了动态
-            int size = MyZanDao.getInstance().getZanSize(coreManager.getSelf().getUserId());
-            if (size == 0) {
-                // 本地社交圈无未读数量
-                UiUtils.updateNum(mTvCircleNum, -1);
-            }
-            return;
-        }
-        numCircle = message.number;
-        UiUtils.updateNum(mTvCircleNum, numCircle);
+//        if (message.number == -1) {
+//            // 好友更新了动态
+//            int size = MyZanDao.getInstance().getZanSize(coreManager.getSelf().getUserId());
+//            if (size == 0) {
+//                // 本地社交圈无未读数量
+//                UiUtils.updateNum(mTvCircleNum, -1);
+//            }
+//            return;
+//        }
+//        numCircle = message.number;
+//        UiUtils.updateNum(mTvCircleNum, numCircle);
     }
 
     // 已上传的联系人注册了IM,更新到联系人表内
@@ -1478,7 +1479,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
         ShortcutBadger.applyCount(this, numMessage);
 
         UiUtils.updateNum(mTvMessageNum, numMessage);
-        UiUtils.updateNum(mTvCircleNum, numCircle);
+//        UiUtils.updateNum(mTvCircleNum, numCircle);
     }
 
     /*

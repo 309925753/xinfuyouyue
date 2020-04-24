@@ -13,27 +13,20 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.j256.ormlite.stmt.query.In;
 import com.stx.xhb.xbanner.XBanner;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.MyInAdapter;
-import com.xfyyim.cn.adapter.QuestionAdapter;
 import com.xfyyim.cn.adapter.QuestionInfoAdapter;
-import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.MyInEntity;
-import com.xfyyim.cn.bean.Photo;
+import com.xfyyim.cn.bean.PhotoEntity;
 import com.xfyyim.cn.bean.QuestEntity;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.customer.FlowLayout;
 import com.xfyyim.cn.customer.SkillTextView;
-import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
-import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.me.EditInfoActivity;
-import com.xfyyim.cn.ui.me.PersonEditInfoActivity;
-import com.xfyyim.cn.util.DateFormatUtil;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
@@ -42,7 +35,6 @@ import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,8 +65,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     TextView nick_name;
     @BindView(R.id.rl_blum)
     RelativeLayout rl_blum;
-    @BindView(R.id.rl_seelike)
-    RelativeLayout rl_seelike;
     @BindView(R.id.tv_age)
     TextView tv_age;
     @BindView(R.id.tv_xingzuo)
@@ -161,7 +151,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         usrId = coreManager.getSelf().getUserId();
         iv_title_left.setVisibility(View.VISIBLE);
         iv_title_left.setOnClickListener(this);
-        tv_title_center.setText("个人信息");
+        tv_title_center.setText("个人资料");
 
         if (friendId.equals(usrId)) {
             iv_title_right.setVisibility(View.VISIBLE);
@@ -221,7 +211,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
-
     public void setUiData(User user) {
 
         nick_name.setText(user.getNickName());
@@ -251,34 +240,39 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
         //相册
         List<String> imgesUrl = new ArrayList<>();
-        if (user.getPhoto() != null && user.getPhoto().size() > 0) {
-            for (Photo photo : user.getPhoto()) {
-                imgesUrl.add(photo.getoUrl());
+        if (user.getMyPhotos() != null && user.getMyPhotos().size() > 0) {
+            for (PhotoEntity photo : user.getMyPhotos()) {
+                imgesUrl.add(photo.getPhotoUtl());
             }
-//            banner.setVisibility(View.VISIBLE);
+            banner.setVisibility(View.VISIBLE);
             rl_blum.setVisibility(View.VISIBLE);
 
 
-            int index = user.getPhoto().size() > 3 ? 3 : user.getPhoto().size();
+            int index = user.getMyPhotos().size() > 3 ? 3 : user.getMyPhotos().size();
+            ll_my_blum.removeAllViews();
             for (int i = 0; i < index; i++) {
                 ImageView imageView = new ImageView(this);
-                GlideImageUtils.setImageView(this, user.getPhoto().get(index).getoUrl(), imageView);
-                LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                ll_my_blum.addView(imageView, ls);
+
+                int wid = ScreenUtils.dip2px(33, mContext);
+                int hight = ScreenUtils.dip2px(33, mContext);
+
+                LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(wid, hight);
+                ls.setMargins(0,0,10,0);
+                imageView.setLayoutParams(ls);
+
+                GlideImageUtils.setImageView(this, user.getMyPhotos().get(i).getPhotoUtl(), imageView);
+                ll_my_blum.addView(imageView);
 
             }
         } else {
-            String  headUrl= AvatarHelper.getAvatarUrl(friendId,false);
+            String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false);
             imgesUrl.add(headUrl);
-
-//            banner.setVisibility(View.GONE);
             rl_blum.setVisibility(View.GONE);
         }
 
         banner.setData(imgesUrl, null);
+
         banner.setmAdapter(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
@@ -308,14 +302,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
 
         //我的信息
-        if (user.getMyFrequentLocations() != null || user.getMyHometown() != null || user.getMyWork() != null || user.getMyCompany() != null || user.getMyIndustry() != null) {
-            my_info.setVisibility(View.VISIBLE);
-            line_info.setVisibility(View.VISIBLE);
-
-        } else {
-            my_info.setVisibility(View.GONE);
-            line_info.setVisibility(View.GONE);
-        }
 
         if (user.getMyIndustry() != null && !TextUtils.isEmpty(user.getMyIndustry())) {
             ll_position.setVisibility(View.VISIBLE);
@@ -362,7 +348,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
             List<String> list = new ArrayList<>();
             if (user.getMyTag().contains(",")) {
-                list= StringUtils.getListString(user.getMyTag());
+                list = StringUtils.getListString(user.getMyTag());
             } else {
                 list.add(user.getMyTag());
             }
@@ -434,19 +420,19 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         }
 
 
-        if (user.getUserQuestions()!=null&&user.getUserQuestions().size()>0){
+        if (user.getUserQuestions() != null && user.getUserQuestions().size() > 0) {
             line_question.setVisibility(View.VISIBLE);
             rv_question.setVisibility(View.VISIBLE);
             tv_myquestion.setVisibility(View.VISIBLE);
-            List<QuestEntity> entities=new ArrayList<>();
-            for (int i=0;i<user.getUserQuestions().size();i++){
-                QuestEntity entity=new QuestEntity();
+            List<QuestEntity> entities = new ArrayList<>();
+            for (int i = 0; i < user.getUserQuestions().size(); i++) {
+                QuestEntity entity = new QuestEntity();
                 entity.setQuestion(user.getUserQuestions().get(i).getQuestion());
                 entity.setAnswer(user.getUserQuestions().get(i).getUserQuestionAnswer().getAnswer());
                 entities.add(entity);
             }
             setAdapter(entities);
-        }else{
+        } else {
             rv_question.setVisibility(View.GONE);
             line_question.setVisibility(View.GONE);
             tv_myquestion.setVisibility(View.GONE);
@@ -465,6 +451,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             questionAdapter.notifyDataSetChanged();
         }
     }
+
     public void setMyInAdapter(List<MyInEntity> list) {
         if (adapter == null) {
             LinearLayoutManager linearLayout = new LinearLayoutManager(PersonInfoActivity.this);

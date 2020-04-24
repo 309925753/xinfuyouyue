@@ -27,6 +27,7 @@ import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.util.Constants;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.PreferenceUtils;
+import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.secure.LoginPassword;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -53,6 +54,8 @@ public class RegisterActivity extends BaseActivity {
     public static int isSmsRegister = 0;
     private EditText mPhoneNumEdit;
     private EditText mPassEdit;
+    private EditText password_edit_comfirm;
+
     private ImageView mImageCodeIv;
     private ImageView mRefreshIv;
     private EditText mAuthCodeEdit;
@@ -86,7 +89,7 @@ public class RegisterActivity extends BaseActivity {
                 }
             } else if (msg.what == 0x2) {
                 // 60秒结束
-                mSendAgainBtn.setText(getString(R.string.send));
+                mSendAgainBtn.setText("重新发送");
                 mSendAgainBtn.setEnabled(true);
                 reckonTime = 60;
             }
@@ -131,7 +134,9 @@ public class RegisterActivity extends BaseActivity {
             mPhoneNumEdit.setText(phone);
         }
         mPassEdit = (EditText) findViewById(R.id.password_edit);
+        password_edit_comfirm = (EditText) findViewById(R.id.password_edit_comfirm);
         PasswordHelper.bindPasswordEye(mPassEdit, findViewById(R.id.tbEye));
+        PasswordHelper.bindPasswordEye(password_edit_comfirm, findViewById(R.id.tbEyeConfirm));
         String password = getIntent().getStringExtra("password");
         if (!TextUtils.isEmpty(password)) {
             mPassEdit.setText(password);
@@ -338,6 +343,37 @@ public class RegisterActivity extends BaseActivity {
             public void onClick(View v) {
                 String mPhoneStr = mPhoneNumEdit.getText().toString().trim();
                 String mPassStr = mPassEdit.getText().toString().trim();
+                String mPassStrConfirm =password_edit_comfirm .getText().toString().trim();
+
+                if (mPassStr.length()<6||mPassStr.length()>12){
+                    ToastUtil.showToast(RegisterActivity.this,"请输入6-12位密码");
+                    mPassEdit.requestFocus();
+                    return;
+                }  if (mPassStrConfirm.length()<6||mPassStrConfirm.length()>12){
+                    ToastUtil.showToast(RegisterActivity.this,"请输入6-12位确认密码");
+                    mPassEdit.requestFocus();
+                    return;
+                }
+
+                if (!StringUtils.isPawDigit(mPassStr)){
+                    ToastUtil.showToast(RegisterActivity.this,"请输入数字、字母组成的密码");
+                    mPassEdit.requestFocus();
+                    return;
+                }
+                if (!StringUtils.isPawDigit(mPassStrConfirm)){
+                    ToastUtil.showToast(RegisterActivity.this,"请输入数字、字母组成的确认密码");
+                    password_edit_comfirm.requestFocus();
+                    return;
+                }
+
+                if (!mPassStrConfirm.equals(mPassStr)){
+                    ToastUtil.showToast(RegisterActivity.this,"两次输入的密码不一致");
+                    return;
+                }
+
+
+
+
                 if (checkInput(mPhoneStr, mPassStr))
                     return;
 

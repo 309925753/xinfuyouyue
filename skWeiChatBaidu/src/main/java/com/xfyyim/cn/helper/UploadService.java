@@ -25,14 +25,9 @@ public class UploadService {
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private static final String BOUNDARY = "------WebKitFormBoundarywL3jvc3wm30NCvQt"; // 数据分隔线
 
-    /**
-     * @param 只发送普通数据   ,调用此方法
-     * @param uploadUrl 对应的Php 页面
-     * @param params    需要发送的相关数据 包括调用的方法
-     * @param filePath  图片或文件手机上的地址 如:sdcard/photo/123.jpg
-     * @param pic       图片名称
-     * @return Json
-     */
+
+
+
     public String uploadFile(String uploadUrl, Map<String, String> params, List<String> filePathList) {
         if (filePathList == null || filePathList.size() <= 0) {
             return null;

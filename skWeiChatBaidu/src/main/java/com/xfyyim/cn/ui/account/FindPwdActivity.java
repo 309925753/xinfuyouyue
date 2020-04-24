@@ -21,6 +21,7 @@ import com.xfyyim.cn.bean.UserRandomStr;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.helper.ImageLoadHelper;
 import com.xfyyim.cn.helper.PasswordHelper;
+import com.xfyyim.cn.helper.UsernameHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.tool.ButtonColorChange;
 import com.xfyyim.cn.util.Constants;
@@ -125,7 +126,8 @@ public class FindPwdActivity extends BaseActivity implements View.OnClickListene
         mPasswordEdit.setHint(getString(R.string.please_input_new_password));
         mConfigPasswordEdit.setHint(getString(R.string.please_confirm_new_password));
         btn_change.setText(getString(R.string.change_password));
-
+        PasswordHelper.bindPasswordEye(mPasswordEdit, findViewById(R.id.tbEye));
+        PasswordHelper.bindPasswordEye(mConfigPasswordEdit, findViewById(R.id.tbEye1));
 
         if (getIntent() != null) {
             mobilePrefix = getIntent().getIntExtra("mobilePrefix", 86);
@@ -164,7 +166,7 @@ public class FindPwdActivity extends BaseActivity implements View.OnClickListene
                 if (!configPassword()) {// 两次密码是否一致
                     return;
                 }
-                verifyTelephone(phoneNumber);
+                verifyPhoneNumber(phoneNumber);
                 break;
             case R.id.login_btn:
                 // 确认修改
@@ -272,6 +274,47 @@ public class FindPwdActivity extends BaseActivity implements View.OnClickListene
                     public void onError(Call call, Exception e) {
                         DialogHelper.dismissProgressDialog();
                         Toast.makeText(FindPwdActivity.this, getString(R.string.error_network), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    /**
+     * 验证手机是否注册
+     */
+
+    private void verifyPhoneNumber(String phoneNumber) {
+        if (!UsernameHelper.verify(this, phoneNumber, coreManager.getConfig().registerUsername)) {
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("telephone", phoneNumber);
+        params.put("areaCode", "" + mobilePrefix);
+
+        HttpUtils.get().url(coreManager.getConfig().VERIFY_TELEPHONE)
+                .params(params)
+                .build(true, true)
+                .execute(new BaseCallback<Void>(Void.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        DialogHelper.dismissProgressDialog();
+                        if (result == null) {
+                            ToastUtil.showToast(FindPwdActivity.this,
+                                    R.string.data_exception);
+                            return;
+                        }
+
+                        if (result.getResultCode() == 1) {
+                            ToastUtil.showToast(FindPwdActivity.this,
+                                   "该用户不存在！");
+                        } else {
+                                verifyTelephone(phoneNumber);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                        ToastUtil.showErrorNet(FindPwdActivity.this);
                     }
                 });
     }

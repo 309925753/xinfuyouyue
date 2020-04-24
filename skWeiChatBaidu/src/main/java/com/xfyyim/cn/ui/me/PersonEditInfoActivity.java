@@ -95,7 +95,7 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
         getSupportActionBar().hide();
         iv_title_left.setVisibility(View.VISIBLE);
         iv_title_left.setOnClickListener(this);
-        tv_title_center.setText("个人信息");
+        tv_title_center.setText("个人资料");
     }
     @Override
     public void onClick(View v) {
