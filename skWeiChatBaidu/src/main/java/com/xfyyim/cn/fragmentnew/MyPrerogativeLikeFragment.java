@@ -180,16 +180,12 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
      * @param vip
      */
     private void payType(String type, int vip){
-
-
-
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("paytype", type);
         if(vip==1){
             params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice1()+"");
             params.put("month", "1");
-
         }else if(vip==2){
             params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice2()+"");
             params.put("month", "3");

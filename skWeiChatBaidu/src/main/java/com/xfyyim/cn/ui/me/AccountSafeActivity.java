@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.ui.account.ChangePasswordActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
@@ -80,8 +81,9 @@ public class AccountSafeActivity extends BaseActivity implements View.OnClickLis
                 startActivity(new Intent(this, MyUpdateMobileActivity.class));
                 break;
             case R.id.rlPassword:
-                startActivity(new Intent(this, MyUpdatePassWordActivity.class));
+               // startActivity(new Intent(this, MyUpdatePassWordActivity.class));
                 //设置/修改密码
+                startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.rlManageRenewal:
                 //管理自动续费

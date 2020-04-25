@@ -117,15 +117,15 @@ public class SuperCriticalLightWindow extends PopupWindow implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tvWalletAlipay:
-                btnOnClick.btnOnClick("0");
+                btnOnClick.btnOnClick("2");
                 dismiss();
                 break;
             case R.id.tvWalletWx:
-                btnOnClick.btnOnClick("1");
+                btnOnClick.btnOnClick("0");
                 dismiss();
                 break;
             case R.id.tvWalletBalance:
-                btnOnClick.btnOnClick("2");
+                btnOnClick.btnOnClick("1");
                 dismiss();
                 break;
             case R.id.tvSetCheck:

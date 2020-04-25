@@ -161,7 +161,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-
+        tvSetCity.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
         if (coreManager.getSelf().getSettings().getDisplaySex() == 1) {
             sex=1;
             tvCurrentSex.setText(R.string.sex_man);
@@ -169,7 +169,6 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             sex=0;
             tvCurrentSex.setText(R.string.sex_woman);
         }
-
         if(coreManager.getSelf().getSettings().getIsAutoExpandRange()==1){
             sbBExpandScope.setChecked(true);
         }else {
@@ -222,7 +221,6 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
 
 
     private void initActionBar() {
-
         getSupportActionBar().hide();
         ivTitleLeft.setVisibility(View.VISIBLE);
         ivTitleLeft.setOnClickListener(this);

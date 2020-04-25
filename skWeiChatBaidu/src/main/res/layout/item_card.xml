@@ -9,18 +9,73 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        >
     <ImageView
         android:layout_above="@+id/info"
         android:id="@+id/img_pic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        >
-    </ImageView>
+        android:src="@mipmap/my_set_log"
+        />
+        <RelativeLayout
+            android:id="@+id/rlhome"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp30"
+            android:background="@drawable/appdes_shape_f0f2f5_4"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp5"
+            >
+            <ImageView
+                android:id="@+id/home_ph"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:src="@mipmap/home_phot"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp5"
+                />
+            <TextView
+                android:id="@+id/tvLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/sp_12_text_size"
+                tools:text="11"
+                android:text="1"
+                android:layout_toRightOf="@+id/home_ph"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp5"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp30"
+            android:background="@drawable/appdes_shape_f0f2f5_4"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_toRightOf="@+id/rlhome"
+            >
+            <ImageView
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:src="@mipmap/home_quan"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp5"
+                />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp30"
+            android:src="@mipmap/home_v"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            />
 
-    <FrameLayout
+
+
+        <FrameLayout
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -50,7 +105,7 @@
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:padding="10dp"
-android:orientation="vertical"
+        android:orientation="vertical"
         >
 
         <LinearLayout

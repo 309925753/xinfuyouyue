@@ -158,6 +158,8 @@ public class LoginSecureHelper {
             // 地址信息
             double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
             double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
+            LogUtil.e("latitude = " +latitude);
+            LogUtil.e("longitude = " +latitude);
             if (latitude != 0)
                 params.put("latitude", String.valueOf(latitude));
             if (longitude != 0)

@@ -2,6 +2,7 @@ package com.xfyyim.cn.fragmentnew;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -24,6 +25,7 @@ import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.me.payCompleteActivity;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.DateUtils;
 import com.xfyyim.cn.util.EventBusHelper;
@@ -96,7 +98,7 @@ public class MyPrerogativeFragment extends EasyFragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
-        ToastUtil.showLongToast(getContext(),"支付成功");
+        startActivity(new Intent(getActivity(), payCompleteActivity.class));
     }
 
     private void getUserPrivilegeConfigInfo() {

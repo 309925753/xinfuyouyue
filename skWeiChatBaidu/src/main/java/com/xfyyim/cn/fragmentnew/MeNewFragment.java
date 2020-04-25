@@ -296,7 +296,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), avatar_img, true);
         tv_fans.setText(String.valueOf(user.getFansCount()));
         tv_guanzhu.setText(String.valueOf(user.getAttCount()));
-        tv_blum.setText(user.getPraiseCount());
+        tv_blum.setText(user.getPraiseCount()+"");
         tv_name.setText(user.getNickName());
 
         if (user.getVipFlag() == 0) {

@@ -205,7 +205,7 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void btnOnClick(String payType, int selectCounts, int oncePrice, int Frequency10More, int Frequency10MorePrice) {
                         LogUtil.e("payType =  " + payType + "-------------selectCounts = " + selectCounts + "--oncePrice-" + oncePrice + "--Frequency10More-" + Frequency10More + "--Frequency10MorePrice--" + Frequency10MorePrice);
-
+                        confirmPay(2,payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
                     }
                 });
                 break;
@@ -216,7 +216,7 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void btnOnClick(String payType, int selectCounts, int oncePrice, int Frequency10More, int Frequency10MorePrice) {
                         LogUtil.e("payType =  " + payType + "-------------selectCounts = " + selectCounts + "--oncePrice-" + oncePrice + "--Frequency10More-" + Frequency10More + "--Frequency10MorePrice--" + Frequency10MorePrice);
-
+                        confirmPay(3,payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
                     }
                 });
                 break;
@@ -226,16 +226,22 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void btnOnClick(String payType, int selectCounts, int oncePrice, int Frequency10More, int Frequency10MorePrice) {
                         LogUtil.e("payType =  " + payType + "-------------selectCounts = " + selectCounts + "--oncePrice-" + oncePrice + "--Frequency10More-" + Frequency10More + "--Frequency10MorePrice--" + Frequency10MorePrice);
-                        confirmPay(payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
+                        confirmPay(4,payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
                     }
                 });
                 break;
         }
     }
-
-    private void confirmPay(String payType, int selectType, int functionType,int Frequency10More, int Frequency10MorePrice) {
+    //payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice
+    private void confirmPay(int functionType,String payType, int selectCounts, int oncePrice,int Frequency10More, int Frequency10MorePrice) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
+        //0 是微信  1钱包  2是支付宝
+        if (payType.equals("0")) {
+        } else if (payType.equals("1")) {
+        } else if (payType.equals("2")) {
+        }
+
 
 
 
@@ -269,6 +275,7 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
             public void btnOnClick(String type) {
                 LogUtil.e("type =  " + type);
                 payFunction=1;
+                //0 是微信  1钱包  2是支付宝    userVIPPrivilegePrice.getOutPrice()
                 AlipayHelper.recharge(MyNewWalletActivity.this, coreManager, userVIPPrivilegePrice.getOutPrice()+"");
             }
         });

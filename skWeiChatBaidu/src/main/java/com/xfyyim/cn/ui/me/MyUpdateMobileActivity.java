@@ -11,7 +11,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.baidu.idl.face.platform.utils.MD5Utils;
+import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.helper.LoginHelper;
+import com.xfyyim.cn.sp.UserSp;
+import com.xfyyim.cn.ui.account.ChangePasswordActivity;
+import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.util.RegUtil;
 import com.xfyyim.cn.util.ToastUtil;
@@ -113,6 +118,11 @@ public class MyUpdateMobileActivity extends BaseActivity implements View.OnClick
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(MyUpdateMobileActivity.this, result)) {
                             ToastUtil.showLongToast(MyUpdateMobileActivity.this, "修改成功");
+                            UserSp.getInstance(mContext).clearUserInfo();
+                            MyApplication.getInstance().mUserStatus = LoginHelper.STATUS_USER_SIMPLE_TELPHONE;
+                            coreManager.logout();
+                            LoginHelper.broadcastLogout(mContext);
+                            LoginActivity.start(MyUpdateMobileActivity.this);
                             finish();
                         } else {
                             ToastUtil.showLongToast(MyUpdateMobileActivity.this, "修改失败，请重新修改");

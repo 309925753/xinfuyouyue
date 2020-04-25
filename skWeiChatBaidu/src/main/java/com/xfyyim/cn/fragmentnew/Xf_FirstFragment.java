@@ -153,7 +153,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     userLike(list.get(selectItem));
                  //   ToastUtil.showToast(getActivity(),"喜欢接口");
                 }
-                if (mUsers.size()==3){
+                if (mUsers.size()<=3){
                     requestData();
                 }
             }
@@ -310,7 +310,7 @@ public class Xf_FirstFragment extends EasyFragment {
         }else if (selectItem>=1 && mUsers.size()>=2){
             mUsers.add(0,user);
         }*/
-        if(mUsers!=null &&mUsers.size()==3){
+        if(mUsers!=null &&mUsers.size()<=3){
             requestData();
         }
          if(mUsers.size()==3){
@@ -350,6 +350,24 @@ public class Xf_FirstFragment extends EasyFragment {
             String url = AvatarHelper.getAvatarUrl(mData.get(position).getUserId(), false);
 
             GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
+            holder.tvName.setText(mData.get(position).getNickName());
+            holder.tvAge.setText(mData.get(position).getAge()+"");
+            if(!TextUtils.isEmpty(mData.get(position).getStarSign())){
+            holder.tvCnstellation.setText(mData.get(position).getStarSign());
+            }
+
+            if(mData.get(position).getMyPhotos()!=null && mData.get(position).getMyPhotos().size()>=1){
+                holder.tvLike.setText(mData.get(position).getMyPhotos().size());
+             }
+
+            if(mData.get(position).getVip()==1){
+             holder.tvVip.setText("白银会员");
+            }else  if(mData.get(position).getVip()==2){
+            holder.tvVip.setText("黄金会员");
+            }else  if(mData.get(position).getVip()==3){
+            holder.tvVip.setText("铂金会员");
+            }
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -368,10 +386,22 @@ public class Xf_FirstFragment extends EasyFragment {
 
         public class ViewHolder extends StackLayout.ViewHolder {
             ImageView img_pic;
+            TextView tvName;
+            TextView tvCnstellation;
+            TextView tvAge;
+            TextView tvVip;
+            TextView tvLike;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_pic = itemView.findViewById(R.id.img_pic);
+                tvName = itemView.findViewById(R.id.t1);
+                tvAge = itemView.findViewById(R.id.t2);
+                tvCnstellation = itemView.findViewById(R.id.t3);
+                tvVip = itemView.findViewById(R.id.t4);
+                tvLike = itemView.findViewById(R.id.tvLike);
+
+
             }
         }
 
@@ -385,20 +415,23 @@ public class Xf_FirstFragment extends EasyFragment {
 
     private void requestData() {
         mUsers = new ArrayList<>();
-        double latitude =31.2351;
-        double longitude =121.5276;
+     /*   double latitude =31.2351;
+        double longitude =121.5276;*/
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
 //      params.put("sex", String.valueOf(0));
 //      params.put("minAge", String.valueOf(1));
 //      params.put("maxAge", String.valueOf(10));
-        params.put("latitude", String.valueOf(latitude));
-        params.put("longitude", String.valueOf(longitude));
+/*        params.put("latitude", String.valueOf(latitude));
+        params.put("longitude", String.valueOf(longitude));*/
+      LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " +MyApplication.getInstance().getBdLocationHelper().getLongitude());
+        params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
+        params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");
         params.put("pageIndex", pageIndex+"");
         params.put("pageSize", pageSize+"");
 //        params.put("distance", distance);
-        pageIndex++;
+        ++pageIndex;
         HttpUtils.post().url(coreManager.getConfig().USER_NEAR_BY)
                 .params(params)
                 .build()
@@ -556,6 +589,41 @@ public class Xf_FirstFragment extends EasyFragment {
             case 1:
                 superLight(userSelect);
                 break;
+            default:
+                updateSelfData();
+                break;
         }
+    }
+
+    /**
+     * 支付完成后更新用户信息
+     */
+    private void updateSelfData() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+
+        HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+                });
     }
 }

@@ -25,6 +25,7 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.me.payCompleteActivity;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.EventBusHelper;
@@ -40,6 +41,8 @@ import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import de.greenrobot.event.Subscribe;
@@ -121,7 +124,7 @@ public class myOnlineChatFragment extends EasyFragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
-        ToastUtil.showLongToast(getContext(),"支付成功");
+        startActivity(new Intent(getActivity(), payCompleteActivity.class));
     }
 
     /**
@@ -210,10 +213,10 @@ public class myOnlineChatFragment extends EasyFragment {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-       /* params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
-        params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");*/
-        params.put("longitude",  1.0+"");
-        params.put("latitude",  1.0+"");
+       params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
+        params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");
+      /*  params.put("longitude",  1.0+"");
+        params.put("latitude",  1.0+"");*/
         params.put("type",  "0");//type 类型（0-爸爸发起 1-儿子接收）
         params.put("fromUserId","0");
         DialogHelper.showDefaulteMessageProgressDialog(getActivity());
@@ -223,8 +226,17 @@ public class myOnlineChatFragment extends EasyFragment {
                 .execute(new BaseCallback<String>(String.class) {
                     @Override
                     public void onResponse(ObjectResult<String> result) {
-                        DialogHelper.dismissProgressDialog();
+                      //  DialogHelper.dismissProgressDialog();
+                        Timer timer = new Timer();// 实例化Timer类
+                        timer.schedule(new TimerTask() {
+                            public void run() {
+                                DialogHelper.dismissProgressDialog();
+                                this.cancel();
+                            }
+                        }, 10000);
                         if (Result.checkSuccess(getActivity(), result)) {
+
+
                           /*  Friend friend = result.getData();
                             if(friend!=null && (!TextUtils.isEmpty(friend.getUserId()+""))){
                                 openOnlineChat( friend);
@@ -253,14 +265,9 @@ public class myOnlineChatFragment extends EasyFragment {
         my.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type, int vip) {
-                //判断月份
-                if(vip==1){
-                    vip= 1;
-                }else if(vip==2){
-                    vip=2;
-                }else if(vip==3){
-                    vip=3;
-                }
+
+                payType(type,vip);
+
                 LogUtil.e("**********************************************************");
                 LogUtil.e("type = " + type + "---vip = " + vip);
                 LogUtil.e("**********************************************************");
@@ -268,5 +275,28 @@ public class myOnlineChatFragment extends EasyFragment {
         });
     }
 
-
+    /**
+     * 支付类型
+     * @param type
+     * @param selectMonth
+     */
+    private void payType(String type, int selectMonth){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("paytype", type);
+        //判断月份
+        if(selectMonth==1){
+            selectMonth= 1;
+            params.put("vipPrice",userVIPPrivilegePrice.getChatByMonthPrice1()+"");
+            params.put("month", "1");
+        }else if(selectMonth==2){
+            selectMonth=2;
+            params.put("vipPrice",userVIPPrivilegePrice.getChatByMonthPrice2()+"");
+            params.put("month", "3");
+        }else if(selectMonth==3){
+            selectMonth=3;
+            params.put("vipPrice",userVIPPrivilegePrice.getChatByMonthPrice3()+"");
+            params.put("month", "12");
+        }
+    }
 }
