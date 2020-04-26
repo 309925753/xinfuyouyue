@@ -17,6 +17,7 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.payCompleteActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
@@ -83,6 +84,7 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
         startActivity(new Intent(getActivity(), payCompleteActivity.class));
+
     }
 
     /**
@@ -169,7 +171,7 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
                 LogUtil.e("**********************************************************");
                 LogUtil.e("type = " + type + "---vip = " + vip);
                 LogUtil.e("**********************************************************");
-                payType(type,vip);
+                payType(type,vip,userVIPPrivilegePrice);
             }
         });
     }
@@ -179,19 +181,25 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
      * @param type
      * @param vip
      */
-    private void payType(String type, int vip){
+    private void payType(String type, int vip,UserVIPPrivilegePrice _userVIPPrivilegePrice ){
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
-        params.put("paytype", type);
+        params.put("payType", type);
         if(vip==1){
-            params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice1()+"");
-            params.put("month", "1");
+            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice1()+"");
+            params.put("mon", "1");
         }else if(vip==2){
-            params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice2()+"");
-            params.put("month", "3");
+            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice2()+"");
+            params.put("mon", "3");
         }else if(vip==3){
-            params.put("vipPrice",userVIPPrivilegePrice.getLikePrivilegeDayPrice3()+"");
-            params.put("month", "12");
+            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice3()+"");
+            params.put("mon", "12");
         }
+        params.put("funType", String.valueOf(6));
+        params.put("num", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        AlipayHelper.rechargePay(getActivity(), coreManager,params);
+
+
     }
 }

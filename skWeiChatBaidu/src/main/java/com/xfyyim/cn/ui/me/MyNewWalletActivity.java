@@ -112,8 +112,6 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
         tvTitleCenter.setText("钱包");
         tvTitleRight.setText("帐单明细");
 
-
-
         tvUserBalance.setText(coreManager.getSelf().getBalance()+"");
         mergerStatus.setBackground(getDrawable(R.drawable.bg_new_my_wallet_red));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -232,19 +230,31 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
-    //payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice
+
+    /**
+     * 支付给的数据  支付功能类型 支付方式  选中次数 单次价格 自定价格  自定次数
+     * @param functionType
+     * @param payType
+     * @param selectCounts
+     * @param oncePrice
+     * @param Frequency10More
+     * @param Frequency10MorePrice
+     */
     private void confirmPay(int functionType,String payType, int selectCounts, int oncePrice,int Frequency10More, int Frequency10MorePrice) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
-        //0 是微信  1钱包  2是支付宝
-        if (payType.equals("0")) {
-        } else if (payType.equals("1")) {
-        } else if (payType.equals("2")) {
+        params.put("funType", String.valueOf(functionType));
+        if(Frequency10More==0){
+            params.put("price", String.valueOf(oncePrice));
+            params.put("num", String.valueOf(selectCounts));
+        }else if(Frequency10More>=0) {
+            params.put("price", String.valueOf(Frequency10MorePrice));
+            params.put("num", String.valueOf(Frequency10More));
         }
-
-
-
-
+        params.put("mon", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        params.put("payType", payType);
+        AlipayHelper.rechargePay(MyNewWalletActivity.this, coreManager,params);
     }
 
     /**
@@ -275,10 +285,25 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
             public void btnOnClick(String type) {
                 LogUtil.e("type =  " + type);
                 payFunction=1;
-                //0 是微信  1钱包  2是支付宝    userVIPPrivilegePrice.getOutPrice()
-                AlipayHelper.recharge(MyNewWalletActivity.this, coreManager, userVIPPrivilegePrice.getOutPrice()+"");
+                //0 是微信  1钱包  2是支付宝
+                superLightPay(type,userVIPPrivilegePrice.getOutPrice());
             }
         });
+    }
+
+    /**
+     *超级爆光支付
+     */
+    private void superLightPay(String  type,int  outPrice){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("funType", String.valueOf(1));
+        params.put("price", String.valueOf(outPrice));
+        params.put("num", String.valueOf(1));
+        params.put("mon", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        params.put("payType", type);
+        AlipayHelper.rechargePay(MyNewWalletActivity.this, coreManager,params);
     }
 
     /**

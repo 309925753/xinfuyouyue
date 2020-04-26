@@ -26,6 +26,7 @@ import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.payCompleteActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.EventBusHelper;
@@ -183,7 +184,7 @@ public class myOnlineChatFragment extends EasyFragment {
                                 }else {
                                     tvDataTime.setText("暂未开通");
                                 }
-                                tvFlashChat.setText("￥" + ArithUtils.round1(userVIPPrivilege.getChatByMonthPrice()) + "在线闪聊");
+                                tvFlashChat.setText("￥" + ArithUtils.round1(userVIPPrivilege.getChatByMonthPrice()) + "获取闪聊特权");
                             }
                         } else {
                         }
@@ -226,14 +227,14 @@ public class myOnlineChatFragment extends EasyFragment {
                 .execute(new BaseCallback<String>(String.class) {
                     @Override
                     public void onResponse(ObjectResult<String> result) {
-                      //  DialogHelper.dismissProgressDialog();
-                        Timer timer = new Timer();// 实例化Timer类
+                        DialogHelper.dismissProgressDialog();
+                    /*    Timer timer = new Timer();// 实例化Timer类
                         timer.schedule(new TimerTask() {
                             public void run() {
                                 DialogHelper.dismissProgressDialog();
                                 this.cancel();
                             }
-                        }, 10000);
+                        }, 10000);*/
                         if (Result.checkSuccess(getActivity(), result)) {
 
 
@@ -283,20 +284,23 @@ public class myOnlineChatFragment extends EasyFragment {
     private void payType(String type, int selectMonth){
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
-        params.put("paytype", type);
+        params.put("payType", type);
         //判断月份
         if(selectMonth==1){
-            selectMonth= 1;
-            params.put("vipPrice",userVIPPrivilegePrice.getChatByMonthPrice1()+"");
-            params.put("month", "1");
+            params.put("price",String.valueOf(userVIPPrivilegePrice.getChatByMonthPrice1()));
+            params.put("mon", "1");
         }else if(selectMonth==2){
             selectMonth=2;
-            params.put("vipPrice",userVIPPrivilegePrice.getChatByMonthPrice2()+"");
-            params.put("month", "3");
+            params.put("price",String.valueOf(userVIPPrivilegePrice.getChatByMonthPrice2()));
+            params.put("mon", "3");
         }else if(selectMonth==3){
             selectMonth=3;
-            params.put("vipPrice",userVIPPrivilegePrice.getChatByMonthPrice3()+"");
-            params.put("month", "12");
+            params.put("price",String.valueOf(userVIPPrivilegePrice.getChatByMonthPrice3()));
+            params.put("mon", "12");
         }
+        params.put("funType", String.valueOf(7));
+        params.put("num", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        AlipayHelper.rechargePay(getActivity(), coreManager,params);
     }
 }

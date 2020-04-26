@@ -19,6 +19,7 @@ import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventNotifyByTag;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.broadcast.OtherBroadcast;
@@ -425,11 +426,11 @@ public class Xf_FirstFragment extends EasyFragment {
 //      params.put("maxAge", String.valueOf(10));
 /*        params.put("latitude", String.valueOf(latitude));
         params.put("longitude", String.valueOf(longitude));*/
-      LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " +MyApplication.getInstance().getBdLocationHelper().getLongitude());
-        params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
-        params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");
-        params.put("pageIndex", pageIndex+"");
-        params.put("pageSize", pageSize+"");
+  //    LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " +MyApplication.getInstance().getBdLocationHelper().getLongitude());
+        params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        params.put("pageIndex", String.valueOf(pageIndex));
+        params.put("pageSize", String.valueOf(pageSize));
 //        params.put("distance", distance);
         ++pageIndex;
         HttpUtils.post().url(coreManager.getConfig().USER_NEAR_BY)
@@ -535,13 +536,40 @@ public class Xf_FirstFragment extends EasyFragment {
         myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type, int vip) {
-
                 LogUtil.e("********************************* pay type = " + type + "-------------vip = " + vip);
-                Intent intent = new Intent(getActivity(), WxPayAdd.class);
-                startActivity(intent);
+                submitPay(type,vip,user.getUserVIPPrivilegeConfig());
             }
         });
     }
+    /**
+     * 转支付类型返回支付签名数据
+     * @param type
+     * @param vip
+     */
+    private void  submitPay(String type, int vip, UserVIPPrivilegePrice vipPrivilegePriceList){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("payType", type);
+        if(vip==1){
+            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+            params.put("level", vipPrivilegePriceList.getV0());
+        }else if(vip==2){
+            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+            params.put("level", vipPrivilegePriceList.getV1());
+        }else if(vip==3){
+            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+            params.put("level", vipPrivilegePriceList.getV2());
+        }else if(vip==4){
+            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+            params.put("level", vipPrivilegePriceList.getV3());
+        }
+        params.put("funType", String.valueOf(5));
+        params.put("num", String.valueOf(-1));
+        params.put("mon", String.valueOf(-1));
+        AlipayHelper.rechargePay(getActivity(), coreManager,params);
+
+    }
+
     private void swithSuperSolarize(int switchType){
         SuperSolarizePopupWindow  RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(getActivity(),switchType,true);
         RegretsUnLikePopupWindow.setBtnOnClice(new SuperSolarizePopupWindow.BtnOnClick() {
@@ -575,9 +603,23 @@ public class Xf_FirstFragment extends EasyFragment {
                         startActivity(intent);*/
               //   AlipayHelper.recharge(getActivity(), coreManager, userVIPPrivilegePrice.getOutPrice()+"");
                 //
-
+                superLightPay(type,coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice());
             }
         });
+    }
+    /**
+     *超级爆光支付
+     */
+    private void superLightPay(String  type,int  outPrice){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("funType", String.valueOf(1));
+        params.put("price", String.valueOf(outPrice));
+        params.put("num", String.valueOf(1));
+        params.put("mon", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        params.put("payType", type);
+        AlipayHelper.rechargePay(getActivity(), coreManager,params);
     }
 
 

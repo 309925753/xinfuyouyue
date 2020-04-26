@@ -25,7 +25,9 @@ import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.payCompleteActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.DateUtils;
 import com.xfyyim.cn.util.EventBusHelper;
@@ -99,6 +101,7 @@ public class MyPrerogativeFragment extends EasyFragment {
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
         startActivity(new Intent(getActivity(), payCompleteActivity.class));
+
     }
 
     private void getUserPrivilegeConfigInfo() {
@@ -211,17 +214,25 @@ public class MyPrerogativeFragment extends EasyFragment {
     private void  payType(String type, int vip){
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
-        params.put("paytype", type);
-        params.put("vipLevel", privilegeBean.getVipLevel());
+        params.put("payType", type);
+
         if(vip==1){
-            params.put("vipPrice",vipPrivilegePriceList.getV0Price()+"");
+            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+            params.put("level", vipPrivilegePriceList.getV0());
         }else if(vip==2){
-            params.put("vipPrice",vipPrivilegePriceList.getV1Price()+"");
+            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+            params.put("level", vipPrivilegePriceList.getV1());
         }else if(vip==3){
-            params.put("vipPrice", vipPrivilegePriceList.getV2Price()+"");
+            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+            params.put("level", vipPrivilegePriceList.getV2());
         }else if(vip==4){
-            params.put("vipPrice", vipPrivilegePriceList.getV3Price()+"");
+            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+            params.put("level", vipPrivilegePriceList.getV3());
         }
+        params.put("funType", String.valueOf(5));
+        params.put("num", String.valueOf(-1));
+        params.put("mon", String.valueOf(-1));
+        AlipayHelper.rechargePay(getActivity(), coreManager,params);
 
     }
 

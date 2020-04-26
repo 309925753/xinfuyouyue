@@ -318,10 +318,24 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         superCriticalLightWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type) {
-                LogUtil.e("type =  " + type);
                 payFunction=1;
-                AlipayHelper.recharge(CheckLikesMeActivity.this, coreManager, coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice()+"");
+                superLightPay(type,coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice());
             }
         });
+    }
+
+    /**
+     *超级爆光支付
+     */
+    private void superLightPay(String  type,int  outPrice){
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("funType", String.valueOf(1));
+        params.put("price", String.valueOf(outPrice));
+        params.put("num", String.valueOf(1));
+        params.put("mon", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        params.put("payType", type);
+        AlipayHelper.rechargePay(CheckLikesMeActivity.this, coreManager,params);
     }
 }

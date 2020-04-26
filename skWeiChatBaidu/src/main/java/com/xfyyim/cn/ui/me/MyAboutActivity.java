@@ -69,6 +69,9 @@ public class MyAboutActivity extends BaseActivity implements View.OnClickListene
             case R.id.rlUserAbout:
                 //用户协议
                 break;
+            case R.id.iv_title_left:
+                finish();
+                break;
             case R.id.rlPrivacyPolicy:
                 //隐私政策
                 break;
