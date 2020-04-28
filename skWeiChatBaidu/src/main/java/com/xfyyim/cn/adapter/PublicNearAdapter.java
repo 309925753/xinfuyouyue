@@ -11,6 +11,7 @@ import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ import com.xfyyim.cn.bean.collection.CollectionEvery;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.helper.CirlcePop;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.helper.ImageLoadHelper;
 import com.xfyyim.cn.ui.base.CoreManager;
@@ -96,6 +98,7 @@ import java.util.WeakHashMap;
 import de.greenrobot.event.EventBus;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JVCideoPlayerStandardSecond;
+import fm.jiecao.jcvideoplayer_lib.MessageEvent;
 import okhttp3.Call;
 
 /**
@@ -124,14 +127,18 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
     private int collectionType;
     private OnItemClickListener onItemClickListener = null;
     private OnItemToClickListener onItemToClickListener = null;
+
+    CirlcePop mPop;
+    View view;
     /**
      * 缓存getShowName，
      * 每次约两三毫秒，
      */
     private WeakHashMap<String, String> showNameCache = new WeakHashMap<>();
 
-    public PublicNearAdapter(Context context, CoreManager coreManager, List<PublicMessage> messages) {
+    public PublicNearAdapter(Context context, View view,CoreManager coreManager, List<PublicMessage> messages) {
         setHasStableIds(true);
+        this.view=view;
         mContext = context;
         this.coreManager = coreManager;
         mMessages = messages;
@@ -352,12 +359,6 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
         viewHolder.time_tv.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) message.getTime()));
 
 
-        viewHolder.delete_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDeleteMsgDialog(position);
-            }
-        });
 
         viewHolder.tv_read_count.setText(String.valueOf(message.getCount().getTotal()));
 
@@ -382,17 +383,43 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
 
         if (userId.equals(mLoginUserId)) {
             // 是我发的消息
-            viewHolder.delete_tv.setVisibility(View.VISIBLE);
-            viewHolder.delete_tv.setOnClickListener(new View.OnClickListener() {
+            viewHolder.llReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDeleteMsgDialog(position);
                 }
             });
         } else {
-            // todo 其他操作
 
-            viewHolder.delete_tv.setOnClickListener(null);
+            viewHolder.llReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onReport(position);
+//                    mPop = new CirlcePop(mContext, "匿名举报", "在关注页面屏蔽TA的内容", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            switch (v.getId()) {
+//                                case R.id.tv_1:
+//                                    onReport(position);
+//                                    mPop.dismiss();
+//
+//                                    break;
+//
+//
+//                                case R.id.tv_2:
+//                                    updateSettings(position,1,-1);
+//                                    mPop.dismiss();
+//                                    break;
+//
+//
+//                                default:
+//                                    break;
+//                            }
+//                        }
+//                    });
+//                    mPop.showAtLocation(view, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+                }
+            });
 
         }
 
@@ -886,7 +913,6 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
      * 加关注
      */
     private void doAddAttention(String mRoomUserId,int position) {
-        DialogHelper.showDefaulteMessageProgressDialog(mContext);
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
@@ -900,15 +926,13 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                 .execute(new BaseCallback<AddAttentionResult>(AddAttentionResult.class) {
                     @Override
                     public void onResponse(ObjectResult<AddAttentionResult> result) {
-                        DialogHelper.dismissProgressDialog();
-                        mMessages.remove(position);
-                        notifyDataSetChanged();
-                       ToastUtil.showLongToast(mContext,"关注成功");
+                        if (Result.checkSuccess(mContext, result)) {
+                            EventBus.getDefault().post(new MessageEvent("NearAttionUser"));
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Exception e) {
-                        DialogHelper.dismissProgressDialog();
                     }
                 });
     }
@@ -1254,6 +1278,37 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                 });
     }
 
+
+    //屏蔽某人
+    private void updateSettings(int position,int type, int shieldType) {
+        final PublicMessage message = mMessages.get(position);
+        if (message == null) {
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("type", String.valueOf(type));
+        params.put("shieldType", String.valueOf(shieldType));
+        params.put("toUserId", message.getUserId());
+
+        HttpUtils.get().url(coreManager.getConfig().FILTER_USER_CIRCLE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        if (Result.checkSuccess(mContext, result)) {
+                            EventBus.getDefault().post(new MessageEvent("NearForbitUser"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        ToastUtil.showErrorNet(mContext);
+                    }
+                });
+    }
     /**
      * 停止播放声音
      */
@@ -1366,9 +1421,8 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
         HttpTextView body_tv;
         TextView open_tv;
         FrameLayout content_fl;
-        ImageView delete_tv;
 
-
+        LinearLayout llReport;
         ImageView img_sex;
         TextView tv_age;
         RelativeLayout rl_img;
@@ -1389,7 +1443,6 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
             body_tv = itemView.findViewById(R.id.body_tv);
             open_tv = (TextView) itemView.findViewById(R.id.open_tv);
             content_fl = (FrameLayout) itemView.findViewById(R.id.content_fl);
-            delete_tv = itemView.findViewById(R.id.delete_tv);
             img_sex = (ImageView) itemView.findViewById(R.id.img_sex);
             tv_age = (TextView) itemView.findViewById(R.id.tv_age);
             rl_img =itemView.findViewById(R.id.rl_img);
@@ -1400,6 +1453,7 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
             tvThumb = itemView.findViewById(R.id.tvThumb);
             tv_read_count = itemView.findViewById(R.id.tv_read_count);
             tv_att=itemView.findViewById(R.id.tv_att);
+            llReport = itemView.findViewById(R.id.llReport);
         }
     }
 
@@ -1601,35 +1655,35 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                 builder.append(charSequence);
             }
             holder.text_view.setText(builder);
-            holder.text_view.setLinksClickable(true);
-            holder.text_view.setMovementMethod(LinkMovementClickMethod.getInstance());
-
-            holder.text_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (comment.getUserId().equals(mLoginUserId)) {
-                        // 如果消息是我发的，那么就弹出删除和复制的对话框
-                        showCommentLongClickDialog(messagePosition, position, CommentAdapter.this);
-                    } else {
-                        // 弹出回复的框
-                        String toShowName = getShowName(comment.getUserId(), comment.getNickName());
-                        if (mContext instanceof BusinessCircleActivity) {
-                            ((BusinessCircleActivity) mContext).showCommentEnterView(messagePosition, comment.getUserId(), comment.getNickName(), toShowName);
-                        } else {
-                            EventBus.getDefault().post(new MessageEventReply("Reply", comment, messagePosition, toShowName,
-                                    (ListView) parent));
-                        }
-                    }
-                }
-            });
-
-            holder.text_view.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    showCommentLongClickDialog(messagePosition, position, CommentAdapter.this);
-                    return true;
-                }
-            });
+//            holder.text_view.setLinksClickable(true);
+//            holder.text_view.setMovementMethod(LinkMovementClickMethod.getInstance());
+//
+//            holder.text_view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (comment.getUserId().equals(mLoginUserId)) {
+//                        // 如果消息是我发的，那么就弹出删除和复制的对话框
+//                        showCommentLongClickDialog(messagePosition, position, CommentAdapter.this);
+//                    } else {
+//                        // 弹出回复的框
+//                        String toShowName = getShowName(comment.getUserId(), comment.getNickName());
+//                        if (mContext instanceof BusinessCircleActivity) {
+//                            ((BusinessCircleActivity) mContext).showCommentEnterView(messagePosition, comment.getUserId(), comment.getNickName(), toShowName);
+//                        } else {
+//                            EventBus.getDefault().post(new MessageEventReply("Reply", comment, messagePosition, toShowName,
+//                                    (ListView) parent));
+//                        }
+//                    }
+//                }
+//            });
+//
+//            holder.text_view.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    showCommentLongClickDialog(messagePosition, position, CommentAdapter.this);
+//                    return true;
+//                }
+//            });
 
             return convertView;
         }

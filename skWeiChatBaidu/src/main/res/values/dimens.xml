@@ -205,10 +205,11 @@
     <dimen name="card_height">15dp</dimen>
 
     <dimen name="fragment_message_radio_button_width">120dp</dimen>
-    <dimen name="fragment_message_radio_button_height">2dp</dimen>
+    <dimen name="fragment_message_radio_button_height">3dp</dimen>
 
 
     <dimen name="edit_info_add">7dp</dimen>
+    <dimen name="mainall_padding_bottom">30dp</dimen>
 
 
 </resources>

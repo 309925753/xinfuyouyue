@@ -11,6 +11,7 @@ import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
-import com.j256.ormlite.stmt.query.In;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
@@ -46,16 +46,11 @@ import com.xfyyim.cn.bean.circle.PublicMessage.Body;
 import com.xfyyim.cn.bean.circle.PublicMessage.Resource;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.collection.CollectionEvery;
-import com.xfyyim.cn.bean.message.ChatMessage;
-import com.xfyyim.cn.bean.message.NewFriendMessage;
-import com.xfyyim.cn.bean.message.XmppMessage;
-import com.xfyyim.cn.broadcast.CardcastUiUpdateUtil;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.FriendDao;
-import com.xfyyim.cn.db.dao.NewFriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.helper.CirlcePop;
 import com.xfyyim.cn.helper.DialogHelper;
-import com.xfyyim.cn.helper.FriendHelper;
 import com.xfyyim.cn.helper.ImageLoadHelper;
 import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.circle.BusinessCircleActivity;
@@ -64,18 +59,11 @@ import com.xfyyim.cn.ui.circle.LongTextShowActivity;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
-import com.xfyyim.cn.ui.circle.range.PraiseListActivity;
-import com.xfyyim.cn.ui.circle.range.SendShuoshuoActivity;
-import com.xfyyim.cn.ui.live.LivePlayingActivity;
-import com.xfyyim.cn.ui.map.MapActivity;
-import com.xfyyim.cn.ui.me.MyCollection;
-import com.xfyyim.cn.ui.me.redpacket.RedDetailsActivity;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.ui.mucfile.DownManager;
 import com.xfyyim.cn.ui.mucfile.MucFileDetails;
 import com.xfyyim.cn.ui.mucfile.XfileUtils;
 import com.xfyyim.cn.ui.mucfile.bean.MucFileBean;
-import com.xfyyim.cn.ui.other.BasicInfoActivity;
 import com.xfyyim.cn.ui.tool.MultiImagePreviewActivity;
 import com.xfyyim.cn.ui.tool.SingleImagePreviewActivity;
 import com.xfyyim.cn.ui.tool.WebViewActivity;
@@ -93,7 +81,6 @@ import com.xfyyim.cn.view.CheckableImageView;
 import com.xfyyim.cn.view.MyGridView;
 import com.xfyyim.cn.view.ReportDialog;
 import com.xfyyim.cn.view.SelectionFrame;
-import com.xfyyim.cn.xmpp.ListenerManager;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -110,13 +97,14 @@ import java.util.WeakHashMap;
 import de.greenrobot.event.EventBus;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JVCideoPlayerStandardSecond;
+import fm.jiecao.jcvideoplayer_lib.MessageEvent;
 import okhttp3.Call;
 
 /**
  * 1.我的空间
  * 2.我的收藏 adapter
  */
-public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRecyclerAdapter.ViewHolder> implements ListenerAudio {
+public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRecyclerAdapter.ViewHolder> implements ListenerAudio {
     private static final int VIEW_TYPE_NORMAL_TEXT = 0;
     private static final int VIEW_TYPE_NORMAL_SINGLE_IMAGE = 2;
     private static final int VIEW_TYPE_NORMAL_MULTI_IMAGE = 4;
@@ -138,13 +126,18 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
     private int collectionType;
     private OnItemToClickListener onItemToClickListener = null;
     private OnItemClickListener onItemClickListener = null;
+    CirlcePop mPop;
+    View view;
     /**
      * 缓存getShowName，
      * 每次约两三毫秒，
      */
     private WeakHashMap<String, String> showNameCache = new WeakHashMap<>();
 
-    public PublicCareRecyclerAdapter(Context context, CoreManager coreManager, List<PublicMessage> messages) {
+    public PublicCareRecyclerAdapter(Context context,View view, CoreManager coreManager, List<PublicMessage> messages) {
+
+
+
         setHasStableIds(true);
         mContext = context;
         this.coreManager = coreManager;
@@ -195,10 +188,10 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
         this.onItemClickListener = onItemClickListener;
     }
 
-  public void setOnItemToClickListener(OnItemToClickListener onItemToClickListener){
-        this.onItemToClickListener=onItemToClickListener;
+    public void setOnItemToClickListener(OnItemToClickListener onItemToClickListener) {
+        this.onItemToClickListener = onItemToClickListener;
 
-  }
+    }
 
     @Override
     public long getItemId(int position) {
@@ -293,19 +286,18 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
         viewHolder.nick_name_tv.setMovementMethod(LinkMovementClickMethod.getInstance());
 
 
-
         if (message.getSex() == 1) {
             viewHolder.img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_man));
             viewHolder.rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_zise));
         } else {
             viewHolder.img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_nv));
-            viewHolder. rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_pink));
+            viewHolder.rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_pink));
         }
-            viewHolder.tv_age.setText(String.valueOf(message.getAge()));
+        viewHolder.tv_age.setText(String.valueOf(message.getAge()));
 
-        if (message.getFaceIdentity()==0){
+        if (message.getFaceIdentity() == 0) {
             viewHolder.img_vip.setVisibility(View.GONE);
-        }else{
+        } else {
             viewHolder.img_vip.setVisibility(View.VISIBLE);
         }
 
@@ -318,7 +310,8 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
                 }
                 Intent intent = new Intent(mContext, PersonInfoActivity.class);
                 intent.putExtra("FriendId", userId);
-                mContext.startActivity(intent);;
+                mContext.startActivity(intent);
+                ;
             }
         });
 
@@ -365,12 +358,12 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
         viewHolder.time_tv.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) message.getTime()));
 
 
-        viewHolder.delete_tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDeleteMsgDialog(position);
-            }
-        });
+//        viewHolder.delete_tv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showDeleteMsgDialog(position);
+//            }
+//        });
 
         viewHolder.tv_read_count.setText(String.valueOf(message.getCount().getTotal()));
 
@@ -384,24 +377,47 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
         });
 
 
-
-
-
         if (userId.equals(mLoginUserId)) {
             // 是我发的消息
-            viewHolder.delete_tv.setVisibility(View.VISIBLE);
-            viewHolder.delete_tv.setOnClickListener(new View.OnClickListener() {
+            viewHolder.llReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDeleteMsgDialog(position);
                 }
             });
         } else {
-            // todo 其他操作
 
-            viewHolder.delete_tv.setOnClickListener(null);
+            viewHolder.llReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPop = new CirlcePop(mContext, "匿名举报", "在关注页面屏蔽TA的内容", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            switch (v.getId()) {
+                                case R.id.tv_1:
+                                    onReport(position);
+                                    mPop.dismiss();
+
+                                    break;
+
+
+                                case R.id.tv_2:
+                                    updateSettings(position,1,-1);
+                                    mPop.dismiss();
+                                    break;
+
+
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+                    mPop.showAtLocation(view, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+                }
+            });
 
         }
+
 
         final ViewHolder vh = viewHolder;
         vh.ivThumb.setChecked(1 == message.getIsPraise());
@@ -785,6 +801,8 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
                             // 删除成功，停止正在播放的视频、音频
                             JCVideoPlayer.releaseAllVideos();
                             stopVoice();
+
+
                         }
                     }
 
@@ -887,8 +905,6 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
     }
 
 
-
-
     /**
      * 加关注
      */
@@ -908,7 +924,7 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
                     @Override
                     public void onResponse(ObjectResult<AddAttentionResult> result) {
                         DialogHelper.dismissProgressDialog();
-                       ToastUtil.showLongToast(mContext,"关注成功");
+                        ToastUtil.showLongToast(mContext, "关注成功");
                     }
 
                     @Override
@@ -936,7 +952,7 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
                     @Override
                     public void onResponse(ObjectResult<Void> result) {
                         DialogHelper.dismissProgressDialog();
-                            ToastUtil.showToast(mContext, result.getResultMsg());
+                        ToastUtil.showToast(mContext, result.getResultMsg());
                     }
 
                     @Override
@@ -945,6 +961,7 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
                     }
                 });
     }
+
     /**
      * 删除一条回复
      */
@@ -1259,6 +1276,37 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
                 });
     }
 
+
+    //屏蔽某人
+    private void updateSettings(int position,int type, int shieldType) {
+        final PublicMessage message = mMessages.get(position);
+        if (message == null) {
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("type", String.valueOf(type));
+        params.put("shieldType", String.valueOf(shieldType));
+        params.put("toUserId", message.getUserId());
+
+        HttpUtils.get().url(coreManager.getConfig().FILTER_USER_CIRCLE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        if (Result.checkSuccess(mContext, result)) {
+                            EventBus.getDefault().post(new MessageEvent("ForbitUser"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        ToastUtil.showErrorNet(mContext);
+                    }
+                });
+    }
     /**
      * 停止播放声音
      */
@@ -1367,18 +1415,16 @@ public class  PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareR
         ImageView avatar_img;
         ImageView img_vip;
         LinearLayout ll_tocomment;
+        LinearLayout llReport;
         TextView nick_name_tv;
         ImageView img_sex;
         TextView tv_age;
-RelativeLayout rl_img;
+        RelativeLayout rl_img;
 
         TextView time_tv;
         HttpTextView body_tv;
         TextView open_tv;
         FrameLayout content_fl;
-        ImageView delete_tv;
-
-
 
 
         View llOperator;
@@ -1395,15 +1441,15 @@ RelativeLayout rl_img;
             nick_name_tv = (TextView) itemView.findViewById(R.id.nick_name_tv);
             img_sex = (ImageView) itemView.findViewById(R.id.img_sex);
             tv_age = (TextView) itemView.findViewById(R.id.tv_age);
-            rl_img =itemView.findViewById(R.id.rl_img);
+            rl_img = itemView.findViewById(R.id.rl_img);
             time_tv = (TextView) itemView.findViewById(R.id.time_tv);
             body_tv = itemView.findViewById(R.id.body_tv);
             open_tv = (TextView) itemView.findViewById(R.id.open_tv);
             content_fl = (FrameLayout) itemView.findViewById(R.id.content_fl);
-            delete_tv = itemView.findViewById(R.id.delete_tv);
 
             llOperator = itemView.findViewById(R.id.llOperator);
             ll_tocomment = itemView.findViewById(R.id.ll_tocomment);
+            llReport = itemView.findViewById(R.id.llReport);
             llThumb = itemView.findViewById(R.id.llThumb);
             ivThumb = itemView.findViewById(R.id.ivThumb);
             tvThumb = itemView.findViewById(R.id.tvThumb);
@@ -1671,6 +1717,7 @@ RelativeLayout rl_img;
         }
     }
 
+
     private class MultipleImagesClickListener implements AdapterView.OnItemClickListener {
         private List<Resource> images;
 
@@ -1694,4 +1741,5 @@ RelativeLayout rl_img;
             mContext.startActivity(intent);
         }
     }
+
 }

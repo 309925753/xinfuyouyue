@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/new_main"
     android:orientation="vertical">
 
     <include
@@ -15,6 +15,8 @@
         android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/new_main"
+
         android:layout_above="@+id/tv_comment"
         >
 
@@ -190,8 +192,8 @@ android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/text_black_333"
-                    android:textSize="@dimen/sp_12_text_size"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="@dimen/sp_10_text_size"
                     tools:text="7小时前 1m" />
 
                 <LinearLayout
@@ -310,7 +312,7 @@ android:gravity="center"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@color/white"
             android:hint="走心评论，说点好听的~"
             android:textColor="@color/text_black_333"
             android:textColorHint="@color/text_black_999"

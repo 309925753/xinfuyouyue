@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
     private RadioGroup mRadioGroup;
     private RadioButton mRbTab1, mRbTab2, mRbTab3, mRbTab4;
     private TextView mTvMessageNum;// 显示消息界面未读数量
-    private TextView mTvNewFriendNum;// 显示通讯录消息未读数量
+//    private TextView mTvNewFriendNum;// 显示通讯录消息未读数量
     private TextView mTvCircleNum;// 显示朋友圈未读数量
     private int numMessage = 0;// 当前未读消息数量
     private int numCircle = 0; // 当前朋友圈未读数量
@@ -373,13 +373,13 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
         mRbTab3 = findViewById(R.id.rb_tab_3);
         mRbTab4 = findViewById(R.id.rb_tab_4);
 
-        mTvMessageNum = findViewById(R.id.main_tab_one_tv);
-        mTvNewFriendNum = findViewById(R.id.main_tab_two_tv);
+        mTvMessageNum = findViewById(R.id.main_tab_two_tv);
+//        mTvNewFriendNum = findViewById(R.id.main_tab_two_tv);
         Friend newFriend = FriendDao.getInstance().getFriend(coreManager.getSelf().getUserId(), Friend.ID_NEW_FRIEND_MESSAGE);
 
-        if (newFriend != null) {
-            updateNewFriendMsgNum(newFriend.getUnReadNum());
-        }
+//        if (newFriend != null) {
+//            updateNewFriendMsgNum(newFriend.getUnReadNum());
+//        }
 
         mTvCircleNum = (TextView) findViewById(R.id.main_tab_three_tv);
         mTvCircleNum.setVisibility(View.GONE);
@@ -1511,19 +1511,19 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
     /*
     通讯录
      */
-    public void updateNewFriendMsgNum(int msgNum) {
-        int mNewContactsNumber = PreferenceUtils.getInt(this, Constants.NEW_CONTACTS_NUMBER + coreManager.getSelf().getUserId(),
-                0);
-        int totalNumber = msgNum + mNewContactsNumber;
-
-        if (totalNumber == 0) {
-            mTvNewFriendNum.setText("");
-            mTvNewFriendNum.setVisibility(View.INVISIBLE);
-        } else {
-            mTvNewFriendNum.setText(totalNumber + "");
-            mTvNewFriendNum.setVisibility(View.VISIBLE);
-        }
-    }
+//    public void updateNewFriendMsgNum(int msgNum) {
+//        int mNewContactsNumber = PreferenceUtils.getInt(this, Constants.NEW_CONTACTS_NUMBER + coreManager.getSelf().getUserId(),
+//                0);
+//        int totalNumber = msgNum + mNewContactsNumber;
+//
+//        if (totalNumber == 0) {
+//            mTvNewFriendNum.setText("");
+//            mTvNewFriendNum.setVisibility(View.INVISIBLE);
+//        } else {
+//            mTvNewFriendNum.setText(totalNumber + "");
+//            mTvNewFriendNum.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     private void updateContactUI(List<Contact> mContactList) {
         String mLoginUserId = coreManager.getSelf().getUserId();
@@ -1531,7 +1531,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
         int mTotalContactsNumber = mContactsNumber + mContactList.size();
         PreferenceUtils.putInt(MainActivity.this, Constants.NEW_CONTACTS_NUMBER + mLoginUserId, mTotalContactsNumber);
         Friend newFriend = FriendDao.getInstance().getFriend(coreManager.getSelf().getUserId(), Friend.ID_NEW_FRIEND_MESSAGE);
-        updateNewFriendMsgNum(newFriend.getUnReadNum());
+//todo        updateNewFriendMsgNum(newFriend.getUnReadNum());
 
         List<String> mNewContactsIds = new ArrayList<>();
         for (int i = 0; i < mContactList.size(); i++) {

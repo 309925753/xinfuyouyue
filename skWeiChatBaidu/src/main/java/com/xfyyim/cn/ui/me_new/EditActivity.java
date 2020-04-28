@@ -77,7 +77,8 @@ public class EditActivity extends BaseActivity {
         tv_title_right.setTextColor(getResources().getColor(R.color.white));
         tv_title_right.setText(getResources().getString(R.string.save));
         tv_title_right.setOnClickListener(v -> {
-            textContent = et_desc.getText().toString().trim();
+            textContent = (et_desc.getText().toString().trim()).replaceAll("\r|\n*","").replaceAll(" " ,"");
+
             if (TextUtils.isEmpty(textContent)) {
                 ToastUtil.showToast(mContext, "输入信息不能为空");
                 et_desc.requestFocus();

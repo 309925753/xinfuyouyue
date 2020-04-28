@@ -107,6 +107,9 @@ public class Friend implements Serializable {
     @DatabaseField
     private int roomTalkTime;// 在这个群组的禁言时间
 
+   @DatabaseField
+    private int isMatch;// 是否是匹配用户 0- 是 1-不是（仅聊天）
+
     @DatabaseField(defaultValue = "0")
     private long topTime;
     // 0:正常 1:被踢出该群组 2:该群已被解散 3:该群已被后台锁定
@@ -461,6 +464,15 @@ public class Friend implements Serializable {
 
     public void setRoomTalkTime(int roomTalkTime) {
         this.roomTalkTime = roomTalkTime;
+    }
+
+
+    public int getIsMatch() {
+        return isMatch;
+    }
+
+    public void setIsMatch(int isMatch) {
+        this.isMatch = isMatch;
     }
 
     /* 快捷方法，获取在好友列表中显示的名称 */

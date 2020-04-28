@@ -19,6 +19,7 @@ import com.xfyyim.cn.nocsroll.MessagePagerAdapter;
 import com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer;
 import com.xfyyim.cn.nocsroll.NoScrollViewPager;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.search.SearchAllActivity;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Xf_MessageFragment extends EasyFragment {
     int radioButtonWith;
     int indicatorHeight;
     MessageFragment messageFragment;
-    AllFragmet allFragmet;
+    AllnewFragment allFragmet;
     RadioGroup rg_choice;
     RadioButton rb_readmessage;
     RadioButton rb_unread;
@@ -71,7 +72,7 @@ public class Xf_MessageFragment extends EasyFragment {
     }
 
     private void addFragment() {
-        listFragments.add(allFragmet = new AllFragmet());
+        listFragments.add(allFragmet = new AllnewFragment());
         listFragments.add(messageFragment = new MessageFragment());
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -82,13 +83,12 @@ public class Xf_MessageFragment extends EasyFragment {
     private void initActionBar() {
         findViewById(R.id.iv_title_left).setVisibility(View.GONE);
         mTvTitle = (TextView) findViewById(R.id.tv_title_center);
-        mTvTitle.setText("消息");
+        mTvTitle.setText("聊天");
         mTvTitle.setTextColor(getResources().getColor(R.color.white));
-        mIvTitleRight = (ImageView) findViewById(R.id.iv_title_right);
-        mIvTitleRight.setImageResource(R.mipmap.folding_icon);
-        mIvTitleRight.setVisibility(View.GONE);
-        ImageView iv_title_right_right = findViewById(R.id.iv_title_right_right);
-        iv_title_right_right.setVisibility(View.GONE);
+        mIvTitleRight =  findViewById(R.id.iv_title_right);
+        mIvTitleRight.setImageResource(R.mipmap.search_white);
+        mIvTitleRight.setVisibility(View.VISIBLE);
+
     }
 
     public void setOnListener() {
@@ -154,6 +154,13 @@ public class Xf_MessageFragment extends EasyFragment {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        mIvTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchAllActivity.start(requireActivity(), "chatHistory");
             }
         });
     }

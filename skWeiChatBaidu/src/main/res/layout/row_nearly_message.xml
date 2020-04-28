@@ -147,6 +147,7 @@
     </RelativeLayout>
 
     <View
+        android:visibility="gone"
         style="@style/View_Line"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="60dp"

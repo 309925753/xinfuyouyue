@@ -39,6 +39,7 @@
             android:drawablePadding="9dp"
             android:drawableRight="@drawable/search_clear"
             android:hint="@string/hint_search_all"
+            android:imeOptions="actionSearch"
             android:paddingLeft="9dp"
             android:paddingRight="9dp"
             android:singleLine="true"

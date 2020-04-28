@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
@@ -24,6 +25,7 @@ import com.xfyyim.cn.view.CircleImageView;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
+import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,12 +108,13 @@ public class UserListGatherFragment extends BaseGridFragment<UserListGatherFragm
                             mUsers.clear();
 
                         }
-                        List<User> datas = result.getData();
-                        if (datas != null && datas.size() > 0) {
-                            mUsers.addAll(datas);
-
+                        if (Result.checkSuccess(getActivity(), result)) {
+                            List<User> datas = result.getData();
+                            if (datas != null && datas.size() > 0) {
+                                mUsers.addAll(datas);
+                            }
+                            update(mUsers);
                         }
-                        update(mUsers);
                     }
 
                     @Override

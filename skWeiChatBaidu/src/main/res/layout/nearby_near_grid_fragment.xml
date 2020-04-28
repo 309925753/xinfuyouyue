@@ -8,6 +8,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/fragment_list_swip"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -21,4 +22,14 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:id="@+id/search_empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="@dimen/sp_18_text_size"
+        android:textColor="@color/text_black_333"
+        android:text="暂无搜索结果"
+        />
 </LinearLayout>

@@ -38,7 +38,7 @@ import java.util.List;
 public class SQLiteHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "shiku.db";
     private static final String TAG = "SQLiteHelper";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 15;
 
     // public static final String DATABASE_PATH = Config.SDCARD_PATH +
     // File.separator + "shiku" + File.separator + "shiku.db";

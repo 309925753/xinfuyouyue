@@ -230,6 +230,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llReport"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -237,13 +238,12 @@
                         >
 
                         <ImageView
-
                             android:padding="10dp"
-                            android:id="@+id/delete_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:scaleType="center"
                             android:src="@drawable/more_ver"
+                            android:tint="@color/color_red"
                             />
 
                     </LinearLayout>

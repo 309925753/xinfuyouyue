@@ -57,6 +57,8 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.util.SendTextFilter;
+import com.xfyyim.cn.ui.map.MapAddressListActivity;
+import com.xfyyim.cn.ui.map.MapPickerActivity;
 import com.xfyyim.cn.ui.me.LocalVideoActivity;
 import com.xfyyim.cn.ui.tool.MultiImagePreviewActivity;
 import com.xfyyim.cn.util.BitmapUtil;
@@ -178,6 +180,10 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     public int isSeLectPic = 0;
     String  topicType="1";
 
+
+    private double latitude;
+    private double longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -287,6 +293,9 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                 showDialog1();
                 break;
             case R.id.img_locotion:
+                // 所在位置
+                Intent intent1 = new Intent(this, MapAddressListActivity.class);
+                startActivityForResult(intent1, REQUEST_CODE_SELECT_LOCATE);
                 break;
         }
     }
@@ -591,241 +600,10 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     private void initRcv() {
         rcvImg.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         rcvImg.setAdapter(postArticleImgAdapter);
-        MyCallBack myCallBack = new MyCallBack(tv, postArticleImgAdapter, mPhotoList, null);
-        itemTouchHelper = new ItemTouchHelper(myCallBack);
-        itemTouchHelper.attachToRecyclerView(rcvImg);//绑定RecyclerView
-        //事件监听
-        rcvImg.addOnItemTouchListener(new OnRecyclerItemClickListener(rcvImg) {
-
-            @Override
-            public void onItemClick(RecyclerView.ViewHolder vh) {
-                showPictureActionDialog(vh.getAdapterPosition());
-
-            }
-
-            @Override
-            public void onItemLongClick(RecyclerView.ViewHolder vh) {
-                //如果item不是最后一个，则执行拖拽
-                if (vh.getLayoutPosition() != mPhotoList.size()) {
-                    itemTouchHelper.startDrag(vh);
-                }
-            }
-        });
-
-        myCallBack.setDragListener(new DragListener() {
-            @Override
-            public void deleteState(boolean delete) {
-                if (delete) {
-                    tv.setBackgroundResource(R.color.holo_red_dark);
-                    tv.setText(getResources().getString(R.string.post_delete_tv_s));
-                    if (mPhotoList.size() == 0) {
-                        isSeLectPic = 0;
-                    }
-                } else {
-                    tv.setText(getResources().getString(R.string.post_delete_tv_d));
-                    tv.setBackgroundResource(R.color.holo_red_light);
-                    if (mPhotoList.size() == 0) {
-                        isSeLectPic = 0;
-                    }
-                }
-            }
-
-            @Override
-            public void dragState(boolean start) {
-                if (start) {
-                    tv.setVisibility(View.VISIBLE);
-                } else {
-                    tv.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void clearView() {
-
-            }
-        });
-    }
-
-    public static class MyCallBack extends ItemTouchHelper.Callback {
-
-        private int dragFlags;
-        private int swipeFlags;
-        private View removeView;
-        private PostArticleImgAdapter adapter;
-        private List<String> images;//图片经过压缩处理
-        private List<String> originImages;//图片没有经过处理，这里传这个进来是为了使原图片的顺序与拖拽顺序保持一致
-        private boolean up;//手指抬起标记位
-        private DragListener dragListener;
-
-        public MyCallBack(View tv, PostArticleImgAdapter adapter, List<String> images, List<String> originImages) {
-            removeView = tv;
-            this.adapter = adapter;
-            this.images = images;
-            this.originImages = originImages;
-        }
-
-        /**
-         * 设置item是否处理拖拽事件和滑动事件，以及拖拽和滑动操作的方向
-         *
-         * @param recyclerView
-         * @param viewHolder
-         * @return
-         */
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            //判断 recyclerView的布局管理器数据
-            if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {//设置能拖拽的方向
-                dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-                swipeFlags = 0;//0则不响应事件
-            }
-            return makeMovementFlags(dragFlags, swipeFlags);
-        }
-
-        /**
-         * 当用户从item原来的位置拖动可以拖动的item到新位置的过程中调用
-         *
-         * @param recyclerView
-         * @param viewHolder
-         * @param target
-         * @return
-         */
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            int fromPosition = viewHolder.getAdapterPosition();//得到item原来的position
-            int toPosition = target.getAdapterPosition();//得到目标position
-            if (toPosition == images.size() || images.size() == fromPosition) {
-                return true;
-            }
-            if (fromPosition < toPosition) {
-                for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(images, i, i + 1);
-                }
-            } else {
-                for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(images, i, i - 1);
-                }
-            }
-            adapter.notifyItemMoved(fromPosition, toPosition);
-            return true;
-        }
-
-        /**
-         * 设置是否支持长按拖拽
-         *
-         * @return
-         */
-        @Override
-        public boolean isLongPressDragEnabled() {
-            return false;
-        }
-
-        /**
-         * @param viewHolder
-         * @param direction
-         */
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-        }
-
-        /**
-         * 当用户与item的交互结束并且item也完成了动画时调用
-         *
-         * @param recyclerView
-         * @param viewHolder
-         */
-        @Override
-        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            super.clearView(recyclerView, viewHolder);
-            adapter.notifyDataSetChanged();
-            initData();
-            if (dragListener != null) {
-                dragListener.clearView();
-            }
-        }
-
-        /**
-         * 重置
-         */
-        private void initData() {
-            if (dragListener != null) {
-                dragListener.deleteState(false);
-                dragListener.dragState(false);
-            }
-            up = false;
-        }
-
-        /**
-         * 自定义拖动与滑动交互
-         *
-         * @param c
-         * @param recyclerView
-         * @param viewHolder
-         * @param dX
-         * @param dY
-         * @param actionState
-         * @param isCurrentlyActive
-         */
-        @Override
-        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            if (null == dragListener) {
-                return;
-            }
-            int[] location = new int[2];
-            viewHolder.itemView.getLocationInWindow(location); //获取在当前窗口内的绝对坐标
-            if (location[1] + viewHolder.itemView.getHeight() > removeView.getTop()) {//拖到删除处
-                dragListener.deleteState(true);
-                if (up) {//在删除处放手，则删除item
-                    viewHolder.itemView.setVisibility(View.INVISIBLE);//先设置不可见，如果不设置的话，会看到viewHolder返回到原位置时才消失，因为remove会在viewHolder动画执行完成后才将viewHolder删除
-                    images.remove(viewHolder.getAdapterPosition());
-                    adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-                    initData();
-                    return;
-                }
-            } else {//没有到删除处
-                if (View.INVISIBLE == viewHolder.itemView.getVisibility()) {//如果viewHolder不可见，则表示用户放手，重置删除区域状态
-                    dragListener.dragState(false);
-                }
-                dragListener.deleteState(false);
-            }
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-
-        /**
-         * 当长按选中item的时候（拖拽开始的时候）调用
-         *
-         * @param viewHolder
-         * @param actionState
-         */
-        @Override
-        public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-            if (ItemTouchHelper.ACTION_STATE_DRAG == actionState && dragListener != null) {
-                dragListener.dragState(true);
-            }
-            super.onSelectedChanged(viewHolder, actionState);
-        }
-
-        /**
-         * 设置手指离开后ViewHolder的动画时间，在用户手指离开后调用
-         *
-         * @param recyclerView
-         * @param animationType
-         * @param animateDx
-         * @param animateDy
-         * @return
-         */
-        @Override
-        public long getAnimationDuration(RecyclerView recyclerView, int animationType, float animateDx, float animateDy) {
-            //手指放开
-            up = true;
-            return super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy);
-        }
-
-        void setDragListener(DragListener dragListener) {
-            this.dragListener = dragListener;
-        }
 
     }
+
+
 
 
     /**
@@ -943,18 +721,18 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             mTimeLen = videoFile.getFileLength();
             mSelectedId = videoFile.get_id();
         }
-//        else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SELECT_LOCATE) {
-//            // 选择位置返回
-//            latitude = data.getDoubleExtra(AppConstant.EXTRA_LATITUDE, 0);
-//            longitude = data.getDoubleExtra(AppConstant.EXTRA_LONGITUDE, 0);
-//            address = data.getStringExtra(AppConstant.EXTRA_ADDRESS);
-//            if (latitude != 0 && longitude != 0 && !TextUtils.isEmpty(address)) {
-//                Log.e("zq", "纬度:" + latitude + "   经度：" + longitude + "   位置：" + address);
-//                tv_Location.setText(address);
-//            } else {
-//                ToastUtil.showToast(mContext, getString(R.string.loc_startlocnotice));
-//            }
-//        }
+        else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SELECT_LOCATE) {
+            // 选择位置返回
+            latitude = data.getDoubleExtra(AppConstant.EXTRA_LATITUDE, 0);
+            longitude = data.getDoubleExtra(AppConstant.EXTRA_LONGITUDE, 0);
+            address = data.getStringExtra(AppConstant.EXTRA_ADDRESS);
+            if (latitude != 0 && longitude != 0 && !TextUtils.isEmpty(address)) {
+                Log.e("zq", "纬度:" + latitude + "   经度：" + longitude + "   位置：" + address);
+                tv_Location.setText(address);
+            } else {
+                ToastUtil.showToast(mContext, getString(R.string.loc_startlocnotice));
+            }
+        }
 
 
     }
@@ -1081,6 +859,16 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                     150, 150,
                     holder.imageView
             );
+
+            holder.img_delete_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPhotoList.remove(position);
+                  notifyDataSetChanged();
+
+
+                }
+            });
         }
 
         @Override
@@ -1094,12 +882,14 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
         class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
+            ImageView img_delete_pic;
             SquareCenterFrameLayout squareCenterFrameLayout;
 
             MyViewHolder(View itemView) {
                 super(itemView);
                 squareCenterFrameLayout = itemView.findViewById(R.id.add_sc);
                 imageView = itemView.findViewById(R.id.sdv);
+                img_delete_pic = itemView.findViewById(R.id.img_delete_pic);
             }
         }
     }

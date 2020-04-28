@@ -82,6 +82,9 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     TextView tv_title_center;
     @BindView(R.id.iv_title_left)
     ImageView iv_title_left;
+
+    @BindView(R.id.rl_root)
+    RelativeLayout rl_root;
     private static final int REQUEST_CODE_SEND_MSG = 1;
     private static final int REQUEST_CODE_PICK_PHOTO = 2;
     private static int PAGER_SIZE = 10;
@@ -286,7 +289,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void initData() {
-        mAdapter = new PublicNearAdapter(TopicDetailActivity.this, coreManager, mMessages);
+        mAdapter = new PublicNearAdapter(TopicDetailActivity.this,rl_root, coreManager, mMessages);
         mListView.setAdapter(mAdapter);
 
         mAdapter.setOnItemToClickListener(new PublicNearAdapter.OnItemToClickListener() {

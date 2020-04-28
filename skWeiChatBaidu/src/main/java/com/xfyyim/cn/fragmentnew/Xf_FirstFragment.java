@@ -69,15 +69,15 @@ public class Xf_FirstFragment extends EasyFragment {
     private List<User> mUsers;
     @BindView(R.id.ll_superLight)
     LinearLayout ll_superLigth;
-    private int selectItem=0;
+    private int selectItem = 0;
 
 
     StackLayout mStackLayout;
     Adapter mAdapter;
-    private  int pageIndex=0;
-    private  int pageSize=25;
-    private boolean  isSliding=false;
-    private  int payFunction=0;//判断支付回调功能类型
+    private int pageIndex = 0;
+    private int pageSize = 25;
+    private boolean isSliding = false;
+    private int payFunction = 0;//判断支付回调功能类型
 
     @Override
     protected int inflateLayoutId() {
@@ -91,12 +91,14 @@ public class Xf_FirstFragment extends EasyFragment {
 
 
     }
+
     private void initActionBar() {
         findViewById(R.id.iv_title_left).setVisibility(View.GONE);
         mTvTitle = findViewById(R.id.tv_title_center);
         mTvTitle.setText("幸福有约");
         mTvTitle.setTextColor(getResources().getColor(R.color.white));
     }
+
     private void initView() {
 
         mStackLayout = (StackLayout) findViewById(R.id.stack_layout);
@@ -111,7 +113,8 @@ public class Xf_FirstFragment extends EasyFragment {
         EventBusHelper.register(this);
 
     }
-    private void  openSuperCritcal(){
+
+    private void openSuperCritcal() {
      /*   SuperCriticalLightWindow myWalletPopupWindow=new SuperCriticalLightWindow(getActivity());
         myWalletPopupWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
             @Override
@@ -140,39 +143,40 @@ public class Xf_FirstFragment extends EasyFragment {
 
         mStackLayout.setOnSwipeListener(
                 new StackLayout.OnSwipeListener() {
-            @Override
-            public void onSwiped(View swipedView, int swipedItemPos, boolean isSwipeLeft, int itemLeft) {
+                    @Override
+                    public void onSwiped(View swipedView, int swipedItemPos, boolean isSwipeLeft, int itemLeft) {
               /*  if(itemLeft>=1){
                    selectItem= itemLeft-1;
                 }*/
-                isSliding=true;
-                LogUtil.e("cjh left "+itemLeft+"  isSwipeLeft  "+isSwipeLeft+"--swipedItemPos = " +swipedItemPos);
-                if (isSwipeLeft){
-                  //  ToastUtil.showToast(getActivity(),"不喜欢接口");
-                    unLike(list.get(selectItem));
-                }else{
-                    userLike(list.get(selectItem));
-                 //   ToastUtil.showToast(getActivity(),"喜欢接口");
-                }
-                if (mUsers.size()<=3){
-                    requestData();
-                }
-            }
-        });
+                        isSliding = true;
+                        LogUtil.e("cjh left " + itemLeft + "  isSwipeLeft  " + isSwipeLeft + "--swipedItemPos = " + swipedItemPos);
+                        if (isSwipeLeft) {
+                            //  ToastUtil.showToast(getActivity(),"不喜欢接口");
+                            unLike(list.get(selectItem));
+                        } else {
+                            userLike(list.get(selectItem));
+                            //   ToastUtil.showToast(getActivity(),"喜欢接口");
+                        }
+                        if (mUsers.size() <= 3) {
+                            requestData();
+                        }
+                    }
+                });
 
     }
 
     /**
      * 喜欢
+     *
      * @param user
      */
-    private  void userLike(User  user){
+    private void userLike(User user) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("likeUserId",user.getUserId());
-        params.put("nickname",user.getNickName());
-        params.put("age",user.getAge()+"");
+        params.put("likeUserId", user.getUserId());
+        params.put("nickname", user.getNickName());
+        params.put("age", user.getAge() + "");
         HttpUtils.post().url(coreManager.getConfig().USER_LIKE)
                 .params(params)
                 .build()
@@ -183,6 +187,7 @@ public class Xf_FirstFragment extends EasyFragment {
                             exchangeAdapter(user);
                         }
                     }
+
                     @Override
                     public void onError(Call call, Exception e) {
                     }
@@ -191,15 +196,16 @@ public class Xf_FirstFragment extends EasyFragment {
 
     /**
      * 不喜欢
+     *
      * @param user
      */
-    private  void unLike(User  user){
+    private void unLike(User user) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("likeUserId",user.getUserId());
-        params.put("nickname",user.getNickName());
-        params.put("age",user.getAge()+"");
+        params.put("likeUserId", user.getUserId());
+        params.put("nickname", user.getNickName());
+        params.put("age", user.getAge() + "");
         HttpUtils.post().url(coreManager.getConfig().USER_UN_LIKE)
                 .params(params)
                 .build()
@@ -210,6 +216,7 @@ public class Xf_FirstFragment extends EasyFragment {
                             exchangeAdapter(user);
                         }
                     }
+
                     @Override
                     public void onError(Call call, Exception e) {
                     }
@@ -218,15 +225,16 @@ public class Xf_FirstFragment extends EasyFragment {
 
     /**
      * 超级爆光
+     *
      * @param user
      */
-    private  void superLight(User  user){
+    private void superLight(User user) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("likeUserId",user.getUserId());
-        params.put("nickname",user.getNickName());
-        params.put("age",user.getAge()+"");
+        params.put("likeUserId", user.getUserId());
+        params.put("nickname", user.getNickName());
+        params.put("age", user.getAge() + "");
         HttpUtils.post().url(coreManager.getConfig().USER_OPEN_SUPEREXPOSURE)
                 .params(params)
                 .build()
@@ -241,14 +249,15 @@ public class Xf_FirstFragment extends EasyFragment {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(user);
                             }
-                            if(coreManager.getSelf().getUserVIPPrivilege().getOutFlag()==1){
+                            if (coreManager.getSelf().getUserVIPPrivilege().getOutFlag() == 1) {
                                 swithSuperSolarize(1);
 
                             }
-                            LogUtil.e("result = " +result.getData());
+                            LogUtil.e("result = " + result.getData());
 
                         }
                     }
+
                     @Override
                     public void onError(Call call, Exception e) {
                     }
@@ -257,13 +266,14 @@ public class Xf_FirstFragment extends EasyFragment {
 
     /**
      * 反悔不喜欢
+     *
      * @param user
      */
-    private  void RegretsUnLike(User  user){
+    private void RegretsUnLike(User user) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("likeUserId",user.getUserId());
+        params.put("likeUserId", user.getUserId());
         HttpUtils.post().url(coreManager.getConfig().USER_REGRETS_UN_LIKE)
                 .params(params)
                 .build()
@@ -279,29 +289,31 @@ public class Xf_FirstFragment extends EasyFragment {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(user);
                             }
-                            if(user.getUserVIPPrivilege().getVipLevel().equals("-1")){
+                            if (user.getUserVIPPrivilege().getVipLevel().equals("-1")) {
                                 BuyMember(user);
-                            }else {
-                                if(mUsers!=null && (!isSliding)){
+                            } else {
+                                if (mUsers != null && (!isSliding)) {
                                     swithSuperSolarize(0);
-                                }else {
+                                } else {
                                     mUsers.remove(0);
-                                    mUsers.add(0,userSelect);
+                                    mUsers.add(0, userSelect);
                                     setmAdapter(mUsers);
                                     mAdapter.notifyDataSetChanged();
                                 }
                             }
                         }
                     }
+
                     @Override
                     public void onError(Call call, Exception e) {
                     }
                 });
     }
 
-    private User  userSelect=new User();
-    private void exchangeAdapter(User  user){
-        userSelect=user;
+    private User userSelect = new User();
+
+    private void exchangeAdapter(User user) {
+        userSelect = user;
       /*  if(selectItem>=1){
             mUsers.add(0,user);
         }else if (selectItem==0 && mUsers.size()==1){
@@ -311,13 +323,13 @@ public class Xf_FirstFragment extends EasyFragment {
         }else if (selectItem>=1 && mUsers.size()>=2){
             mUsers.add(0,user);
         }*/
-        if(mUsers!=null &&mUsers.size()<=3){
+        if (mUsers != null && mUsers.size() <= 3) {
             requestData();
         }
-         if(mUsers.size()==3){
+        if (mUsers.size() == 3) {
             mUsers.remove(0);
             mUsers.add(user);
-        }else if(mUsers.size()>=1){
+        } else if (mUsers.size() >= 1) {
             mUsers.remove(0);
         }
         setmAdapter(mUsers);
@@ -352,21 +364,21 @@ public class Xf_FirstFragment extends EasyFragment {
 
             GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
             holder.tvName.setText(mData.get(position).getNickName());
-            holder.tvAge.setText(mData.get(position).getAge()+"");
-            if(!TextUtils.isEmpty(mData.get(position).getStarSign())){
-            holder.tvCnstellation.setText(mData.get(position).getStarSign());
+            holder.tvAge.setText(mData.get(position).getAge() + "");
+            if (!TextUtils.isEmpty(mData.get(position).getStarSign())) {
+                holder.tvCnstellation.setText(mData.get(position).getStarSign());
             }
 
-            if(mData.get(position).getMyPhotos()!=null && mData.get(position).getMyPhotos().size()>=1){
+            if (mData.get(position).getMyPhotos() != null && mData.get(position).getMyPhotos().size() >= 1) {
                 holder.tvLike.setText(mData.get(position).getMyPhotos().size());
-             }
+            }
 
-            if(mData.get(position).getVip()==1){
-             holder.tvVip.setText("白银会员");
-            }else  if(mData.get(position).getVip()==2){
-            holder.tvVip.setText("黄金会员");
-            }else  if(mData.get(position).getVip()==3){
-            holder.tvVip.setText("铂金会员");
+            if (mData.get(position).getVip() == 1) {
+                holder.tvVip.setText("白银会员");
+            } else if (mData.get(position).getVip() == 2) {
+                holder.tvVip.setText("黄金会员");
+            } else if (mData.get(position).getVip() == 3) {
+                holder.tvVip.setText("铂金会员");
             }
 
 
@@ -374,7 +386,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), PersonInfoActivity.class);
-                    intent.putExtra("FriendId",mData.get(position).getUserId());
+                    intent.putExtra("FriendId", mData.get(position).getUserId());
                     startActivity(intent);
                 }
             });
@@ -416,19 +428,19 @@ public class Xf_FirstFragment extends EasyFragment {
 
     private void requestData() {
         mUsers = new ArrayList<>();
-     /*   double latitude =31.2351;
-        double longitude =121.5276;*/
+        double latitude = 1.0;
+        double longitude = 1.0;
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
-//      params.put("sex", String.valueOf(0));
+// todo     params.put("sex", String.valueOf(0));
 //      params.put("minAge", String.valueOf(1));
 //      params.put("maxAge", String.valueOf(10));
-/*        params.put("latitude", String.valueOf(latitude));
-        params.put("longitude", String.valueOf(longitude));*/
-  //    LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " +MyApplication.getInstance().getBdLocationHelper().getLongitude());
-        params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        params.put("latitude", String.valueOf(latitude));
+        params.put("longitude", String.valueOf(longitude));
+        LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " + MyApplication.getInstance().getBdLocationHelper().getLongitude());
+//todo        params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+//        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
         params.put("pageIndex", String.valueOf(pageIndex));
         params.put("pageSize", String.valueOf(pageSize));
 //        params.put("distance", distance);
@@ -459,8 +471,8 @@ public class Xf_FirstFragment extends EasyFragment {
 
     @Override
     public void onClick(View v) {
-        LogUtil.e("selectItem  = " +selectItem+"***mUsers.size()  = " +mUsers.size());
-        if(mUsers!=null && mUsers.size()>0) {
+        LogUtil.e("selectItem  = " + selectItem + "***mUsers.size()  = " + mUsers.size());
+        if (mUsers != null && mUsers.size() > 0) {
          /*   if(mUsers.size()==selectItem ) {
                 selectItem = selectItem - 1;
             }*/
@@ -472,7 +484,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     unLike(mUsers.get(selectItem));
                     break;
                 case R.id.ll_superLight:
-                    payFunction=1;
+                    payFunction = 1;
                     openSuperSolarize();
                     break;
                 case R.id.llUserLike:
@@ -487,15 +499,16 @@ public class Xf_FirstFragment extends EasyFragment {
 
     /**
      * 超级喜欢
+     *
      * @param user
      */
-    private  void superLike(User  user){
+    private void superLike(User user) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("likeUserId",user.getUserId());
-        params.put("nickname",user.getNickName());
-        params.put("age",user.getAge()+"");
+        params.put("likeUserId", user.getUserId());
+        params.put("nickname", user.getNickName());
+        params.put("age", user.getAge() + "");
         HttpUtils.post().url(coreManager.getConfig().USER_SUPER_LIKE)
                 .params(params)
                 .build()
@@ -511,17 +524,18 @@ public class Xf_FirstFragment extends EasyFragment {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(userSuper);
                             }
-                            if(userSuper.getUserVIPPrivilege().getVipLevel().equals("-1")){
+                            if (userSuper.getUserVIPPrivilege().getVipLevel().equals("-1")) {
                                 BuyMember(userSuper);
                             } else {
                                 //判断超级喜欢每天5次
-                                if(userSuper.getUserVIPPrivilege().getQuantity()==0){
-                                    ToastUtil.showLongToast(getContext(),"当天次数已用完");
+                                if (userSuper.getUserVIPPrivilege().getQuantity() == 0) {
+                                    ToastUtil.showLongToast(getContext(), "当天次数已用完");
                                 }
-                        }
+                            }
 
                         }
                     }
+
                     @Override
                     public void onError(Call call, Exception e) {
                     }
@@ -530,58 +544,60 @@ public class Xf_FirstFragment extends EasyFragment {
 
     //购买会员
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void BuyMember(User  user) {
+    private void BuyMember(User user) {
         //显示VIP购买会员
-        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), user.getUserVIPPrivilegeConfig(), coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(),user.getUserVIPPrivilege().getVipLevel());
+        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), user.getUserVIPPrivilegeConfig(), coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(), user.getUserVIPPrivilege().getVipLevel());
         myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type, int vip) {
                 LogUtil.e("********************************* pay type = " + type + "-------------vip = " + vip);
-                submitPay(type,vip,user.getUserVIPPrivilegeConfig());
+                submitPay(type, vip, user.getUserVIPPrivilegeConfig());
             }
         });
     }
+
     /**
      * 转支付类型返回支付签名数据
+     *
      * @param type
      * @param vip
      */
-    private void  submitPay(String type, int vip, UserVIPPrivilegePrice vipPrivilegePriceList){
+    private void submitPay(String type, int vip, UserVIPPrivilegePrice vipPrivilegePriceList) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
-        if(vip==1){
-            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+        if (vip == 1) {
+            params.put("price", vipPrivilegePriceList.getV0Price() + "");
             params.put("level", vipPrivilegePriceList.getV0());
-        }else if(vip==2){
-            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+        } else if (vip == 2) {
+            params.put("price", vipPrivilegePriceList.getV1Price() + "");
             params.put("level", vipPrivilegePriceList.getV1());
-        }else if(vip==3){
-            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+        } else if (vip == 3) {
+            params.put("price", vipPrivilegePriceList.getV2Price() + "");
             params.put("level", vipPrivilegePriceList.getV2());
-        }else if(vip==4){
-            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+        } else if (vip == 4) {
+            params.put("price", vipPrivilegePriceList.getV3Price() + "");
             params.put("level", vipPrivilegePriceList.getV3());
         }
         params.put("funType", String.valueOf(5));
         params.put("num", String.valueOf(-1));
         params.put("mon", String.valueOf(-1));
-        AlipayHelper.rechargePay(getActivity(), coreManager,params);
+        AlipayHelper.rechargePay(getActivity(), coreManager, params);
 
     }
 
-    private void swithSuperSolarize(int switchType){
-        SuperSolarizePopupWindow  RegretsUnLikePopupWindow=new SuperSolarizePopupWindow(getActivity(),switchType,true);
+    private void swithSuperSolarize(int switchType) {
+        SuperSolarizePopupWindow RegretsUnLikePopupWindow = new SuperSolarizePopupWindow(getActivity(), switchType, true);
         RegretsUnLikePopupWindow.setBtnOnClice(new SuperSolarizePopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(int sumbitType) {
                 //超级爆光再来一次
-                if(switchType==1&&sumbitType==1){
+                if (switchType == 1 && sumbitType == 1) {
                     openSuperSolarize();
-                //超级爆光滑动卡片
-                }else if(switchType==1&&sumbitType==0) {
-                 //无法反悔
-                }else if(switchType==0&&sumbitType==1) {
+                    //超级爆光滑动卡片
+                } else if (switchType == 1 && sumbitType == 0) {
+                    //无法反悔
+                } else if (switchType == 0 && sumbitType == 1) {
 
                 }
 
@@ -593,7 +609,7 @@ public class Xf_FirstFragment extends EasyFragment {
      * 开启超级级爆光
      * 支付成功回调同时再弹出超级爆光页面
      */
-    private void openSuperSolarize(){
+    private void openSuperSolarize() {
         SuperCriticalLightWindow superCriticalLightWindow = new SuperCriticalLightWindow(getActivity(), coreManager.getSelf().getUserVIPPrivilegeConfig());
         superCriticalLightWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
             @Override
@@ -601,16 +617,17 @@ public class Xf_FirstFragment extends EasyFragment {
                 LogUtil.e("type =  " + type);
                         /*Intent intent = new Intent(MyNewWalletActivity.this, WxPayAdd.class);
                         startActivity(intent);*/
-              //   AlipayHelper.recharge(getActivity(), coreManager, userVIPPrivilegePrice.getOutPrice()+"");
+                //   AlipayHelper.recharge(getActivity(), coreManager, userVIPPrivilegePrice.getOutPrice()+"");
                 //
-                superLightPay(type,coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice());
+                superLightPay(type, coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice());
             }
         });
     }
+
     /**
-     *超级爆光支付
+     * 超级爆光支付
      */
-    private void superLightPay(String  type,int  outPrice){
+    private void superLightPay(String type, int outPrice) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("funType", String.valueOf(1));
@@ -619,14 +636,14 @@ public class Xf_FirstFragment extends EasyFragment {
         params.put("mon", String.valueOf(-1));
         params.put("level", String.valueOf(-1));
         params.put("payType", type);
-        AlipayHelper.rechargePay(getActivity(), coreManager,params);
+        AlipayHelper.rechargePay(getActivity(), coreManager, params);
     }
 
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
-        switch (payFunction){
+        switch (payFunction) {
             //超级爆光回调
             case 1:
                 superLight(userSelect);

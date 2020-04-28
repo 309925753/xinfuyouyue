@@ -73,7 +73,7 @@
             android:layout_height="@dimen/menu_item_size"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="@dimen/dp15" />
+            android:padding="@dimen/dp10" />
 
         <com.xfyyim.cn.view.SkinImageView
             android:id="@+id/iv_title_right_right"

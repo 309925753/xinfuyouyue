@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,12 +33,14 @@ import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.mucfile.UploadingHelper;
+import com.xfyyim.cn.ui.trill.ReleasexActivity;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.LogUtils;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.TrillCommentInputDialog;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -79,9 +82,9 @@ public class CareFragment extends EasyFragment {
     private boolean more;
     private String messageId;
     private boolean showTitle = true;
+private RelativeLayout root;
 
-
-    @Override
+@Override
     protected int inflateLayoutId() {
         return R.layout.fragment_care;
     }
@@ -122,10 +125,12 @@ public class CareFragment extends EasyFragment {
     public void initViews() {
         more = true;
         mUserId = coreManager.getSelf().getUserId();
+
         mUserName = coreManager.getSelf().getNickName();
         mListView = findViewById(R.id.recyclerView);
         mListView.setLayoutManager(new LinearLayoutManager(requireContext()));
         // ---------------------------初始化主视图-----------------------
+        root = findViewById(R.id.rl_root);
         mRefreshLayout = findViewById(R.id.refreshLayout);
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
             requestData(true);
@@ -213,7 +218,7 @@ public class CareFragment extends EasyFragment {
     }
 
     public void initData() {
-        mAdapter = new PublicCareRecyclerAdapter(getActivity(), coreManager, mMessages);
+        mAdapter = new PublicCareRecyclerAdapter(getActivity(),root, coreManager, mMessages);
         mListView.setAdapter(mAdapter);
       mAdapter.setOnItemToClickListener(new PublicCareRecyclerAdapter.OnItemToClickListener() {
           @Override
@@ -312,8 +317,13 @@ public class CareFragment extends EasyFragment {
     public void helloEventBus(final MessageEvent message) {
         if (message.message.equals("prepare")) {// 准备播放视频，关闭语音播放
             mAdapter.stopVoice();
+        }else if (message.message.equals("ForbitUser")){
+            requestData(true);
         }
     }
+
+
+
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(MessageEventNotifyDynamic message) {

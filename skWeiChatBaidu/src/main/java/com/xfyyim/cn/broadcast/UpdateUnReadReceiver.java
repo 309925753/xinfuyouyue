@@ -27,12 +27,16 @@ public class UpdateUnReadReceiver extends BroadcastReceiver {
             int operation = intent.getIntExtra(MsgBroadcast.EXTRA_NUM_OPERATION, MsgBroadcast.NUM_ADD);
             int count = intent.getIntExtra(MsgBroadcast.EXTRA_NUM_COUNT, 0);
             main.msg_num_update(operation, count);
-        } else if (action.equals(MsgBroadcast.ACTION_MSG_NUM_UPDATE_NEW_FRIEND)) {// 刷新 新的朋友 消息数量
-            Friend friend = FriendDao.getInstance().getFriend(CoreManager.requireSelf(context).getUserId(), Friend.ID_NEW_FRIEND_MESSAGE);
-            if (friend != null) {
-                main.updateNewFriendMsgNum(friend.getUnReadNum());
-            }
-        } else if (action.equals(MsgBroadcast.ACTION_MSG_NUM_RESET)) {
+        }
+
+//        else if (action.equals(MsgBroadcast.ACTION_MSG_NUM_UPDATE_NEW_FRIEND)) {// 刷新 新的朋友 消息数量
+//            Friend friend = FriendDao.getInstance().getFriend(CoreManager.requireSelf(context).getUserId(), Friend.ID_NEW_FRIEND_MESSAGE);
+//            if (friend != null) {
+//                main.updateNewFriendMsgNum(friend.getUnReadNum());
+//            }
+//        }
+
+        else if (action.equals(MsgBroadcast.ACTION_MSG_NUM_RESET)) {
             main.msg_num_reset();
         }
     }

@@ -29,7 +29,7 @@
                 android:id="@+id/rb_tab_2"
                 style="@style/SkMainTabStyle"
                 android:drawableTop="@drawable/tab_group_normal_bg"
-                android:text="消息"/>
+                android:text="聊天"/>
 
             <RadioButton
                 android:id="@+id/rb_tab_3"

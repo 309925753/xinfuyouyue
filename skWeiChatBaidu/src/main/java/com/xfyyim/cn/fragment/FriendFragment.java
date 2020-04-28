@@ -98,16 +98,18 @@ public class FriendFragment extends EasyFragment {
             if (action.equals(CardcastUiUpdateUtil.ACTION_UPDATE_UI)) {
                 // update();
                 loadData();
-            } else if (action.equals(MsgBroadcast.ACTION_MSG_NUM_UPDATE_NEW_FRIEND)) {// 更新消息数量
-                Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, Friend.ID_NEW_FRIEND_MESSAGE);
-                if (friend != null && friend.getUnReadNum() > 0) {
-                    MainActivity activity = (MainActivity) getActivity();
-                    activity.updateNewFriendMsgNum(friend.getUnReadNum());// 更新底部Tab栏通讯录角标
-
-                    mNotifyCountTv.setText(friend.getUnReadNum() + "");
-                    mNotifyCountTv.setVisibility(View.VISIBLE);
-                }
             }
+
+//            else if (action.equals(MsgBroadcast.ACTION_MSG_NUM_UPDATE_NEW_FRIEND)) {// 更新消息数量
+//                Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, Friend.ID_NEW_FRIEND_MESSAGE);
+//                if (friend != null && friend.getUnReadNum() > 0) {
+//                    MainActivity activity = (MainActivity) getActivity();
+//                  activity.updateNewFriendMsgNum(friend.getUnReadNum());// 更新底部Tab栏通讯录角标
+//
+//                    mNotifyCountTv.setText(friend.getUnReadNum() + "");
+//                    mNotifyCountTv.setVisibility(View.VISIBLE);
+//                }
+//            }
         }
     };
 
@@ -315,9 +317,9 @@ public class FriendFragment extends EasyFragment {
                     mNewFriend.setUnReadNum(0);
 
                     MainActivity activity = (MainActivity) getActivity();
-                    if (activity != null) {
-                        activity.updateNewFriendMsgNum(0);// 更新底部Tab栏通讯录角标
-                    }
+//                    if (activity != null) {
+//                        activity.updateNewFriendMsgNum(0);// 更新底部Tab栏通讯录角标
+//                    }
                 }
                 Intent intentNewFriend = new Intent(getActivity(), NewFriendActivity.class);
                 getActivity().startActivity(intentNewFriend);
@@ -340,9 +342,9 @@ public class FriendFragment extends EasyFragment {
 
                 Friend mNewFriend2 = FriendDao.getInstance().getFriend(mLoginUserId, Friend.ID_NEW_FRIEND_MESSAGE);
                 MainActivity activity = (MainActivity) getActivity();
-                if (mNewFriend2 != null && activity != null) {
-                    activity.updateNewFriendMsgNum(mNewFriend2.getUnReadNum());// 更新底部Tab栏通讯录角标
-                }
+//                if (mNewFriend2 != null && activity != null) {
+//                    activity.updateNewFriendMsgNum(mNewFriend2.getUnReadNum());// 更新底部Tab栏通讯录角标
+//                }
                 Intent intentGroup = new Intent(getActivity(), ContactsActivity.class);
                 getActivity().startActivity(intentGroup);
                 break;

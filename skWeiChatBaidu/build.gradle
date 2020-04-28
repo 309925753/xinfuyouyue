@@ -8,7 +8,7 @@ buildscript {
         channel = 'client' // bugly上显示的渠道名，
 
         buglyAppId = '3e0dc6ee26' // bugly配置的appId,
-        baiduApiKey = '17Oc8gfZjEwO9O36x6Z7VLPhG2Oe7BOb' // baidu配置的apiKey,
+        baiduApiKey = 'a1fo3SKxdzK1awOifhfcsbdi8WsY1P3y' // baidu配置的apiKey,
         googleApiKey = 'AIzaSyAbJjDWUPU6sRsQccNMp8E3soO7YGSkTIg' // google地图配置的apiKey,
         huaweiAppId = '100565571' // 华为推送配置的appId,
         xiaomiAppId = '2882303761517581074' // 小米推送配置的appId,
@@ -144,17 +144,47 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
 
+//    buildTypes {
+//        release {
+//            minifyEnabled true
+//            // 混淆文件位置
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField('String', "VERSION_NAME_SUFFIX", '"' + buglyVersionNameSuffix + '"')
+//            signingConfig signingConfigs.release
+//        }
+//        debug {
+//            buildConfigField('String', "VERSION_NAME_SUFFIX", '"' + "-DEBUG" + '"')
+//            signingConfig signingConfigs.release
+//            debuggable = true
+//        }
+//    }
+    signingConfigs {
+        sigbkey {
+            storeFile file('E:\\android_workspase\\eastkeystore.jks')
+            storePassword '900126cjh'
+            keyPassword '900126cjh'
+            keyAlias = 'chengjinhui'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
-            // 混淆文件位置
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField('String', "VERSION_NAME_SUFFIX", '"' + buglyVersionNameSuffix + '"')
+            //加上以下两句
+            debuggable true
+            signingConfig signingConfigs.sigbkey
         }
+        //添加以下
         debug {
-            buildConfigField('String', "VERSION_NAME_SUFFIX", '"' + "-DEBUG" + '"')
+            buildConfigField('String', "VERSION_NAME_SUFFIX", '"' + buglyVersionNameSuffix + '"')
+            signingConfig signingConfigs.sigbkey
         }
     }
+
+
+
     bundle {
         // 是否分割多语言包
         language {
@@ -174,34 +204,34 @@ android {
     // 签名信息从signing.properties中获取，
     // debug和release使用相同签名，以便用debug包覆盖release包从而调试，
     // 如果没有，就会使用默认debug签名，
-    def signingFile = rootProject.file('signing.properties')
-    if (signingFile.exists()) {
-        def input = signingFile.newInputStream()
-        def p = new Properties()
-        p.load(input)
-        // 签名文件存在才配置签名，
-        def jks = rootProject.file(p['storeFile'])
-        if (jks.exists()) {
-            signingConfigs {
-                config {
-                    keyAlias p['keyAlias']
-                    keyPassword p['keyPassword']
-                    storeFile jks
-                    storePassword p['storePassword']
-                    v1SigningEnabled true
-                    v2SigningEnabled true
-                }
-            }
-            buildTypes {
-                debug {
-                    signingConfig signingConfigs.config
-                }
-                release {
-                    signingConfig signingConfigs.config
-                }
-            }
-        }
-    }
+//    def signingFile = rootProject.file('signing.properties')
+//    if (signingFile.exists()) {
+//        def input = signingFile.newInputStream()
+//        def p = new Properties()
+//        p.load(input)
+//        // 签名文件存在才配置签名，
+//        def jks = rootProject.file(p['storeFile'])
+//        if (jks.exists()) {
+//            signingConfigs {
+//                config {
+//                    storeFile file('../eastkeystore.jks')
+//                    storePassword '900126cjh'
+//                    keyAlias = 'chengjinhui'
+//                    keyPassword '900126cjh'
+//                    v1SigningEnabled true
+//                    v2SigningEnabled true
+//                }
+//            }
+//            buildTypes {
+//                debug {
+//                    signingConfig signingConfigs.config
+//                }
+//                release {
+//                    signingConfig signingConfigs.config
+//                }
+//            }
+//        }
+//    }
 }
 
 configurations.all {

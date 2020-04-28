@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.alipay.sdk.app.AuthTask;
+import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
@@ -177,6 +178,8 @@ public class AlipayHelper {
     }
 
     private static void callAlipay(Activity activity, String orderInfo) {
+        //todo 沙箱
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         AsyncUtils.doAsync(activity, t -> {
             Reporter.post("拉起支付宝失败，", t);
             AsyncUtils.runOnUiThread(activity, ctx -> {

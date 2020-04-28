@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/new_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-        <include layout="@layout/a_view_actionbar" />
+        <include
+            android:id="@+id/title"
+            layout="@layout/a_view_actionbar" />
+        <LinearLayout
+            android:layout_below="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/new_main"
+        >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,12 +61,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:visibility="gone">
-
                 <View
-
                     android:id="@+id/myNavigationView"
                     android:layout_width="0dp"
-                    android:layout_height="2dp"
+                    android:layout_height="3dp"
                     android:background="#FC607E" />
         </com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer>
         <com.xfyyim.cn.nocsroll.NoScrollViewPager
@@ -68,6 +75,56 @@
             android:layout_weight="1">
 
         </com.xfyyim.cn.nocsroll.NoScrollViewPager>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_all"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/img_1"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar_normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_oval="true" />
+
+                <LinearLayout
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/img_1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="在线闪聊"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_13_text_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="当前在线0人"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
 
 
-</LinearLayout>
+                </LinearLayout>
+
+        </RelativeLayout>
+</RelativeLayout>
+
+

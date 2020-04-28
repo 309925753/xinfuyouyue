@@ -364,7 +364,7 @@ public class DataDownloadActivity extends BaseActivity {
     /**
      * 下载我的标签
      */
-    private void downloadUserLabel() {
+    private void   downloadUserLabel() {
         HashMap<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
 

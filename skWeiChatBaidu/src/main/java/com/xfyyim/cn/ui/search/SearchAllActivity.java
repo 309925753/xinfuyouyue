@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -179,11 +181,24 @@ public class SearchAllActivity extends BaseActivity {
         tvSearchNewKey = searchNew.findViewById(R.id.tvSearchNewKey);
         tvSearchNewKey.setTextColor(SkinUtils.getSkin(this).getAccentColor());
 
+
+        mSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    if (!TextUtils.isEmpty(mSearchEdit.getText().toString().trim())) {
+                    UserListGatherActivity.start(SearchAllActivity.this, mSearchEdit.getText().toString());
+                    searchHistoryList.add(0, mSearchEdit.getText().toString());
+                    saveSearchHistory(SearchAllActivity.this, historyKey, searchHistoryList);
+                    return true;
+                    }
+                }
+                return false;
+            }
+        });
         mSearchEdit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {

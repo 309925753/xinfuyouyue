@@ -9,40 +9,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.Reporter;
-import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicMessageRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicNearAdapter;
 import com.xfyyim.cn.adapter.SendTopicAdapter;
-import com.xfyyim.cn.adapter.TopicAdapter;
-import com.xfyyim.cn.bean.MyZan;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.circle.TopicEntity;
-import com.xfyyim.cn.bean.event.MessageEventHongdian;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
-import com.xfyyim.cn.db.dao.MyZanDao;
-import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.downloader.Downloader;
-import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
@@ -51,20 +39,10 @@ import com.xfyyim.cn.ui.circle.MessageEventNotifyDynamic;
 import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
-import com.xfyyim.cn.ui.circle.range.NewZanActivity;
-import com.xfyyim.cn.ui.circle.range.SendAudioActivity;
-import com.xfyyim.cn.ui.circle.range.SendFileActivity;
-import com.xfyyim.cn.ui.circle.range.SendShuoshuoActivity;
-import com.xfyyim.cn.ui.circle.range.SendVideoActivity;
-import com.xfyyim.cn.ui.circle.range.TopicActivity;
 import com.xfyyim.cn.ui.circle.range.TopicDetailActivity;
-import com.xfyyim.cn.ui.mucfile.UploadingHelper;
-import com.xfyyim.cn.util.CameraUtil;
-import com.xfyyim.cn.util.LogUtils;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
-import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.TrillCommentInputDialog;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -109,9 +87,11 @@ public class NearFragment extends EasyFragment {
     private boolean more;
     private String messageId;
     private boolean showTitle = true;
+RelativeLayout rl_root;
 
     RecyclerView rv_topic_hor;
     TextView tv_like;
+    RelativeLayout rl_like;
     ImageView img_likefirst;
     private View mHeadView;
 
@@ -151,6 +131,7 @@ public class NearFragment extends EasyFragment {
 
     public void initViews() {
         more = true;
+        rl_root=findViewById(R.id.rl_root);
         mUserId = coreManager.getSelf().getUserId();
         mUserName = coreManager.getSelf().getNickName();
         mListView = findViewById(R.id.recyclerView);
@@ -159,6 +140,7 @@ public class NearFragment extends EasyFragment {
         mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.header_near, mListView, false);
         rv_topic_hor=mHeadView.findViewById(R.id.rv_topic_hor);
         tv_like=mHeadView.findViewById(R.id.tv_like_count);
+        rl_like=mHeadView.findViewById(R.id.rl_like);
         img_likefirst=mHeadView.findViewById(R.id.avatar_img);
 
 
@@ -224,7 +206,12 @@ public class NearFragment extends EasyFragment {
 
                             if (Result.checkSuccess(getActivity(), result)) {
                                 TopicEntity.DataBean bean=result.getData();
-                                tv_like.setText(String.valueOf(bean.getQuantity()));
+                                if(bean.getQuantity()==0){
+                                    rl_like.setVisibility(View.GONE);
+                                }else{
+                                    tv_like.setText(String.valueOf(bean.getQuantity()));
+                                }
+
                                 List<TopicEntity.DataBean.ListBean> list=bean.getList();
                                 setTopicAdapter(list);
                             }
@@ -249,7 +236,7 @@ public class NearFragment extends EasyFragment {
     }
 
     public void initData() {
-        mAdapter = new PublicNearAdapter(getActivity(), coreManager, mMessages);
+        mAdapter = new PublicNearAdapter(getActivity(),rl_root, coreManager, mMessages);
         mListView.setAdapter(mAdapter);
 
         mAdapter.setOnItemToClickListener(new PublicNearAdapter.OnItemToClickListener() {
@@ -349,6 +336,10 @@ public class NearFragment extends EasyFragment {
     public void helloEventBus(final MessageEvent message) {
         if (message.message.equals("prepare")) {// 准备播放视频，关闭语音播放
             mAdapter.stopVoice();
+        }else if (message.message.equals("NearForbitUser")){
+            requestData(true);
+        }else if (message.message.equals("NearAttionUser")){
+            requestData(true);
         }
     }
 

@@ -21,52 +21,51 @@
         />
         <RelativeLayout
             android:id="@+id/rlhome"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp30"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
             android:background="@drawable/appdes_shape_f0f2f5_4"
             android:layout_marginTop="@dimen/dp10"
             android:layout_marginLeft="@dimen/dp5"
             >
             <ImageView
                 android:id="@+id/home_ph"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
+                android:layout_width="16dp"
+                android:layout_height="12dp"
                 android:src="@mipmap/home_phot"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginTop="@dimen/dp5"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
                 />
             <TextView
                 android:id="@+id/tvLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
-                android:textSize="@dimen/sp_12_text_size"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_10_text_size"
+                android:layout_centerVertical="true"
                 tools:text="11"
-                android:text="1"
                 android:layout_toRightOf="@+id/home_ph"
-                android:layout_marginLeft="@dimen/dp10"
-                android:layout_marginTop="@dimen/dp5"
-                />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="@dimen/dp30"
-            android:layout_height="@dimen/dp30"
-            android:background="@drawable/appdes_shape_f0f2f5_4"
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_marginLeft="@dimen/dp5"
-            android:layout_toRightOf="@+id/rlhome"
-            >
-            <ImageView
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:src="@mipmap/home_quan"
                 android:layout_marginLeft="@dimen/dp5"
-                android:layout_marginTop="@dimen/dp5"
                 />
         </RelativeLayout>
+
+
         <ImageView
-            android:layout_width="@dimen/dp30"
-            android:layout_height="@dimen/dp30"
+            android:layout_toRightOf="@+id/rlhome"
+            android:layout_alignTop="@+id/rlhome"
+            android:layout_alignBottom="@+id/rlhome"
+            android:layout_width="@dimen/dp20"
+            android:padding="2dp"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/home_quan"
+            android:layout_marginLeft="@dimen/dp5"
+            android:background="@drawable/appdes_shape_f0f2f5_4"
+
+            />
+
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:src="@mipmap/home_v"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dp10"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +53,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     ImageView iv_title_left;
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
+    @BindView(R.id.rl_root)
+    LinearLayout rl_root;
 
     private View mHeadView;
 
@@ -96,7 +99,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         rv_blum.setLayoutManager(linearLayoutManager
         );
 
-        mAdapter = new PublicCareRecyclerAdapter(PersonBlumActivity.this, coreManager, mMessages);
+        mAdapter = new PublicCareRecyclerAdapter(PersonBlumActivity.this, rl_root,coreManager, mMessages);
         rv_blum.setAdapter(mAdapter);
 
 
@@ -183,7 +186,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         tv_age.setText(user.getAge() + "  " + user.getStarSign());
 
         tv_my_blum.setText("我的相册 " + user.getMsgCount());
-        tv_zan.setText(user.getPraiseCount());
+        tv_zan.setText(String.valueOf(user.getPraiseCount()));
 
     }
 

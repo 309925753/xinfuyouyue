@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/a_view_actionbar"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="@dimen/dp15">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="图片证据"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="@dimen/sp_14_text_size" />
+
+
+                <TextView
+                    android:id="@+id/tv_pic_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="0张/9"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="@dimen/sp_14_text_size" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_edit"
+                android:background="@color/white"
+                android:clickable="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:descendantFocusability="blocksDescendants"
+                android:padding="15dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp15"
+                android:text="投诉内容(必填)"
+                android:textColor="@color/text_black_333"
+                android:textSize="@dimen/sp_14_text_size" />
+
+            <EditText
+
+                android:id="@+id/et_report_content"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@color/white"
+                android:gravity="top|left"
+
+                android:hint="请输入投诉内容"
+                android:lineSpacingExtra="5dp"
+                android:maxLength="200"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="5dp"
+                android:textSize="@dimen/sp_14_text_size"
+
+
+                />
+
+            <TextView
+                android:id="@+id/tv_word_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="right"
+                android:paddingRight="10dp"
+                android:text="0/200"
+                android:textColor="@color/text_black_999"
+                android:textSize="@dimen/sp_14_text_size" />
+
+            <Button
+                android:id="@+id/next_step_btn"
+                style="@style/BossGreenBtn"
+                android:layout_marginTop="@dimen/dp30"
+                android:text="提交" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

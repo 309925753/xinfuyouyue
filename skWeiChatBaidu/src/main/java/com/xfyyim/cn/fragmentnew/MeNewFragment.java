@@ -235,11 +235,12 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     }
 
 
-    public void startToPersonBlum(){
+    public void startToPersonBlum() {
         Intent intentperson = new Intent(getActivity(), PersonBlumActivity.class);
         intentperson.putExtra("FriendId", user.getUserId());
         startActivity(intentperson);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -300,7 +301,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), avatar_img, true);
         tv_fans.setText(String.valueOf(user.getFansCount()));
         tv_guanzhu.setText(String.valueOf(user.getAttCount()));
-        tv_blum.setText(user.getPraiseCount()+"");
+        tv_blum.setText(String.valueOf(user.getPraiseCount()));
         tv_name.setText(user.getNickName());
 
         if (user.getVipFlag() == 0) {
@@ -310,36 +311,39 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
         //相册
 
-        if (user.getMsgImgs() != null &&!TextUtils.isEmpty(user.getMsgImgs()) ) {
-            List<String > blumList=new ArrayList<>();
-            if (user.getMsgImgs().contains(",")){
-                String blums[]=user.getMsgImgs().split(",");
-                for (String s:blums){
+        if (user.getMsgImgs() != null && !TextUtils.isEmpty(user.getMsgImgs())) {
+
+            List<String> blumList = new ArrayList<>();
+            if (user.getMsgImgs().contains(",")) {
+                String blums[] = user.getMsgImgs().split(",");
+                for (String s : blums) {
                     blumList.add(s);
                 }
-            }else{
+            } else {
                 blumList.add(user.getMsgImgs());
             }
 
+            if (blumList != null && blumList.size() > 0) {
 
-            int index = blumList.size() == 3 ? 3 : user.getMyPhotos().size();
-            ll_my_blum.removeAllViews();
-            for (int i = 0; i < index; i++) {
-                ImageView imageView = new ImageView(getActivity());
-                int wid = ScreenUtils.dip2px(33, getActivity());
-                int hight = ScreenUtils.dip2px(33, getActivity());
 
-                LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(wid, hight);
-                ls.setMargins(0, 0, 10, 0);
-                imageView.setLayoutParams(ls);
-                GlideImageUtils.setImageView(getActivity(), user.getMyPhotos().get(i).getPhotoUtl(), imageView);
-                ll_my_blum.addView(imageView);
+                int index = blumList.size() == 3 ? 3 : blumList.size();
+                ll_my_blum.removeAllViews();
+                for (int i = 0; i < index; i++) {
+                    ImageView imageView = new ImageView(getActivity());
+                    int wid = ScreenUtils.dip2px(33, getActivity());
+                    int hight = ScreenUtils.dip2px(33, getActivity());
 
+                    LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(wid, hight);
+                    ls.setMargins(0, 0, 10, 0);
+                    imageView.setLayoutParams(ls);
+                    GlideImageUtils.setImageView(getActivity(), blumList.get(i), imageView);
+                    ll_my_blum.addView(imageView);
+
+                }
+            } else {
+                ll_my_blum.removeAllViews();
             }
-        }else{
-            ll_my_blum.removeAllViews();
         }
-
 
     }
 
@@ -371,23 +375,23 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
-        if(vip==1){
-            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+        if (vip == 1) {
+            params.put("price", vipPrivilegePriceList.getV0Price() + "");
             params.put("level", vipPrivilegePriceList.getV0());
-        }else if(vip==2){
-            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+        } else if (vip == 2) {
+            params.put("price", vipPrivilegePriceList.getV1Price() + "");
             params.put("level", vipPrivilegePriceList.getV1());
-        }else if(vip==3){
-            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+        } else if (vip == 3) {
+            params.put("price", vipPrivilegePriceList.getV2Price() + "");
             params.put("level", vipPrivilegePriceList.getV2());
-        }else if(vip==4){
-            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+        } else if (vip == 4) {
+            params.put("price", vipPrivilegePriceList.getV3Price() + "");
             params.put("level", vipPrivilegePriceList.getV3());
         }
         params.put("funType", String.valueOf(5));
         params.put("num", String.valueOf(-1));
         params.put("mon", String.valueOf(-1));
-        AlipayHelper.rechargePay(getActivity(), coreManager,params);
+        AlipayHelper.rechargePay(getActivity(), coreManager, params);
     }
 }
 

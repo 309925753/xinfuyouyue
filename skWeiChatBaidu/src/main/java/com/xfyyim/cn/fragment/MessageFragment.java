@@ -1,4 +1,4 @@
-package com.xfyyim.cn.fragment;
+ package com.xfyyim.cn.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

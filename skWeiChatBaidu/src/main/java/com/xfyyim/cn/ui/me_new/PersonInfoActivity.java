@@ -281,13 +281,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         });
 
 
-        //喜欢我
-        if (user.getAttCount() == 0) {
 
-        } else {
-
-            private_wechat_like.setText(String.valueOf(user.getAttCount()) + "人喜欢了你");
-        }
+            private_wechat_like.setText(String.valueOf(user.getLikeMeCount()) + "人喜欢了你");
 
 
         //签名

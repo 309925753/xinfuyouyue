@@ -12,6 +12,8 @@
         android:layout_height="70dp"
         android:scaleType="centerCrop" />
 
+
+
     <com.xfyyim.cn.view.SquareCenterFrameLayout
         android:id="@+id/add_sc"
         android:layout_width="70dp"
@@ -48,5 +50,14 @@
         </FrameLayout>
 
     </com.xfyyim.cn.view.SquareCenterFrameLayout>
-
+    <ImageView
+        android:id="@+id/img_delete_pic"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:padding="5dp"
+        android:src="@mipmap/del_circle"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/shape_gray_dot"
+        />
 </FrameLayout>

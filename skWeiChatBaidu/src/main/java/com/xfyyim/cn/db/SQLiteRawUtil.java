@@ -31,6 +31,7 @@ public class SQLiteRawUtil {
                 "fileSize INTEGER," +
                 "timeLen INTEGER, " +
                 "isReadDel INTEGER," +
+                "isMatch INTEGER," +
                 "isEncrypt INTEGER," +
                 "signature VARCHAR," +
                 "deleteTime INTEGER NOT NULL," +

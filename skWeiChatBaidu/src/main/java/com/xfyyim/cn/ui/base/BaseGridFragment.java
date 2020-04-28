@@ -2,7 +2,9 @@ package com.xfyyim.cn.ui.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ public abstract class BaseGridFragment<VH extends RecyclerView.ViewHolder> exten
     public LayoutInflater mInflater;
     SwipeRefreshLayout mSSRlayout;
     RecyclerView mRecyclerView;
+    TextView search_empty;
     private int pager;
     private boolean loading = true;
 
@@ -42,11 +45,10 @@ public abstract class BaseGridFragment<VH extends RecyclerView.ViewHolder> exten
     private void initView() {
         mSSRlayout = (SwipeRefreshLayout) findViewById(R.id.fragment_list_swip);
         mRecyclerView = (RecyclerView) findViewById(R.id.fragment_list_recyview);
+        search_empty =  findViewById(R.id.search_empty);
         mInflater = LayoutInflater.from(getActivity());
-
         mSSRlayout.setColorSchemeResources(R.color.text_select, R.color.dialog_normal,
                 R.color.color_violet);
-
         mSSRlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -55,6 +57,8 @@ public abstract class BaseGridFragment<VH extends RecyclerView.ViewHolder> exten
                 loading = false;
             }
         });
+
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new PreviewAdapter();
@@ -81,7 +85,15 @@ public abstract class BaseGridFragment<VH extends RecyclerView.ViewHolder> exten
         if (mSSRlayout.isRefreshing()) {
             mSSRlayout.setRefreshing(false);
         }
-        mAdapter.setData(data);
+
+      if  (data != null && data.size() > 0){
+          mSSRlayout.setVisibility(View.VISIBLE);
+          search_empty.setVisibility(View.GONE);
+          mAdapter.setData(data);
+      }else{
+          search_empty.setVisibility(View.VISIBLE);
+          mSSRlayout.setVisibility(View.GONE);
+      }
     }
 
     class PreviewAdapter extends RecyclerView.Adapter<VH> {

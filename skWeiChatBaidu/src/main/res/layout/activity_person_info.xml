@@ -235,7 +235,7 @@
                         android:layout_marginLeft="40dp"
                         android:layout_toRightOf="@+id/img_like"
                         android:gravity="center"
-                        android:text="122331人喜欢了你"
+                        android:text="0人喜欢了你"
                         android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
 

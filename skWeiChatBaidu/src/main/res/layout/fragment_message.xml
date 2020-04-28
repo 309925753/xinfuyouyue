@@ -4,7 +4,7 @@
     android:id="@+id/message_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/new_main"
     android:orientation="vertical">
 
     <include layout="@layout/a_view_actionbar"
@@ -26,7 +26,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:background="@color/new_main"
             android:overScrollMode="never"
             tools:listitem="@android:layout/simple_list_item_2" />
 

@@ -14,6 +14,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name, android:icon, android:roundIcon">
+        <activity android:name=".ui.me.FaceLivenessExpActivity"></activity>
+        <activity android:name=".ui.me_new.ReportActivity"></activity>
         <activity android:name=".ui.me.MatchingSuccessfulActivity"></activity>
         <activity android:name=".ui.me.payCompleteActivity" />
         <activity android:name=".ui.me.FaceLivenessExpActivity" />
@@ -236,7 +238,12 @@
         <activity android:name=".ui.map.MapActivity" />
         <activity
             android:name=".ui.map.MapPickerActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" /> <!-- 红包 -->
+            android:windowSoftInputMode="stateHidden|adjustPan"
+
+            />
+        <activity android:name=".ui.map.MapAddressListActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            />
         <activity android:name=".ui.me.redpacket.MucSendRedPacketActivity" />
         <activity android:name=".ui.me.redpacket.MyConsumeRecordNew" />
         <activity android:name=".ui.me.redpacket.QuXianActivity" />
@@ -558,6 +565,7 @@
                     android:scheme="shikuimapp" />
             </intent-filter>
         </activity>
+
         <activity android:name=".call.QuickMeetingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -631,19 +639,21 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="com.vivo.push.api_key"
             android:value="${VIVO_APP_KEY}" />
+
         <meta-data
             android:name="com.vivo.push.app_id"
             android:value="${VIVO_APP_ID}" />
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="${HUAWEI_APP_ID}" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icon_notification" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${APP_ID}.fileProvider"
@@ -658,7 +668,6 @@
             android:authorities="${APP_ID}.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true" />
-
         <receiver
             android:name=".broadcast.MyBroadcastReceiver"
             android:process=":restart">
@@ -666,6 +675,7 @@
                 <action android:name="${APP_ID}.action.broadcasttest.startActivity" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".broadcast.ShakeReceiver">
             <intent-filter>
                 <action android:name="${APP_ID}.action.shake_msg_notify" />
@@ -748,7 +758,6 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />
-
         <service
             android:name=".xmpp.CoreService"
             android:enabled="true"
@@ -817,6 +826,7 @@
         <service
             android:name="com.fanjun.keeplive.service.RemoteService"
             android:process=":remote" />
+
     </application>
     <permission
         android:name="${APP_ID}.permission.MIPUSH_RECEIVE"
@@ -824,7 +834,6 @@
     <permission
         android:name="${APP_ID}.push.permission.MESSAGE"
         android:protectionLevel="signature" />
-
     <permission
         android:name="${APP_ID}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
