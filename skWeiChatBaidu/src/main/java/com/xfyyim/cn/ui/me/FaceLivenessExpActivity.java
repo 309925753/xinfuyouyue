@@ -1,6 +1,7 @@
 package com.xfyyim.cn.ui.me;
 
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 
 public class FaceLivenessExpActivity  extends FaceLivenessActivity {
 
-    private DefaultDialog mDefaultDialog;
+    private AlertDialog mDefaultDialog;
     private HashMap<String, String> base64ImageMap;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class FaceLivenessExpActivity  extends FaceLivenessActivity {
 
     private void showMessageDialog(String title, String message) {
         if (mDefaultDialog == null) {
-            DefaultDialog.Builder builder = new DefaultDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(title).
                     setMessage(message).
                     setNegativeButton("确认",

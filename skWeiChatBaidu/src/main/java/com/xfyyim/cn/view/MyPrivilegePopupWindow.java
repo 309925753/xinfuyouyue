@@ -72,7 +72,7 @@ public class MyPrivilegePopupWindow extends PopupWindow implements View.OnClickL
         }else {
             TvMoney.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice1()));
             TvMoney2.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice2()));
-            TvMoney3.setText("￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice3()));
+            TvMoney3.setText("  ￥"+ ArithUtils.round1(userVIPPrivilegePrice.getChatByMonthPrice3()));
         }
         tvDiscount2.setVisibility(View.VISIBLE);
 

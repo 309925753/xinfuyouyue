@@ -850,6 +850,9 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
     public void helloEventBus(EventNotifyMatching message) {
         LogUtil.e("乙方匹配喜欢接收 ");
         Friend friend = JSON.parseObject(message.MessageData, Friend.class);
+        Intent      intent=new Intent(MainActivity.this, MatchingSuccessfulActivity.class);
+        intent.putExtra("friend",friend);
+        startActivity(intent);
     }
 
     /**

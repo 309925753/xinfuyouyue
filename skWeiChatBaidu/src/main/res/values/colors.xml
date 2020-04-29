@@ -214,6 +214,6 @@
     <color name="rl_bg_two">#F8C042</color>
 
     <color name="system_default_text_color">#969696</color>
-    <color name="tab_notice_blue">#1296db</color>
-    <color name="tab_notice_normal">#999999</color>
+    <color name="tab_notice_blue">#FC607E</color>
+    <color name="tab_notice_normal">#666666</color>
 </resources>

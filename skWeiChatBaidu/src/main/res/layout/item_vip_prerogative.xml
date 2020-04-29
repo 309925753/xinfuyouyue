@@ -29,6 +29,12 @@
         android:layout_height="102dp"
         android:layout_marginTop="@dimen/dp10"
         >
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="102dp"
+        android:layout_toLeftOf="@+id/ivCenter"
+        android:layout_marginRight="-23dp"
+        >
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivLeft"
             android:layout_width="100dp"
@@ -37,39 +43,45 @@
             android:scaleType="centerCrop"
             android:src="@drawable/default_head"
             android:visibility="visible"
-            app:riv_border_color="#fff"
-            app:riv_border_width="1dip"
+            app:riv_border_color="#FFFFFF"
+            app:riv_border_width="2dip"
             app:riv_corner_radius="6dp"
             app:riv_oval="true"
-            android:layout_marginRight="-23dp"
-            android:layout_toLeftOf="@+id/ivCenter"
             />
-
-
-        <ImageView
-            android:id="@+id/ivCenter"
-            android:layout_width="@dimen/dp30"
-            android:layout_height="@dimen/dp30"
-            android:layout_centerHorizontal="true"
-            android:src="@mipmap/my_super_love"
-            />
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/ivRight"
+    </RelativeLayout>
+        <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="102dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_head"
-            android:visibility="visible"
-            app:riv_border_color="#fff"
-            app:riv_border_width="1dip"
-            app:riv_corner_radius="6dp"
-            app:riv_oval="true"
-            android:layout_marginLeft="-22dp"
             android:layout_toRightOf="@+id/ivCenter"
-            />
-
-
+            android:layout_marginLeft="-22dp"
+            >
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivRight"
+                android:layout_width="100dp"
+                android:layout_height="102dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_head"
+                android:visibility="visible"
+                app:riv_border_color="#FFFFFF"
+                app:riv_border_width="0.1dip"
+                app:riv_corner_radius="6dp"
+                app:riv_oval="true"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/ivCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            >
+            <ImageView
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/my_super_love"
+                />
+        </RelativeLayout>
     </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"

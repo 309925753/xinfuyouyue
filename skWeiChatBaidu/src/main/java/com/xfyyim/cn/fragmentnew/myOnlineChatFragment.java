@@ -79,6 +79,7 @@ public class myOnlineChatFragment extends EasyFragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventNotifyOnlineChat message) {
         LogUtil.e("在线闪聊发起方");
+        DialogHelper.dismissProgressDialog();
          Friend friend = JSON.parseObject(message.MessageData, Friend.class);
         ImmediateiyChatPopupWindow immediateiyChatPopupWindow=new ImmediateiyChatPopupWindow(getActivity(),coreManager.getSelf().getUserId());
         immediateiyChatPopupWindow.setBtnOnClice(new ImmediateiyChatPopupWindow.BtnOnClick() {
@@ -115,18 +116,19 @@ public class myOnlineChatFragment extends EasyFragment {
             @Override
             public void onClick(View v) {
                 //立即闪聊
-                openOnlineChat();
+                OnlineChat();
+
             }
         });
         getUserPrivilegeInfo();
         EventBusHelper.register(this);
     }
-    @SuppressWarnings("unused")
+   /* @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
         startActivity(new Intent(getActivity(), payCompleteActivity.class));
-    }
+    }*/
 
     /**
      * 获取特权配置信息
@@ -227,16 +229,15 @@ public class myOnlineChatFragment extends EasyFragment {
                 .execute(new BaseCallback<String>(String.class) {
                     @Override
                     public void onResponse(ObjectResult<String> result) {
-                        DialogHelper.dismissProgressDialog();
-                    /*    Timer timer = new Timer();// 实例化Timer类
+                      //  DialogHelper.dismissProgressDialog();
+                        Timer timer = new Timer();// 实例化Timer类
                         timer.schedule(new TimerTask() {
                             public void run() {
                                 DialogHelper.dismissProgressDialog();
                                 this.cancel();
                             }
-                        }, 10000);*/
+                        }, 3000);
                         if (Result.checkSuccess(getActivity(), result)) {
-
 
                           /*  Friend friend = result.getData();
                             if(friend!=null && (!TextUtils.isEmpty(friend.getUserId()+""))){

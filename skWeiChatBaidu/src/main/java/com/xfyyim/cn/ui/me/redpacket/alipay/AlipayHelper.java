@@ -179,7 +179,7 @@ public class AlipayHelper {
 
     private static void callAlipay(Activity activity, String orderInfo) {
         //todo 沙箱
-        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+       // EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         AsyncUtils.doAsync(activity, t -> {
             Reporter.post("拉起支付宝失败，", t);
             AsyncUtils.runOnUiThread(activity, ctx -> {

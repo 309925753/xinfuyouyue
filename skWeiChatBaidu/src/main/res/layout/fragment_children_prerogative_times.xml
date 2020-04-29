@@ -28,7 +28,7 @@
         android:textSize="@dimen/sp_13_text_size"
         android:textColor="@color/text_black_333"
         android:layout_gravity="center_horizontal"
-        android:text="经常手快滑错了？"/>
+        android:text=""/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:textColor="@color/text_black_999"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp5"
-        android:text="用反悔轻松找回一个人，让你拥有多次机会获取会员不限量"/>
+        android:text="VIP会员可以无限右滑从此再无限制尽情滑动,与更多朋友配对!"/>
 
     <ImageView
         android:layout_width="wrap_content"

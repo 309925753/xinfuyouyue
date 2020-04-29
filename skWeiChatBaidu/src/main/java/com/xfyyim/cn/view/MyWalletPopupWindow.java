@@ -113,7 +113,7 @@ public class MyWalletPopupWindow extends PopupWindow implements View.OnClickList
                     tvBuyMoney.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency1())+"RMB");
                     tvBuyMoney2.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency2())+"RMB");
                     tvBuyMoney3.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10())+"RMB");
-                    tvBuyMoney4.setText(ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10More())+"RMB");
+                    tvBuyMoney4.setText(""+ArithUtils.round1(userVIPPrivilegePrice.getSuperLikeByFrequency10More())+"RMB");
                     Frequency10MorePrice=userVIPPrivilegePrice.getSuperLikeByFrequency10More();
                     oncePrice=userVIPPrivilegePrice.getSuperLikeByFrequency2();
                     tvTitleType.setText("获取超级喜欢");

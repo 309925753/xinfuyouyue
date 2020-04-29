@@ -101,6 +101,7 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
             //超级爆光回调
             case 1:
                 superLight(coreManager.getSelf());
+                payFunction=0;
                 break;
         }
     }

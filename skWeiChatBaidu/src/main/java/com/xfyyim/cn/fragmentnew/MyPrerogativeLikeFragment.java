@@ -77,15 +77,15 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
             }
         });
         getUserPrivilegeInfo();
-        EventBusHelper.register(this);
+
     }
-    @SuppressWarnings("unused")
+  /*  @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
         //支付成功
         startActivity(new Intent(getActivity(), payCompleteActivity.class));
 
-    }
+    }*/
 
     /**
      *获取用户特权信息
@@ -199,7 +199,5 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
         params.put("num", String.valueOf(-1));
         params.put("level", String.valueOf(-1));
         AlipayHelper.rechargePay(getActivity(), coreManager,params);
-
-
     }
 }

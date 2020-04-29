@@ -94,15 +94,8 @@ public class MyPrerogativeFragment extends EasyFragment {
         findViewById(R.id.llChangePosition).setOnClickListener(this::onClick);
         findViewById(R.id.llLikeTimes).setOnClickListener(this::onClick);
         getUserPrivilegeInfo();
-        EventBusHelper.register(this);
     }
-    @SuppressWarnings("unused")
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void helloEventBus(EventPaySuccess message) {
-        //支付成功
-        startActivity(new Intent(getActivity(), payCompleteActivity.class));
 
-    }
 
     private void getUserPrivilegeConfigInfo() {
         LogUtil.e("into  getUserPrivilegeConfigInfo");
@@ -150,7 +143,7 @@ public class MyPrerogativeFragment extends EasyFragment {
                             privilegeBean = result.getData();
                             LogUtil.e("UserVIPPrivilege = " +privilegeBean.toString());
                             if (privilegeBean.getVipLevel().equals("v0") || privilegeBean.getVipLevel().equals("v1") || privilegeBean.getVipLevel().equals("v2") || privilegeBean.getVipLevel().equals("v3")) {
-                                tvDataTime.setText("VIP会员" + DateUtils.newTimedate(privilegeBean.getEndTime()) + "到期）");
+                                tvDataTime.setText("VIP会员(" + DateUtils.newTimedate(privilegeBean.getEndTime()) + "到期）");
                                 tvBuyVipPerogative.setText("续费VIP会员");
                                 AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
                             } else {
@@ -194,6 +187,7 @@ public class MyPrerogativeFragment extends EasyFragment {
     private void BuyMember() {
         //显示VIP购买会员
         MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), vipPrivilegePriceList, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(),privilegeBean.getVipLevel());
+
         //谁喜欢我，在线聊天  购买
         //   MyPrivilegePopupWindow  my=new MyPrivilegePopupWindow(getActivity());
         LogUtil.e("BuyMember  BuyMember");
@@ -284,6 +278,10 @@ public class MyPrerogativeFragment extends EasyFragment {
         //滑错无限反悔
         View children_online_chat = getActivity().getLayoutInflater().inflate(
                 R.layout.fragment_children_slip_error, null);
+        TextView  tvConent=children_online_chat.findViewById(R.id.tvConent);
+        tvConent.setVisibility(View.VISIBLE);
+        tvConent.setText("经常手快滑错了?");
+
         children_online_chat.findViewById(R.id.tvPaySlip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -91,7 +91,7 @@
         android:textColor="@color/text_black_999"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp5"
-        android:text="帮你突出并置顶，记得留给最喜欢的人哦。获取会员每天5个"/>
+        android:text="多重维度彰显身份配对更容易!"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp10"

@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_pay_red"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginLeft="@dimen/dp10"
             >
             <TextView
                 android:id="@+id/tvBuyTimes2"
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_white"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginLeft="@dimen/dp10"
             >
             <TextView
                 android:id="@+id/tvBuyTimes3"
@@ -140,19 +140,19 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_new_my_wallet_white"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp5"
             >
             <TextView
                 android:id="@+id/tvBuyTimes4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="10次以上"
+                android:text="  10次以上"
                 android:textColor="@color/text_black_999"
                 android:textSize="@dimen/sp_10_text_size"
-                android:paddingLeft="@dimen/dp10"
-                android:paddingRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp5"
                 />
             <TextView
                 android:id="@+id/tvBuyMoney4"
@@ -161,8 +161,8 @@
                 android:text="0.99mb"
                 android:textColor="@color/text_black_666"
                 android:textSize="@dimen/sp_15_text_size"
-                android:paddingLeft="@dimen/dp10"
-                android:paddingRight="@dimen/dp10"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp5"
                 android:layout_marginTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp15"
                 />

@@ -73,11 +73,14 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         tvUserName.setText(UserName);
         AvatarHelper.getInstance().displayAvatar(UserId, children_prerogative_like.findViewById(R.id.ivHead), true);
 
-
-
         //滑错无限反悔
         View children_online_chat = context.getLayoutInflater().inflate(
                 R.layout.item_vip_prerogative_location, null);
+        TextView children_online = (TextView) children_online_chat.findViewById(R.id.tvPayType);
+        children_online.setText("滑错无限反悔");
+        children_online.setVisibility(View.VISIBLE);
+        TextView childrenPayTypeContent = (TextView) children_online_chat.findViewById(R.id.tvPayTypeContent);
+        childrenPayTypeContent.setText("滑错了？点击立刻找回!");
 
         //任意定位
         View children_prerogative_location = context.getLayoutInflater().inflate(
@@ -86,6 +89,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         ivVIpCenter.setImageResource(R.mipmap.my_vip_change_positioning);
         TextView tvPayType = (TextView) children_prerogative_location.findViewById(R.id.tvPayType);
         tvPayType.setText("任意更改定位");
+        tvPayType.setVisibility(View.VISIBLE);
         TextView tvPayTypeContent = (TextView) children_prerogative_location.findViewById(R.id.tvPayTypeContent);
         tvPayType.setText(" 位置漫游，与全球朋友say嗨！");
        ImageView ivVipPoint=children_prerogative_location.findViewById(R.id.ivVipPoint);
@@ -98,6 +102,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         ivVIpCenterLikeTimes.setImageResource(R.mipmap.my_vip_liking_times);
         TextView tvPayLikeType = (TextView) children_prerogative_times.findViewById(R.id.tvPayType);
         tvPayLikeType.setText("无限喜欢次数");
+        tvPayLikeType.setVisibility(View.VISIBLE);
         TextView tvPayContent = (TextView) children_prerogative_times.findViewById(R.id.tvPayTypeContent);
         tvPayContent.setText("突破限制，放肆喜欢不再顾虑！");
       ImageView  ivVipPointFive=children_prerogative_times.findViewById(R.id.ivVipPoint);

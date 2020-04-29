@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +13,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.ViewPageFragmentAdapter;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.fragmentnew.MyPrerogativeFragment;
 import com.xfyyim.cn.fragmentnew.MyPrerogativeLikeFragment;
 import com.xfyyim.cn.fragmentnew.myOnlineChatFragment;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
@@ -26,6 +29,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class MyPrerogativeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -77,7 +82,7 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
 
 
     private void ininView() {
-
+        EventBusHelper.register(this);
         mViewPager = (ViewPager) findViewById(R.id.my_vp);
         findViewById(R.id.iv_title_left).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,5 +155,12 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
         }
+    }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功
+        startActivity(new Intent(MyPrerogativeActivity.this, payCompleteActivity.class));
+        finish();
     }
 }

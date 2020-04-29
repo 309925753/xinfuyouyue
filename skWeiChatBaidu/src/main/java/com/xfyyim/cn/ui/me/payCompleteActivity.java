@@ -60,13 +60,15 @@ public class payCompleteActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
            case  R.id.iv_title_left:
+               startActivity(new Intent(payCompleteActivity.this, MyPrerogativeActivity.class));
                finish();
             break;
             case  R.id.tvSubmit:
+                startActivity(new Intent(payCompleteActivity.this, MyPrerogativeActivity.class));
                 finish();
                 break;
         }
 
-    //    startActivity(new Intent(payCompleteActivity.this, MyPrerogativeActivity.class));
+    //
     }
 }

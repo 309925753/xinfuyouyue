@@ -439,8 +439,8 @@ public class Xf_FirstFragment extends EasyFragment {
         params.put("latitude", String.valueOf(latitude));
         params.put("longitude", String.valueOf(longitude));
         LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " + MyApplication.getInstance().getBdLocationHelper().getLongitude());
-//todo        params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-//        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
         params.put("pageIndex", String.valueOf(pageIndex));
         params.put("pageSize", String.valueOf(pageSize));
 //        params.put("distance", distance);

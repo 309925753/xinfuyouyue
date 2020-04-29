@@ -114,11 +114,11 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
                 finish();
                 break;
             case R.id.rlCertificationImmediately:
-                if(CoreManager.getSelf(this).getFaceIdentity()==1){
-                  return;
+                if(CoreManager.getSelf(this).getFaceIdentity()!=1){
+                    Intent intent = new Intent(this, FaceLivenessExpActivity.class);
+                    startActivityForResult(intent, 100);
                 }
-             Intent intent = new Intent(this, FaceLivenessExpActivity.class);
-                startActivityForResult(intent, 100);
+
                 break;
         }
     }

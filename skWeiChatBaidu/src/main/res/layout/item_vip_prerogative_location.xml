@@ -41,7 +41,8 @@
         android:textSize="@dimen/sp_18_text_size"
         android:textColor="@color/text_black_333"
         android:layout_gravity="center_horizontal"
-        android:text="滑错无线反悔"/>
+        android:visibility="gone"
+        android:text="滑错无限反悔"/>
     <TextView
         android:id="@+id/tvPayTypeContent"
         android:layout_width="wrap_content"
@@ -50,7 +51,7 @@
         android:textColor="@color/text_black_999"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp5"
-        android:text="滑错了？点击立刻找回!"/>
+        android:text="与全球朋友配对把握无限可能"/>
     <ImageView
         android:id="@+id/ivVipPoint"
         android:layout_width="wrap_content"

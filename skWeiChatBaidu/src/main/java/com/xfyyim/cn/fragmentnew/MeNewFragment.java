@@ -375,23 +375,23 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
-        if (vip == 1) {
-            params.put("price", vipPrivilegePriceList.getV0Price() + "");
+        if(vip==1){
+            params.put("price",vipPrivilegePriceList.getV0Price()+"");
             params.put("level", vipPrivilegePriceList.getV0());
-        } else if (vip == 2) {
-            params.put("price", vipPrivilegePriceList.getV1Price() + "");
+        }else if(vip==2){
+            params.put("price",vipPrivilegePriceList.getV1Price()+"");
             params.put("level", vipPrivilegePriceList.getV1());
-        } else if (vip == 3) {
-            params.put("price", vipPrivilegePriceList.getV2Price() + "");
+        }else if(vip==3){
+            params.put("price", vipPrivilegePriceList.getV2Price()+"");
             params.put("level", vipPrivilegePriceList.getV2());
-        } else if (vip == 4) {
-            params.put("price", vipPrivilegePriceList.getV3Price() + "");
+        }else if(vip==4){
+            params.put("price", vipPrivilegePriceList.getV3Price()+"");
             params.put("level", vipPrivilegePriceList.getV3());
         }
         params.put("funType", String.valueOf(5));
         params.put("num", String.valueOf(-1));
         params.put("mon", String.valueOf(-1));
-        AlipayHelper.rechargePay(getActivity(), coreManager, params);
+        AlipayHelper.rechargePay(getActivity(), coreManager,params);
     }
 }
 
