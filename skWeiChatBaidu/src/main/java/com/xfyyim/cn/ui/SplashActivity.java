@@ -73,6 +73,7 @@ public class SplashActivity extends BaseActivity implements PermissionUtil.OnReq
         permissionsMap.put(Manifest.permission.CAMERA, R.string.permission_photo);
         // 麦克风
         permissionsMap.put(Manifest.permission.RECORD_AUDIO, R.string.permission_microphone);
+        permissionsMap.put(Manifest.permission.READ_CONTACTS, R.string.permission_constat);
         // 存储权限
         permissionsMap.put(Manifest.permission.READ_EXTERNAL_STORAGE, R.string.permission_storage);
         permissionsMap.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.permission_storage);

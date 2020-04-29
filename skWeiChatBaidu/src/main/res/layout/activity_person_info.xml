@@ -213,7 +213,7 @@
                 </RelativeLayout>
 
                 <View
-
+android:id="@+id/line"
                     style="@style/Line_hor_e5e7" />
 
                 <RelativeLayout

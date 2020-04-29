@@ -53,7 +53,7 @@ public class MyPrivacyActivity extends BaseActivity implements View.OnClickListe
     MergerStatus mergerStatus;
     private  boolean  isAutoExpandRange;
     private   SwitchButton sbNotAllowComAlbum;
-
+public  int currentSelect;
     private Unbinder  unbinder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +78,12 @@ public class MyPrivacyActivity extends BaseActivity implements View.OnClickListe
 
     private void initView() {
 
-        RelativeLayout rlUserBlocked = (RelativeLayout) findViewById(R.id.rlUserBlocked);
-         sbNotAllowComAlbum = (SwitchButton) findViewById(R.id.sbNotAllowComAlbum);
-        SwitchButton sbComContacts = (SwitchButton) findViewById(R.id.sbComContacts);
+        RelativeLayout rlUserBlocked =  findViewById(R.id.rlUserBlocked);
+         sbNotAllowComAlbum =  findViewById(R.id.sbNotAllowComAlbum);
+        SwitchButton sbComContacts =  findViewById(R.id.sbComContacts);
         SwitchButton sbPrivacyContacts = (SwitchButton) findViewById(R.id.sbPrivacyContacts);
 
+        currentSelect=coreManager.getSelf().getSettings().getNotSeeFilterMyPhotos();
         if(coreManager.getSelf().getSettings().getNotSeeFilterMyPhotos()==1){
             sbNotAllowComAlbum.setChecked(true);
         }else {
@@ -93,6 +94,11 @@ public class MyPrivacyActivity extends BaseActivity implements View.OnClickListe
         sbNotAllowComAlbum.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                if (isChecked){
+                    currentSelect=1;
+                }else{
+                    currentSelect=0;
+                }
                 isAutoExpandRange=isChecked;
             }
         });
@@ -115,7 +121,9 @@ public class MyPrivacyActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_title_left:
-                update();
+                if (coreManager.getSelf().getSettings().getNotSeeFilterMyPhotos()!=currentSelect){
+                    update();
+                }
                 finish();
                 break;
         }
@@ -158,6 +166,7 @@ public class MyPrivacyActivity extends BaseActivity implements View.OnClickListe
                 });
     }
     private void updateData(){
+
         if(coreManager.getSelf().getSettings().getNotSeeFilterMyPhotos()==1){
             sbNotAllowComAlbum.setChecked(true);
         }else {

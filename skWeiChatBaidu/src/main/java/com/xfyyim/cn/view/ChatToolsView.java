@@ -178,43 +178,43 @@ public class ChatToolsView extends RelativeLayout {
                     });
                 }),
 */
-                new Item(R.drawable.im_tool_video_button_bg, R.string.video_call, () -> {
-                    groupVideoChatToolDialog = new GroupVideoChatToolDialog(mContext, onVideoChatToolDialogClickListener);
-                    singleVideoChatToolDialog = new SingleVideoChatToolDialog(mContext, onSingleVideoChatToolDialog, true);
-                    if (isGroup) {
-                        groupVideoChatToolDialog.show();
-                    } else {
-                        singleVideoChatToolDialog.show();
-                    }
-                }),
+//                new Item(R.drawable.im_tool_video_button_bg, R.string.video_call, () -> {
+//                    groupVideoChatToolDialog = new GroupVideoChatToolDialog(mContext, onVideoChatToolDialogClickListener);
+//                    singleVideoChatToolDialog = new SingleVideoChatToolDialog(mContext, onSingleVideoChatToolDialog, true);
+//                    if (isGroup) {
+//                        groupVideoChatToolDialog.show();
+//                    } else {
+//                        singleVideoChatToolDialog.show();
+//                    }
+//                }),
                 new Item(R.drawable.im_tool_local_button_bg, R.string.chat_loc, () -> {
                     listener.clickLocation();
-                }),
-                new Item(R.drawable.im_tool_redpacket_button_bg, R.string.chat_redpacket, () -> {
-                    listener.clickRedpacket();
-                }),
-                new Item(R.drawable.im_tool_transfer_button_bg, R.string.transfer_money, () -> {
-                    listener.clickTransferMoney();
-                }),
-                new Item(R.drawable.im_tool_collection_button_bg, R.string.chat_collection, () -> {
-                    listener.clickCollection();
-                }),
-                new Item(R.drawable.im_tool_card_button_bg, R.string.chat_card, () -> {
-                    listener.clickCard();
-                }),
-                new Item(R.drawable.im_tool_file_button_bg, R.string.chat_file, () -> {
-                    listener.clickFile();
-                }),
-                new Item(R.drawable.im_tool_cantacts_button_bg, R.string.send_contacts, () -> {
-                    listener.clickContact();
-                }),
-                new Item(R.drawable.im_tool_shake_button_bg, R.string.chat_shake, () -> {
-                    listener.clickShake();
-                }),
-                new Item(R.drawable.im_tool_group_button_bg, R.string.group_assistant, () -> {
-                    changeGroupAssistant();
-                    queryGroupAssistant();
                 })
+//                new Item(R.drawable.im_tool_redpacket_button_bg, R.string.chat_redpacket, () -> {
+//                    listener.clickRedpacket();
+//                }),
+//                new Item(R.drawable.im_tool_transfer_button_bg, R.string.transfer_money, () -> {
+//                    listener.clickTransferMoney();
+//                }),
+//                new Item(R.drawable.im_tool_collection_button_bg, R.string.chat_collection, () -> {
+//                    listener.clickCollection();
+//                }),
+//                new Item(R.drawable.im_tool_card_button_bg, R.string.chat_card, () -> {
+//                    listener.clickCard();
+//                }),
+//                new Item(R.drawable.im_tool_file_button_bg, R.string.chat_file, () -> {
+//                    listener.clickFile();
+//                }),
+//                new Item(R.drawable.im_tool_cantacts_button_bg, R.string.send_contacts, () -> {
+//                    listener.clickContact();
+//                }),
+//                new Item(R.drawable.im_tool_shake_button_bg, R.string.chat_shake, () -> {
+//                    listener.clickShake();
+//                }),
+//                new Item(R.drawable.im_tool_group_button_bg, R.string.group_assistant, () -> {
+//                    changeGroupAssistant();
+//                    queryGroupAssistant();
+//                })
         );
     }
 

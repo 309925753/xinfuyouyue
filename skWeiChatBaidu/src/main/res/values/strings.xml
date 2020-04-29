@@ -934,6 +934,7 @@
     <string name="permission_photo">照相</string>
     <string name="permission_location">定位</string>
     <string name="permission_microphone">麦克风</string>
+    <string name="permission_constat">手机联系人</string>
     <string name="permission_phone_status">手机状态</string>
     <string name="permission_storage">存储</string>
     <string name="tip_reject_permission_place_holder">你已拒绝了%s的权限请求，是否前往手动开启</string>

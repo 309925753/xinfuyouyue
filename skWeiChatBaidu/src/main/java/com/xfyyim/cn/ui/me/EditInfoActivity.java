@@ -212,7 +212,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     HashMap<ImageView, Integer> map = new HashMap<>();
     List<String> listPhoto;
     private String mImageData;
-    boolean isHeader=false;
+    boolean isHeader = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,10 +357,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.img_header:
                 selectPhoto(true);
-
-
-
-
 
 
                 break;
@@ -542,25 +538,27 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     public void setPhotoBlum() {
         photoEntityList = new ArrayList<>();
-        photoEntityList = user.getMyPhotos();
-        map.put(img_blum_1, 1);
-        map.put(img_blum_2, 1);
-        map.put(img_blum_3, 1);
-        map.put(img_blum_4, 1);
-        map.put(img_blum_5, 1);
-        if (user.getMyPhotos().size() > 0) {
+        if (user.getMyPhotos() != null && user.getMyPhotos().size() > 0) {
+
+
+            photoEntityList = user.getMyPhotos();
+            map.put(img_blum_1, 1);
+            map.put(img_blum_2, 1);
+            map.put(img_blum_3, 1);
+            map.put(img_blum_4, 1);
+            map.put(img_blum_5, 1);
             int index = photoEntityList.size() > 5 ? 5 : photoEntityList.size();
             for (int i = 0; i < index; i++) {
                 map.put(listImage.get(i), 2);
             }
-        }
-        for (int i = 0; i < 5; i++) {
-            if (map.get(listImage.get(i)) == 1) {
-                GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg, listImage.get(i));
-                map.put(listImage.get(i), 1);
-            } else {
-                GlideImageUtils.setImageView(EditInfoActivity.this, photoEntityList.get(i).getPhotoUtl(), listImage.get(i));
-                map.put(listImage.get(i), 2);
+            for (int i = 0; i < 5; i++) {
+                if (map.get(listImage.get(i)) == 1) {
+                    GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg, listImage.get(i));
+                    map.put(listImage.get(i), 1);
+                } else {
+                    GlideImageUtils.setImageView(EditInfoActivity.this, photoEntityList.get(i).getPhotoUtl(), listImage.get(i));
+                    map.put(listImage.get(i), 2);
+                }
             }
         }
     }
@@ -710,7 +708,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
     private Uri mNewPhotoUri;
 
     private void selectPhoto(boolean flag) {
-        isHeader=flag;
+        isHeader = flag;
         CameraUtil.pickImageSimple(this, REQUEST_CODE_PICK_CROP_PHOTO);
     }
 
@@ -740,7 +738,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                         AvatarHelper.getInstance().displayUrl(mNewPhotoUri.toString(), img_header);
                         // 上传头像
                         uploadAvatar(mCurrentFile);
-                    }else{
+                    } else {
                         listPhoto = new ArrayList<>();
                         listPhoto.add(photoUrl);
                         new UploadPhoto().execute();

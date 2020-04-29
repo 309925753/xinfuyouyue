@@ -145,7 +145,7 @@
                 style="@style/IMTbleLine_TextValue"
                 android:layout_toLeftOf="@+id/sex_arrow_img"
                 android:layout_toRightOf="@+id/sex_text"
-                android:text="性别" />
+                android:hint="选择性别" />
 
 
         </LinearLayout>
@@ -176,7 +176,7 @@
                 style="@style/IMTbleLine_TextValue"
                 android:layout_toLeftOf="@+id/birthday_arrow_img"
                 android:layout_toRightOf="@+id/birthday_text"
-                android:text="出生日期" />
+                android:hint="选择出生日期" />
 
 
         </LinearLayout>
@@ -207,7 +207,7 @@
                 style="@style/IMTbleLine_TextValue"
                 android:layout_toLeftOf="@+id/birthday_arrow_img"
                 android:layout_toRightOf="@+id/birthday_text"
-                android:text="选择城市" />
+                android:hint="选择地址" />
 
 
         </LinearLayout>

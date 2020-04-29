@@ -309,7 +309,7 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
                     return;
                 }
                 Intent intent = new Intent(mContext, PersonInfoActivity.class);
-                intent.putExtra("FriendId", userId);
+                intent.putExtra("FriendId", message.getUserId());
                 mContext.startActivity(intent);
                 ;
             }

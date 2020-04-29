@@ -114,6 +114,9 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.ll_renzheng)
     RelativeLayout ll_renzheng;
 
+    @BindView(R.id.rl_seelike)
+    RelativeLayout rl_seelike;
+
     @BindView(R.id.tv_my_sign)
     TextView tv_my_sign;
 
@@ -127,7 +130,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.line_question)
     View line_question;
     @BindView(R.id.line_sign)
-    View line_sign;
+    View line_sign;  @BindView(R.id.line)
+    View line;
     User user;
     MyInAdapter adapter;
     String usrId;
@@ -142,6 +146,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         friendId = getIntent().getStringExtra("FriendId");
         initActionBar();
 
+        rl_blum.setOnClickListener(this);
     }
 
 
@@ -155,7 +160,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
         if (friendId.equals(usrId)) {
             iv_title_right.setVisibility(View.VISIBLE);
-            iv_title_right.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));
+            iv_title_right.setImageDrawable(getResources().getDrawable(R.mipmap.pen_edit));
             iv_title_right.setOnClickListener(this);
         } else {
             iv_title_right.setVisibility(View.GONE);
@@ -172,6 +177,19 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_title_right:
                 Intent intent = new Intent(PersonInfoActivity.this, EditInfoActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.rl_blum:
+
+                if (!user.getUserId().equals(friendId)) {
+                    if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
+                        ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
+                    } else {
+                        Intent intent1=new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
+                        intent1.putExtra("FriendId",friendId);
+                        startActivity(intent1);
+                    }
+                }
                 break;
 
 
@@ -223,6 +241,15 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         }
 
 
+        //喜欢我的人数
+        if (friendId.equals(user.getUserId())) {
+            line.setVisibility(View.VISIBLE);
+            rl_seelike.setVisibility(View.VISIBLE);
+        } else {
+            line.setVisibility(View.GONE);
+            rl_seelike.setVisibility(View.GONE);
+        }
+
         if (user.getAge() == 0) {
             tv_age.setVisibility(View.GONE);
         } else {
@@ -245,7 +272,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 imgesUrl.add(photo.getPhotoUtl());
             }
             banner.setVisibility(View.VISIBLE);
-            rl_blum.setVisibility(View.VISIBLE);
+
 
 
             int index = user.getMyPhotos().size() > 3 ? 3 : user.getMyPhotos().size();
@@ -258,7 +285,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 int hight = ScreenUtils.dip2px(33, mContext);
 
                 LinearLayout.LayoutParams ls = new LinearLayout.LayoutParams(wid, hight);
-                ls.setMargins(0,0,10,0);
+                ls.setMargins(0, 0, 10, 0);
                 imageView.setLayoutParams(ls);
 
                 GlideImageUtils.setImageView(this, user.getMyPhotos().get(i).getPhotoUtl(), imageView);
@@ -268,7 +295,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         } else {
             String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false);
             imgesUrl.add(headUrl);
-            rl_blum.setVisibility(View.GONE);
         }
 
         banner.setData(imgesUrl, null);
@@ -281,8 +307,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         });
 
 
-
-            private_wechat_like.setText(String.valueOf(user.getLikeMeCount()) + "人喜欢了你");
+        private_wechat_like.setText(String.valueOf(user.getLikeMeCount()) + "人喜欢了你");
 
 
         //签名

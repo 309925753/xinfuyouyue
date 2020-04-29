@@ -105,15 +105,15 @@ public class SelectAreaActivity extends ActionBackActivity {
     private void prepareData() {
         mItems = new ArrayList<Item>();
         if (hasAddtionCity()) {
-            // 添加当前城市
-            mItems.add(new Item(getString(R.string.current_location)));
-            mItems.add(new Item(new Area()));// 显示定位的那个city
-
-            // 添加热门城市
-            mItems.add(new Item(getString(R.string.hot_city)));
-            for (Area area : Area.HOT_CITYS) {
-                mItems.add(new Item(area));
-            }
+// todo           // 添加当前城市
+//            mItems.add(new Item(getString(R.string.current_location)));
+//            mItems.add(new Item(new Area()));// 显示定位的那个city
+//
+//            // 添加热门城市
+//            mItems.add(new Item(getString(R.string.hot_city)));
+//            for (Area area : Area.HOT_CITYS) {
+//                mItems.add(new Item(area));
+//            }
 
             // 添加按省份选择城市
             mItems.add(new Item(getString(R.string.select_city_by_province)));

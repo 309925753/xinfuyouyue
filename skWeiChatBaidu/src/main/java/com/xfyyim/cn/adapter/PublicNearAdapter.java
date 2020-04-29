@@ -310,7 +310,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
                     return;
                 }
                 Intent intent = new Intent(mContext, PersonInfoActivity.class);
-                intent.putExtra("FriendId", userId);
+                intent.putExtra("FriendId", message.getUserId());
 
                 mContext.startActivity(intent);;
             }

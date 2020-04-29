@@ -109,6 +109,7 @@ public class User implements Parcelable, Cloneable {
     private String onlineStatus  ;//活跃度
     private int  praiseCount  ;//点赞次数
     private int  msgCount ;// 个人发布动态数
+    private int  isMatch; // 是否匹配 0- 匹配 1- 未匹配
 
     //我的兴趣爱好
     private String myIndustry;
@@ -127,6 +128,14 @@ public class User implements Parcelable, Cloneable {
     private String mySports;
     private List<QuestionEntity> userQuestions;
 
+
+    public int getIsMatch() {
+        return isMatch;
+    }
+
+    public void setIsMatch(int isMatch) {
+        this.isMatch = isMatch;
+    }
 
     public String getProvinceName() {
         return provinceName;

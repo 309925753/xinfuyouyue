@@ -59,7 +59,8 @@ public class CurrentLocationActivity extends BaseActivity {
 
 
     @BindView(R.id.rl_newaddress)
-    RelativeLayout rl_newaddress; @BindView(R.id.rl_current_location)
+    RelativeLayout rl_newaddress;
+    @BindView(R.id.rl_current_location)
     RelativeLayout rl_current_location;
     long lat;
     long lon;
@@ -76,17 +77,11 @@ public class CurrentLocationActivity extends BaseActivity {
         unbinder = ButterKnife.bind(this);
         initActionBar();
         initDate();
-
-
-        lat = PreferenceUtils.getLong(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.LAT, 0);
-        lon = PreferenceUtils.getLong(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.LON, 0);
-
-
     }
 
 
     public void initDate() {
-        isSelect = PreferenceUtils.getBoolean(CurrentLocationActivity.this, coreManager.getSelf().getUserId() +SpContext.ISSELECT, false);
+        isSelect = PreferenceUtils.getBoolean(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.ISSELECT, false);
 
         tv_city_name.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
         tv_address_detail.setText(MyApplication.getInstance().getBdLocationHelper().getAddress());
@@ -126,7 +121,7 @@ public class CurrentLocationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CurrentLocationActivity.this, MapPickerAddressActivity.class);
-                startActivityForResult(intent,REQUEST_CODE_SELECT_LOCATE );
+                startActivityForResult(intent, REQUEST_CODE_SELECT_LOCATE);
             }
         });
 
@@ -170,19 +165,16 @@ public class CurrentLocationActivity extends BaseActivity {
             // 选择位置返回
             double latitude = data.getDoubleExtra(AppConstant.EXTRA_LATITUDE, 0);
             double longitude = data.getDoubleExtra(AppConstant.EXTRA_LONGITUDE, 0);
-            LatLng latLng1=new LatLng(latitude,longitude);
-         String    address = data.getStringExtra(AppConstant.EXTRA_ADDRESS);
-
-            Long  lat=new Double(latitude).longValue();
-            Long  lon=new Double(longitude).longValue();
+            LatLng latLng1 = new LatLng(latitude, longitude);
+            String address = data.getStringExtra(AppConstant.EXTRA_ADDRESS);
 
 
             if (latitude != 0 && longitude != 0 && !TextUtils.isEmpty(address)) {
                 Log.e("zq", "纬度:" + latitude + "   经度：" + longitude + "   位置：" + address);
-        rl_newaddress.setVisibility(View.VISIBLE);
-               PreferenceUtils.putString(CurrentLocationActivity.this,coreManager.getSelf().getUserId()+SpContext.Address,address);
-                PreferenceUtils.putLong(CurrentLocationActivity.this,coreManager.getSelf().getUserId()+SpContext.LAT,lat);
-                PreferenceUtils.putLong(CurrentLocationActivity.this,coreManager.getSelf().getUserId()+SpContext.LON,lon);
+                rl_newaddress.setVisibility(View.VISIBLE);
+                PreferenceUtils.putString(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.Address, address);
+                PreferenceUtils.putString(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.LAT, String.valueOf(latitude));
+                PreferenceUtils.putString(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.LON, String.valueOf(longitude));
 
                 tv_address_newdetail.setText(address);
                 geo = GeoCoder.newInstance();
@@ -214,15 +206,14 @@ public class CurrentLocationActivity extends BaseActivity {
 
         @Override
         public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
-            if (reverseGeoCodeResult.getAddressDetail().city!=null||TextUtils.isEmpty(reverseGeoCodeResult.getAddressDetail().city)){
-                PreferenceUtils.putString(CurrentLocationActivity.this,coreManager.getSelf().getUserId()+SpContext.CITY,reverseGeoCodeResult.getAddressDetail().city);
+            if (reverseGeoCodeResult.getAddressDetail().city != null || TextUtils.isEmpty(reverseGeoCodeResult.getAddressDetail().city)) {
+                PreferenceUtils.putString(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.CITY, reverseGeoCodeResult.getAddressDetail().city);
                 tv_city_newname.setText(reverseGeoCodeResult.getAddressDetail().city);
             }
 
 
         }
     };
-
 
 
     @Override

@@ -25,6 +25,8 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.contacts.ContactsActivity;
+import com.xfyyim.cn.ui.contacts.ContactsMsgInviteActivity;
 import com.xfyyim.cn.ui.me.CertificationCenterActivity;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
@@ -35,6 +37,7 @@ import com.xfyyim.cn.ui.me.redpacket.WxPayBlance;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.AttentionActivity;
 import com.xfyyim.cn.ui.me_new.FansActivity;
+import com.xfyyim.cn.ui.me_new.InviteActivity;
 import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.ui.me_new.ZanActivity;
@@ -101,6 +104,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
     @BindView(R.id.rl_guide)
     RelativeLayout rl_guide;
+ @BindView(R.id.rl_invite)
+    RelativeLayout rl_invite;
 
     @BindView(R.id.rl_biaobai)
     RelativeLayout rl_biaobai;
@@ -150,6 +155,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         rl_renzheng.setOnClickListener(this);
         rl_set.setOnClickListener(this);
         rl_guide.setOnClickListener(this);
+        rl_invite.setOnClickListener(this);
         rl_biaobai.setOnClickListener(this);
         rl_share.setOnClickListener(this);
         ll_showdt.setOnClickListener(this);
@@ -201,7 +207,12 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
             case R.id.rl_guide:
                 break;
+                case R.id.rl_invite:
+                    startActivity(new Intent(getActivity(), InviteActivity.class));
+                break;
             case R.id.rl_biaobai:
+                startActivity(new Intent(getActivity(), ContactsMsgInviteActivity.class));
+
                 break;
             case R.id.rl_share:
 

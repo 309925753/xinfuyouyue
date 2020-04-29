@@ -41,7 +41,6 @@
                     android:layout_marginBottom="0dp"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/default_head"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +58,11 @@
                     android:layout_below="@+id/avatar_img"
                     android:layout_alignLeft="@+id/avatar_img"
                     android:layout_marginTop="10dp"
-                    android:text="EAsyij"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_vip"
                     android:layout_width="@dimen/dp30"
                     android:layout_height="14dp"
@@ -87,7 +86,7 @@
                     android:layout_marginTop="40dp"
                     android:drawableLeft="@drawable/me_edit_pen"
                     android:drawablePadding="3dp"
-                    android:text="林深时见鹿"
+                    android:text="设置签名"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 

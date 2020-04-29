@@ -92,16 +92,5 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/sure_add_tv"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        android:gravity="center"
-        android:text="@string/sure"
-        android:textColor="@color/main_color"
-        android:textSize="@dimen/one_level_title"
-        android:visibility="visible" />
 
 </LinearLayout>

@@ -29,7 +29,7 @@
             <com.stx.xhb.xbanner.XBanner
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="260dp"
+                android:layout_height="220dp"
 
                 app:AutoPlayTime="3000"
                 app:isShowIndicatorOnlyOne="true"

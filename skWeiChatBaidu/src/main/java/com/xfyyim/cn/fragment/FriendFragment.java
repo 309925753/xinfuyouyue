@@ -336,7 +336,7 @@ public class FriendFragment extends EasyFragment {
                 getActivity().startActivity(intentBlack);
                 break;
             case R.id.contacts_rl:
-                // 清空新联系人数量
+                // 新联系人数量
                 PreferenceUtils.putInt(getActivity(), Constants.NEW_CONTACTS_NUMBER + mLoginUserId, 0);
                 mNotifyCountTv2.setVisibility(View.GONE);
 

@@ -87,7 +87,8 @@ public class CircleDetailActivity extends BaseActivity {
     @BindView(R.id.tvLoadMore)
     TextView tvLoadMore;
     @BindView(R.id.tvThumb)
-    TextView tvThumb; @BindView(R.id.tv_comment)
+    TextView tvThumb;
+    @BindView(R.id.tv_comment)
     TextView tv_comment;
     @BindView(R.id.tv_read_count)
     TextView tv_read_count;
@@ -218,7 +219,7 @@ public class CircleDetailActivity extends BaseActivity {
                             comment.setUserId(mUserId);
                             comment.setNickName(mUserName);
                             comment.setTime(TimeUtils.sk_time_current_time());
-                            addComment( comment);
+                            addComment(comment);
                         });
                 Window window = trillCommentInputDialog.getWindow();
                 if (window != null) {
@@ -398,11 +399,11 @@ public class CircleDetailActivity extends BaseActivity {
             if (convertView == null) {
                 holder = new CommentViewHolder();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.p_msg_comment_list_item, null);
-                holder.text_view =  convertView.findViewById(R.id.text_view);
-                holder.avatar_img =  convertView.findViewById(R.id.avatar_img);
-                holder.img_vip =  convertView.findViewById(R.id.img_vip);
-                holder.tv_time =  convertView.findViewById(R.id.tv_time);
-                holder.nick_name_tv =  convertView.findViewById(R.id.nick_name_tv);
+                holder.text_view = convertView.findViewById(R.id.text_view);
+                holder.avatar_img = convertView.findViewById(R.id.avatar_img);
+                holder.img_vip = convertView.findViewById(R.id.img_vip);
+                holder.tv_time = convertView.findViewById(R.id.tv_time);
+                holder.nick_name_tv = convertView.findViewById(R.id.nick_name_tv);
                 convertView.setTag(holder);
             } else {
                 holder = (CommentViewHolder) convertView.getTag();
@@ -428,8 +429,8 @@ public class CircleDetailActivity extends BaseActivity {
 
             AvatarHelper.getInstance().displayAvatar(comment.getUserId(), holder.avatar_img);
             //todo 评论者的认证 if (comment.)
-           holder.tv_time.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) comment.getTime()));
-           holder.nick_name_tv.setText(comment.getNickName());
+            holder.tv_time.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) comment.getTime()));
+            holder.nick_name_tv.setText(comment.getNickName());
 
             // 设置头像的点击事件
             holder.avatar_img.setOnClickListener(new View.OnClickListener() {
@@ -441,41 +442,12 @@ public class CircleDetailActivity extends BaseActivity {
                     Intent intent = new Intent(mContext, PersonInfoActivity.class);
                     intent.putExtra("FriendId", comment.getUserId());
 
-                    mContext.startActivity(intent);;
+                    mContext.startActivity(intent);
                 }
             });
 
 
             holder.text_view.setText(builder);
-//            holder.text_view.setLinksClickable(true);
-//            holder.text_view.setMovementMethod(LinkMovementClickMethod.getInstance());
-
-//            holder.text_view.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (comment.getUserId().equals(mLoginUserId)) {
-//                        // 如果消息是我发的，那么就弹出删除和复制的对话框
-//                        showCommentLongClickDialog(messagePosition, position, CommentAdapter.this);
-//                    } else {
-//                        // 弹出回复的框
-//                        String toShowName = getShowName(comment.getUserId(), comment.getNickName());
-//                        if (mContext instanceof BusinessCircleActivity) {
-//                            ((BusinessCircleActivity) mContext).showCommentEnterView(messagePosition, comment.getUserId(), comment.getNickName(), toShowName);
-//                        } else {
-//                            EventBus.getDefault().post(new MessageEventReply("Reply", comment, messagePosition, toShowName,
-//                                    (ListView) parent));
-//                        }
-//                    }
-//                }
-//            });
-//
-//            holder.text_view.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    showCommentLongClickDialog(messagePosition, position, CommentAdapter.this);
-//                    return true;
-//                }
-//            });
 
             return convertView;
         }
@@ -599,7 +571,7 @@ public class CircleDetailActivity extends BaseActivity {
     }
 
 
-    private void addComment( final Comment comment) {
+    private void addComment(final Comment comment) {
         String messageId = message.getMessageId();
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
@@ -618,9 +590,9 @@ public class CircleDetailActivity extends BaseActivity {
                     @Override
                     public void onResponse(ObjectResult<String> result) {
                         // 评论成功
-                        if ( Result.checkSuccess(CircleDetailActivity.this, result)) {
+                        if (Result.checkSuccess(CircleDetailActivity.this, result)) {
                             comment.setCommentId(result.getData());
-                        tv_read_count.setText(String.valueOf(message.getCount().getTotal()+1));
+                            tv_read_count.setText(String.valueOf(message.getCount().getTotal() + 1));
                             adapter.addComment(comment);
                             adapter.notifyDataSetChanged();
                         }
