@@ -12,28 +12,21 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
-import com.j256.ormlite.stmt.query.In;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.bean.PhotoEntity;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
-import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
-import com.xfyyim.cn.ui.contacts.ContactsActivity;
 import com.xfyyim.cn.ui.contacts.ContactsMsgInviteActivity;
 import com.xfyyim.cn.ui.me.CertificationCenterActivity;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
 import com.xfyyim.cn.ui.me.NewSettingsActivity;
-import com.xfyyim.cn.ui.me.redpacket.WxPayAdd;
-import com.xfyyim.cn.ui.me.redpacket.WxPayBlance;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.AttentionActivity;
 import com.xfyyim.cn.ui.me_new.FansActivity;
@@ -51,6 +44,7 @@ import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -298,6 +292,55 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 });
     }
 
+
+    private void getShareInfo() {
+        DialogHelper.showDefaulteMessageProgressDialog(getActivity());
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
+
+        HttpUtils.get().url(coreManager.getConfig().USER_SHARE_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        super.onFailure(call, e);
+                    }
+                });
+
+//                .execute(new BaseCallback<User>(User.class) {
+//                    @Override
+//                    public void onResponse(ObjectResult<User> result) {
+//                        DialogHelper.dismissProgressDialog();
+//                        if (result.getResultCode() == 1 && result.getData() != null) {
+//                            user = result.getData();
+//                            setUserDate(user);
+//                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+//                            // 设置登陆用户信息
+//                            if (updateSuccess) {
+//                                // 如果成功，保存User变量，
+//                                coreManager.setSelf(user);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Call call, Exception e) {
+//                        DialogHelper.dismissProgressDialog();
+//                        ToastUtil.showErrorNet(getActivity());
+//                    }
+//                });
+    }
 
     public void setUserDate(User user) {
 

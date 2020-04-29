@@ -81,7 +81,7 @@ public class DateSelectHelper {
         if (TextUtils.isEmpty(dateMax) || dateMax.length() < 7) {
             return;
         }
-
+dateMax="2001-12-31";
         String[] cc = dateMax.split("-");
         long date = dateFromat(Integer.parseInt(cc[0]), (Integer.parseInt(cc[1]) - 1), Integer.parseInt(cc[2]));
         setDateMax(date);

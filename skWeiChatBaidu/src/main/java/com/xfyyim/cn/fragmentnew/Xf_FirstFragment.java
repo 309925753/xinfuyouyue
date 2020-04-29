@@ -3,7 +3,6 @@ package com.xfyyim.cn.fragmentnew;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +17,10 @@ import androidx.annotation.RequiresApi;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
-import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
-import com.xfyyim.cn.bean.event.EventNotifyByTag;
 import com.xfyyim.cn.bean.event.EventNotifyUpdate;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
-import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.customer.AngleTransformer;
 import com.xfyyim.cn.customer.MyAlphaTransformer;
 import com.xfyyim.cn.customer.StackLayout;
@@ -33,20 +29,15 @@ import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
-import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.base.EasyFragment;
-import com.xfyyim.cn.ui.me.MyNewWalletActivity;
-import com.xfyyim.cn.ui.me.redpacket.WxPayAdd;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
-import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
-import com.xfyyim.cn.view.MyWalletPopupWindow;
 import com.xfyyim.cn.view.SuperCriticalLightWindow;
 import com.xfyyim.cn.view.SuperSolarizePopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
@@ -58,7 +49,6 @@ import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -381,7 +371,7 @@ public class Xf_FirstFragment extends EasyFragment {
             }
 
             if (mData.get(position).getMyPhotos() != null && mData.get(position).getMyPhotos().size() >= 1) {
-                holder.tvLike.setText(mData.get(position).getMyPhotos().size());
+                holder.tv_Likecount.setText(String.valueOf(mData.get(position).getMyPhotos().size()));
             }
             if(mData.get(position).getFaceIdentity()==1){
                 holder.ivHead.setVisibility(View.VISIBLE);
@@ -423,7 +413,7 @@ public class Xf_FirstFragment extends EasyFragment {
             TextView tvCnstellation;
             TextView tvAge;
             TextView tvVip;
-            TextView tvLike;
+            TextView tv_Likecount;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -434,7 +424,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 tvAge = itemView.findViewById(R.id.t2);
                 tvCnstellation = itemView.findViewById(R.id.t3);
                 tvVip = itemView.findViewById(R.id.t4);
-                tvLike = itemView.findViewById(R.id.tvLike);
+                tv_Likecount = itemView.findViewById(R.id.tv_Likecount);
             }
         }
 

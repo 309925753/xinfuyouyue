@@ -36,7 +36,7 @@
                 android:layout_marginLeft="5dp"
                 />
             <TextView
-                android:id="@+id/tvLike"
+                android:id="@+id/tv_Likecount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"

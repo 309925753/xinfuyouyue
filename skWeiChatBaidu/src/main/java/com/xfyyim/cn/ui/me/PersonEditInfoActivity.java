@@ -1,7 +1,5 @@
 package com.xfyyim.cn.ui.me;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,35 +11,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
-import com.xfyyim.cn.ui.account.RegisterUserBasicInfoActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
-import com.xfyyim.cn.ui.company.CreateDepartment;
 import com.xfyyim.cn.ui.dialog.DialogView;
 import com.xfyyim.cn.util.DateFormatUtil;
 import com.xfyyim.cn.util.DateSelectHelper;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
-import com.xuan.xuanhttplibrary.okhttp.callback.JsonCallback;
-import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
-import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
-import fm.jiecao.jcvideoplayer_lib.MessageEvent;
 import okhttp3.Call;
-import okhttp3.Callback;
 
 public class PersonEditInfoActivity extends BaseActivity  implements View.OnClickListener {
     Unbinder unbinder;
@@ -140,8 +128,9 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
     @SuppressWarnings("deprecation")
     private void showSelectBirthdayDialog() {
         DateSelectHelper dialog = DateSelectHelper.getInstance(PersonEditInfoActivity.this);
-        dialog.setDateMin("1900-1-1");
-        dialog.setDateMax(System.currentTimeMillis());
+        dialog.setDateMin("1900-1-01");
+        dialog.setDateMax("2002-1-01");
+//        dialog.setDateMax(System.currentTimeMillis());
         dialog.setCurrentDate(birthday * 1000);
         dialog.setOnDateSetListener(new DateSelectHelper.OnDateResultListener() {
             @Override
