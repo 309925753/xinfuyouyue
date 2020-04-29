@@ -21,6 +21,8 @@ import android.widget.Toast;
 import androidx.core.view.ViewCompat;
 
 import com.alibaba.fastjson.JSON;
+import com.xfyyim.cn.SpContext;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.im.audio.MessageEventVoice;
 import com.xfyyim.im.audio.VoiceRecordActivity2;
 import com.xfyyim.cn.AppConstant;
@@ -402,12 +404,24 @@ public class SendAudioActivity extends BaseActivity implements View.OnClickListe
          * 所在位置
          */
         if (!TextUtils.isEmpty(address)) {
-            // 纬度
+            /*// 纬度
             params.put("latitude", String.valueOf(latitude));
             // 经度
             params.put("longitude", String.valueOf(longitude));
             // 位置
-            params.put("location", address);
+            params.put("location", address);*/
+            if (PreferenceUtils.getBoolean(SendAudioActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(SendAudioActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(SendAudioActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                params.put("location", String.valueOf(PreferenceUtils.getBoolean(SendAudioActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+            }else {
+                // 纬度
+                params.put("latitude", String.valueOf(latitude));
+                // 经度
+                params.put("longitude", String.valueOf(longitude));
+                // 位置
+                params.put("location", address);
+            }
         }
 
         params.put("isAllowComment", isBoolBan ? String.valueOf(1) : String.valueOf(0));

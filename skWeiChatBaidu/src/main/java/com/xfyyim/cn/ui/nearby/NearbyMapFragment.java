@@ -25,8 +25,10 @@ import android.widget.Toast;
 import androidx.viewpager.widget.ViewPager;
 
 import com.xfyyim.cn.AppConstant;
+import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.adapter.MarkerPagerAdapter;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -38,6 +40,7 @@ import com.xfyyim.cn.util.AppUtils;
 import com.xfyyim.cn.util.AsyncUtils;
 import com.xfyyim.cn.util.AvatarUtil;
 import com.xfyyim.cn.util.DisplayUtil;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.CircleImageView;
@@ -261,8 +264,15 @@ public class NearbyMapFragment extends EasyFragment implements View.OnClickListe
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("pageIndex", "0");
         params.put("pageSize", "20");
-        params.put("latitude", String.valueOf(latitude));
-        params.put("longitude", String.valueOf(longitude));
+     /*   params.put("latitude", String.valueOf(latitude));
+        params.put("longitude", String.valueOf(longitude));*/
+        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        }
         if (!TextUtils.isEmpty(sexUser)) {
             params.put("sex", sexUser);
         }

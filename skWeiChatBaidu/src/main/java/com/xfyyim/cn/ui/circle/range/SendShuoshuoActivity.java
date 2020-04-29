@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.alibaba.fastjson.JSON;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Area;
 import com.xfyyim.cn.bean.UploadFileResult;
 import com.xfyyim.cn.helper.DialogHelper;
@@ -49,6 +50,7 @@ import com.xfyyim.cn.ui.tool.ButtonColorChange;
 import com.xfyyim.cn.ui.tool.MultiImagePreviewActivity;
 import com.xfyyim.cn.util.Constants;
 import com.xfyyim.cn.util.DeviceInfoUtil;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.video.EasyCameraActivity;
@@ -638,12 +640,24 @@ public class SendShuoshuoActivity extends BaseActivity implements View.OnClickLi
          * 所在位置
          */
         if (!TextUtils.isEmpty(address)) {
-            // 纬度
+          /*  // 纬度
             params.put("latitude", String.valueOf(latitude));
             // 经度
             params.put("longitude", String.valueOf(longitude));
             // 位置
-            params.put("location", address);
+            params.put("location", address);*/
+            if (PreferenceUtils.getBoolean(SendShuoshuoActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(SendShuoshuoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(SendShuoshuoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                params.put("location", String.valueOf(PreferenceUtils.getBoolean(SendShuoshuoActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+            }else {
+                // 纬度
+                params.put("latitude", String.valueOf(latitude));
+                // 经度
+                params.put("longitude", String.valueOf(longitude));
+                // 位置
+                params.put("location", address);
+            }
         }
 
         // 必传，之前删除该字段，发布说说，服务器返回接口内部异常

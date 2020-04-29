@@ -29,6 +29,7 @@ import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Area;
 import com.xfyyim.cn.bean.UploadFileResult;
 import com.xfyyim.cn.bean.VideoFile;
@@ -48,6 +49,7 @@ import com.xfyyim.cn.ui.tool.ButtonColorChange;
 import com.xfyyim.cn.util.BitmapUtil;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.DeviceInfoUtil;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.RecorderUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
@@ -536,12 +538,18 @@ public class ShareVideoActivity extends BaseActivity implements View.OnClickList
          * 所在位置
          */
         if (!TextUtils.isEmpty(address)) {
-            // 纬度
-            params.put("latitude", String.valueOf(latitude));
-            // 经度
-            params.put("longitude", String.valueOf(longitude));
-            // 位置
-            params.put("location", address);
+            if (PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                params.put("location", String.valueOf(PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+            }else {
+                // 纬度
+                params.put("latitude", String.valueOf(latitude));
+                // 经度
+                params.put("longitude", String.valueOf(longitude));
+                // 位置
+                params.put("location", address);
+            }
         }
 
         params.put("isAllowComment", isBoolBan ? String.valueOf(1) : String.valueOf(0));

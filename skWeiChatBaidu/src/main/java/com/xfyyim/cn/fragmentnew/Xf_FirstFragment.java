@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
@@ -38,6 +39,7 @@ import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
@@ -436,11 +438,19 @@ public class Xf_FirstFragment extends EasyFragment {
 // todo     params.put("sex", String.valueOf(0));
 //      params.put("minAge", String.valueOf(1));
 //      params.put("maxAge", String.valueOf(10));
-        params.put("latitude", String.valueOf(latitude));
+/*        params.put("latitude", String.valueOf(latitude));
         params.put("longitude", String.valueOf(longitude));
         LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " + MyApplication.getInstance().getBdLocationHelper().getLongitude());
         params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));*/
+        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        }
+
         params.put("pageIndex", String.valueOf(pageIndex));
         params.put("pageSize", String.valueOf(pageSize));
 //        params.put("distance", distance);

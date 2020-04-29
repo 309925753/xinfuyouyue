@@ -23,6 +23,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Area;
 import com.xfyyim.cn.bean.Contact;
 import com.xfyyim.cn.bean.Contacts;
@@ -619,12 +620,20 @@ public class ContactsActivity extends BaseActivity {
             }
         }
 
-        double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
-        double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
-        if (latitude != 0)
-            params.put("latitude", String.valueOf(latitude));
-        if (longitude != 0)
-            params.put("longitude", String.valueOf(longitude));
+
+        if (PreferenceUtils.getBoolean(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
+            double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
+            if (latitude != 0)
+                params.put("latitude", String.valueOf(latitude));
+            if (longitude != 0)
+                params.put("longitude", String.valueOf(longitude));
+        }
+
+
         // SecureFlagGroup
         params.put("isSecretGroup", String.valueOf(isSecretGroup));
         if (isSecretGroup == 1) {

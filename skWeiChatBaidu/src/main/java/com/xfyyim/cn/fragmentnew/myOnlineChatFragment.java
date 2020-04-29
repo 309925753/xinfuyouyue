@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.UserVIPPrivilege;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
@@ -30,6 +31,7 @@ import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.ArithUtils;
 import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.ImmediateiyChatPopupWindow;
 import com.xfyyim.cn.view.MyPrivilegePopupWindow;
@@ -216,9 +218,16 @@ public class myOnlineChatFragment extends EasyFragment {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-       params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
+        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        }
+    /*   params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
         params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");
-      /*  params.put("longitude",  1.0+"");
+      *//*  params.put("longitude",  1.0+"");
         params.put("latitude",  1.0+"");*/
         params.put("type",  "0");//type 类型（0-爸爸发起 1-儿子接收）
         params.put("fromUserId","0");

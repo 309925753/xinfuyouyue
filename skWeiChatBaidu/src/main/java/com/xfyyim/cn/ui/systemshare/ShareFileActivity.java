@@ -23,7 +23,9 @@ import androidx.core.view.ViewCompat;
 
 import com.alibaba.fastjson.JSON;
 import com.xfyyim.cn.AppConstant;
+import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Area;
 import com.xfyyim.cn.bean.UploadFileResult;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -40,6 +42,7 @@ import com.xfyyim.cn.ui.map.MapPickerActivity;
 import com.xfyyim.cn.ui.tool.ButtonColorChange;
 import com.xfyyim.cn.util.DeviceInfoUtil;
 import com.xfyyim.cn.util.LogUtils;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.log.FileUtils;
@@ -471,12 +474,25 @@ public class ShareFileActivity extends BaseActivity implements View.OnClickListe
          * 所在位置
          */
         if (!TextUtils.isEmpty(address)) {
-            // 纬度
+        /*    // 纬度
             params.put("latitude", String.valueOf(latitude));
             // 经度
-            params.put("longitude", String.valueOf(longitude));
-            // 位置
-            params.put("location", address);
+            params.put("longitude", String.valueOf(longitude));*/
+            if (PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                params.put("location",   String.valueOf(PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+            }else {
+              /*  params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+                params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));*/
+                // 纬度
+                params.put("latitude", String.valueOf(latitude));
+                // 经度
+                params.put("longitude", String.valueOf(longitude));
+                // 位置
+                params.put("location", address);
+            }
+
         }
 
         // 必传，之前删除该字段，发布说说，服务器返回接口内部异常

@@ -22,6 +22,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Code;
 import com.xfyyim.cn.bean.LoginRegisterResult;
 import com.xfyyim.cn.helper.DialogHelper;
@@ -319,14 +320,18 @@ public class AuthCodeActivity extends BaseActivity implements View.OnClickListen
         params.put("osVersion", DeviceInfoUtil.getOsVersion());
         params.put("serial", DeviceInfoUtil.getDeviceId(mContext));
         params.put("loginType", "1");//验证码登录
-
-        // 地址信息
-        double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
-        double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
-        if (latitude != 0)
-            params.put("latitude", String.valueOf(latitude));
-        if (longitude != 0)
-            params.put("longitude", String.valueOf(longitude));
+        if (PreferenceUtils.getBoolean(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            // 地址信息
+            double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
+            double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
+            if (latitude != 0)
+                params.put("latitude", String.valueOf(latitude));
+            if (longitude != 0)
+                params.put("longitude", String.valueOf(longitude));
+        }
 
         if (MyApplication.IS_OPEN_CLUSTER) {// 服务端集群需要
             String area = PreferenceUtils.getString(this, AppConstant.EXTRA_CLUSTER_AREA);

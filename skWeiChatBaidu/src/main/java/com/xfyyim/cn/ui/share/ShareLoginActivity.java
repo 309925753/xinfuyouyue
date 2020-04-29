@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.helper.LoginHelper;
@@ -134,10 +135,17 @@ public class ShareLoginActivity extends BaseActivity implements View.OnClickList
         // 地址信息
         double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
         double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
-        if (latitude != 0)
-            params.put("latitude", String.valueOf(latitude));
-        if (longitude != 0)
-            params.put("longitude", String.valueOf(longitude));
+
+
+        if (PreferenceUtils.getBoolean(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            if (latitude != 0)
+                params.put("latitude", String.valueOf(latitude));
+            if (longitude != 0)
+                params.put("longitude", String.valueOf(longitude));
+        }
 
         if (MyApplication.IS_OPEN_CLUSTER) {// 服务端集群需要
             String area = PreferenceUtils.getString(this, AppConstant.EXTRA_CLUSTER_AREA);

@@ -40,6 +40,7 @@ import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.secure.LoginPassword;
 import com.xfyyim.cn.view.VerifyDialog;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.wxapi.WXEntryActivity;
 import com.tencent.tauth.Tencent;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;

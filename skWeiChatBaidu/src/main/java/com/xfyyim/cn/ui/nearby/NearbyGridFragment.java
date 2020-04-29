@@ -13,11 +13,13 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseGridFragment;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
 import com.xfyyim.cn.util.DisplayUtil;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ScreenUtil;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
@@ -57,8 +59,15 @@ public class NearbyGridFragment extends BaseGridFragment<NearbyGridFragment.Near
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("pageIndex", String.valueOf(pager));
         params.put("pageSize", "20");
-        params.put("latitude", String.valueOf(latitude));
-        params.put("longitude", String.valueOf(longitude));
+        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        }
+      /*  params.put("latitude", String.valueOf(latitude));
+        params.put("longitude", String.valueOf(longitude));*/
         //    String sex = getActivity().getIntent().getStringExtra("sex");
         if (!TextUtils.isEmpty(mSex)) {
             params.put("sex", mSex);

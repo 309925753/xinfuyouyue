@@ -110,6 +110,8 @@
                     android:gravity="center"
                     android:layout_marginRight="@dimen/dp15"
                     android:layout_marginLeft="@dimen/dp15"
+                    android:paddingTop="@dimen/dp5"
+                    android:paddingBottom="@dimen/dp5"
                     android:visibility="gone"
                     />
 

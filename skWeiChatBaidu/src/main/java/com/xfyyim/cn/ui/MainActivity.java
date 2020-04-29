@@ -40,6 +40,7 @@ import com.xfyyim.cn.BuildConfig;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Contact;
 import com.xfyyim.cn.bean.Contacts;
 import com.xfyyim.cn.bean.Friend;
@@ -872,10 +873,16 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-       /* params.put("longitude",  MyApplication.getInstance().getBdLocationHelper().getLongitude()+"");
-        params.put("latitude",   MyApplication.getInstance().getBdLocationHelper().getLatitude()+"");*/
-        params.put("longitude",  1.0+"");
-        params.put("latitude",  1.0+"");
+       /**/
+
+        if (PreferenceUtils.getBoolean(MainActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(MainActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(MainActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        }
+
         params.put("type",  "1");//type 类型（0-爸爸发起 1-儿子接收）
         params.put("fromUserId",  friend.getUserId());//
         HttpUtils.post().url(coreManager.getConfig().USER_CHAT_ONLINE)

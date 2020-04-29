@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.message.MucRoom;
 import com.xfyyim.cn.bean.message.MucRoomMember;
@@ -32,6 +33,7 @@ import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.message.HandleActivityDestroyedDoSomeThing;
 import com.xfyyim.cn.ui.message.MucChatActivity;
 import com.xfyyim.cn.ui.tool.ButtonColorChange;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
@@ -280,8 +282,13 @@ public class FaceToFaceGroup extends BaseActivity implements View.OnClickListene
     private void querySignalGroup() {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
-        params.put("longitude", String.valueOf(longitude));
-        params.put("latitude", String.valueOf(latitude));
+        if (PreferenceUtils.getBoolean(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+        }else {
+            params.put("longitude", String.valueOf(longitude));
+            params.put("latitude", String.valueOf(latitude));
+        }
         params.put("password", mSignal);
         params.put("isQuery", isQuery ? String.valueOf(1) : String.valueOf(0));
 
