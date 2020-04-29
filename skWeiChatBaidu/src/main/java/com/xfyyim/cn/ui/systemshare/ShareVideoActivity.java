@@ -539,9 +539,9 @@ public class ShareVideoActivity extends BaseActivity implements View.OnClickList
          */
         if (!TextUtils.isEmpty(address)) {
             if (PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
-                params.put("location", String.valueOf(PreferenceUtils.getBoolean(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+                params.put("longitude",  String.valueOf(PreferenceUtils.getString(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                params.put("latitude",   String.valueOf(PreferenceUtils.getString(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                params.put("location", String.valueOf(PreferenceUtils.getString(ShareVideoActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
             }else {
                 // 纬度
                 params.put("latitude", String.valueOf(latitude));

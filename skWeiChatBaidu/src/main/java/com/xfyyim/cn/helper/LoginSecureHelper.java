@@ -168,8 +168,8 @@ public class LoginSecureHelper {
 */
 
             if (PreferenceUtils.getBoolean(ctx,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ctx,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ctx,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                params.put("longitude",  String.valueOf(PreferenceUtils.getLong(ctx,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                params.put("latitude",   String.valueOf(PreferenceUtils.getLong(ctx,coreManager.getSelf().getUserId()+ SpContext.LAT)));
             }else {
                 params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
                 params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));

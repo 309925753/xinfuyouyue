@@ -60,8 +60,8 @@ public class NearbyGridFragment extends BaseGridFragment<NearbyGridFragment.Near
         params.put("pageIndex", String.valueOf(pager));
         params.put("pageSize", "20");
         if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",   PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
         }else {
             params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
             params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));

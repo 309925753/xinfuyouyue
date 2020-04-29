@@ -22,6 +22,7 @@ import com.xfyyim.cn.BuildConfig;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.NearPositionAdapter;
+import com.xfyyim.cn.bean.event.EventNotifyUpdate;
 import com.xfyyim.cn.map.MapHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.tool.ButtonColorChange;
@@ -36,6 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2017/7/20.
@@ -103,7 +106,7 @@ public class MapPickerAddressActivity extends BaseActivity {
            } else {
                address = "";
            }
-
+            EventBus.getDefault().post(new EventNotifyUpdate("Update"));
            Intent intent = new Intent();
            intent.putExtra(AppConstant.EXTRA_LATITUDE, currentLatLng.getLatitude());
            intent.putExtra(AppConstant.EXTRA_LONGITUDE, currentLatLng.getLongitude());

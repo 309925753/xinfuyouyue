@@ -315,13 +315,13 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         tv_blum.setText(String.valueOf(user.getPraiseCount()));
         tv_name.setText(user.getNickName());
 
-        if (user.getVipFlag() == 0) {
-
+        if (user.getVipFlag() == -1) {
+            tv_vip.setVisibility(View.INVISIBLE);
+        }else {
+            tv_vip.setVisibility(View.VISIBLE);
         }
 
-
         //相册
-
         if (user.getMsgImgs() != null && !TextUtils.isEmpty(user.getMsgImgs())) {
 
             List<String> blumList = new ArrayList<>();

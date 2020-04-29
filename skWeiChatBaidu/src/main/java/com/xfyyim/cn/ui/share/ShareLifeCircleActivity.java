@@ -347,9 +347,9 @@ public class ShareLifeCircleActivity extends BaseActivity implements View.OnClic
             // 位置
             params.put("location", address);*/
             if (PreferenceUtils.getBoolean(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
-                params.put("location", String.valueOf(PreferenceUtils.getBoolean(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+                params.put("longitude", PreferenceUtils.getString(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON));
+                params.put("latitude",  PreferenceUtils.getString(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT));
+                params.put("location", PreferenceUtils.getString(ShareLifeCircleActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address));
             }else {
                 // 纬度
                 params.put("latitude", String.valueOf(latitude));

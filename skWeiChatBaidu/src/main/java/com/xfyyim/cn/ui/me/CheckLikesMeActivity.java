@@ -182,7 +182,6 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
                             if (Result.checkSuccess(getApplicationContext(), result)) {
                                ;
                                 LogUtil.e("likeMeBeanList = " +likeMeBeanList.size());
-                                likeMeBeanList.addAll(result.getData());
                                 checkLikesMeAdapter.likeMeBeanList.addAll(result.getData());
                                 tvTitleCenter.setText("谁喜欢我人("+likeMeBeanList.size()+")");
                                 checkLikesMeAdapter.notifyDataSetChanged();
@@ -252,7 +251,7 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
                 final LikeMeBean likeMeBean = likeMeBeanList.get(position);
                 holder.tvLikeName.setText("" + likeMeBean.getNickname() + "");
 
-                String url = AvatarHelper.getAvatarUrl(likeMeBean.getUserId()+","+likeMeBean.getAge(), false);
+                String url = AvatarHelper.getAvatarUrl(likeMeBean.getUserId()+"", false);
 
              //   GlideImageUtils.setImageView(context, url, holder.ivlike);
                 GlideImageUtils.setImageDrawableCirCle(mContext, url,  holder.ivlike);

@@ -138,8 +138,8 @@ public class ShareLoginActivity extends BaseActivity implements View.OnClickList
 
 
         if (PreferenceUtils.getBoolean(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  String.valueOf(PreferenceUtils.getString(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getString(ShareLoginActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
         }else {
             if (latitude != 0)
                 params.put("latitude", String.valueOf(latitude));

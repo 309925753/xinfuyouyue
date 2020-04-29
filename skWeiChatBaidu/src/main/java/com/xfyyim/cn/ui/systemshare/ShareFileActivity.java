@@ -479,9 +479,9 @@ public class ShareFileActivity extends BaseActivity implements View.OnClickListe
             // 经度
             params.put("longitude", String.valueOf(longitude));*/
             if (PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
-                params.put("location",   String.valueOf(PreferenceUtils.getBoolean(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+                params.put("longitude", PreferenceUtils.getString(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON));
+                params.put("latitude",   PreferenceUtils.getString(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT));
+                params.put("location",  PreferenceUtils.getString(ShareFileActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address));
             }else {
               /*  params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
                 params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));*/

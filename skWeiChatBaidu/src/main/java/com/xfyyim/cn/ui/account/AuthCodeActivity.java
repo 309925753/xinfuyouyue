@@ -321,8 +321,8 @@ public class AuthCodeActivity extends BaseActivity implements View.OnClickListen
         params.put("serial", DeviceInfoUtil.getDeviceId(mContext));
         params.put("loginType", "1");//验证码登录
         if (PreferenceUtils.getBoolean(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  PreferenceUtils.getString(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",  PreferenceUtils.getString(AuthCodeActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT));
         }else {
             // 地址信息
             double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();

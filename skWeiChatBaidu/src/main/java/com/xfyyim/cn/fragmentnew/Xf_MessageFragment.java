@@ -26,6 +26,7 @@ import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
+import com.xfyyim.cn.bean.event.EventOnlieChat;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.fragment.MessageFragment;
@@ -262,6 +263,15 @@ public class Xf_MessageFragment extends EasyFragment {
         //支付成功
         updateSelfData();
     }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventOnlieChat message) {
+        LogUtil.e("message online = " +message.MessageData);
+        if(!TextUtils.isEmpty(message.MessageData)){
+            tvOnlineChatCount.setText("当前在线"+message.MessageData+"人");
+        }
+
+    }
     /**
      * 支付完成后更新用户信息
      */
@@ -303,8 +313,8 @@ public class Xf_MessageFragment extends EasyFragment {
       *//*  params.put("longitude",  1.0+"");
         params.put("latitude",  1.0+"");*/
         if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",   PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
         }else {
             params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
             params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
@@ -327,7 +337,7 @@ public class Xf_MessageFragment extends EasyFragment {
                             }
                         }, 5000);
                         if (Result.checkSuccess(getActivity(), result)) {
-
+                            DialogHelper.dismissProgressDialog();
                         }
                     }
                     @Override

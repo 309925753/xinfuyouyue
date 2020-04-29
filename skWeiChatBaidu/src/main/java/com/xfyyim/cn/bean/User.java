@@ -128,6 +128,16 @@ public class User implements Parcelable, Cloneable {
     private String mySports;
     private List<QuestionEntity> userQuestions;
 
+    public int getNotSeeFilterMyPhotos() {
+        return notSeeFilterMyPhotos;
+    }
+
+    public void setNotSeeFilterMyPhotos(int notSeeFilterMyPhotos) {
+        this.notSeeFilterMyPhotos = notSeeFilterMyPhotos;
+    }
+
+    private int notSeeFilterMyPhotos;//未让配对人查看用户相册
+
 
     public int getIsMatch() {
         return isMatch;

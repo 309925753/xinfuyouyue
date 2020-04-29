@@ -3,6 +3,7 @@ package com.xfyyim.cn.ui.me;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,11 +14,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventNotifyUpdate;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.DialogHelper;
@@ -27,11 +33,14 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.lock.DeviceLockHelper;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.CurrentLocationActivity;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.Md5Util;
 import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MergerStatus;
+import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
 import com.xfyyim.cn.view.SelectionFrame;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
@@ -49,6 +58,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 
@@ -147,6 +159,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     TextView tvVersionNumber;
     private Unbinder unbinder;
     private  boolean  isAutoExpandRange;
+    private boolean  isRefreshHome=false;
     User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +201,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 isAutoExpandRange=isChecked;
+                isRefreshHome=true;
             }
         });
 
@@ -198,6 +212,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvCurrentDistance.setText(progress+"km+");
+                isRefreshHome=true;
             }
 
             @Override
@@ -217,6 +232,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvCurrentAge.setText("18-"+progress);
+                isRefreshHome=true;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -277,9 +293,11 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.rlNews).setOnClickListener(this::onClick);
         findViewById(R.id.tvCurrentSex).setOnClickListener(this::onClick);
         rlCurrentLocation.setOnClickListener(this);
+        EventBusHelper.register(this);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -324,14 +342,18 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.rlCurrentLocation:
                 //位置
-
-                //todo -1没有会员
-                startActivity(new Intent(this, CurrentLocationActivity.class));
+                if(!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
+                    //todo -1没有会员
+                    startActivity(new Intent(this, CurrentLocationActivity.class));
 //                if (user.getUserVIPPrivilege().getVipLevel().equals("-1")){
 //
 //                }else{
 //
 //                }
+                }else {
+                    BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                }
+
                 break;
         }
 
@@ -367,7 +389,9 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     public void onResponse(ObjectResult<Void> result) {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(NewSettingsActivity.this, result)) {
-
+                            if(isRefreshHome){
+                                EventBus.getDefault().post(new EventNotifyUpdate("isRefreshHome"));
+                            }
                         }
                     }
 
@@ -438,9 +462,11 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                         if (which == 0) {
                             sex=1;
                             tvCurrentSex.setText(R.string.sex_man);
+                            isRefreshHome=true;
                         } else {
                             sex=0;
                             tvCurrentSex.setText(R.string.sex_woman);
+                            isRefreshHome=true;
                         }
 
                         dialog.dismiss();
@@ -448,6 +474,58 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     }
                 }).setCancelable(true).create().show();
     }
+    //购买会员
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
+        //显示VIP购买会员
+        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(NewSettingsActivity.this, userVIPPrivilegePrice, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(), coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
+        //谁喜欢我，在线聊天  购买
+        //   MyPrivilegePopupWindow  my=new MyPrivilegePopupWindow(getActivity());
+        LogUtil.e("BuyMember  BuyMember");
+        myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type, int vip) {
+                submitPay(type, vip);
+                LogUtil.e("*********************************type = " + type + "-------------vip = " + vip);
+            }
+        });
+    }
 
+    /**
+     * 转支付类型返回支付签名数据
+     *
+     * @param type
+     * @param vip
+     */
+    private void submitPay(String type, int vip) {
+        UserVIPPrivilegePrice vipPrivilegePriceList = coreManager.getSelf().getUserVIPPrivilegeConfig();
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("payType", type);
+        if(vip==1){
+            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+            params.put("level", vipPrivilegePriceList.getV0());
+        }else if(vip==2){
+            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+            params.put("level", vipPrivilegePriceList.getV1());
+        }else if(vip==3){
+            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+            params.put("level", vipPrivilegePriceList.getV2());
+        }else if(vip==4){
+            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+            params.put("level", vipPrivilegePriceList.getV3());
+        }
+        params.put("funType", String.valueOf(5));
+        params.put("num", String.valueOf(-1));
+        params.put("mon", String.valueOf(-1));
+        AlipayHelper.rechargePay(NewSettingsActivity.this, coreManager,params);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功刷新用户页面
+        updateSelfData();
+    }
 
 }

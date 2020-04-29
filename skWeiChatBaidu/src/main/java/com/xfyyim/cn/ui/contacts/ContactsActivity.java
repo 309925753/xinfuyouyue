@@ -622,8 +622,8 @@ public class ContactsActivity extends BaseActivity {
 
 
         if (PreferenceUtils.getBoolean(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  String.valueOf(PreferenceUtils.getString(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getString(ContactsActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
         }else {
             double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
             double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();

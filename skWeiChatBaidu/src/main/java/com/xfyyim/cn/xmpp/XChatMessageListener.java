@@ -32,6 +32,7 @@ import com.xfyyim.cn.bean.event.EventNotifyMatching;
 import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
 import com.xfyyim.cn.bean.event.EventNotifyWaitMatching;
 import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
+import com.xfyyim.cn.bean.event.EventOnlieChat;
 import com.xfyyim.cn.bean.event.EventSyncFriendOperating;
 import com.xfyyim.cn.bean.event.EventTransfer;
 import com.xfyyim.cn.bean.event.MessageContactEvent;
@@ -191,6 +192,13 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             EventBus.getDefault().post(new EventNotifyMatching(chatMessage.getFromUserName()));
             return;
         }
+        //在线闪聊当前多少人
+        if(type==XmppMessage.TYPE_ONLINE_CHAT_COUNT){
+            LogUtil.e("chatMessage.getToUserName() = " +fromUserId);
+            EventBus.getDefault().post(new EventOnlieChat(fromUserId));
+            return;
+        }
+
         // 单聊收到805消息，群成员发送了chatKey给我，解密存入本地，更新界面
         if (chatMessage.getType() == XmppMessage.TYPE_SECURE_SEND_KEY) {
             if (!TextUtils.equals(chatMessage.getFromUserId(), mLoginUserId)) {// 需要考虑多点登录的情况

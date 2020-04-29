@@ -25,19 +25,75 @@
             android:src="@mipmap/matching_congratulations"
             android:layout_gravity="center_horizontal"
             />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/matching_congratulations_member"
-            android:layout_gravity="center_horizontal"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="102dp"
+            android:layout_marginTop="@dimen/dp40"
+            >
+            <RelativeLayout
+                android:layout_width="145dp"
+                android:layout_height="145dp"
+                android:layout_toLeftOf="@+id/ivCenter"
+                android:layout_marginRight="-23dp"
+                >
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/ivLeft"
+                    android:layout_width="100dp"
+                    android:layout_height="102dp"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_head"
+                    android:visibility="visible"
+                    app:riv_border_color="#FFFFFF"
+                    app:riv_border_width="2dip"
+                    app:riv_corner_radius="6dp"
+                    app:riv_oval="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="145dp"
+                android:layout_height="145dp"
+                android:layout_toRightOf="@+id/ivCenter"
+                android:layout_marginLeft="-22dp"
+                >
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/ivRight"
+                    android:layout_width="145dp"
+                    android:layout_height="145dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="visible"
+                    app:riv_border_color="#fff"
+                    app:riv_border_width="1dip"
+                    android:background="@drawable/appeds_shape_2d3a4d_oval"
+                    app:riv_oval="true"
+                    android:layout_centerHorizontal="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/ivCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible"
+                >
+                <ImageView
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/my_super_love"
+                    />
+            </RelativeLayout>
+        </RelativeLayout>
+
         <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="你和星辰相互喜欢了对方"
             android:textColor="#f0f2f5"
             android:textSize="@dimen/sp_15_text_size"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp30"
             />
         <TextView
             android:id="@+id/tvImmediatelyChat"

@@ -267,8 +267,8 @@ public class NearbyMapFragment extends EasyFragment implements View.OnClickListe
      /*   params.put("latitude", String.valueOf(latitude));
         params.put("longitude", String.valueOf(longitude));*/
         if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",   PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
         }else {
             params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
             params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));

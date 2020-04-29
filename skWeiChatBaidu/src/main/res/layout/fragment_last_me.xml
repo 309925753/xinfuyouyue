@@ -62,7 +62,6 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/tv_vip"
                     android:layout_width="@dimen/dp30"
                     android:layout_height="14dp"
@@ -74,6 +73,7 @@
                     android:gravity="center"
                     android:text="VIP"
                     android:textColor="@color/white"
+                    android:visibility="invisible"
                     android:textSize="12sp" />
 
                 <TextView

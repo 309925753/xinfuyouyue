@@ -542,9 +542,9 @@ public class ReleasexActivity extends BaseActivity implements View.OnClickListen
             // 位置
             params.put("location", address);*/
             if (PreferenceUtils.getBoolean(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
-                params.put("location", String.valueOf(PreferenceUtils.getBoolean(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address)));
+                params.put("longitude",  PreferenceUtils.getString(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.LON));
+                params.put("latitude",  PreferenceUtils.getString(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.LAT));
+                params.put("location", PreferenceUtils.getString(ReleasexActivity.this,coreManager.getSelf().getUserId()+ SpContext.Address));
             }else {
                 // 纬度
                 params.put("latitude", String.valueOf(latitude));

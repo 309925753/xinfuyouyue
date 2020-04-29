@@ -21,6 +21,7 @@ import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
+import com.xfyyim.cn.bean.event.EventNotifyUpdate;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.map.MapPickerAddressActivity;
 import com.xfyyim.cn.util.PreferenceUtils;
@@ -29,6 +30,7 @@ import com.xfyyim.cn.util.ToastUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.EventBus;
 
 public class CurrentLocationActivity extends BaseActivity {
     private static final int REQUEST_CODE_SELECT_LOCATE = 10;  // 位置
@@ -112,6 +114,7 @@ public class CurrentLocationActivity extends BaseActivity {
             public void onClick(View v) {
                 isSelect = true;
                 checkStates(isSelect);
+                EventBus.getDefault().post(new EventNotifyUpdate("Update"));
 
             }
         });
@@ -209,6 +212,7 @@ public class CurrentLocationActivity extends BaseActivity {
             if (reverseGeoCodeResult.getAddressDetail().city != null || TextUtils.isEmpty(reverseGeoCodeResult.getAddressDetail().city)) {
                 PreferenceUtils.putString(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.CITY, reverseGeoCodeResult.getAddressDetail().city);
                 tv_city_newname.setText(reverseGeoCodeResult.getAddressDetail().city);
+
             }
 
 

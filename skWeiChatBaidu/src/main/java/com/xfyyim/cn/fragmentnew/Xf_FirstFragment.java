@@ -22,6 +22,7 @@ import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventNotifyByTag;
+import com.xfyyim.cn.bean.event.EventNotifyUpdate;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.customer.AngleTransformer;
@@ -32,6 +33,7 @@ import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
+import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.redpacket.WxPayAdd;
@@ -80,6 +82,7 @@ public class Xf_FirstFragment extends EasyFragment {
     private int pageSize = 25;
     private boolean isSliding = false;
     private int payFunction = 0;//判断支付回调功能类型
+    private boolean  isRegret=false;
 
     @Override
     protected int inflateLayoutId() {
@@ -155,9 +158,11 @@ public class Xf_FirstFragment extends EasyFragment {
                         if (isSwipeLeft) {
                             //  ToastUtil.showToast(getActivity(),"不喜欢接口");
                             unLike(list.get(selectItem));
+                            isRegret=true;
                         } else {
                             userLike(list.get(selectItem));
                             //   ToastUtil.showToast(getActivity(),"喜欢接口");
+                            isRegret=false;
                         }
                         if (mUsers.size() <= 3) {
                             requestData();
@@ -187,6 +192,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
                             exchangeAdapter(user);
+                            isRegret=false;
                         }
                     }
 
@@ -216,6 +222,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
                             exchangeAdapter(user);
+                            isRegret=true;
                         }
                     }
 
@@ -297,10 +304,12 @@ public class Xf_FirstFragment extends EasyFragment {
                                 if (mUsers != null && (!isSliding)) {
                                     swithSuperSolarize(0);
                                 } else {
+                                    if(isRegret){
                                     mUsers.remove(0);
                                     mUsers.add(0, userSelect);
                                     setmAdapter(mUsers);
                                     mAdapter.notifyDataSetChanged();
+                                    }
                                 }
                             }
                         }
@@ -363,26 +372,33 @@ public class Xf_FirstFragment extends EasyFragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
             String url = AvatarHelper.getAvatarUrl(mData.get(position).getUserId(), false);
-
             GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
             holder.tvName.setText(mData.get(position).getNickName());
             holder.tvAge.setText(mData.get(position).getAge() + "");
             if (!TextUtils.isEmpty(mData.get(position).getStarSign())) {
                 holder.tvCnstellation.setText(mData.get(position).getStarSign());
+                holder.tvCnstellation.setVisibility(View.VISIBLE);
             }
 
             if (mData.get(position).getMyPhotos() != null && mData.get(position).getMyPhotos().size() >= 1) {
                 holder.tvLike.setText(mData.get(position).getMyPhotos().size());
             }
-
-            if (mData.get(position).getVip() == 1) {
-                holder.tvVip.setText("白银会员");
-            } else if (mData.get(position).getVip() == 2) {
-                holder.tvVip.setText("黄金会员");
-            } else if (mData.get(position).getVip() == 3) {
-                holder.tvVip.setText("铂金会员");
+            if(mData.get(position).getFaceIdentity()==1){
+                holder.ivHead.setVisibility(View.VISIBLE);
             }
-
+           /* if (mData.get(position).getMsgImgs() != null && !TextUtils.isEmpty(mData.get(position).getMsgImgs())) {
+                holder.tvLike.setText(mData.get(position).getMsgImgs().split(",").length+"");
+            }*/
+           if(mData.get(position).getNotSeeFilterMyPhotos()==0){
+               holder.ivShow.setVisibility(View.VISIBLE);
+           }else {
+               holder.ivShow.setVisibility(View.INVISIBLE);
+           }
+            if(mData.get(position).getVip()==-1){
+                holder.tvVip.setVisibility(View.INVISIBLE);
+            }else {
+                holder.tvVip.setVisibility(View.VISIBLE);
+            }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -401,6 +417,8 @@ public class Xf_FirstFragment extends EasyFragment {
 
         public class ViewHolder extends StackLayout.ViewHolder {
             ImageView img_pic;
+            ImageView ivHead;
+            ImageView  ivShow;
             TextView tvName;
             TextView tvCnstellation;
             TextView tvAge;
@@ -410,13 +428,13 @@ public class Xf_FirstFragment extends EasyFragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_pic = itemView.findViewById(R.id.img_pic);
+                ivShow = itemView.findViewById(R.id.ivtSee);
+                ivHead= itemView.findViewById(R.id.ivHead);
                 tvName = itemView.findViewById(R.id.t1);
                 tvAge = itemView.findViewById(R.id.t2);
                 tvCnstellation = itemView.findViewById(R.id.t3);
                 tvVip = itemView.findViewById(R.id.t4);
                 tvLike = itemView.findViewById(R.id.tvLike);
-
-
             }
         }
 
@@ -435,20 +453,13 @@ public class Xf_FirstFragment extends EasyFragment {
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
-// todo     params.put("sex", String.valueOf(0));
-//      params.put("minAge", String.valueOf(1));
-//      params.put("maxAge", String.valueOf(10));
-/*        params.put("latitude", String.valueOf(latitude));
-        params.put("longitude", String.valueOf(longitude));
-        LogUtil.e("MyApplication.getInstance().getBdLocationHelper().getLongitude() = " + MyApplication.getInstance().getBdLocationHelper().getLongitude());
-        params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-        params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));*/
+
         if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
         }else {
-            params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-            params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+            params.put("longitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
         }
 
         params.put("pageIndex", String.valueOf(pageIndex));
@@ -504,6 +515,8 @@ public class Xf_FirstFragment extends EasyFragment {
                     superLike(mUsers.get(selectItem));
                     break;
             }
+        }else {
+            requestData();
         }
     }
 
@@ -540,14 +553,19 @@ public class Xf_FirstFragment extends EasyFragment {
                                 //判断超级喜欢每天5次
                                 if (userSuper.getUserVIPPrivilege().getQuantity() == 0) {
                                     ToastUtil.showLongToast(getContext(), "当天次数已用完");
+                                }else {
+                                    exchangeAdapter(user);
                                 }
                             }
 
+                        }else {
+                            ToastUtil.showLongToast(getContext(), "当天次数已用完");
                         }
                     }
 
                     @Override
                     public void onError(Call call, Exception e) {
+
                     }
                 });
     }
@@ -663,6 +681,15 @@ public class Xf_FirstFragment extends EasyFragment {
                 break;
         }
     }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyUpdate message) {
+        LogUtil.e("message = " +message.MessageData);
+        pageIndex=0;
+       requestData();
+    }
+
 
     /**
      * 支付完成后更新用户信息

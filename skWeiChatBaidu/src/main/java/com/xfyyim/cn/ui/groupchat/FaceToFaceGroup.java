@@ -283,8 +283,8 @@ public class FaceToFaceGroup extends BaseActivity implements View.OnClickListene
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         if (PreferenceUtils.getBoolean(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  String.valueOf(PreferenceUtils.getString(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.LON)));
+            params.put("latitude",   String.valueOf(PreferenceUtils.getString(FaceToFaceGroup.this,coreManager.getSelf().getUserId()+ SpContext.LAT)));
         }else {
             params.put("longitude", String.valueOf(longitude));
             params.put("latitude", String.valueOf(latitude));

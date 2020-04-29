@@ -50,26 +50,28 @@
 
 
         <ImageView
-            android:layout_toRightOf="@+id/rlhome"
-            android:layout_alignTop="@+id/rlhome"
-            android:layout_alignBottom="@+id/rlhome"
-            android:layout_width="@dimen/dp20"
-            android:padding="2dp"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/home_quan"
+            android:id="@+id/ivtSee"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginBottom="6dp"
+            android:layout_toRightOf="@+id/rlhome"
             android:background="@drawable/appdes_shape_f0f2f5_4"
-
-            />
+            android:padding="4dp"
+            android:layout_marginTop="@dimen/dp10"
+            android:visibility="invisible"
+            android:src="@mipmap/home_quan" />
 
 
         <ImageView
+            android:id="@+id/ivHead"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:src="@mipmap/home_v"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"
+            android:visibility="invisible"
             />
 
 
@@ -146,6 +148,7 @@
             android:gravity="center"
             android:text="金牛座"
             android:textColor="@color/white"
+            android:visibility="invisible"
             android:textSize="10sp" />
 
 
@@ -159,6 +162,7 @@
             android:gravity="center"
             android:text="VIP"
             android:textColor="@color/white"
+            android:visibility="invisible"
             android:textSize="10sp" />
 
         </LinearLayout>

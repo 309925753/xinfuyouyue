@@ -115,6 +115,7 @@ public abstract class XmppMessage {
     public static final int TYPE_WAIT_CHAT = 517;// 在线闪聊待接收方
     public static final int TYPE_SUPER_MATCHING = 518;// 甲方匹配喜欢
     public static final int TYPE_WAIT_MATCHING = 519;// 乙方匹配喜欢接收
+    public static final int TYPE_ONLINE_CHAT_COUNT = 520;// 在线闪聊当前多少人
 
     // 未用到
     public static final int TYPE_NEWSEE = 503;// 新关注

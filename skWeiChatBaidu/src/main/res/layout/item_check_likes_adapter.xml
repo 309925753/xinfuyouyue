@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/dp10"
-    android:paddingRight="@dimen/dp10"
-    android:background="#FEF7F8"
-    android:orientation="vertical">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FEF7F8"
+        app:cardCornerRadius="6dp">
     <LinearLayout
         android:id="@+id/select_ll"
         android:layout_width="168dp"
@@ -18,7 +17,7 @@
         <ImageView
             android:id="@+id/ivlike"
             android:layout_width="168dp"
-            android:layout_height="185dp"
+            android:layout_height="195dp"
             android:src="@mipmap/my_vip_regrets"
             android:layout_marginTop="-10dp"
             android:background="@drawable/shape_1aff3f63_10_myl_ike"
@@ -32,8 +31,8 @@
             android:textSize="@dimen/sp_14_text_size"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp5"
             android:layout_marginBottom="@dimen/dp10"
             />
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

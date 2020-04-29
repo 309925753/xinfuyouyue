@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.Friend;
-import com.xfyyim.cn.ui.MainActivity;
+import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.message.ChatActivity;
 
@@ -27,8 +28,12 @@ public class MatchingSuccessfulActivity extends BaseActivity implements View.OnC
     TextView tvBack;
     @BindView(R.id.matching)
     RelativeLayout matching;
+    @BindView(R.id.tvUserName)
+    TextView tvUserName;
+    @BindView(R.id.ivLeft)
+    ImageView ivLeft;
     private Unbinder unbinder;
-    private  Friend friend=new Friend();
+    private Friend friend = new Friend();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +47,11 @@ public class MatchingSuccessfulActivity extends BaseActivity implements View.OnC
     private void initView() {
         tvImmediatelyChat.setOnClickListener(this);
         tvBack.setOnClickListener(this::onClick);
-        friend=(Friend)getIntent().getSerializableExtra("friend");
+        friend = (Friend) getIntent().getSerializableExtra("friend");
+        tvUserName.setText("你和" + friend.getNickName() + "相互喜欢了对方");
+        AvatarHelper.getInstance().displayAvatar(friend.getUserId(), ivLeft, true);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -54,9 +62,9 @@ public class MatchingSuccessfulActivity extends BaseActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tvImmediatelyChat:
-                if(friend!=null){
+                if (friend != null) {
                     Intent intent = new Intent(MatchingSuccessfulActivity.this, ChatActivity.class);
                     intent.setClass(MatchingSuccessfulActivity.this, ChatActivity.class);
                     intent.putExtra(ChatActivity.FRIEND, friend);

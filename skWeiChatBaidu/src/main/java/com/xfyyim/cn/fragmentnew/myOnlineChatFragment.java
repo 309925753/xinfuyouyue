@@ -82,7 +82,12 @@ public class myOnlineChatFragment extends EasyFragment {
     public void helloEventBus(EventNotifyOnlineChat message) {
         LogUtil.e("在线闪聊发起方");
         DialogHelper.dismissProgressDialog();
-         Friend friend = JSON.parseObject(message.MessageData, Friend.class);
+       if((userVIPPrivilege.getChatQuantity() + userVIPPrivilege.getChatByMonthQuantity()-1)!=0){
+           tvDataTime.setText("剩余" + (userVIPPrivilege.getChatQuantity() + userVIPPrivilege.getChatByMonthQuantity()-1) + "次");
+       }
+         getUserPrivilegeInfo();
+
+        Friend friend = JSON.parseObject(message.MessageData, Friend.class);
         ImmediateiyChatPopupWindow immediateiyChatPopupWindow=new ImmediateiyChatPopupWindow(getActivity(),coreManager.getSelf().getUserId());
         immediateiyChatPopupWindow.setBtnOnClice(new ImmediateiyChatPopupWindow.BtnOnClick() {
             @Override
@@ -219,8 +224,8 @@ public class myOnlineChatFragment extends EasyFragment {
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
         if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",  String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON)));
-            params.put("latitude",   String.valueOf(PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            params.put("longitude",  PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",   PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
         }else {
             params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
             params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
