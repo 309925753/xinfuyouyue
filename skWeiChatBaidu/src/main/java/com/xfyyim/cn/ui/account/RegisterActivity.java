@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.xfyyim.cn.AppConfig;
@@ -55,6 +56,8 @@ public class RegisterActivity extends BaseActivity {
     private EditText mPhoneNumEdit;
     private EditText mPassEdit;
     private EditText password_edit_comfirm;
+
+    private LinearLayout ll_back;
 
     private ImageView mImageCodeIv;
     private ImageView mRefreshIv;
@@ -300,6 +303,14 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void initEvent() {
+
+        findViewById(R.id.ll_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mPhoneNumEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

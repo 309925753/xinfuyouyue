@@ -2417,5 +2417,8 @@
     <string name="tip_not_set_download">后台未配置新版本下载地址</string>
     <string name="new_device_login_sure">新设备登录确认</string>
     <string name="tip_red_packet_than_account">红包数量不可大于最大限制</string>
+    <string name="location_current">我的当前定位</string>
+
+
 
 </resources>

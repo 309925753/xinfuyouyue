@@ -1,689 +1,627 @@
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FEF7F8"
+    android:background="@color/new_main"
     android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/a_view_actionbar" />
+
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FEF7F8"
-        android:orientation="vertical">
-        <include layout="@layout/a_view_actionbar" />
-
- <!--   <RelativeLayout
-        android:id="@+id/rlWallet"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp45"
-        android:background="@drawable/bg_new_my_wallet_red">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp10"
-            android:layout_marginTop="@dimen/dp15"
-            android:src="@mipmap/my_return_left" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp15"
-            android:text="设置"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/sp_18_text_size" />
-
-        <TextView
-            android:id="@+id/tvBillDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/dp15"
-            android:layout_marginRight="@dimen/dp15"
-            android:text="账单明细"
-            android:textColor="@color/color_white"
-            android:textSize="@dimen/sp_10_text_size" />
-    </RelativeLayout>-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/sp_15_text_size"
-        android:layout_marginTop="@dimen/sp_15_text_size"
-        android:text="向我显示"
-        android:textColor="#ffa26262"
-        android:textSize="@dimen/sp_10_text_size" />
+        android:orientation="vertical"
+      >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp10"
-            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/rlCurrentLocation"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="18dp">
+                android:text="向我显示"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#ffa26262"
+                android:textSize="@dimen/sp_10_text_size" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp5"
-                    android:src="@mipmap/my_set_return" />
-
-                <TextView
-                    android:id="@+id/tvCurrentLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:text="我的当前定位"
-                    android:textColor="#fffc607e"
-                    android:textSize="9sp" />
-
-                <TextView
-                    android:id="@+id/tvSetCity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvCurrentLocation"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:text="上海市"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="9sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="位置"
-                    android:textColor="@color/text_black_333"
-                    android:textSize="@dimen/sp_15_text_size" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlCurrentDistance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="35dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="范围"
-                    android:textColor="@color/text_black_333"
-                    android:textSize="@dimen/sp_15_text_size" />
-
-                <TextView
-                    android:id="@+id/tvCurrentDistance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:text="100km+"
-                    android:textColor="#FC607E"
-                    android:textSize="@dimen/sp_12_text_size" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="35dp">
-
-                <ImageView
-                    android:id="@+id/ivBicycle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/my_set_bicycle" />
-
-                <ImageView
-                    android:id="@+id/ivPlane"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:src="@mipmap/my_set_plane" />
-
-                <SeekBar
-                    android:id="@+id/sbDistance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:layout_toLeftOf="@+id/ivPlane"
-                    android:layout_toRightOf="@+id/ivBicycle"
-                    android:max="1000"
-                    android:maxHeight="2dp"
-                    android:progress="30"
-                    android:progressDrawable="@drawable/bg_new_my_set_seek_line"
-                    android:thumb="@drawable/bg_new_my_set_seek_bar" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="25dp">
-
-                <TextView
-                    android:id="@+id/tvRange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="自动扩大范围"
-                    android:textColor="@color/text_black_333"
-                    android:textSize="@dimen/sp_15_text_size" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvRange"
-                    android:text="如果用户较少，自动适量扩大范围"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="@dimen/sp_10_text_size" />
-
-                <com.xfyyim.cn.view.SwitchButton
-                    android:id="@+id/sbBExpandScope"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp5"
-                    app:sb_background="@color/app_white"
-                    app:sb_checked_color="@color/main_color_red"
-                    app:sb_effect_duration="100"
-                    app:sb_shadow_radius="4dp"
-                    app:sb_show_indicator="false" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="35dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="显示性别"
-                    android:textColor="@color/text_black_333"
-                    android:textSize="@dimen/sp_15_text_size" />
-
-                <TextView
-                    android:id="@+id/tvCurrentSex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:text="女"
-                    android:textColor="#FC607E"
-                    android:textSize="@dimen/sp_12_text_size" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="35dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年龄"
-                    android:textColor="@color/text_black_333"
-                    android:textSize="@dimen/sp_15_text_size" />
-
-                <TextView
-                    android:id="@+id/tvCurrentAge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:text="18-30"
-                    android:textColor="#FC607E"
-                    android:textSize="@dimen/sp_12_text_size" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="35dp"
-                android:paddingBottom="@dimen/dp30">
-
-                <ImageView
-                    android:id="@+id/ivSetMin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/my_set_age_min" />
-                <!--
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/ivSetMin"
-                android:layout_toLeftOf="@+id/ivSetMax"
-                >
-                <com.changliaoim.weichat.view.SeekBarPressure
-                    android:id="@+id/seekbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
--->
-                <ImageView
-                    android:id="@+id/ivSetMax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp25"
-                    android:src="@mipmap/my_set_age_max" />
+                android:layout_marginTop="@dimen/dp10"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:background="@color/color_white"
+                android:orientation="vertical">
 
-
-                <SeekBar
-                    android:id="@+id/seekbar"
+                <RelativeLayout
+                    android:id="@+id/rlCurrentLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:layout_toLeftOf="@+id/ivSetMax"
-                    android:layout_toRightOf="@+id/ivSetMin"
-                    android:max="60"
-                    android:maxHeight="2dp"
-                    android:min="18"
-                    android:progress="30"
-                    android:progressDrawable="@drawable/bg_new_my_set_seek_line"
-                    android:thumb="@drawable/bg_new_my_set_seek_bar" />
+                    android:layout_marginTop="18dp">
 
-                <View
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+
+                        android:text="我的当前定位"
+                        android:textColor="#fffc607e"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvCurrentLocation"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="上海市"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="位置"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlCurrentDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/newme_set_margintop">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="范围"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="100km+"
+                        android:textColor="#FC607E"
+                        android:textSize="@dimen/sp_12_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/newme_set_margintop">
+
+                    <ImageView
+                        android:id="@+id/ivBicycle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/my_set_bicycle" />
+
+                    <ImageView
+                        android:id="@+id/ivPlane"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/my_set_plane" />
+
+                    <SeekBar
+                        android:id="@+id/sbDistance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:layout_toLeftOf="@+id/ivPlane"
+                        android:layout_toRightOf="@+id/ivBicycle"
+                        android:max="1000"
+                        android:maxHeight="2dp"
+                        android:progress="30"
+                        android:progressDrawable="@drawable/bg_new_my_set_seek_line"
+                        android:thumb="@drawable/bg_new_my_set_seek_bar" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="25dp">
+
+                    <TextView
+                        android:id="@+id/tvRange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="自动扩大范围"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvRange"
+                        android:layout_marginTop="5dp"
+                        android:text="如果用户较少，自动适量扩大范围"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="@dimen/sp_10_text_size" />
+
+                    <com.xfyyim.cn.view.SwitchButton
+                        android:id="@+id/sbBExpandScope"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        app:sb_background="@color/app_white"
+                        app:sb_checked_color="@color/main_color_red"
+                        app:sb_effect_duration="100"
+                        app:sb_shadow_radius="4dp"
+                        app:sb_show_indicator="false" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="35dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="显示性别"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentSex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+
+                        android:gravity="right"
+                        android:text="女"
+                        android:textColor="#FC607E"
+                        android:textSize="@dimen/sp_12_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="35dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="年龄"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:text="18-30"
+                        android:textColor="#FC607E"
+                        android:textSize="@dimen/sp_12_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="35dp"
+                    android:paddingBottom="@dimen/dp30">
+
+                    <ImageView
+                        android:id="@+id/ivSetMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/my_set_age_min" />
+                    <!--
+                <LinearLayout
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivSetMin"
+                    android:layout_toLeftOf="@+id/ivSetMax"
+                    >
+                    <com.changliaoim.weichat.view.SeekBarPressure
+                        android:id="@+id/seekbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                </LinearLayout>
+    -->
+                    <ImageView
+                        android:id="@+id/ivSetMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+
+                        android:src="@mipmap/my_set_age_max" />
+
+
+                    <SeekBar
+                        android:id="@+id/seekbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:layout_toLeftOf="@+id/ivSetMax"
+                        android:layout_toRightOf="@+id/ivSetMin"
+                        android:max="60"
+                        android:maxHeight="2dp"
+                        android:min="18"
+                        android:progress="30"
+                        android:progressDrawable="@drawable/bg_new_my_set_seek_line"
+                        android:thumb="@drawable/bg_new_my_set_seek_bar" />
+
+                    <View
+                        android:layout_width="wrap_content"
                         android:layout_height="2dp"
                         android:layout_marginTop="13dp"
                         android:layout_toLeftOf="@+id/ivSetMax"
                         android:layout_toRightOf="@+id/ivSetMin"
-                    android:background="#FC607E"
-                    android:visibility="gone" />
-            </RelativeLayout>
+                        android:background="#FC607E"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
+                android:text="应用设置"
+                android:textColor="#ffa26262"
+                android:textSize="@dimen/sp_10_text_size" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:background="@color/color_white"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/rlPrivacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp">
+
+                    <ImageView
+                        android:id="@+id/ivPrivacy"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/my_set_privacy">
+
+
+                    </ImageView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSetPrivacy"
+                        android:layout_marginLeft="@dimen/dp40"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="联系人、我的相册、朋友圈"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetPrivacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_toRightOf="@+id/ivPrivacy"
+                        android:text="隐私与权限"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="18dp">
+
+                    <ImageView
+                        android:id="@+id/ivNews"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/my_set_news"></ImageView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSetNews"
+                        android:layout_marginLeft="@dimen/dp40"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="通知，聊天设置"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetNews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_toRightOf="@+id/ivNews"
+                        android:text="消息提醒与聊天"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlCache"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="18dp">
+
+                    <ImageView
+                        android:id="@+id/ivCache"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/my_set_data" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSetCache"
+                        android:layout_marginLeft="@dimen/dp40"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="数据和缓存设置"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetCache"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_toRightOf="@+id/ivCache"
+                        android:text="数据和缓存"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlSafe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="18dp"
+                    android:paddingBottom="@dimen/dp30">
+
+                    <ImageView
+                        android:id="@+id/ivSafe"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/my_set_safe"></ImageView>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSetSafe"
+                        android:layout_marginLeft="@dimen/dp40"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="修改手机号和密码"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetSafe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_toRightOf="@+id/ivSafe"
+                        android:text="账号与安全"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:paddingLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="应用设置"
+                android:textColor="#ffa26262"
+                android:textSize="@dimen/sp_10_text_size" />
+
+            <LinearLayout
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:background="@color/color_white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rlHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="18dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp5"
+                        android:layout_height="@dimen/dp5"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/dp10"
+
+                        android:src="@drawable/red_my_button" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <ImageView
+                        android:id="@+id/ivSetHelp"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/my_set_help" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSetHelp"
+                        android:layout_marginLeft="@dimen/dp40"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="感谢你提出对幸福有约的宝贵意见"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_toRightOf="@+id/ivSetHelp"
+                        android:text="帮助与反馈"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="18dp"
+                    android:paddingBottom="@dimen/dp30">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp5"
+                        android:src="@mipmap/my_set_return" />
+
+                    <ImageView
+                        android:id="@+id/ivSetAbout"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/my_set_about" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSetAbout"
+                        android:layout_marginLeft="@dimen/dp40"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="感谢你提出对幸福有约的宝贵意见"
+                        android:textColor="@color/text_black_999"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvSetAbout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_toRightOf="@+id/ivSetAbout"
+                        android:text="关于幸福有约"
+                        android:textColor="@color/text_black_333"
+                        android:textSize="@dimen/sp_15_text_size" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSwitchAccount"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+
+                android:layout_marginTop="@dimen/dp50"
+                android:layout_marginRight="@dimen/dp15"
+                android:background="@drawable/red_my_button"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/dp15"
+                android:text="切换账号"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvLoginOut"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp15"
+                android:background="@drawable/red_my_button"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/dp15"
+                android:text="退出登录"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvVersionNumber"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp15"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/dp15"
+                android:text="幸福有约1.0.0"
+                android:textColor="#651E1E" />
         </LinearLayout>
-
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/sp_15_text_size"
-        android:layout_marginTop="@dimen/sp_15_text_size"
-        android:text="应用设置"
-        android:textColor="#ffa26262"
-        android:textSize="@dimen/sp_10_text_size" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
-        android:background="@color/color_white"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/rlPersonal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:visibility="gone"
-            android:layout_marginTop="18dp">
-
-            <ImageView
-                android:id="@+id/ivPersonal"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_personal_information"></ImageView>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetPersonal"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="编辑姓名等"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetPersonal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivPersonal"
-                android:text="个人资料"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlPrivacy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="18dp">
-
-            <ImageView
-                android:id="@+id/ivPrivacy"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_privacy">
-
-
-            </ImageView>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetPrivacy"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="联系人、我的相册、朋友圈"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetPrivacy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivPrivacy"
-                android:text="隐私与权限"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlNews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="18dp">
-
-            <ImageView
-                android:id="@+id/ivNews"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_news">
-            </ImageView>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetNews"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="通知，聊天设置"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetNews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivNews"
-                android:text="消息提醒与聊天"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlCache"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="18dp">
-
-            <ImageView
-                android:id="@+id/ivCache"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_data"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetCache"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="数据和缓存设置"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetCache"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivCache"
-                android:text="数据和缓存"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlSafe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:paddingBottom="@dimen/dp30"
-            android:layout_marginTop="18dp">
-
-            <ImageView
-                android:id="@+id/ivSafe"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_safe"></ImageView>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetSafe"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="修改手机号和密码"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetSafe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivSafe"
-                android:text="账号与安全"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/sp_15_text_size"
-        android:layout_marginTop="@dimen/sp_15_text_size"
-        android:text="应用设置"
-        android:textColor="#ffa26262"
-        android:textSize="@dimen/sp_10_text_size" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
-        android:background="@color/color_white"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/rlHelp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="18dp">
-
-            <ImageView
-                android:layout_width="@dimen/dp5"
-                android:layout_height="@dimen/dp5"
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp25"
-                android:src="@drawable/red_my_button"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-            <ImageView
-                android:id="@+id/ivSetHelp"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_help"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetHelp"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="感谢你提出对幸福有约的宝贵意见"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetHelp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivSetHelp"
-                android:text="帮助与反馈"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlAbout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:paddingBottom="@dimen/dp30"
-            android:layout_marginTop="18dp">
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp5"
-                android:src="@mipmap/my_set_return" />
-            <ImageView
-                android:id="@+id/ivSetAbout"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/my_set_about"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvSetAbout"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="感谢你提出对幸福有约的宝贵意见"
-                android:textColor="@color/text_black_999"
-                android:textSize="9sp" />
-
-            <TextView
-                android:id="@+id/tvSetAbout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_toRightOf="@+id/ivSetAbout"
-                android:text="关于幸福有约"
-                android:textColor="@color/text_black_333"
-                android:textSize="@dimen/sp_15_text_size" />
-        </RelativeLayout>
-
-    </LinearLayout>
-        <TextView
-            android:id="@+id/tvSwitchAccount"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@drawable/red_my_button"
-            android:text="切换账号"
-            android:textColor="@color/white"
-            android:paddingHorizontal="@dimen/dp15"
-            android:gravity="center"
-            android:layout_marginRight="@dimen/dp15"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp50"
-            />
-        <TextView
-        android:id="@+id/tvLoginOut"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/red_my_button"
-        android:text="退出登录"
-        android:textColor="@color/white"
-        android:paddingHorizontal="@dimen/dp15"
-        android:gravity="center"
-        android:layout_marginRight="@dimen/dp15"
-        android:layout_marginLeft="@dimen/dp15"
-        android:layout_marginTop="@dimen/dp10"
-        />
-        <TextView
-            android:id="@+id/tvVersionNumber"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:text="幸福有约1.0.0"
-            android:textColor="#651E1E"
-            android:paddingHorizontal="@dimen/dp15"
-            android:gravity="center"
-            android:layout_marginRight="@dimen/dp15"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp10"
-            />
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
-</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_main">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/a_view_actionbar" />
+
+    <LinearLayout
+        android:layout_below="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="我的当前定位"
+            android:textColor="@color/text_black_999"
+            android:textSize="@dimen/sp_14_text_size"
+
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+android:id="@+id/rl_current_location"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="15dp"
+
+
+            >
+
+
+            <ImageView
+                android:id="@+id/location"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/set_location" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/location"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_city_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="18sp"
+                    tools:text="上海市"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_address_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="12sp"
+                    tools:text="上海市闵行区都会路28号"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <CheckBox
+                android:id="@+id/check_box"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/check_sign"
+                android:button="@null"
+                android:checked="true"
+                android:clickable="false"
+                android:focusable="false" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="35dp"
+            android:padding="15dp"
+            android:text="我的漫游位置"
+            android:textColor="@color/text_black_999"
+            android:textSize="@dimen/sp_14_text_size"
+
+            />
+        <RelativeLayout
+            android:id="@+id/rl_newaddress"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+
+            android:background="@color/white"
+            android:padding="15dp"
+
+
+            >
+
+
+            <ImageView
+                android:id="@+id/location1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/set_new_location" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/location1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_city_newname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black_333"
+                    android:textSize="18sp"
+                    tools:text="上海市"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_address_newdetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/text_black_999"
+                    android:textSize="12sp"
+                    tools:text="上海市闵行区都会路28号"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <CheckBox
+                android:id="@+id/check_box1"
+                android:layout_width="20dp"
+                android:layout_centerVertical="true"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/check_sign"
+                android:button="@null"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="添加漫游位置"
+        android:textSize="@dimen/sp_15_text_size"
+        android:background="@drawable/bg_new_my_wallet_red" />
+
+</RelativeLayout>

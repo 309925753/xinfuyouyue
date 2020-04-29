@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class FindPwdActivity extends BaseActivity implements View.OnClickListene
     private EditText mPhoneNumberEdit;
     private EditText mPasswordEdit, mConfigPasswordEdit, mAuthCodeEdit;
     private TextView tv_prefix;
+    private LinearLayout ll_back;
     private int mobilePrefix = 86;
     private int reckonTime = 60;
     private Handler mReckonHandler = new Handler() {
@@ -102,6 +104,14 @@ public class FindPwdActivity extends BaseActivity implements View.OnClickListene
         tv_prefix.setOnClickListener(this);
         mobilePrefix = PreferenceUtils.getInt(this, Constants.AREA_CODE_KEY, mobilePrefix);
         tv_prefix.setText("+" + mobilePrefix);
+
+        ll_back=findViewById(R.id.ll_back);
+        ll_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btn_getCode = (Button) findViewById(R.id.send_again_btn);
         btn_change = (Button) findViewById(R.id.login_btn);

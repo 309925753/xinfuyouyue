@@ -8,6 +8,17 @@ import android.content.SharedPreferences.Editor;
  * SharedPreferences存储数据类
  */
 public class PreferenceUtils {
+
+
+
+
+
+
+
+
+
+
+
     private static SharedPreferences sp;
 
     private static SharedPreferences getPreferences(Context context) {

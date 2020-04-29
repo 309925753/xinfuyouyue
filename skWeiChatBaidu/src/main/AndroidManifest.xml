@@ -25,9 +25,9 @@
             android:label="@string/title_activity_payment_new_ui"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.contacts.label.LabelActivityNewUI" />
-        <activity  android:name=".ui.me_new.FansActivity" />
-        <activity  android:name=".ui.me_new.AttentionActivity" />
-        <activity  android:name=".ui.me_new.ZanActivity" />
+        <activity android:name=".ui.me_new.FansActivity" />
+        <activity android:name=".ui.me_new.AttentionActivity" />
+        <activity android:name=".ui.me_new.ZanActivity" />
         <activity android:name=".ui.me.DescriptionActivity" />
         <activity android:name=".ui.me_new.PersonBlumActivity" />
         <activity android:name=".ui.backup.ReceiveChatHistoryActivity" />
@@ -238,12 +238,14 @@
         <activity android:name=".ui.map.MapActivity" />
         <activity
             android:name=".ui.map.MapPickerActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-            />
-        <activity android:name=".ui.map.MapAddressListActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            />
+        <activity
+            android:name=".ui.map.MapAddressListActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.map.MapPickerAddressActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".ui.me.redpacket.MucSendRedPacketActivity" />
         <activity android:name=".ui.me.redpacket.MyConsumeRecordNew" />
         <activity android:name=".ui.me.redpacket.QuXianActivity" />
@@ -625,6 +627,7 @@
         <activity android:name=".ui.me.MyPrivacyActivity" />
         <activity android:name=".ui.me.MyPersonalInformationActivity" />
         <activity android:name=".ui.me.NewSettingsActivity" />
+        <activity android:name=".ui.me_new.CurrentLocationActivity" />
         <activity android:name=".ui.me.MyWalletBillDetailsActivity" />
         <activity android:name=".ui.me.MyCashWithdrawalActivity" />
         <activity android:name=".ui.me.MyPrerogativeActivity" />
@@ -654,6 +657,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icon_notification" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${APP_ID}.fileProvider"
@@ -668,6 +672,7 @@
             android:authorities="${APP_ID}.hms.update.provider"
             android:exported="false"
             android:grantUriPermissions="true" />
+
         <receiver
             android:name=".broadcast.MyBroadcastReceiver"
             android:process=":restart">
@@ -758,6 +763,7 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />
+
         <service
             android:name=".xmpp.CoreService"
             android:enabled="true"
@@ -828,6 +834,7 @@
             android:process=":remote" />
 
     </application>
+
     <permission
         android:name="${APP_ID}.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
@@ -837,10 +844,12 @@
     <permission
         android:name="${APP_ID}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-feature android:name="android.hardware.microphone" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

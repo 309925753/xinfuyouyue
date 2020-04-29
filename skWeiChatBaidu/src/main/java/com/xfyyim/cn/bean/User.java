@@ -2,6 +2,7 @@ package com.xfyyim.cn.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.j256.ormlite.field.DatabaseField;
@@ -58,6 +59,11 @@ public class User implements Parcelable, Cloneable {
     @DatabaseField
     private int areaId;   // 地区编号
     @DatabaseField
+
+    private String provinceName;
+    private String cityName;
+    private String areaName;
+
     private int integral; // 积分
     @DatabaseField
     private int integralTotal;// 积分总数
@@ -121,6 +127,30 @@ public class User implements Parcelable, Cloneable {
     private String mySports;
     private List<QuestionEntity> userQuestions;
 
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
 
     public String getMsgImgs() {
         return msgImgs;
@@ -624,9 +654,12 @@ public class User implements Parcelable, Cloneable {
     public String getTelephoneNoAreaCode() {
         String areaCode = String.valueOf(PreferenceUtils.getInt(MyApplication.getContext(), Constants.AREA_CODE_KEY, 86));
         // 删除开头的区号，
-        if (telephone.startsWith(areaCode)) {
-            telephone = telephone.substring(areaCode.length());
+        if (areaCode!=null&& !TextUtils.isEmpty(areaCode)){
+            if (telephone.startsWith(areaCode)) {
+                telephone = telephone.substring(areaCode.length());
+            }
         }
+
         return telephone;
     }
 

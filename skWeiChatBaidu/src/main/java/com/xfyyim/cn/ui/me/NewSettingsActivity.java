@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.broadcast.OtherBroadcast;
@@ -26,7 +27,9 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.lock.DeviceLockHelper;
+import com.xfyyim.cn.ui.me_new.CurrentLocationActivity;
 import com.xfyyim.cn.util.Md5Util;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SelectionFrame;
@@ -99,11 +102,6 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     SeekBar seekbar;
     @BindView(R.id.ivSetMax)
     ImageView ivSetMax;
-    @BindView(R.id.ivPersonal)
-    ImageView ivPersonal;
-    @BindView(R.id.tvSetPersonal)
-    TextView tvSetPersonal;
-    @BindView(R.id.rlPersonal)
     RelativeLayout rlPersonal;
     @BindView(R.id.ivPrivacy)
     ImageView ivPrivacy;
@@ -149,7 +147,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     TextView tvVersionNumber;
     private Unbinder unbinder;
     private  boolean  isAutoExpandRange;
-
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,11 +155,22 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         unbinder = ButterKnife.bind(this);
         inintView();
         initActionBar();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         updateSelfData();
     }
 
     private void initData() {
-        tvSetCity.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
+        if (PreferenceUtils.getBoolean(NewSettingsActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            tvSetCity.setText(PreferenceUtils.getString(NewSettingsActivity.this,coreManager.getSelf().getUserId()+ SpContext.CITY));
+        }else{
+            tvSetCity.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
+        }
+
         if (coreManager.getSelf().getSettings().getDisplaySex() == 1) {
             sex=1;
             tvCurrentSex.setText(R.string.sex_man);
@@ -225,8 +234,6 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         ivTitleLeft.setVisibility(View.VISIBLE);
         ivTitleLeft.setOnClickListener(this);
         tvTitleCenter.setText("设置中心");
-       /* ivTitleRight.setVisibility(View.VISIBLE);
-        ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
 
     }
     private void updateSelfData() {
@@ -240,7 +247,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onResponse(ObjectResult<User> result) {
                         if (result.getResultCode() == 1 && result.getData() != null) {
-                            User user = result.getData();
+                             user = result.getData();
                             boolean updateSuccess = UserDao.getInstance().updateByUser(user);
                             // 设置登陆用户信息
                             if (updateSuccess) {
@@ -268,8 +275,8 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.rlCache).setOnClickListener(this::onClick);
         findViewById(R.id.rlPrivacy).setOnClickListener(this::onClick);
         findViewById(R.id.rlNews).setOnClickListener(this::onClick);
-        findViewById(R.id.rlPersonal).setOnClickListener(this::onClick);
         findViewById(R.id.tvCurrentSex).setOnClickListener(this::onClick);
+        rlCurrentLocation.setOnClickListener(this);
     }
 
 
@@ -315,12 +322,16 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                 //消息提醒与聊天
                 startActivity(new Intent(this, MyRemindersChatsActivity.class));
                 break;
-            case R.id.rlPersonal:
-                //个人资料
-                startActivity(new Intent(this, MyPersonalInformationActivity.class));
-                break;
             case R.id.rlCurrentLocation:
                 //位置
+
+                //todo -1没有会员
+                startActivity(new Intent(this, CurrentLocationActivity.class));
+//                if (user.getUserVIPPrivilege().getVipLevel().equals("-1")){
+//
+//                }else{
+//
+//                }
                 break;
         }
 

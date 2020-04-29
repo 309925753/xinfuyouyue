@@ -210,6 +210,7 @@
 
     <dimen name="edit_info_add">7dp</dimen>
     <dimen name="mainall_padding_bottom">30dp</dimen>
+    <dimen name="newme_set_margintop">30dp</dimen>
 
 
 </resources>

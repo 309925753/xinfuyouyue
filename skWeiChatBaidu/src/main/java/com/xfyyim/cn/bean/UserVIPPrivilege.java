@@ -7,29 +7,6 @@ public class UserVIPPrivilege {
    //("用户Id")
     private int userId;
 
-    @Override
-    public String toString() {
-        return "UserVIPPrivilege{" +
-                "userId=" + userId +
-                ", vipLevel='" + vipLevel + '\'' +
-                ", quantity=" + quantity +
-                ", vipPrice=" + vipPrice +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", likePrivilegeFlag=" + likePrivilegeFlag +
-                ", likePrice=" + likePrice +
-                ", likeStartTime='" + likeStartTime + '\'' +
-                ", likeEndTime='" + likeEndTime + '\'' +
-                ", chatByMonthQuantity=" + chatByMonthQuantity +
-                ", chatByMonthPrice=" + chatByMonthPrice +
-                ", chatByMonthStartTime='" + chatByMonthStartTime + '\'' +
-                ", chatByMonthEndTime='" + chatByMonthEndTime + '\'' +
-                ", chatQuantity=" + chatQuantity +
-                ", chatLookQuantity=" + chatLookQuantity +
-                ", outFlag=" + outFlag +
-                ", outMinute=" + outMinute +
-                '}';
-    }
 
     //("会员等级：v0 v1 v2 v3(同时只有一个)")
     private String vipLevel;
@@ -225,6 +202,29 @@ public class UserVIPPrivilege {
 
     public void setOutMinute(int outMinute) {
         this.outMinute = outMinute;
+    }
+    @Override
+    public String toString() {
+        return "UserVIPPrivilege{" +
+                "userId=" + userId +
+                ", vipLevel='" + vipLevel + '\'' +
+                ", quantity=" + quantity +
+                ", vipPrice=" + vipPrice +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", likePrivilegeFlag=" + likePrivilegeFlag +
+                ", likePrice=" + likePrice +
+                ", likeStartTime='" + likeStartTime + '\'' +
+                ", likeEndTime='" + likeEndTime + '\'' +
+                ", chatByMonthQuantity=" + chatByMonthQuantity +
+                ", chatByMonthPrice=" + chatByMonthPrice +
+                ", chatByMonthStartTime='" + chatByMonthStartTime + '\'' +
+                ", chatByMonthEndTime='" + chatByMonthEndTime + '\'' +
+                ", chatQuantity=" + chatQuantity +
+                ", chatLookQuantity=" + chatLookQuantity +
+                ", outFlag=" + outFlag +
+                ", outMinute=" + outMinute +
+                '}';
     }
 
 }
