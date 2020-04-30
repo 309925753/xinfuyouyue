@@ -2,7 +2,6 @@ package com.xfyyim.cn.ui.map;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,6 +16,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.BuildConfig;
 import com.xfyyim.cn.MyApplication;
@@ -26,7 +31,6 @@ import com.xfyyim.cn.bean.event.EventNotifyUpdate;
 import com.xfyyim.cn.map.MapHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.tool.ButtonColorChange;
-import com.xfyyim.cn.util.FileUtil;
 import com.xfyyim.cn.util.PermissionUtil;
 import com.xfyyim.cn.util.ScreenUtil;
 import com.xfyyim.cn.util.SoftKeyBoardListener;
@@ -192,14 +196,11 @@ public class MapPickerAddressActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 seachPlace.clear();
-                if (TextUtils.isEmpty(s.toString()))
+                if (TextUtils.isEmpty(s.toString())) {
                     loadMapDatas(currentLatLng);
-                for (int i = 0; i < placesSeach.size(); i++) {
-                    if (placesSeach.get(i).getName().contains(s.toString())) {
-                        seachPlace.add(placesSeach.get(i));
-                    }
+                } else {
+                    getGeoPointBystr(s.toString());
                 }
-                nearPositionAdapter.setData(seachPlace);
             }
         });
 
@@ -210,6 +211,9 @@ public class MapPickerAddressActivity extends BaseActivity {
                 inputManager.hideSoftInputFromWindow(findViewById(R.id.rl_map_position).getWindowToken(), 0); //强制隐藏键盘
             }
         });
+
+
+
 
         SoftKeyBoardListener.setListener(this, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
 
@@ -227,6 +231,49 @@ public class MapPickerAddressActivity extends BaseActivity {
         });
     }
 
+
+    GeoCoder gc;
+    MapHelper.LatLng lan = null;
+
+    public void getGeoPointBystr(String str) {
+
+
+        gc = GeoCoder.newInstance();
+        gc.setOnGetGeoCodeResultListener(listener);
+        String city= MyApplication.getInstance().getBdLocationHelper().getCityName();
+        if (city==null||TextUtils.isEmpty(city)){
+            city="上海";
+        }
+        gc.geocode(new GeoCodeOption()
+                .city(city)
+                .address(str));
+    }
+
+
+
+    OnGetGeoCoderResultListener listener = new OnGetGeoCoderResultListener() {
+        @Override
+        public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+            if (null != geoCodeResult && null != geoCodeResult.getLocation()) {
+                if (geoCodeResult == null || geoCodeResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                    //没有检索到结果
+                    return;
+                } else {
+                    double latitude = geoCodeResult.getLocation().latitude;
+                    double longitude = geoCodeResult.getLocation().longitude;
+                    lan = new MapHelper.LatLng(latitude, longitude);
+picker.moveMap(lan);
+
+                    loadMapDatas(lan);
+                }
+            }
+        }
+
+        @Override
+        public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+
+        }
+    };
     private void loadMapDatas(MapHelper.LatLng latLng) {
         currentLatLng = latLng;
         tvTitleRight.setVisibility(View.VISIBLE);

@@ -1,6 +1,5 @@
 package com.xfyyim.cn.ui.map;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,7 +30,6 @@ import com.xfyyim.cn.map.MapHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.tool.ButtonColorChange;
 import com.xfyyim.cn.util.PermissionUtil;
-import com.xfyyim.cn.util.ScreenUtil;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.ClearEditText;
 
@@ -178,7 +176,6 @@ public class MapAddressListActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 seachPlace.clear();
                 if (TextUtils.isEmpty(s.toString())) {
-
                     loadMapDatas(currentLatLng);
                 } else {
                     getGeoPointBystr(s.toString());

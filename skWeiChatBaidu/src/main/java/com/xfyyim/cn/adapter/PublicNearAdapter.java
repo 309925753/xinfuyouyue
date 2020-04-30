@@ -11,7 +11,6 @@ import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,14 +56,12 @@ import com.xfyyim.cn.ui.circle.BusinessCircleActivity;
 import com.xfyyim.cn.ui.circle.BusinessCircleActivity.ListenerAudio;
 import com.xfyyim.cn.ui.circle.LongTextShowActivity;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
-import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
-import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
+import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.mucfile.DownManager;
 import com.xfyyim.cn.ui.mucfile.MucFileDetails;
 import com.xfyyim.cn.ui.mucfile.XfileUtils;
 import com.xfyyim.cn.ui.mucfile.bean.MucFileBean;
-import com.xfyyim.cn.ui.other.BasicInfoActivity;
 import com.xfyyim.cn.ui.tool.MultiImagePreviewActivity;
 import com.xfyyim.cn.ui.tool.SingleImagePreviewActivity;
 import com.xfyyim.cn.ui.tool.WebViewActivity;
@@ -309,7 +306,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
                 if (!UiUtils.isNormalClick(v)) {
                     return;
                 }
-                Intent intent = new Intent(mContext, PersonInfoActivity.class);
+                Intent intent = new Intent(mContext, PersonBlumActivity.class);
                 intent.putExtra("FriendId", message.getUserId());
 
                 mContext.startActivity(intent);;

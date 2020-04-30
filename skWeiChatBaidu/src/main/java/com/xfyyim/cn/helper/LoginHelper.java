@@ -187,10 +187,11 @@ public class LoginHelper {
         if (result.getData() == null) {
             return false;
         }
-        String sAreaCode = result.getData().getAreaCode();
+//        String sAreaCode = result.getData().getAreaCode();
+        String sAreaCode ="86";
         try {
             int areaCode;
-            areaCode = Integer.valueOf(result.getData().getAreaCode());
+            areaCode = 86;
             PreferenceUtils.putInt(context, Constants.AREA_CODE_KEY, areaCode);
         } catch (Exception e) {
             LogUtils.log("没有areaCode");

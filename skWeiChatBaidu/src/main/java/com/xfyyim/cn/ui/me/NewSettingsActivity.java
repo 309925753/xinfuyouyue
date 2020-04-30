@@ -5,30 +5,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
-import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventNotifyUpdate;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
-import com.xfyyim.cn.broadcast.OtherBroadcast;
 import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.helper.LoginHelper;
-import com.xfyyim.cn.helper.PrivacySettingHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
@@ -345,11 +340,6 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                 if(!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
                     //todo -1没有会员
                     startActivity(new Intent(this, CurrentLocationActivity.class));
-//                if (user.getUserVIPPrivilege().getVipLevel().equals("-1")){
-//
-//                }else{
-//
-//                }
                 }else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
                 }
