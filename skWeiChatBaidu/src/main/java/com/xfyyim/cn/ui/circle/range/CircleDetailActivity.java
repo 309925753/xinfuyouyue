@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.stx.xhb.xbanner.XBanner;
@@ -30,11 +31,8 @@ import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.base.CoreManager;
-import com.xfyyim.cn.ui.circle.BusinessCircleActivity;
-import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.util.HtmlUtils;
-import com.xfyyim.cn.util.LinkMovementClickMethod;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.SystemUtil;
 import com.xfyyim.cn.util.TimeUtils;
@@ -59,7 +57,6 @@ import java.util.WeakHashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 
 public class CircleDetailActivity extends BaseActivity {
@@ -97,9 +94,10 @@ public class CircleDetailActivity extends BaseActivity {
     @BindView(R.id.llThumb)
     LinearLayout llThumb;
     @BindView(R.id.ivThumb)
-
-
     CheckableImageView ivThumb;
+
+    @BindView(R.id.rl_img)
+    RelativeLayout rl_img;
     Unbinder unbinder;
     CommentAdapter adapter;
     List<Comment> data;
@@ -155,6 +153,18 @@ public class CircleDetailActivity extends BaseActivity {
         /* 设置头像 */
         AvatarHelper.getInstance().displayAvatar(message.getUserId(), avatar_img);
         nick_name_tv.setText(message.getNickName());
+
+
+        if (message.getSex() == 1) {
+            img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_man));
+            rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_qing));
+        } else {
+            img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_nv));
+            rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_pink));
+        }
+
+        tv_age.setText(String.valueOf(message.getAge()));
+
         time_distance.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) message.getTime()));
         tv_content.setText(message.getBody().getText());
         tv_read_count.setText(String.valueOf(message.getCount().getTotal()));

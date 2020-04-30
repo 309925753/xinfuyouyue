@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -58,14 +57,12 @@ import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.util.SendTextFilter;
 import com.xfyyim.cn.ui.map.MapAddressListActivity;
-import com.xfyyim.cn.ui.map.MapPickerActivity;
 import com.xfyyim.cn.ui.me.LocalVideoActivity;
 import com.xfyyim.cn.ui.tool.MultiImagePreviewActivity;
 import com.xfyyim.cn.util.BitmapUtil;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.DeviceInfoUtil;
 import com.xfyyim.cn.util.RecorderUtils;
-import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.UploadCacheUtils;
 import com.xfyyim.cn.util.VideoCompressUtil;
@@ -78,17 +75,13 @@ import com.xfyyim.cn.view.photopicker.SelectModel;
 import com.xfyyim.cn.view.photopicker.intent.PhotoPickerIntent;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
-import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
-import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,8 +147,9 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.float_layout)
     FrameLayout mFloatLayout;
     @BindView(R.id.image_view)
-
     ImageView mImageView;
+    @BindView(R.id.img_delete_video)
+    ImageView img_delete_video;
     @BindView(R.id.icon_image_view)
 
     ImageView mIconImageView;
@@ -240,6 +234,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         img_blum.setOnClickListener(this);
         img_camera.setOnClickListener(this);
         img_locotion.setOnClickListener(this);
+        img_delete_video.setOnClickListener(this);
 
 
     }
@@ -248,6 +243,11 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
 
+            case R.id.img_delete_video:
+                mVideoFilePath="";
+                mImageView.setImageBitmap(null);
+                img_delete_video.setVisibility(View.GONE);
+                break;
             case R.id.iv_title_left:
                 finish();
                 break;
@@ -715,6 +715,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                 return;
             }
             // 返回成功，隐藏录制图标
+            img_delete_video.setVisibility(View.VISIBLE);
 
             mVideoFilePath = filePath;
             mThumbBmp = AvatarHelper.getInstance().displayVideoThumb(filePath, mImageView);
@@ -1252,6 +1253,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(final MessageVideoFile message) {
+        img_delete_video.setVisibility(View.VISIBLE);
 
         mVideoFilePath = message.path;
         mThumbBmp = AvatarHelper.getInstance().displayVideoThumb(mVideoFilePath, mImageView);

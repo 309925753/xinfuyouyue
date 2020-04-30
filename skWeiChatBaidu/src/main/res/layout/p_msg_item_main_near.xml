@@ -251,7 +251,6 @@
                         android:layout_height="match_parent"
                         android:scaleType="center"
                         android:src="@drawable/more_ver"
-                        android:tint="@color/color_red"
                         />
 
                 </LinearLayout>

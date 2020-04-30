@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_fc6e7a"
         android:layout_marginTop="10dp"
-        android:text="男"
         android:textSize="@dimen/sp_15_text_size"
         />
 
@@ -67,7 +66,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_fc6e7a"
         android:layout_marginTop="10dp"
-        android:text="dsaf"
         android:textSize="@dimen/sp_15_text_size"
         />
 </LinearLayout>

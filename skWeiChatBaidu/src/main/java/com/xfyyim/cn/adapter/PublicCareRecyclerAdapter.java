@@ -288,7 +288,7 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
 
         if (message.getSex() == 1) {
             viewHolder.img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_man));
-            viewHolder.rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_zise));
+            viewHolder.rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_qing));
         } else {
             viewHolder.img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_nv));
             viewHolder.rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_pink));

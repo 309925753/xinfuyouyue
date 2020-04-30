@@ -1,6 +1,7 @@
 package com.xfyyim.cn.fragmentnew;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,7 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.xfyyim.cn.BuildConfig;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.ShareEntity;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
@@ -21,6 +27,7 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.ui.circle.range.SendTextPicActivity;
 import com.xfyyim.cn.ui.contacts.ContactsMsgInviteActivity;
 import com.xfyyim.cn.ui.me.CertificationCenterActivity;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
@@ -37,15 +44,14 @@ import com.xfyyim.cn.ui.me_new.ZanActivity;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
+import com.xfyyim.cn.util.share.WxShareUtils;
 import com.xfyyim.cn.view.MyPrivilegePopupWindow;
-import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +105,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
     @BindView(R.id.rl_guide)
     RelativeLayout rl_guide;
- @BindView(R.id.rl_invite)
+    @BindView(R.id.rl_invite)
     RelativeLayout rl_invite;
 
     @BindView(R.id.rl_biaobai)
@@ -202,8 +208,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
             case R.id.rl_guide:
                 break;
-                case R.id.rl_invite:
-                    startActivity(new Intent(getActivity(), InviteActivity.class));
+            case R.id.rl_invite:
+                startActivity(new Intent(getActivity(), InviteActivity.class));
                 break;
             case R.id.rl_biaobai:
                 startActivity(new Intent(getActivity(), ContactsMsgInviteActivity.class));
@@ -211,8 +217,13 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
             case R.id.rl_share:
 
+
+                getShareInfo();
                 break;
             case R.id.ll_showdt:
+                Intent intentDt = new Intent(getActivity(), SendTextPicActivity.class);
+                intentDt.putExtra("topicType", "1");
+                startActivity(intentDt);
                 break;
             case R.id.ll_att:
                 if (user.getAttCount() == 0) {
@@ -302,45 +313,39 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         HttpUtils.get().url(coreManager.getConfig().USER_SHARE_URL)
                 .params(params)
                 .build()
-                .execute(new BaseCallback<Void>(Void.class) {
+                .execute(new BaseCallback<ShareEntity>(ShareEntity.class) {
                     @Override
-                    public void onResponse(ObjectResult<Void> result) {
+                    public void onResponse(ObjectResult<ShareEntity> result) {
+                        DialogHelper.dismissProgressDialog();
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                            ShareEntity shareEntity = result.getData();
+                            String url = shareEntity.getUrl();
+                            String title = shareEntity.getTitle();
+                            String content = shareEntity.getContent();
+                            String iconUrl = shareEntity.getIcon();
+                            Glide.with(getActivity()).load(iconUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    if (resource == null) {
+                                        WxShareUtils.shareWeb(getActivity(), BuildConfig.WECHAT_APP_ID, url, title, content, null, 1);
+                                    } else {
+                                        WxShareUtils.shareWeb(getActivity(), BuildConfig.WECHAT_APP_ID, url, title, content, resource, 1);
 
+                                    }
+                                }
+                            });
+
+                        } else {
+                            ToastUtil.showToast(getActivity(), "服务没数据");
+                        }
                     }
 
                     @Override
                     public void onError(Call call, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        super.onFailure(call, e);
+                        DialogHelper.dismissProgressDialog();
+                        ToastUtil.showErrorNet(getActivity());
                     }
                 });
-
-//                .execute(new BaseCallback<User>(User.class) {
-//                    @Override
-//                    public void onResponse(ObjectResult<User> result) {
-//                        DialogHelper.dismissProgressDialog();
-//                        if (result.getResultCode() == 1 && result.getData() != null) {
-//                            user = result.getData();
-//                            setUserDate(user);
-//                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
-//                            // 设置登陆用户信息
-//                            if (updateSuccess) {
-//                                // 如果成功，保存User变量，
-//                                coreManager.setSelf(user);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Call call, Exception e) {
-//                        DialogHelper.dismissProgressDialog();
-//                        ToastUtil.showErrorNet(getActivity());
-//                    }
-//                });
     }
 
     public void setUserDate(User user) {
@@ -361,7 +366,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
 
         if (user.getVipFlag() == -1) {
             tv_vip.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             tv_vip.setVisibility(View.VISIBLE);
         }
 
@@ -406,7 +411,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
         //谁喜欢我，在线聊天  购买
-        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1,"查看谁喜欢我", "哇，99+个小姐姐喜欢我!她们是谁？",userVIPPrivilegePrice);
+        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1, "查看谁喜欢我", "哇，99+个小姐姐喜欢我!她们是谁？", userVIPPrivilegePrice);
         LogUtil.e("BuyMember  BuyMember");
         myBuy.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override
@@ -414,7 +419,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 LogUtil.e("**********************************************************");
                 LogUtil.e("type = " + type + "---vip = " + vip);
                 LogUtil.e("**********************************************************");
-                submitPay(type,vip,userVIPPrivilegePrice);
+                submitPay(type, vip, userVIPPrivilegePrice);
             }
         });
     }
@@ -425,25 +430,27 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
      * @param type
      * @param vip
      */
-    private void submitPay(String type, int vip,UserVIPPrivilegePrice _userVIPPrivilegePrice) {
+    private void submitPay(String type, int vip, UserVIPPrivilegePrice _userVIPPrivilegePrice) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
-        if(vip==1){
-            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice1()+"");
-            params.put("mon", "1");
-        }else if(vip==2){
-            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice2()+"");
-            params.put("mon", "3");
-        }else if(vip==3){
-            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice3()+"");
-            params.put("mon", "12");
-        }
-        params.put("funType", String.valueOf(6));
-        params.put("num", String.valueOf(-1));
-        params.put("level", String.valueOf(-1));
-        AlipayHelper.rechargePay(getActivity(), coreManager,params);
+
+            if (vip == 1) {
+                params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice1() + "");
+                params.put("mon", "1");
+            } else if (vip == 2) {
+                params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice2() + "");
+                params.put("mon", "3");
+            } else if (vip == 3) {
+                params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice3() + "");
+                params.put("mon", "12");
+            }
+            params.put("funType", String.valueOf(6));
+            params.put("num", String.valueOf(-1));
+            params.put("level", String.valueOf(-1));
+            AlipayHelper.rechargePay(getActivity(), coreManager, params);
+
     }
+
+
 }
-
-

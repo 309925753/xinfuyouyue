@@ -259,7 +259,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
         if (user.getSex() == 1) {
             img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_man));
-            ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_zise));
+            ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_qing));
         } else {
             img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_nv));
             ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_pink));

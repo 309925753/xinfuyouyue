@@ -5,16 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.CheckResult;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.adapter.AttentionAdapter;
 import com.xfyyim.cn.adapter.InviteAdapter;
-import com.xfyyim.cn.bean.AttentionEntity;
-import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.InviteEntity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -109,12 +106,12 @@ public class InviteActivity extends BaseActivity {
         HttpUtils.get().url(coreManager.getConfig().INVITE_LIST)
                 .params(params)
                 .build()
-                 .execute(new ListCallback<User>(User.class) {
+                 .execute(new ListCallback<InviteEntity>(InviteEntity.class) {
                      @Override
-                     public void onResponse(ArrayResult<User> result) {
+                     public void onResponse(ArrayResult<InviteEntity> result) {
                          refreshComplete();
                          if (Result.checkSuccess(InviteActivity.this, result)){
-                             List<User> data = result.getData();
+                             List<InviteEntity> data = result.getData();
                              if (data != null && data.size() > 0){
                                  setAdapter(data);
                              }
@@ -137,7 +134,7 @@ public class InviteActivity extends BaseActivity {
     }
 
 
-    public void setAdapter( List<User> list){
+    public void setAdapter( List<InviteEntity> list){
         if (attentionAdapter == null) {
 
             LinearLayoutManager linearLayout = new LinearLayoutManager(InviteActivity.this);

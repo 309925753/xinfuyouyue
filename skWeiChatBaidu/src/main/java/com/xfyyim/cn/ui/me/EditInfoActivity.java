@@ -364,7 +364,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
             case R.id.ll_edit_personinfo:
                 Intent intent2 = new Intent(EditInfoActivity.this, PersonEditInfoActivity.class);
-                intent2.putExtra("Age", user.getSex());
+                intent2.putExtra("Sex", user.getSex());
                 intent2.putExtra("NickName", user.getNickName());
                 intent2.putExtra("Birthday", user.getBirthday());
                 startActivity(intent2);
@@ -434,7 +434,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
         if (user.getSex() == 1) {
             img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_man));
-            ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_zise));
+            ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_qing));
         } else {
             img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_nv));
             ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_pink));
@@ -446,11 +446,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
 
         //签名
-        if (user.getDescription() == null || TextUtils.isEmpty(user.getDescription())) {
-            person_sign.setText("这个人很懒，什么都没留下");
-            person_sign.setTextColor(getResources().getColor(R.color.text_black_999));
+        if (user.getDescription() != null || !TextUtils.isEmpty(user.getDescription())) {
 
-        } else {
             person_sign.setText(user.getDescription());
             person_sign.setTextColor(getResources().getColor(R.color.text_black_333));
         }
@@ -530,6 +527,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             }
             allQuestion.addAll(entities);
             setAdapter(allQuestion);
+        }else{
+            setAdapter(allQuestion);
+
         }
 
 

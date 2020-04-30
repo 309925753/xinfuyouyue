@@ -41,5 +41,14 @@
         </LinearLayout>
 
     </FrameLayout>
-
+    <ImageView
+        android:id="@+id/img_delete_video"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:padding="5dp"
+        android:src="@mipmap/del_circle"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/shape_gray_dot"
+        />
 </com.xfyyim.cn.view.SquareCenterFrameLayout>

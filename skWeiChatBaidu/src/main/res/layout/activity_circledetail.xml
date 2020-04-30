@@ -108,9 +108,10 @@
 
 
                             <RelativeLayout
+                                android:id="@+id/rl_img"
                                 android:layout_width="40dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/shape_bg_ff98c6"
+                                android:background="@drawable/share_sign_pink"
                                 android:gravity="center"
                                 android:paddingTop="2dp"
                                 android:paddingBottom="2dp">
@@ -124,7 +125,7 @@
                                 <TextView
                                     android:id="@+id/tv_age"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="16dp"
 
                                     android:layout_marginLeft="5dp"
                                     android:layout_toRightOf="@+id/img_sex"

@@ -271,7 +271,6 @@
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="这个人很懒，什么都没留下"
                         android:textColor="@color/text_black_999"
                         android:textSize="10sp" />
                 </LinearLayout>

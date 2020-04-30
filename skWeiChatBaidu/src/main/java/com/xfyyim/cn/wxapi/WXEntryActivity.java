@@ -92,7 +92,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     @Override
     public void onResp(BaseResp resp) {
         LogUtils.log(TAG, resp);
-        Log.e("zx", "onResp: " + resp);
+        Log.e("zx", "onResp: " + resp.errCode);
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 if (resp instanceof SendAuth.Resp) {

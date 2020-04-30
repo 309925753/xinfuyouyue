@@ -16,15 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.load.data.FileDescriptorLocalUriFetcher;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.SginBean;
 import com.xfyyim.cn.helper.DialogHelper;
@@ -34,13 +29,11 @@ import com.xfyyim.cn.ui.dialog.DialogView;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
-import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
 import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +119,7 @@ public class EditListChooseActivity extends BaseActivity {
         tv_title_right.setOnClickListener(v -> {
 
             String text = "";
-            if (selectList.size() > 0) {
+            if (selectList!=null&&selectList.size() > 0) {
                 if (selectList.size() == 1) {
                     text = selectList.get(0);
                 } else {
