@@ -516,7 +516,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         MyApplication.getInstance().initMulti();
 
         // startActivity(new Intent(mContext, DataDownloadActivity.class));
-        DataDownloadActivity.start(mContext, result.getData().getIsupdate(), password);
+       /* DataDownloadActivity.start(mContext, result.getData().getIsupdate(), password);*/
+
         finish();
     }
 

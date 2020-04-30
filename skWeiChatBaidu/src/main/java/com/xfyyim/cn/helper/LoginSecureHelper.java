@@ -26,6 +26,7 @@ import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.account.LoginActivity;
 import com.xfyyim.cn.ui.base.CoreManager;
+import com.xfyyim.cn.ui.share.ShareLoginActivity;
 import com.xfyyim.cn.util.AsyncUtils;
 import com.xfyyim.cn.util.Base64;
 import com.xfyyim.cn.util.DeviceInfoUtil;
@@ -167,9 +168,11 @@ public class LoginSecureHelper {
                 params.put("longitude", String.valueOf(longitude));
 */
 
-            if (PreferenceUtils.getBoolean(ctx,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                params.put("longitude",  String.valueOf(PreferenceUtils.getLong(ctx,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                params.put("latitude",   String.valueOf(PreferenceUtils.getLong(ctx,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+            if(coreManager.getSelf()!=null){
+                if (PreferenceUtils.getBoolean(ctx,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+                    params.put("longitude",  String.valueOf(PreferenceUtils.getString(ctx,coreManager.getSelf().getUserId()+ SpContext.LON)));
+                    params.put("latitude",   String.valueOf(PreferenceUtils.getString(ctx,coreManager.getSelf().getUserId()+ SpContext.LAT)));
+                }
             }else {
                 params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
                 params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));

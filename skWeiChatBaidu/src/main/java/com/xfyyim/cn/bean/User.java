@@ -128,6 +128,16 @@ public class User implements Parcelable, Cloneable {
     private String mySports;
     private List<QuestionEntity> userQuestions;
 
+    public int getLikeTimesPerDay() {
+        return likeTimesPerDay;
+    }
+
+    public void setLikeTimesPerDay(int likeTimesPerDay) {
+        this.likeTimesPerDay = likeTimesPerDay;
+    }
+
+    private   int likeTimesPerDay;//-1代表支付弹框喜欢次数
+
     public int getNotSeeFilterMyPhotos() {
         return notSeeFilterMyPhotos;
     }
