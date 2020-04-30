@@ -387,6 +387,11 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 //         mNetErrorLl = (LinearLayout) mHeadView.findViewById(R.id.net_error_ll);
 //         mNetErrorLl.setOnClickListener(this);
 //         mIvNoData = mHeadView.findViewById(R.id.iv_no_nearly_msg);
+        TextView     nick_name_desc= mHeadView.findViewById(R.id.nick_name_desc);
+         if (!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount() + "")) {
+             nick_name_desc.setText("查看谁喜欢我："+coreManager.getSelf().getLikeMeCount()+"人等你撩");
+         }
+
          mListView.addHeaderView(mHeadView);
          mAdapter = new MessageListAdapter();
          mAdapter.setHasStableIds(true);

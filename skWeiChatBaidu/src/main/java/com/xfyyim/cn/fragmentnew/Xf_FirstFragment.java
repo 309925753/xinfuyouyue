@@ -154,6 +154,9 @@ public class Xf_FirstFragment extends EasyFragment {
                             //   ToastUtil.showToast(getActivity(),"喜欢接口");
                             isRegret=false;
                         }
+                        if(mUsers.size()==0){
+                            ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                        }
                         if (mUsers.size() <= 3) {
                             requestData();
                         }
@@ -379,11 +382,11 @@ public class Xf_FirstFragment extends EasyFragment {
            /* if (mData.get(position).getMsgImgs() != null && !TextUtils.isEmpty(mData.get(position).getMsgImgs())) {
                 holder.tvLike.setText(mData.get(position).getMsgImgs().split(",").length+"");
             }*/
-           if(mData.get(position).getNotSeeFilterMyPhotos()==0){
-               holder.ivShow.setVisibility(View.VISIBLE);
-           }else {
-               holder.ivShow.setVisibility(View.INVISIBLE);
-           }
+            if(mData.get(position).getNotSeeFilterMyPhotos()==0){
+                holder.ivShow.setVisibility(View.VISIBLE);
+            }else {
+                holder.ivShow.setVisibility(View.INVISIBLE);
+            }
             if(mData.get(position).getVip()==-1){
                 holder.tvVip.setVisibility(View.INVISIBLE);
             }else {
@@ -468,6 +471,8 @@ public class Xf_FirstFragment extends EasyFragment {
                             if (datas != null && datas.size() > 0) {
                                 mUsers.addAll(datas);
                                 setmAdapter(mUsers);
+                            }else if(datas != null && datas.size() == 0) {
+                                ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
                             }
                         }
                     }
