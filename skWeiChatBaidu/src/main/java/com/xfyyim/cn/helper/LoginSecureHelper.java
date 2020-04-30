@@ -157,7 +157,7 @@ public class LoginSecureHelper {
             Map<String, String> params = new HashMap<>();
             params.put("serial", DeviceInfoUtil.getDeviceId(ctx));
 
-          /*  // 地址信息
+          // 地址信息
             double latitude = MyApplication.getInstance().getBdLocationHelper().getLatitude();
             double longitude = MyApplication.getInstance().getBdLocationHelper().getLongitude();
             LogUtil.e("latitude = " +latitude);
@@ -166,17 +166,6 @@ public class LoginSecureHelper {
                 params.put("latitude", String.valueOf(latitude));
             if (longitude != 0)
                 params.put("longitude", String.valueOf(longitude));
-*/
-
-            if(coreManager.getSelf()!=null){
-                if (PreferenceUtils.getBoolean(ctx,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-                    params.put("longitude",  String.valueOf(PreferenceUtils.getString(ctx,coreManager.getSelf().getUserId()+ SpContext.LON)));
-                    params.put("latitude",   String.valueOf(PreferenceUtils.getString(ctx,coreManager.getSelf().getUserId()+ SpContext.LAT)));
-                }
-            }else {
-                params.put("longitude",  String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-                params.put("latitude",   String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
-            }
 
             if (MyApplication.IS_OPEN_CLUSTER) {// 服务端集群需要
                 String area = PreferenceUtils.getString(MyApplication.getContext(), AppConstant.EXTRA_CLUSTER_AREA);
