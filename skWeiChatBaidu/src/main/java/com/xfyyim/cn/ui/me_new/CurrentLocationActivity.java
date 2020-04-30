@@ -1,6 +1,7 @@
 package com.xfyyim.cn.ui.me_new;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -21,16 +24,34 @@ import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
+import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventNotifyUpdate;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
+import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.map.MapPickerAddressActivity;
+import com.xfyyim.cn.ui.me.NewSettingsActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ToastUtil;
+import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
+import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
+import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
+import okhttp3.Call;
 
 public class CurrentLocationActivity extends BaseActivity {
     private static final int REQUEST_CODE_SELECT_LOCATE = 10;  // 位置
@@ -83,6 +104,7 @@ public class CurrentLocationActivity extends BaseActivity {
 
 
     public void initDate() {
+        EventBusHelper.register(this);
         isSelect = PreferenceUtils.getBoolean(CurrentLocationActivity.this, coreManager.getSelf().getUserId() + SpContext.ISSELECT, false);
 
         tv_city_name.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
@@ -121,15 +143,106 @@ public class CurrentLocationActivity extends BaseActivity {
 
 
         tv_add_address.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CurrentLocationActivity.this, MapPickerAddressActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SELECT_LOCATE);
+                if(!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
+                    //todo -1没有会员
+                    Intent intent = new Intent(CurrentLocationActivity.this, MapPickerAddressActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_SELECT_LOCATE);
+                }else {
+                    BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                }
+
+
             }
         });
 
 
     }
+
+    //购买会员
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
+        //显示VIP购买会员
+        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(CurrentLocationActivity.this, userVIPPrivilegePrice, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(), coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
+        //谁喜欢我，在线聊天  购买
+        //   MyPrivilegePopupWindow  my=new MyPrivilegePopupWindow(getActivity());
+        LogUtil.e("BuyMember  BuyMember");
+        myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type, int vip) {
+                submitPay(type, vip);
+                LogUtil.e("*********************************type = " + type + "-------------vip = " + vip);
+            }
+        });
+    }
+
+    /**
+     * 转支付类型返回支付签名数据
+     *
+     * @param type
+     * @param vip
+     */
+    private void submitPay(String type, int vip) {
+        UserVIPPrivilegePrice vipPrivilegePriceList = coreManager.getSelf().getUserVIPPrivilegeConfig();
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("payType", type);
+        if(vip==1){
+            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+            params.put("level", vipPrivilegePriceList.getV0());
+        }else if(vip==2){
+            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+            params.put("level", vipPrivilegePriceList.getV1());
+        }else if(vip==3){
+            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+            params.put("level", vipPrivilegePriceList.getV2());
+        }else if(vip==4){
+            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+            params.put("level", vipPrivilegePriceList.getV3());
+        }
+        params.put("funType", String.valueOf(5));
+        params.put("num", String.valueOf(-1));
+        params.put("mon", String.valueOf(-1));
+        AlipayHelper.rechargePay(CurrentLocationActivity.this, coreManager,params);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功刷新用户页面
+        updateSelfData();
+    }
+    private void updateSelfData() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+
+        HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                            User     user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+                });
+    }
+
+
 
     private void initActionBar() {
 

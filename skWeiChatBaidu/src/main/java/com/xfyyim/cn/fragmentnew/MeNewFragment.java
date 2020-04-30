@@ -37,6 +37,7 @@ import com.xfyyim.cn.ui.me_new.ZanActivity;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
+import com.xfyyim.cn.view.MyPrivilegePopupWindow;
 import com.xfyyim.cn.view.MyVipPaymentPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
@@ -404,16 +405,16 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     //购买会员
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
-        //显示VIP购买会员
-        MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), userVIPPrivilegePrice, coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(), coreManager.getSelf().getUserVIPPrivilege().getVipLevel());
         //谁喜欢我，在线聊天  购买
-        //   MyPrivilegePopupWindow  my=new MyPrivilegePopupWindow(getActivity());
+        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1,"查看谁喜欢我", "哇，99+个小姐姐喜欢我!她们是谁？",userVIPPrivilegePrice);
         LogUtil.e("BuyMember  BuyMember");
-        myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
+        myBuy.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override
             public void btnOnClick(String type, int vip) {
-                submitPay(type, vip);
-                LogUtil.e("*********************************type = " + type + "-------------vip = " + vip);
+                LogUtil.e("**********************************************************");
+                LogUtil.e("type = " + type + "---vip = " + vip);
+                LogUtil.e("**********************************************************");
+                submitPay(type,vip,userVIPPrivilegePrice);
             }
         });
     }
@@ -424,27 +425,23 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
      * @param type
      * @param vip
      */
-    private void submitPay(String type, int vip) {
-        UserVIPPrivilegePrice vipPrivilegePriceList = coreManager.getSelf().getUserVIPPrivilegeConfig();
+    private void submitPay(String type, int vip,UserVIPPrivilegePrice _userVIPPrivilegePrice) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
         if(vip==1){
-            params.put("price",vipPrivilegePriceList.getV0Price()+"");
-            params.put("level", vipPrivilegePriceList.getV0());
+            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice1()+"");
+            params.put("mon", "1");
         }else if(vip==2){
-            params.put("price",vipPrivilegePriceList.getV1Price()+"");
-            params.put("level", vipPrivilegePriceList.getV1());
+            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice2()+"");
+            params.put("mon", "3");
         }else if(vip==3){
-            params.put("price", vipPrivilegePriceList.getV2Price()+"");
-            params.put("level", vipPrivilegePriceList.getV2());
-        }else if(vip==4){
-            params.put("price", vipPrivilegePriceList.getV3Price()+"");
-            params.put("level", vipPrivilegePriceList.getV3());
+            params.put("price",_userVIPPrivilegePrice.getLikePrivilegePrice3()+"");
+            params.put("mon", "12");
         }
-        params.put("funType", String.valueOf(5));
+        params.put("funType", String.valueOf(6));
         params.put("num", String.valueOf(-1));
-        params.put("mon", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
         AlipayHelper.rechargePay(getActivity(), coreManager,params);
     }
 }

@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -56,7 +57,7 @@ import okhttp3.Call;
 public class myOnlineChatFragment extends EasyFragment {
 
     @BindView(R.id.ivUserHead)
-    RoundedImageView ivUserHead;
+    ImageView ivUserHead;
     @BindView(R.id.tvDataTime)
     TextView tvDataTime;
     @BindView(R.id.tvFlashChat)
@@ -106,6 +107,8 @@ public class myOnlineChatFragment extends EasyFragment {
 
 
     private void initView() {
+        AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
+
         findViewById(R.id.rlGetChat).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override

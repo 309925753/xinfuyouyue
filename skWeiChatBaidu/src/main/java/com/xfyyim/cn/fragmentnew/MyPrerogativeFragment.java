@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -58,7 +59,7 @@ import static com.xfyyim.cn.MyApplication.getContext;
 public class MyPrerogativeFragment extends EasyFragment {
 
     @BindView(R.id.ivUserHead)
-    RoundedImageView ivUserHead;
+    ImageView ivUserHead;
     @BindView(R.id.tvDataTime)
     TextView tvDataTime;
     @BindView(R.id.tvBuyVipPerogative)
@@ -81,6 +82,8 @@ public class MyPrerogativeFragment extends EasyFragment {
     }
 
     private void initView() {
+
+        AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
 
         findViewById(R.id.tvBuyVipPerogative).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +148,7 @@ public class MyPrerogativeFragment extends EasyFragment {
                             if (privilegeBean.getVipLevel().equals("v0") || privilegeBean.getVipLevel().equals("v1") || privilegeBean.getVipLevel().equals("v2") || privilegeBean.getVipLevel().equals("v3")) {
                                 tvDataTime.setText("VIP会员(" + DateUtils.newTimedate(privilegeBean.getEndTime()) + "到期）");
                                 tvBuyVipPerogative.setText("续费VIP会员");
-                                AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
+                            //    AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
                             } else {
                                 tvBuyVipPerogative.setText("￥" + ArithUtils.round1(privilegeBean.getVipPrice()) + "获取VIP会员");
                                 tvDataTime.setText("暂未激活会员");

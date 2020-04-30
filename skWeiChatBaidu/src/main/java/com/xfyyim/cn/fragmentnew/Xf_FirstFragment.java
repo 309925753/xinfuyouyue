@@ -97,8 +97,6 @@ public class Xf_FirstFragment extends EasyFragment {
     private void initView() {
 
         mStackLayout = (StackLayout) findViewById(R.id.stack_layout);
-
-
         ll_superLigth.setOnClickListener(this::onClick);
         findViewById(R.id.llRegretsUnLike).setOnClickListener(this::onClick);
         findViewById(R.id.llUnLike).setOnClickListener(this::onClick);
@@ -106,7 +104,6 @@ public class Xf_FirstFragment extends EasyFragment {
         findViewById(R.id.llUserLike).setOnClickListener(this::onClick);
         findViewById(R.id.llSuperLike).setOnClickListener(this::onClick);
         EventBusHelper.register(this);
-
     }
 
     private void openSuperCritcal() {
@@ -128,7 +125,6 @@ public class Xf_FirstFragment extends EasyFragment {
 
 
     public void setmAdapter(List<User> list) {
-
         mStackLayout.setAdapter(mAdapter = new Adapter(list));
         mStackLayout.addPageTransformer(
                 new StackPageTransformer(),     // 堆叠
@@ -682,7 +678,7 @@ public class Xf_FirstFragment extends EasyFragment {
     public void helloEventBus(EventNotifyUpdate message) {
         LogUtil.e("message = " +message.MessageData);
         pageIndex=0;
-       requestData();
+        requestData();
     }
 
 

@@ -337,12 +337,13 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.rlCurrentLocation:
                 //位置
-                if(!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
+                startActivity(new Intent(this, CurrentLocationActivity.class));
+             /*   if(!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
                     //todo -1没有会员
-                    startActivity(new Intent(this, CurrentLocationActivity.class));
+
                 }else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
-                }
+                }*/
 
                 break;
         }
@@ -362,7 +363,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         params.put("userId", coreManager.getSelf().getUserId());
         params.put("distance", sbDistance.getProgress()+"");
         params.put("ageDistance", seekbar.getProgress()+"");
-        params.put("displaySex", 0+"");
+        params.put("displaySex", sex+"");
         params.put("sex", sex+"");
 
         if(isAutoExpandRange){

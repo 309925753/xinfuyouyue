@@ -75,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:paddingBottom="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp20"
                 >
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/ivUserHead"
@@ -89,6 +90,7 @@
                     app:riv_corner_radius="6dp"
                     app:riv_oval="true"
                     android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginTop="@dimen/dp5"
                     />
                 <TextView
                     android:id="@+id/tvDataTime"
@@ -102,7 +104,7 @@
                 <TextView
                     android:id="@+id/tvImmediatelyChat"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp20"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/red_my_button"
                     android:text="立即闪聊"
                     android:textColor="@color/white"
@@ -112,7 +114,7 @@
                     android:layout_marginLeft="@dimen/dp15"
                     android:paddingTop="@dimen/dp5"
                     android:paddingBottom="@dimen/dp5"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     />
 
             </LinearLayout>
