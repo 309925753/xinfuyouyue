@@ -21,7 +21,7 @@ public final class AngleTransformer extends StackLayout.PageTransformer {
     }
 
     public AngleTransformer() {
-        this(-30f, 0f);
+        this(-90f, 0f);
     }
 
     @Override

@@ -38,7 +38,7 @@ public final class StackPageTransformer extends StackLayout.PageTransformer {
     }
 
     public StackPageTransformer() {
-        this(0.8f, 0.95f, 5);
+        this(0.8f, 0.95f, 3);
     }
 
     public final void transformPage(View view, float position, boolean isSwipeLeft) {

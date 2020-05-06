@@ -141,7 +141,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 }*/
                         isSliding = true;
                         LogUtil.e("cjh left " + itemLeft + "  isSwipeLeft  " + isSwipeLeft + "--swipedItemPos = " + swipedItemPos);
-                        if (isSwipeLeft) {
+                   if (isSwipeLeft) {
                             //  ToastUtil.showToast(getActivity(),"不喜欢接口");
                             unLike(list.get(selectItem));
                             isRegret=true;
@@ -332,8 +332,8 @@ public class Xf_FirstFragment extends EasyFragment {
         } else if (mUsers.size() >= 1) {
             mUsers.remove(0);
         }
-        setmAdapter(mUsers);
-        mAdapter.notifyDataSetChanged();
+       // setmAdapter(mUsers);
+       // mAdapter.notifyDataSetChanged();
 
     }
 

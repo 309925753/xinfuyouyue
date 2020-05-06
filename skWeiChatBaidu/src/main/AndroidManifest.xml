@@ -14,9 +14,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name, android:icon, android:roundIcon">
-        <activity android:name=".ui.me.FaceLivenessExpActivity"></activity>
-        <activity android:name=".ui.me_new.ReportActivity"></activity>
-        <activity android:name=".ui.me.MatchingSuccessfulActivity"></activity>
+        <activity android:name=".ui.me.QuXianNewActivity"></activity>
+        <activity android:name=".ui.me.FaceLivenessExpActivity" />
+        <activity android:name=".ui.me_new.ReportActivity" />
+        <activity android:name=".ui.me.MatchingSuccessfulActivity" />
         <activity android:name=".ui.me.payCompleteActivity" />
         <activity android:name=".ui.me.FaceLivenessExpActivity" />
         <activity android:name=".ui.me.PersonEditInfoActivity" />
@@ -241,7 +242,6 @@
         <activity
             android:name=".ui.map.MapPickerActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".ui.map.MapAddressListActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -570,7 +570,6 @@
                     android:scheme="shikuimapp" />
             </intent-filter>
         </activity>
-
         <activity android:name=".call.QuickMeetingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -645,18 +644,15 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.vivo.push.api_key"
             android:value="${VIVO_APP_KEY}" />
-
         <meta-data
             android:name="com.vivo.push.app_id"
             android:value="${VIVO_APP_ID}" />
         <meta-data
             android:name="com.huawei.hms.client.appid"
             android:value="${HUAWEI_APP_ID}" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icon_notification" />
@@ -683,7 +679,6 @@
                 <action android:name="${APP_ID}.action.broadcasttest.startActivity" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".broadcast.ShakeReceiver">
             <intent-filter>
                 <action android:name="${APP_ID}.action.shake_msg_notify" />
@@ -835,24 +830,21 @@
         <service
             android:name="com.fanjun.keeplive.service.RemoteService"
             android:process=":remote" />
-
     </application>
-
     <permission
         android:name="${APP_ID}.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
     <permission
         android:name="${APP_ID}.push.permission.MESSAGE"
         android:protectionLevel="signature" />
+
     <permission
         android:name="${APP_ID}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-feature android:name="android.hardware.microphone" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -885,10 +877,10 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 这个权限必须是applicationId开头， -->
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 魅族推送， -->
+    <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" /> <!-- 这个权限必须是applicationId开头， -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" /> <!-- 魅族推送， -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
@@ -899,8 +891,8 @@
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="${APP_ID}.permission.MIPUSH_RECEIVE" />
-    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" /> <!-- OPPO 推送 -->
+    <uses-permission android:name="${APP_ID}.permission.MIPUSH_RECEIVE" /> <!-- OPPO 推送 -->
+    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
     <uses-permission android:name="${APP_ID}.push.permission.MESSAGE" />
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
     <uses-permission android:name="${APP_ID}.permission.C2D_MESSAGE" />

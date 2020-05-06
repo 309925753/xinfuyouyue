@@ -8,6 +8,8 @@ import android.widget.ProgressBar;
 
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.me.redpacket.QuXianActivity;
+import com.xfyyim.cn.ui.me.redpacket.WxPayBlance;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
@@ -68,7 +70,8 @@ public class MyCashWithdrawalActivity extends BaseActivity implements View.OnCli
                     finish();
                     break;
             case R.id.tvWalletBalance://提现
-
+                Intent intent = new Intent(MyCashWithdrawalActivity.this, QuXianNewActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tv_title_right://帐单明细
                 startActivity(new Intent(this, MyWalletBillDetailsActivity.class));
