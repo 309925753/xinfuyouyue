@@ -33,14 +33,12 @@ import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.mucfile.UploadingHelper;
-import com.xfyyim.cn.ui.trill.ReleasexActivity;
 import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.LogUtils;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.TrillCommentInputDialog;
-import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -225,6 +223,7 @@ private RelativeLayout root;
           public void onItemClick(int position) {
               Intent intent = new Intent(getActivity(), CircleDetailActivity.class);
               intent.putExtra("PublicMessage",mMessages.get(position));
+              intent.putExtra("CareType",1);
               getActivity().startActivity(intent);
           }
       });

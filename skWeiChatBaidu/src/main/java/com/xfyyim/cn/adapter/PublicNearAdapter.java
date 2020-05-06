@@ -124,6 +124,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
     private int collectionType;
     private OnItemClickListener onItemClickListener = null;
     private OnItemToClickListener onItemToClickListener = null;
+    private boolean isAttion=false;
 
     CirlcePop mPop;
     View view;
@@ -357,13 +358,20 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
 
 
 
-        viewHolder.tv_read_count.setText(String.valueOf(message.getCount().getTotal()));
+        viewHolder.tv_read_count.setText(String.valueOf(message.getCount().getComment()));
 
         viewHolder.ll_tocomment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("PublicMessage", message);
+                if (!isAttion){
+                    intent.putExtra("CareType",2);
+                }else{
+                    intent.putExtra("CareType",1);
+
+                }
+
                 mContext.startActivity(intent);
             }
         });
@@ -373,7 +381,12 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
 viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-            doAddAttention(message.getUserId(),position);
+        if (!isAttion){
+            doAddAttention(message.getUserId(),viewHolder.tv_att,position);
+        }else{
+            deleteFriend(message.getUserId(),viewHolder.tv_att,position);
+        }
+
     }
 });
 
@@ -909,7 +922,7 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
     /**
      * 加关注
      */
-    private void doAddAttention(String mRoomUserId,int position) {
+    private void doAddAttention(String mRoomUserId,TextView tv_att,int positon) {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
@@ -924,7 +937,11 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onResponse(ObjectResult<AddAttentionResult> result) {
                         if (Result.checkSuccess(mContext, result)) {
-                            EventBus.getDefault().post(new MessageEvent("NearAttionUser"));
+                            ToastUtil.showToast(mContext,"关注成功");
+                            isAttion=true;
+                            mMessages.get(positon).setIsAttion(1);
+                            tv_att.setText("已关注");
+                            tv_att.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
                         }
                     }
 
@@ -937,12 +954,11 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
     /**
      * 取消关注
      */
-    private void deleteFriend(String userID) {
+    private void deleteFriend(String userID,TextView tv_att,int positon) {
 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("toUserId", userID);
-        DialogHelper.showDefaulteMessageProgressDialog(mContext);
 
         HttpUtils.get().url(coreManager.getConfig().FRIENDS_ATTENTION_DELETE)
                 .params(params)
@@ -951,13 +967,15 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onResponse(ObjectResult<Void> result) {
-                        DialogHelper.dismissProgressDialog();
-                            ToastUtil.showToast(mContext, result.getResultMsg());
+                            ToastUtil.showToast(mContext, "取消关注成功");
+                            isAttion=false;
+                        mMessages.get(positon).setIsAttion(2);
+                        tv_att.setText("关注");
+                        tv_att.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
                     }
 
                     @Override
                     public void onError(Call call, Exception e) {
-                        DialogHelper.dismissProgressDialog();
                     }
                 });
     }

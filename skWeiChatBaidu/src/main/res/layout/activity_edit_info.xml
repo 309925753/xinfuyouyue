@@ -474,6 +474,8 @@
                         android:src="@drawable/me_sign" />
 
                     <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/ll_mySign"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
@@ -501,7 +503,7 @@
                         android:layout_weight="1"
                         android:clickable="false"
                         android:minWidth="80dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:flow_equally="false"
                         app:flow_horizontalSpacing="10dp"
                         app:flow_maxSelectNum="8"

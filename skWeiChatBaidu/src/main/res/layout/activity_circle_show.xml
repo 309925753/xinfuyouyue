@@ -48,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_ne"
+                android:layout_marginTop="100dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -122,10 +123,7 @@
                 android:paddingStart="@dimen/dp20"
                 android:paddingEnd="@dimen/dp20"
                 android:paddingBottom="@dimen/dp10"
-                tools:itemCount="8"
-                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                tools:listitem="@layout/item_post_activity"
-                tools:spanCount="3" />
+               />
             </LinearLayout>
         </RelativeLayout>
 
@@ -218,16 +216,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/holo_red_light"
-        android:gravity="center"
-        android:text="@string/post_delete_tv_d"
-        android:textColor="@color/white"
-        android:visibility="gone" />
 
 </RelativeLayout>
 

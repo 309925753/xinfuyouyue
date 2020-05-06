@@ -186,6 +186,7 @@ RelativeLayout rl_root;
     public void onResume() {
         super.onResume();
         getTopicList();
+        requestData(true);
     }
 
     public void getTopicList() {
@@ -244,6 +245,7 @@ RelativeLayout rl_root;
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), CircleDetailActivity.class);
                 intent.putExtra("PublicMessage",mMessages.get(position));
+                intent.putExtra("CareType",mMessages.get(position).getIsAttion());
                 getActivity().startActivity(intent);
             }
         });
@@ -337,8 +339,6 @@ RelativeLayout rl_root;
         if (message.message.equals("prepare")) {// 准备播放视频，关闭语音播放
             mAdapter.stopVoice();
         }else if (message.message.equals("NearForbitUser")){
-            requestData(true);
-        }else if (message.message.equals("NearAttionUser")){
             requestData(true);
         }
     }

@@ -81,7 +81,7 @@
                     android:layout_toRightOf="@+id/img_sex"
                     android:gravity="center"
                     android:text="19"
-                    android:textColor="@color/link_nick_name_color"
+                    android:textColor="@color/white"
                     android:textSize="10sp"
                     tools:text="19" />
 

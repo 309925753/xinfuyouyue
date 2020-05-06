@@ -130,8 +130,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
     @BindView(R.id.img_locotion)
     ImageView img_locotion;
-    @BindView(R.id.tv)
-    TextView tv;
 
     @BindView(R.id.rv_add_topic)
     RecyclerView rv_add_topic;
@@ -254,6 +252,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             case R.id.tv_title_right:
 
                 if (mPhotoList.size() <= 0 && TextUtils.isEmpty(editText.getText().toString()) && TextUtils.isEmpty(mVideoFilePath)) {
+                    ToastUtil.showToast(this,"发布的内容不能为空!");
                     return;
                 }
                 if (mVideoFilePath != null && !TextUtils.isEmpty(mVideoFilePath)) {

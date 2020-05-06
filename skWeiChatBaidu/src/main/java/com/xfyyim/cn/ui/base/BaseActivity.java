@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.base;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,8 +18,7 @@ public abstract class BaseActivity extends BaseLoginActivity {
     protected void onCreate(Bundle savedInstanceState) {
         LocaleHelper.setLocale(this, LocaleHelper.getLanguage(this));
         super.onCreate(savedInstanceState);
-
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 竖屏
         swipeBackLayout = this.getSwipeBackLayout();
     }
 

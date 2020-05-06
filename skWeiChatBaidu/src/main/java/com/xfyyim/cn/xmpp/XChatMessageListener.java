@@ -3,7 +3,6 @@ package com.xfyyim.cn.xmpp;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -173,234 +172,104 @@ public class XChatMessageListener implements IncomingChatMessageListener {
             return;
         }
         //在线闪聊待接收方
-        if(type==XmppMessage.TYPE_SUPER_LIGHT){
+        if (type == XmppMessage.TYPE_SUPER_LIGHT) {
             EventBus.getDefault().post(new EventNotifyWaitOnlineChat(chatMessage.getFromUserName()));
             return;
         }
         //    发起方在线闪聊
-        if(type==XmppMessage.TYPE_WAIT_CHAT){
+        if (type == XmppMessage.TYPE_WAIT_CHAT) {
             EventBus.getDefault().post(new EventNotifyOnlineChat(chatMessage.getFromUserName()));
             return;
         }
         //甲方匹配喜欢
-        if(type==XmppMessage.TYPE_SUPER_MATCHING){
+        if (type == XmppMessage.TYPE_SUPER_MATCHING) {
             EventBus.getDefault().post(new EventNotifyWaitMatching(chatMessage.getFromUserName()));
             return;
         }
         //乙方匹配喜欢接收
-        if(type==XmppMessage.TYPE_WAIT_MATCHING){
+        if (type == XmppMessage.TYPE_WAIT_MATCHING) {
             EventBus.getDefault().post(new EventNotifyMatching(chatMessage.getFromUserName()));
             return;
         }
         //在线闪聊当前多少人
-        if(type==XmppMessage.TYPE_ONLINE_CHAT_COUNT){
-            LogUtil.e("chatMessage.getToUserName() = " +fromUserId);
+        if (type == XmppMessage.TYPE_ONLINE_CHAT_COUNT) {
+            LogUtil.e("chatMessage.getToUserName() = " + fromUserId);
             EventBus.getDefault().post(new EventOnlieChat(fromUserId));
             return;
         }
 
-        // 单聊收到805消息，群成员发送了chatKey给我，解密存入本地，更新界面
-        if (chatMessage.getType() == XmppMessage.TYPE_SECURE_SEND_KEY) {
-            if (!TextUtils.equals(chatMessage.getFromUserId(), mLoginUserId)) {// 需要考虑多点登录的情况
-                try {
-                    String chatKey = new String(RSA.decryptFromBase64(chatMessage.getContent(), Base64.decode(SecureChatUtil.getRSAPrivateKey(mLoginUserId))));
-                    HandleSecureChatMessage.distributionChatMessage(chatMessage);
-                    FriendDao.getInstance().updateChatKeyGroup(chatMessage.getObjectId(), SecureChatUtil.encryptChatKey(chatMessage.getObjectId(), chatKey));
-                    Log.e("msg", "设置chatKey成功-->" + chatKey);
-                } catch (Exception e) {
-                    Log.e("msg", "设置chatKey失败");
-                    FriendDao.getInstance().updateIsLostChatKeyGroup(chatMessage.getObjectId(), 1);
-                }
-                return;
-            }
-        }
-        if (chatMessage.getType() == XmppMessage.TYPE_AUTH_LOGIN) {
-            AuthLoginActivity.start(mService, chatMessage.getContent());
-            return;
-        }
 
-        boolean isGroupLiveNewFriendType = false;
-        if (chatMessage.getType() >= XmppMessage.TYPE_MUCFILE_ADD
-                && chatMessage.getType() <= XmppMessage.TYPE_FACE_GROUP_NOTIFY) {// 这些消息类型的fromUserId都有可能等于toUserId
-            isGroupLiveNewFriendType = true;
-        }
+        //发名片
+        if (type == XmppMessage.TYPE_CARD) {
 
-        // 收到 我的设备 消息
-        if (fromUserId.equals(toUserId) && !isGroupLiveNewFriendType) {
-            if (!resource.equals(MyApplication.MULTI_RESOURCE) && message.getTo().toString().substring(message.getTo().toString().indexOf("/") + 1, message.getTo().length()).equals(MyApplication.MULTI_RESOURCE)) {
-                // from resource 不等于自己
-                // to   resource 等于自己 方可进入该方法
-                if (chatMessage.getType() == 26) {
-                    String packetId = chatMessage.getContent();
-                    ChatMessageDao.getInstance().updateMessageRead(mLoginUserId, resource, packetId, true);
-                    boolean isReadChange = ChatMessageDao.getInstance().updateReadMessage(mLoginUserId, resource, packetId);
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("packetId", packetId);
-                    bundle.putBoolean("isReadChange", isReadChange);
-                    intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.IsRead);
-                    intent.putExtras(bundle);
-                    mService.sendBroadcast(intent);
-                    return;
-                }
+            NewFriendMessage mNewMessage = new NewFriendMessage(chatMessage.toJsonString());
+            mNewMessage.setOwnerId(mLoginUserId);
+            mNewMessage.setUserId(chatMessage.getFromUserId());
+            mNewMessage.setRead(false);
+            mNewMessage.setMySend(false);
+            mNewMessage.setPacketId(chatMessage.getPacketId());
+            String content = "";
+            NewFriendDao.getInstance().createOrUpdateNewFriend(mNewMessage);
+            NewFriendDao.getInstance().changeNewFriendState(mNewMessage.getUserId(), Friend.STATUS_11);
 
-                if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, resource, chatMessage)) {
-                    ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, resource, chatMessage, false);
-                }
+            ChatMessage sayHelloMessage = new ChatMessage();
+            sayHelloMessage.setType(XmppMessage.TYPE_CARD); //文本类型
+            sayHelloMessage.setFromUserId(chatMessage.getFromUserId());
+            sayHelloMessage.setFromUserName(chatMessage.getFromUserName());
+            sayHelloMessage.setContent(getContext().getString(R.string.say_hello_default));
+            sayHelloMessage.setMySend(false);
+            sayHelloMessage.setMessageState(ChatMessageListener.MESSAGE_SEND_SUCCESS);
+            sayHelloMessage.setPacketId(chatMessage.getPacketId());
+            sayHelloMessage.setDoubleTimeSend(chatMessage.getTimeSend());
+            ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, chatMessage.getFromUserId(), sayHelloMessage);
+            ListenerManager.getInstance().notifyNewFriend(mLoginUserId, mNewMessage, true);
+        return;
+    }
+
+
+    // 单聊收到805消息，群成员发送了chatKey给我，解密存入本地，更新界面
+        if(chatMessage.getType()==XmppMessage.TYPE_SECURE_SEND_KEY)
+
+    {
+        if (!TextUtils.equals(chatMessage.getFromUserId(), mLoginUserId)) {// 需要考虑多点登录的情况
+            try {
+                String chatKey = new String(RSA.decryptFromBase64(chatMessage.getContent(), Base64.decode(SecureChatUtil.getRSAPrivateKey(mLoginUserId))));
+                HandleSecureChatMessage.distributionChatMessage(chatMessage);
+                FriendDao.getInstance().updateChatKeyGroup(chatMessage.getObjectId(), SecureChatUtil.encryptChatKey(chatMessage.getObjectId(), chatKey));
+                Log.e("msg", "设置chatKey成功-->" + chatKey);
+            } catch (Exception e) {
+                Log.e("msg", "设置chatKey失败");
+                FriendDao.getInstance().updateIsLostChatKeyGroup(chatMessage.getObjectId(), 1);
             }
             return;
         }
+    }
+        if(chatMessage.getType()==XmppMessage.TYPE_AUTH_LOGIN)
 
-        boolean isForwarding = false;// 该条消息是否需要转发
-        boolean isNeedChangeMsgTableSave = false;// 该条消息是否需要换表存储
-        // 注：非多点登录，不会走进该判断
-        if (from.contains(mLoginUserId)) {
-            // 收到转发消息，重置定时器
-            MachineDao.getInstance().updateMachineOnLineStatus(resource, true);
+    {
+        AuthLoginActivity.start(mService, chatMessage.getContent());
+        return;
+    }
 
-            // 1.消息创建方的转发消息
-            // 2.消息接收方的转发消息
-            if (fromUserId.equals(mLoginUserId)) {
-                isNeedChangeMsgTableSave = true;
-                Log.e("msg", "消息创建方的转发消息,将isNeedChangeMsgTableSave置为true");
-                chatMessage.setUploadSchedule(100);
-                chatMessage.setUpload(true);
-                chatMessage.setMySend(true);
-                chatMessage.setMessageState(MESSAGE_SEND_SUCCESS);
-                if (ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, toUserId, packetID)) {
-                    Log.e("msg", "table exist this msg，return");
-                    return;
-                }
-            } else {
-                Log.e("msg", "消息接收方的转发消息");
-                if (ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, fromUserId, packetID)) {
-                    Log.e("msg", "table exist this msg，return");
-                    return;
-                }
-            }
-            Log.e("msg", "table not exist this msg，carry on");
-        } else {// 收到对方发过来的消息
-            isForwarding = true;
-            Log.e("msg", "收到对方发过来的消息,将isForwarding状态置为true");
+    boolean isGroupLiveNewFriendType = false;
+        if(chatMessage.getType()>=XmppMessage.TYPE_MUCFILE_ADD
+                &&chatMessage.getType()<=XmppMessage.TYPE_FACE_GROUP_NOTIFY)
 
-            Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getFromUserId());
-            if (friend != null && friend.getStatus() != -1 && friend.getOfflineNoPushMsg() == 0) {
-                mService.notificationMessage(chatMessage, false);// 调用本地通知
-            }
-        }
+    {// 这些消息类型的fromUserId都有可能等于toUserId
+        isGroupLiveNewFriendType = true;
+    }
 
-        // 音视频相关消息100-134
-        if (type >= XmppMessage.TYPE_IS_CONNECT_VOICE && type <= XmppMessage.TYPE_IS_MU_CONNECT_SCREEN) {
-            chatAudioVideo(chatMessage);
-            return;
-        }
+    // 收到 我的设备 消息
+        if(fromUserId.equals(toUserId)&&!isGroupLiveNewFriendType)
 
-        // 朋友圈相关消息 301-305
-        if (type >= XmppMessage.DIANZAN && type <= XmppMessage.FRIEND_PUBLISH) {
-            chatDiscover(body, chatMessage);
-            return;
-        }
-
-
-        // 新朋友相关消息 500-515
-        if (type >= XmppMessage.TYPE_SAYHELLO && type <= XmppMessage.TYPE_BACK_DELETE) {
-            chatFriend(body, chatMessage);
-            return;
-        }
-
-        // 群文件上传、下载、删除 401-403
-        if (type >= XmppMessage.TYPE_MUCFILE_ADD && type <= XmppMessage.TYPE_MUCFILE_DOWN) {
-            Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getObjectId());
-            chatGroupTipForMe(body, chatMessage, friend);
-            return;
-        }
-
-        /*
-        服务端已修改了发送群控制消息的逻辑(不再遍历群成员之后以单聊的方式发送，而是直接发送到群组内(但是部分协议还是会以单聊的方式发送给个人,ex:邀请群成员...)，
-        但服务端代码还未上传(怕影响老版本用户)，所以我们在XMuChatMessageListener内的处理暂时还未用上，且该类中的逻辑不能删除，还需要添加判断本地是否有存在该条消息
-        防止服务端代码上传后 单、群聊监听都收到同一条消息重复处理
-         */
-        if ((type >= XmppMessage.TYPE_CHANGE_NICK_NAME && type <= XmppMessage.NEW_MEMBER)
-                || type == XmppMessage.TYPE_SEND_MANAGER
-                || type == XmppMessage.TYPE_UPDATE_ROLE) {
-            Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getObjectId());
-            if (ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, chatMessage.getObjectId(), chatMessage.getPacketId())) {
-                // 本地已经保存了这条消息，不处理，因为有些协议群组内也发了，单聊也发了
-                Log.e("msg", "Return 6");
-                return;
-            }
-            if (friend != null || type == XmppMessage.NEW_MEMBER) {
-                if (chatMessage.getFromUserId().equals(mLoginUserId)) {
-                    chatGroupTipFromMe(body, chatMessage, friend);
-                } else {
-                    chatGroupTipForMe(body, chatMessage, friend);
-                }
-            } else {
-                // todo 有可能收到离线的907消息，此时如果本地friend创建的慢一点，即friend还为null，
-                //  其他type的消息都就都会未处理而return掉了，所以此处将未处理消息放入队列内，等群组创建好了在处理。
-                chatMessage.setFromId(body);
-                delayHandleGroupMsgList.add(chatMessage);
-            }
-            return;
-        }
-
-        // 群组控制消息[2] 915-925
-        if (type >= XmppMessage.TYPE_CHANGE_SHOW_READ && type <= XmppMessage.TYPE_GROUP_TRANSFER) {
-            boolean isJumpOver = false;
-            if (type == XmppMessage.TYPE_GROUP_VERIFY) {// 群验证跳过判断，因为自己发送的群验证消息object为一个json
-                isJumpOver = true;
-            }
-            if (!isJumpOver && ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, chatMessage.getObjectId(), chatMessage.getPacketId())) {
-                // 本地已经保存了这条消息，不处理，因为有些协议群组内也发了，单聊也发了
-                Log.e("msg", "Return 7");
-                return;
-            }
-            JSONObject jsonObject = JSONObject.parseObject(body);
-            String toUserName = jsonObject.getString("toUserName");
-            chatGroupTip2(type, chatMessage, toUserName);
-            return;
-        }
-
-        // 后台操作发送过来的xmpp
-        if (type == XmppMessage.TYPE_DISABLE_GROUP) {
-            if (chatMessage.getContent().equals("-1")) {// 锁定
-                FriendDao.getInstance().updateFriendGroupStatus(mLoginUserId, chatMessage.getObjectId(), 3);// 更新本地群组状态
-            } else if (chatMessage.getContent().equals("1")) {// 解锁
-                FriendDao.getInstance().updateFriendGroupStatus(mLoginUserId, chatMessage.getObjectId(), 0);// 更新本地群组状态
-            }
-            mService.sendBroadcast(new Intent(MsgBroadcast.ACTION_DISABLE_GROUP_BY_SERVICE));
-            return;
-        }
-
-        // 面对面建群有人加入、退出
-        if (type == XmppMessage.TYPE_FACE_GROUP_NOTIFY) {
-            MsgBroadcast.broadcastFaceGroupNotify(MyApplication.getContext(), "notify_list");
-            return;
-        }
-
-        // 表示这是已读回执类型的消息
-        if (chatMessage.getType() == XmppMessage.TYPE_READ) {
-            if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
-                mService.sendChatMessage(mLoginUserId, chatMessage);
-            }
-            String packetId = chatMessage.getContent();
-
-            if (chatMessage.getFromUserId().equals(mLoginUserId)) {// 其他端发送过来的已读
-                ChatMessage msgById = ChatMessageDao.getInstance().findMsgById(mLoginUserId, chatMessage.getToUserId(), packetId);
-                if (msgById != null && msgById.getIsReadDel()) {// 在其他端已读了该条阅后即焚消息，本端也需要删除
-                    if (ChatMessageDao.getInstance().deleteSingleChatMessage(mLoginUserId, chatMessage.getToUserId(), packetId)) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("MULTI_LOGIN_READ_DELETE_PACKET", packetId);
-                        intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.MULTI_LOGIN_READ_DELETE);
-                        intent.putExtras(bundle);
-                        mService.sendBroadcast(intent);
-                    }
-                }
-            } else {
-                ChatMessageDao.getInstance().updateMessageRead(mLoginUserId, fromUserId, packetId, true);// 更新状态为已读
-                boolean isReadChange = ChatMessageDao.getInstance().updateReadMessage(mLoginUserId, fromUserId, packetId);
-                // 发送广播通知聊天页面，将未读的消息修改为已读
+    {
+        if (!resource.equals(MyApplication.MULTI_RESOURCE) && message.getTo().toString().substring(message.getTo().toString().indexOf("/") + 1, message.getTo().length()).equals(MyApplication.MULTI_RESOURCE)) {
+            // from resource 不等于自己
+            // to   resource 等于自己 方可进入该方法
+            if (chatMessage.getType() == 26) {
+                String packetId = chatMessage.getContent();
+                ChatMessageDao.getInstance().updateMessageRead(mLoginUserId, resource, packetId, true);
+                boolean isReadChange = ChatMessageDao.getInstance().updateReadMessage(mLoginUserId, resource, packetId);
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putString("packetId", packetId);
@@ -408,163 +277,370 @@ public class XChatMessageListener implements IncomingChatMessageListener {
                 intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.IsRead);
                 intent.putExtras(bundle);
                 mService.sendBroadcast(intent);
+                return;
             }
+
+            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, resource, chatMessage)) {
+                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, resource, chatMessage, false);
+            }
+        }
+        return;
+    }
+
+    boolean isForwarding = false;// 该条消息是否需要转发
+    boolean isNeedChangeMsgTableSave = false;// 该条消息是否需要换表存储
+    // 注：非多点登录，不会走进该判断
+        if(from.contains(mLoginUserId))
+
+    {
+        // 收到转发消息，重置定时器
+        MachineDao.getInstance().updateMachineOnLineStatus(resource, true);
+
+        // 1.消息创建方的转发消息
+        // 2.消息接收方的转发消息
+        if (fromUserId.equals(mLoginUserId)) {
+            isNeedChangeMsgTableSave = true;
+            Log.e("msg", "消息创建方的转发消息,将isNeedChangeMsgTableSave置为true");
+            chatMessage.setUploadSchedule(100);
+            chatMessage.setUpload(true);
+            chatMessage.setMySend(true);
+            chatMessage.setMessageState(MESSAGE_SEND_SUCCESS);
+            if (ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, toUserId, packetID)) {
+                Log.e("msg", "table exist this msg，return");
+                return;
+            }
+        } else {
+            Log.e("msg", "消息接收方的转发消息");
+            if (ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, fromUserId, packetID)) {
+                Log.e("msg", "table exist this msg，return");
+                return;
+            }
+        }
+        Log.e("msg", "table not exist this msg，carry on");
+    } else
+
+    {// 收到对方发过来的消息
+        isForwarding = true;
+        Log.e("msg", "收到对方发过来的消息,将isForwarding状态置为true");
+
+        Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getFromUserId());
+        if (friend != null && friend.getStatus() != -1 && friend.getOfflineNoPushMsg() == 0) {
+            mService.notificationMessage(chatMessage, false);// 调用本地通知
+        }
+    }
+
+    // 音视频相关消息100-134
+        if(type >=XmppMessage.TYPE_IS_CONNECT_VOICE &&type <=XmppMessage.TYPE_IS_MU_CONNECT_SCREEN)
+
+    {
+        chatAudioVideo(chatMessage);
+        return;
+    }
+
+    // 朋友圈相关消息 301-305
+        if(type >=XmppMessage.DIANZAN &&type <=XmppMessage.FRIEND_PUBLISH)
+
+    {
+        chatDiscover(body, chatMessage);
+        return;
+    }
+
+
+    // 新朋友相关消息 500-515
+        if(type >=XmppMessage.TYPE_SAYHELLO &&type <=XmppMessage.TYPE_BACK_DELETE)
+
+    {
+        chatFriend(body, chatMessage);
+        return;
+    }
+
+    // 群文件上传、下载、删除 401-403
+        if(type >=XmppMessage.TYPE_MUCFILE_ADD &&type <=XmppMessage.TYPE_MUCFILE_DOWN)
+
+    {
+        Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getObjectId());
+        chatGroupTipForMe(body, chatMessage, friend);
+        return;
+    }
+
+        /*
+        服务端已修改了发送群控制消息的逻辑(不再遍历群成员之后以单聊的方式发送，而是直接发送到群组内(但是部分协议还是会以单聊的方式发送给个人,ex:邀请群成员...)，
+        但服务端代码还未上传(怕影响老版本用户)，所以我们在XMuChatMessageListener内的处理暂时还未用上，且该类中的逻辑不能删除，还需要添加判断本地是否有存在该条消息
+        防止服务端代码上传后 单、群聊监听都收到同一条消息重复处理
+         */
+        if((type >=XmppMessage.TYPE_CHANGE_NICK_NAME &&type <=XmppMessage.NEW_MEMBER)
+            ||type ==XmppMessage.TYPE_SEND_MANAGER
+                ||type ==XmppMessage.TYPE_UPDATE_ROLE)
+
+    {
+        Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getObjectId());
+        if (ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, chatMessage.getObjectId(), chatMessage.getPacketId())) {
+            // 本地已经保存了这条消息，不处理，因为有些协议群组内也发了，单聊也发了
+            Log.e("msg", "Return 6");
             return;
         }
+        if (friend != null || type == XmppMessage.NEW_MEMBER) {
+            if (chatMessage.getFromUserId().equals(mLoginUserId)) {
+                chatGroupTipFromMe(body, chatMessage, friend);
+            } else {
+                chatGroupTipForMe(body, chatMessage, friend);
+            }
+        } else {
+            // todo 有可能收到离线的907消息，此时如果本地friend创建的慢一点，即friend还为null，
+            //  其他type的消息都就都会未处理而return掉了，所以此处将未处理消息放入队列内，等群组创建好了在处理。
+            chatMessage.setFromId(body);
+            delayHandleGroupMsgList.add(chatMessage);
+        }
+        return;
+    }
 
-        if (type == XmppMessage.TYPE_INPUT) {
+    // 群组控制消息[2] 915-925
+        if(type >=XmppMessage.TYPE_CHANGE_SHOW_READ &&type <=XmppMessage.TYPE_GROUP_TRANSFER)
+
+    {
+        boolean isJumpOver = false;
+        if (type == XmppMessage.TYPE_GROUP_VERIFY) {// 群验证跳过判断，因为自己发送的群验证消息object为一个json
+            isJumpOver = true;
+        }
+        if (!isJumpOver && ChatMessageDao.getInstance().hasSameMessage(mLoginUserId, chatMessage.getObjectId(), chatMessage.getPacketId())) {
+            // 本地已经保存了这条消息，不处理，因为有些协议群组内也发了，单聊也发了
+            Log.e("msg", "Return 7");
+            return;
+        }
+        JSONObject jsonObject = JSONObject.parseObject(body);
+        String toUserName = jsonObject.getString("toUserName");
+        chatGroupTip2(type, chatMessage, toUserName);
+        return;
+    }
+
+    // 后台操作发送过来的xmpp
+        if(type ==XmppMessage.TYPE_DISABLE_GROUP)
+
+    {
+        if (chatMessage.getContent().equals("-1")) {// 锁定
+            FriendDao.getInstance().updateFriendGroupStatus(mLoginUserId, chatMessage.getObjectId(), 3);// 更新本地群组状态
+        } else if (chatMessage.getContent().equals("1")) {// 解锁
+            FriendDao.getInstance().updateFriendGroupStatus(mLoginUserId, chatMessage.getObjectId(), 0);// 更新本地群组状态
+        }
+        mService.sendBroadcast(new Intent(MsgBroadcast.ACTION_DISABLE_GROUP_BY_SERVICE));
+        return;
+    }
+
+    // 面对面建群有人加入、退出
+        if(type ==XmppMessage.TYPE_FACE_GROUP_NOTIFY)
+
+    {
+        MsgBroadcast.broadcastFaceGroupNotify(MyApplication.getContext(), "notify_list");
+        return;
+    }
+
+    // 表示这是已读回执类型的消息
+        if(chatMessage.getType()==XmppMessage.TYPE_READ)
+
+    {
+        if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
+            mService.sendChatMessage(mLoginUserId, chatMessage);
+        }
+        String packetId = chatMessage.getContent();
+
+        if (chatMessage.getFromUserId().equals(mLoginUserId)) {// 其他端发送过来的已读
+            ChatMessage msgById = ChatMessageDao.getInstance().findMsgById(mLoginUserId, chatMessage.getToUserId(), packetId);
+            if (msgById != null && msgById.getIsReadDel()) {// 在其他端已读了该条阅后即焚消息，本端也需要删除
+                if (ChatMessageDao.getInstance().deleteSingleChatMessage(mLoginUserId, chatMessage.getToUserId(), packetId)) {
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("MULTI_LOGIN_READ_DELETE_PACKET", packetId);
+                    intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.MULTI_LOGIN_READ_DELETE);
+                    intent.putExtras(bundle);
+                    mService.sendBroadcast(intent);
+                }
+            }
+        } else {
+            ChatMessageDao.getInstance().updateMessageRead(mLoginUserId, fromUserId, packetId, true);// 更新状态为已读
+            boolean isReadChange = ChatMessageDao.getInstance().updateReadMessage(mLoginUserId, fromUserId, packetId);
+            // 发送广播通知聊天页面，将未读的消息修改为已读
             Intent intent = new Intent();
-            intent.putExtra("fromId", chatMessage.getFromUserId());
-            intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.TYPE_INPUT);
+            Bundle bundle = new Bundle();
+            bundle.putString("packetId", packetId);
+            bundle.putBoolean("isReadChange", isReadChange);
+            intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.IsRead);
+            intent.putExtras(bundle);
             mService.sendBroadcast(intent);
-            return;
+        }
+        return;
+    }
+
+        if(type ==XmppMessage.TYPE_INPUT)
+
+    {
+        Intent intent = new Intent();
+        intent.putExtra("fromId", chatMessage.getFromUserId());
+        intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.TYPE_INPUT);
+        mService.sendBroadcast(intent);
+        return;
+    }
+
+    // 某个用户发过来的撤回消息
+        if(type ==XmppMessage.TYPE_BACK)
+
+    {
+        if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
+            mService.sendChatMessage(mLoginUserId, chatMessage);
+        }
+        backMessage(chatMessage);
+        return;
+    }
+
+    // 对方领取了红包
+        if(type ==XmppMessage.TYPE_83)
+
+    {
+        if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
+            mService.sendChatMessage(mLoginUserId, chatMessage);
         }
 
-        // 某个用户发过来的撤回消息
-        if (type == XmppMessage.TYPE_BACK) {
-            if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
-                mService.sendChatMessage(mLoginUserId, chatMessage);
-            }
-            backMessage(chatMessage);
-            return;
+        String fromName;
+        String toName;
+        if (fromUserId.equals(mLoginUserId)) {// 理论上不存在
+            fromName = MyApplication.getContext().getString(R.string.you);
+            toName = MyApplication.getContext().getString(R.string.self);
+        } else {
+            fromName = chatMessage.getFromUserName();
+            toName = MyApplication.getContext().getString(R.string.you);
         }
 
-        // 对方领取了红包
-        if (type == XmppMessage.TYPE_83) {
-            if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
-                mService.sendChatMessage(mLoginUserId, chatMessage);
-            }
-
-            String fromName;
-            String toName;
-            if (fromUserId.equals(mLoginUserId)) {// 理论上不存在
-                fromName = MyApplication.getContext().getString(R.string.you);
-                toName = MyApplication.getContext().getString(R.string.self);
-            } else {
-                fromName = chatMessage.getFromUserName();
-                toName = MyApplication.getContext().getString(R.string.you);
-            }
-
-            String hasBennReceived = "";
-            if (chatMessage.getFileSize() == 1) {// 红包是否领完
-                try {
-                    String sRedSendTime = chatMessage.getFilePath();
-                    long redSendTime = Long.parseLong(sRedSendTime);
-                    long betweenTime = chatMessage.getTimeSend() - redSendTime;
-                    String sBetweenTime;
-                    if (betweenTime < TimeUnit.MINUTES.toSeconds(1)) {
-                        sBetweenTime = betweenTime + MyApplication.getContext().getString(R.string.second);
-                    } else if (betweenTime < TimeUnit.HOURS.toSeconds(1)) {
-                        sBetweenTime = TimeUnit.SECONDS.toMinutes(betweenTime) + MyApplication.getContext().getString(R.string.minute);
-                    } else {
-                        sBetweenTime = TimeUnit.SECONDS.toHours(betweenTime) + MyApplication.getContext().getString(R.string.hour);
-                    }
-                    hasBennReceived = MyApplication.getContext().getString(R.string.red_packet_has_received_place_holder, sBetweenTime);
-                } catch (Exception e) {
-                    hasBennReceived = MyApplication.getContext().getString(R.string.red_packet_has_received);
+        String hasBennReceived = "";
+        if (chatMessage.getFileSize() == 1) {// 红包是否领完
+            try {
+                String sRedSendTime = chatMessage.getFilePath();
+                long redSendTime = Long.parseLong(sRedSendTime);
+                long betweenTime = chatMessage.getTimeSend() - redSendTime;
+                String sBetweenTime;
+                if (betweenTime < TimeUnit.MINUTES.toSeconds(1)) {
+                    sBetweenTime = betweenTime + MyApplication.getContext().getString(R.string.second);
+                } else if (betweenTime < TimeUnit.HOURS.toSeconds(1)) {
+                    sBetweenTime = TimeUnit.SECONDS.toMinutes(betweenTime) + MyApplication.getContext().getString(R.string.minute);
+                } else {
+                    sBetweenTime = TimeUnit.SECONDS.toHours(betweenTime) + MyApplication.getContext().getString(R.string.hour);
                 }
+                hasBennReceived = MyApplication.getContext().getString(R.string.red_packet_has_received_place_holder, sBetweenTime);
+            } catch (Exception e) {
+                hasBennReceived = MyApplication.getContext().getString(R.string.red_packet_has_received);
             }
-            String str = MyApplication.getContext().getString(R.string.tip_receive_red_packet_place_holder, fromName, toName) + hasBennReceived;
+        }
+        String str = MyApplication.getContext().getString(R.string.tip_receive_red_packet_place_holder, fromName, toName) + hasBennReceived;
 
-            // 针对红包领取的提示消息 需要做点击事件处理，将红包的type与id存入其他字段内
-            chatMessage.setFileSize(XmppMessage.TYPE_83);
-            chatMessage.setFilePath(chatMessage.getContent());
+        // 针对红包领取的提示消息 需要做点击事件处理，将红包的type与id存入其他字段内
+        chatMessage.setFileSize(XmppMessage.TYPE_83);
+        chatMessage.setFilePath(chatMessage.getContent());
 
-            chatMessage.setType(XmppMessage.TYPE_TIP);
-            chatMessage.setContent(str);
+        chatMessage.setType(XmppMessage.TYPE_TIP);
+        chatMessage.setContent(str);
+        if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
+            ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
+        }
+        return;
+    }
+
+    // 红包退回通知，
+        if(type ==XmppMessage.TYPE_RED_BACK)
+
+    {
+        if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
+            mService.sendChatMessage(mLoginUserId, chatMessage);
+        }
+
+        String str = MyApplication.getContext().getString(R.string.tip_red_back);
+        chatMessage.setType(XmppMessage.TYPE_TIP);
+        chatMessage.setContent(str);
+        if (!TextUtils.isEmpty(chatMessage.getObjectId())) {// 群组红包退回 通知到群组
+            fromUserId = chatMessage.getObjectId();
+            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
+                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, true);
+            }
+        } else {// 单聊红包退回
             if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
                 ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
             }
-            return;
         }
+        return;
+    }
 
-        // 红包退回通知，
-        if (type == XmppMessage.TYPE_RED_BACK) {
-            if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
-                mService.sendChatMessage(mLoginUserId, chatMessage);
-            }
+        if(type ==XmppMessage.TYPE_TRANSFER_RECEIVE)
 
-            String str = MyApplication.getContext().getString(R.string.tip_red_back);
-            chatMessage.setType(XmppMessage.TYPE_TIP);
-            chatMessage.setContent(str);
-            if (!TextUtils.isEmpty(chatMessage.getObjectId())) {// 群组红包退回 通知到群组
-                fromUserId = chatMessage.getObjectId();
-                if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
-                    ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, true);
-                }
-            } else {// 单聊红包退回
-                if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
-                    ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
-                }
-            }
-            return;
+    {
+        if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
+            mService.sendChatMessage(mLoginUserId, chatMessage);
         }
-
+        String str;
         if (type == XmppMessage.TYPE_TRANSFER_RECEIVE) {
-            if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
-                mService.sendChatMessage(mLoginUserId, chatMessage);
+            // 更新数据库内转账消息为被领取状态
+            List<ChatMessage> chatMessages = ChatMessageDao.getInstance().getAllSameObjectIdMessages(mLoginUserId, fromUserId, chatMessage.getContent());
+            for (int i = 0; i < chatMessages.size(); i++) {
+                ChatMessageDao.getInstance().updateChatMessageReceiptStatus(mLoginUserId, fromUserId, chatMessages.get(i).getPacketId());
             }
-            String str;
-            if (type == XmppMessage.TYPE_TRANSFER_RECEIVE) {
-                // 更新数据库内转账消息为被领取状态
-                List<ChatMessage> chatMessages = ChatMessageDao.getInstance().getAllSameObjectIdMessages(mLoginUserId, fromUserId, chatMessage.getContent());
-                for (int i = 0; i < chatMessages.size(); i++) {
-                    ChatMessageDao.getInstance().updateChatMessageReceiptStatus(mLoginUserId, fromUserId, chatMessages.get(i).getPacketId());
-                }
-                // 通知到聊天界面
-                EventBus.getDefault().post(new EventTransfer(chatMessage.clone(false)));
-                str = MyApplication.getContext().getString(R.string.transfer_received);
-            } else {
-                str = MyApplication.getContext().getString(R.string.transfer_backed);
-            }
-
-            chatMessage.setType(XmppMessage.TYPE_TIP);
-            chatMessage.setContent(str);
-            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
-                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
-            }
-            return;
+            // 通知到聊天界面
+            EventBus.getDefault().post(new EventTransfer(chatMessage.clone(false)));
+            str = MyApplication.getContext().getString(R.string.transfer_received);
+        } else {
+            str = MyApplication.getContext().getString(R.string.transfer_backed);
         }
 
-        // 扫码充值、提现，转账、收付款消息
-        if ((type == XmppMessage.TYPE_SCAN_RECHARGE || type == XmppMessage.TYPE_SCAN_WITHDRAW)
-                || (type >= XmppMessage.TYPE_TRANSFER_BACK && type <= XmppMessage.TYPE_RECEIPT_GET)) {
-            if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
-                mService.sendChatMessage(mLoginUserId, chatMessage);
-            }
-            if (type == XmppMessage.TYPE_PAYMENT_OUT) {// 通知到付款界面
-                CodePay codePay = JSON.parseObject(chatMessage.getContent(), CodePay.class);
-                EventBus.getDefault().post(new EventPaymentSuccess(codePay.getToUserName()));
-            } else if (type == XmppMessage.TYPE_RECEIPT_GET) {// 通知到收款界面
-                CodePay codePay = JSON.parseObject(chatMessage.getContent(), CodePay.class);
-                EventBus.getDefault().post(new EventReceiptSuccess(codePay.getToUserName()));
-            }
-            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
-                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
-            }
-            return;
+        chatMessage.setType(XmppMessage.TYPE_TIP);
+        chatMessage.setContent(str);
+        if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
+            ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
         }
+        return;
+    }
 
-        // yeepay相关消息，
-        if (type >= XmppMessage.TYPE_YEEPAY_SEND_RED_SUCCESS && type <= XmppMessage.TYPE_YEEPAY_TRANSFER_SUCCESS) {
-            if (type == XmppMessage.TYPE_YEEPAY_SEND_RED_SUCCESS) {// 通知到发红包界面
-                EventBus.getDefault().post(new EventYeepaySendRedSuccess(chatMessage.getContent()));
-            } else if (type == XmppMessage.TYPE_YEEPAY_TRANSFER_SUCCESS) {// 通知到发转账界面
-                EventBus.getDefault().post(new EventYeepayTransferSuccess(chatMessage.getContent()));
-            }
-            return;
+    // 扫码充值、提现，转账、收付款消息
+        if((type ==XmppMessage.TYPE_SCAN_RECHARGE ||type ==XmppMessage.TYPE_SCAN_WITHDRAW)
+            ||(type >=XmppMessage.TYPE_TRANSFER_BACK &&type <=XmppMessage.TYPE_RECEIPT_GET))
+
+    {
+        if (MyApplication.IS_SUPPORT_MULTI_LOGIN && isForwarding) {
+            mService.sendChatMessage(mLoginUserId, chatMessage);
         }
+        if (type == XmppMessage.TYPE_PAYMENT_OUT) {// 通知到付款界面
+            CodePay codePay = JSON.parseObject(chatMessage.getContent(), CodePay.class);
+            EventBus.getDefault().post(new EventPaymentSuccess(codePay.getToUserName()));
+        } else if (type == XmppMessage.TYPE_RECEIPT_GET) {// 通知到收款界面
+            CodePay codePay = JSON.parseObject(chatMessage.getContent(), CodePay.class);
+            EventBus.getDefault().post(new EventReceiptSuccess(codePay.getToUserName()));
+        }
+        if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, fromUserId, chatMessage)) {
+            ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, fromUserId, chatMessage, false);
+        }
+        return;
+    }
 
-        if (type == XmppMessage.TYPE_SCREENSHOT) {
-            chatMessage.setType(XmppMessage.TYPE_TIP);
-            chatMessage.setContent(mService.getString(R.string.tip_remote_screenshot));
-            // 处理成tip后不return，正常流程处理，
-        } else if (type == XmppMessage.TYPE_SYNC_CLEAN_CHAT_HISTORY) {
-            Intent intent = new Intent();
-            if (isNeedChangeMsgTableSave) {
-                intent.putExtra(AppConstant.EXTRA_USER_ID, chatMessage.getToUserId());
-            } else {
-                intent.putExtra(AppConstant.EXTRA_USER_ID, chatMessage.getFromUserId());
+    // yeepay相关消息，
+        if(type >=XmppMessage.TYPE_YEEPAY_SEND_RED_SUCCESS &&type <=XmppMessage.TYPE_YEEPAY_TRANSFER_SUCCESS)
+
+    {
+        if (type == XmppMessage.TYPE_YEEPAY_SEND_RED_SUCCESS) {// 通知到发红包界面
+            EventBus.getDefault().post(new EventYeepaySendRedSuccess(chatMessage.getContent()));
+        } else if (type == XmppMessage.TYPE_YEEPAY_TRANSFER_SUCCESS) {// 通知到发转账界面
+            EventBus.getDefault().post(new EventYeepayTransferSuccess(chatMessage.getContent()));
+        }
+        return;
+    }
+
+        if(type ==XmppMessage.TYPE_SCREENSHOT)
+
+    {
+        chatMessage.setType(XmppMessage.TYPE_TIP);
+        chatMessage.setContent(mService.getString(R.string.tip_remote_screenshot));
+        // 处理成tip后不return，正常流程处理，
+    } else if(type ==XmppMessage.TYPE_SYNC_CLEAN_CHAT_HISTORY)
+
+    {
+        Intent intent = new Intent();
+        if (isNeedChangeMsgTableSave) {
+            intent.putExtra(AppConstant.EXTRA_USER_ID, chatMessage.getToUserId());
+        } else {
+            intent.putExtra(AppConstant.EXTRA_USER_ID, chatMessage.getFromUserId());
 
 /*
                 chatMessage.setType(XmppMessage.TYPE_TIP);
@@ -574,53 +650,62 @@ public class XChatMessageListener implements IncomingChatMessageListener {
                     ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, chatMessage.getFromUserId(), chatMessage, false);
                 }
 */
-            }
-            intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.SYNC_CLEAN_CHAT_HISTORY);
-            mService.sendBroadcast(intent);
-            return;
         }
-
-        // 存储消息
-        if (chatMessage.isExpired()) {// 该条消息为过期消息(基本可以判断为离线消息)，不进行存库通知
-            Log.e("msg", "该条消息为过期消息(基本可以判断为离线消息)，不进行存库通知");
-            return;
-        }
-
-        // 戳一戳
-        if (type == XmppMessage.TYPE_SHAKE) {
-            Vibrator vibrator = (Vibrator) MyApplication.getContext().getSystemService(VIBRATOR_SERVICE);
-            long[] pattern = {100, 400, 100, 400};
-            if (vibrator != null) {
-                vibrator.vibrate(pattern, -1);
-            }
-            // 发送戳一戳动画广播
-            Intent intent = new Intent(OtherBroadcast.ACTION_SHAKE_MSG_NOTIFY);
-            intent.putExtra(OtherBroadcast.ACTION_SHAKE_MSG_NOTIFY, 1);
-            intent.setComponent(new ComponentName(AppConfig.sPackageName, AppConfig.shakeReceiverClass));
-            MyApplication.getContext().sendBroadcast(intent);
-        }
-
-        Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getFromUserId());
-        if (friend != null) {
-            Log.e("msg", "朋友发送过来的消息");
-            if (friend.getStatus() != -1) {
-                saveCurrentMessage(chatMessage, isForwarding, isNeedChangeMsgTableSave);
-                if (friend.getOfflineNoPushMsg() == 0) {// 未开启消息免打扰 可通知
-                    if (!chatMessage.getFromUserId().equals(MyApplication.IsRingId)
-                            && isForwarding) {// 收到该消息时不处于与发送方的聊天界面 && 非转发消息
-                        // 铃声通知
-                        NoticeVoicePlayer.getInstance().start();
-                    }
-                } else {
-                    Log.e("msg", "已针对该好友开启了消息免打扰，不通知");
-                }
-            }
-        } else {
-            Log.e("msg", "陌生人发过来的消息");
-            FriendDao.getInstance().createNewFriend(chatMessage);
-            saveCurrentMessage(chatMessage, isForwarding, isNeedChangeMsgTableSave);
-        }
+        intent.setAction(com.xfyyim.cn.broadcast.OtherBroadcast.SYNC_CLEAN_CHAT_HISTORY);
+        mService.sendBroadcast(intent);
+        return;
     }
+
+    // 存储消息
+        if(chatMessage.isExpired())
+
+    {// 该条消息为过期消息(基本可以判断为离线消息)，不进行存库通知
+        Log.e("msg", "该条消息为过期消息(基本可以判断为离线消息)，不进行存库通知");
+        return;
+    }
+
+    // 戳一戳
+        if(type ==XmppMessage.TYPE_SHAKE)
+
+    {
+        Vibrator vibrator = (Vibrator) MyApplication.getContext().getSystemService(VIBRATOR_SERVICE);
+        long[] pattern = {100, 400, 100, 400};
+        if (vibrator != null) {
+            vibrator.vibrate(pattern, -1);
+        }
+        // 发送戳一戳动画广播
+        Intent intent = new Intent(OtherBroadcast.ACTION_SHAKE_MSG_NOTIFY);
+        intent.putExtra(OtherBroadcast.ACTION_SHAKE_MSG_NOTIFY, 1);
+        intent.setComponent(new ComponentName(AppConfig.sPackageName, AppConfig.shakeReceiverClass));
+        MyApplication.getContext().sendBroadcast(intent);
+    }
+
+    Friend friend = FriendDao.getInstance().getFriend(mLoginUserId, chatMessage.getFromUserId());
+        if(friend !=null)
+
+    {
+        Log.e("msg", "朋友发送过来的消息");
+        if (friend.getStatus() != -1) {
+            saveCurrentMessage(chatMessage, isForwarding, isNeedChangeMsgTableSave);
+            if (friend.getOfflineNoPushMsg() == 0) {// 未开启消息免打扰 可通知
+                if (!chatMessage.getFromUserId().equals(MyApplication.IsRingId)
+                        && isForwarding) {// 收到该消息时不处于与发送方的聊天界面 && 非转发消息
+                    // 铃声通知
+                    NoticeVoicePlayer.getInstance().start();
+                }
+            } else {
+                Log.e("msg", "已针对该好友开启了消息免打扰，不通知");
+            }
+        }
+    } else
+
+    {
+        Log.e("msg", "陌生人发过来的消息");
+        FriendDao.getInstance().createNewFriend(chatMessage);
+        saveCurrentMessage(chatMessage, isForwarding, isNeedChangeMsgTableSave);
+    }
+
+}
 
     private void backMessage(ChatMessage chatMessage) {
         // 本地数据库处理

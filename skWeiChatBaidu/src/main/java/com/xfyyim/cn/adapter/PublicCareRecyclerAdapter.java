@@ -59,7 +59,7 @@ import com.xfyyim.cn.ui.circle.LongTextShowActivity;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
-import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
+import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.mucfile.DownManager;
 import com.xfyyim.cn.ui.mucfile.MucFileDetails;
 import com.xfyyim.cn.ui.mucfile.XfileUtils;
@@ -308,7 +308,7 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
                 if (!UiUtils.isNormalClick(v)) {
                     return;
                 }
-                Intent intent = new Intent(mContext, PersonInfoActivity.class);
+                Intent intent = new Intent(mContext, PersonBlumActivity.class);
                 intent.putExtra("FriendId", message.getUserId());
                 mContext.startActivity(intent);
                 ;
@@ -365,13 +365,14 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
 //            }
 //        });
 
-        viewHolder.tv_read_count.setText(String.valueOf(message.getCount().getTotal()));
+        viewHolder.tv_read_count.setText(String.valueOf(message.getCount().getComment()));
 
         viewHolder.ll_tocomment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CircleDetailActivity.class);
                 intent.putExtra("PublicMessage", message);
+                intent.putExtra("CareType",1);
                 mContext.startActivity(intent);
             }
         });

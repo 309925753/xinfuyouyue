@@ -193,6 +193,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     @BindView(R.id.img_position)
     ImageView img_position;
+
+    @BindView(R.id.ll_mySign)
+    LinearLayout ll_mySign;
     @BindView(R.id.img_work)
     ImageView img_work;
     @BindView(R.id.img_company)
@@ -483,6 +486,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
         if (user.getMyTag() != null && !TextUtils.isEmpty(user.getMyTag())) {
             showSign(user.getMyTag(), flowLayoutTags, tv_add_sign, 0);
+            ll_mySign.setVisibility(View.GONE);
         }
 
 
@@ -538,15 +542,16 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
     public void setPhotoBlum() {
         photoEntityList = new ArrayList<>();
+        map.put(img_blum_1, 1);
+        map.put(img_blum_2, 1);
+        map.put(img_blum_3, 1);
+        map.put(img_blum_4, 1);
+        map.put(img_blum_5, 1);
         if (user.getMyPhotos() != null && user.getMyPhotos().size() > 0) {
 
 
             photoEntityList = user.getMyPhotos();
-            map.put(img_blum_1, 1);
-            map.put(img_blum_2, 1);
-            map.put(img_blum_3, 1);
-            map.put(img_blum_4, 1);
-            map.put(img_blum_5, 1);
+
             int index = photoEntityList.size() > 5 ? 5 : photoEntityList.size();
             for (int i = 0; i < index; i++) {
                 map.put(listImage.get(i), 2);

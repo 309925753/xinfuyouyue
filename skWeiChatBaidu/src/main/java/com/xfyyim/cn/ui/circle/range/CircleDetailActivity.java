@@ -64,6 +64,8 @@ public class CircleDetailActivity extends BaseActivity {
     ImageView iv_title_left;
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
+   @BindView(R.id.tv_attion)
+    TextView tv_attion;
 
     @BindView(R.id.command_listView)
     ListView command_listView;
@@ -105,6 +107,8 @@ public class CircleDetailActivity extends BaseActivity {
     PublicMessage message;
     private String mUserId;
     private String mUserName;
+    private int careType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,22 @@ public class CircleDetailActivity extends BaseActivity {
     public void initView() {
         List<String> imgesUrl = new ArrayList<>();
         message = (PublicMessage) getIntent().getSerializableExtra("PublicMessage");
+        careType = getIntent().getIntExtra("CareType",1);
+
+
+
+        if (message.getUserId().equals(mUserId)){
+            tv_attion.setVisibility(View.GONE);
+        }else{
+            tv_attion.setVisibility(View.VISIBLE);
+        }
+        if (careType==1){
+            tv_attion.setText("已关注");
+            tv_attion.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
+        }else{
+            tv_attion.setText("关注");
+            tv_attion.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
+        }
         mLoginUserId = coreManager.getSelf().getUserId();
         List<PublicMessage.Resource> listImages = message.getBody().getImages();
 
@@ -152,6 +172,15 @@ public class CircleDetailActivity extends BaseActivity {
 
         /* 设置头像 */
         AvatarHelper.getInstance().displayAvatar(message.getUserId(), avatar_img);
+        avatar_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(CircleDetailActivity.this, PersonInfoActivity.class);
+                intent.putExtra("FriendId",message.getUserId());
+                startActivity(intent);
+            }
+        });
+
         nick_name_tv.setText(message.getNickName());
 
 
@@ -167,7 +196,7 @@ public class CircleDetailActivity extends BaseActivity {
 
         time_distance.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) message.getTime()));
         tv_content.setText(message.getBody().getText());
-        tv_read_count.setText(String.valueOf(message.getCount().getTotal()));
+        tv_read_count.setText(String.valueOf(message.getCount().getComment()));
         tvThumb.setText(String.valueOf(message.getPraise()));
         ivThumb.setChecked(1 == message.getIsPraise());
 
@@ -602,7 +631,8 @@ public class CircleDetailActivity extends BaseActivity {
                         // 评论成功
                         if (Result.checkSuccess(CircleDetailActivity.this, result)) {
                             comment.setCommentId(result.getData());
-                            tv_read_count.setText(String.valueOf(message.getCount().getTotal() + 1));
+                            int conmentCount=Integer.parseInt(tv_read_count.getText().toString());
+                            tv_read_count.setText(String.valueOf(conmentCount + 1));
                             adapter.addComment(comment);
                             adapter.notifyDataSetChanged();
                         }

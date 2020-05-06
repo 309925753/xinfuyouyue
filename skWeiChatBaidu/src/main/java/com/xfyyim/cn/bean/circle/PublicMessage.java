@@ -74,6 +74,11 @@ public class PublicMessage implements Serializable {
 
     private int isAllowComment; //生活圈禁止评论
 
+    private int isAttion;
+
+
+
+
     /**
      * 消息来源 {@link #SOURCE_SELF}{@link #SOURCE_FORWARDING}
      */
@@ -118,6 +123,14 @@ public class PublicMessage implements Serializable {
         return 0;
     }
 
+
+    public int getIsAttion() {
+        return isAttion;
+    }
+
+    public void setIsAttion(int isAttion) {
+        this.isAttion = isAttion;
+    }
 
     public int getFaceIdentity() {
         return faceIdentity;
