@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,8 @@ public class Xf_FirstFragment extends EasyFragment {
     @BindView(R.id.ll_superLight)
     LinearLayout ll_superLigth;
     private int selectItem = 0;
+    RelativeLayout  rlShow;
+    LinearLayout llFuction;
 
 
     StackLayout mStackLayout;
@@ -97,6 +100,10 @@ public class Xf_FirstFragment extends EasyFragment {
     private void initView() {
 
         mStackLayout = (StackLayout) findViewById(R.id.stack_layout);
+        rlShow = (RelativeLayout) findViewById(R.id.rl_Show);
+        llFuction = (LinearLayout) findViewById(R.id.ll_fuction);
+
+
         ll_superLigth.setOnClickListener(this::onClick);
         findViewById(R.id.llRegretsUnLike).setOnClickListener(this::onClick);
         findViewById(R.id.llUnLike).setOnClickListener(this::onClick);
@@ -151,7 +158,10 @@ public class Xf_FirstFragment extends EasyFragment {
                             isRegret=false;
                         }
                         if(mUsers.size()==0){
-                            ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                        //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                            rlShow.setVisibility(View.VISIBLE);
+                            mStackLayout.setVisibility(View.GONE);
+                            llFuction.setVisibility(View.GONE);
                         }
                         if (mUsers.size() <= 3) {
                             requestData();
@@ -465,10 +475,16 @@ public class Xf_FirstFragment extends EasyFragment {
                         if (Result.checkSuccess(getActivity(), result)) {
                             List<User> datas = result.getData();
                             if (datas != null && datas.size() > 0) {
+                                rlShow.setVisibility(View.GONE);
+                                mStackLayout.setVisibility(View.VISIBLE);
+                                llFuction.setVisibility(View.VISIBLE);
                                 mUsers.addAll(datas);
                                 setmAdapter(mUsers);
                             }else if(datas != null && datas.size() == 0) {
-                                ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                            //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                                rlShow.setVisibility(View.VISIBLE);
+                                mStackLayout.setVisibility(View.GONE);
+                                llFuction.setVisibility(View.GONE);
                             }
                         }
                     }
