@@ -419,6 +419,7 @@
                     android:textColor="@color/text_black_333" />
 
                 <TextView
+                    android:id="@+id/tv_balance"
                     style="@style/IMTbleLine_gray"
                     android:layout_below="@+id/tv3"
                     android:layout_alignLeft="@+id/tv3"

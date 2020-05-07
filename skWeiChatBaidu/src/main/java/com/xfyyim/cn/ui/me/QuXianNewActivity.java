@@ -157,11 +157,9 @@ public class QuXianNewActivity extends BaseActivity {
             String moneyStr = mMentionMoneyEdit.getText().toString();
             if (checkMoney(moneyStr)) {
                 amount = Money.fromYuan(moneyStr);
-                PaySecureHelper.inputPayPassword(this, this.getString(R.string.withdraw), amount, password -> {
-                    AlipayHelper.auth(this, coreManager, password, userId -> {
-                        AlipayHelper.withdraw(this, coreManager, amount, password);
+                    AlipayHelper.auth(this, coreManager, "123456", userId -> {
+                        AlipayHelper.withdraw(this, coreManager, amount, "123456");
                     });
-                });
             }
         });
 

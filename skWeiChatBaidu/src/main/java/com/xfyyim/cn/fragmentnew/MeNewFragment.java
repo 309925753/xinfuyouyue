@@ -130,6 +130,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     User user;
     @BindView(R.id.tv2)
     TextView tv2;
+    @BindView(R.id.tv_balance)
+    TextView tvBalance;
 
     @Override
     protected int inflateLayoutId() {
@@ -145,6 +147,9 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     private void initData() {
         if (!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount() + "")) {
             tv2.setText(coreManager.getSelf().getLikeMeCount() + "人喜欢我");
+        }
+        if (!TextUtils.isEmpty(coreManager.getSelf().getBalance() + "")) {
+            tvBalance.setText(coreManager.getSelf().getBalance() + "RMB");
         }
     }
 
@@ -435,20 +440,20 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
 
-            if (vip == 1) {
-                params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice1() + "");
-                params.put("mon", "1");
-            } else if (vip == 2) {
-                params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice2() + "");
-                params.put("mon", "3");
-            } else if (vip == 3) {
-                params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice3() + "");
-                params.put("mon", "12");
-            }
-            params.put("funType", String.valueOf(6));
-            params.put("num", String.valueOf(-1));
-            params.put("level", String.valueOf(-1));
-            AlipayHelper.rechargePay(getActivity(), coreManager, params);
+        if (vip == 1) {
+            params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice1() + "");
+            params.put("mon", "1");
+        } else if (vip == 2) {
+            params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice2() + "");
+            params.put("mon", "3");
+        } else if (vip == 3) {
+            params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice3() + "");
+            params.put("mon", "12");
+        }
+        params.put("funType", String.valueOf(6));
+        params.put("num", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        AlipayHelper.rechargePay(getActivity(), coreManager, params);
 
     }
 

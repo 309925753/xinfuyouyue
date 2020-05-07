@@ -188,9 +188,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-
                         android:gravity="right"
                         android:text="女"
+                        android:paddingLeft="10dip"
+                        android:paddingRight="@dimen/dp10"
                         android:textColor="#FC607E"
                         android:textSize="@dimen/sp_12_text_size" />
                 </RelativeLayout>
@@ -262,7 +263,7 @@
                         android:layout_marginTop="@dimen/dp5"
                         android:layout_toLeftOf="@+id/ivSetMax"
                         android:layout_toRightOf="@+id/ivSetMin"
-                        android:max="60"
+                        android:max="100"
                         android:maxHeight="2dp"
                         android:min="18"
                         android:progress="30"

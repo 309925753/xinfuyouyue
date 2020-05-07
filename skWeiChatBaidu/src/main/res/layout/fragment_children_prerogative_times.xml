@@ -28,7 +28,7 @@
         android:textSize="@dimen/sp_13_text_size"
         android:textColor="@color/text_black_333"
         android:layout_gravity="center_horizontal"
-        android:text=""/>
+        android:text="VIP会员可以无限右滑"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:textColor="@color/text_black_999"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp5"
-        android:text="VIP会员可以无限右滑从此再无限制尽情滑动,与更多朋友配对!"/>
+        android:text="从此再无限制尽情滑动,与更多朋友配对!"/>
 
     <ImageView
         android:layout_width="wrap_content"

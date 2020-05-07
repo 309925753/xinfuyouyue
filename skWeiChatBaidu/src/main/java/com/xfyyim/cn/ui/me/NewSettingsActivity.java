@@ -182,9 +182,12 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         if (coreManager.getSelf().getSettings().getDisplaySex() == 1) {
             sex=1;
             tvCurrentSex.setText(R.string.sex_man);
-        } else {
+        } else if(coreManager.getSelf().getSettings().getDisplaySex()==0) {
             sex=0;
             tvCurrentSex.setText(R.string.sex_woman);
+        }else {
+            sex=-1;
+            tvCurrentSex.setText(R.string.sex_unlimited);
         }
         if(coreManager.getSelf().getSettings().getIsAutoExpandRange()==1){
             sbBExpandScope.setChecked(true);
@@ -445,7 +448,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     }
     int sex;
     private void showSelectSexDialog() {
-        String[] sexs = new String[]{getString(R.string.sex_man), getString(R.string.sex_woman)};
+        String[] sexs = new String[]{getString(R.string.sex_man), getString(R.string.sex_woman), getString(R.string.sex_unlimited)};
         new AlertDialog.Builder(this).setTitle(R.string.select_sex)
                 .setSingleChoiceItems(sexs, sex == 1 ? 0 : 1, new DialogInterface.OnClickListener() {
                     @Override
@@ -454,11 +457,16 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                             sex=1;
                             tvCurrentSex.setText(R.string.sex_man);
                             isRefreshHome=true;
-                        } else {
+                        } else if(which == 1) {
                             sex=0;
                             tvCurrentSex.setText(R.string.sex_woman);
                             isRefreshHome=true;
+                        } else {
+                            sex=-1;
+                            tvCurrentSex.setText(R.string.sex_unlimited);
+                            isRefreshHome=true;
                         }
+
 
                         dialog.dismiss();
 

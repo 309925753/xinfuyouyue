@@ -694,6 +694,9 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             }
         } else if (requestCode == REQUEST_CODE_PICK_VIDEO) {
             // 选择视频的返回
+            if(data==null){
+                return;
+            }
             String json = data.getStringExtra(AppConstant.EXTRA_VIDEO_LIST);
             List<VideoFile> fileList = JSON.parseArray(json, VideoFile.class);
             if (fileList == null || fileList.size() == 0) {

@@ -2,10 +2,12 @@ package com.xfyyim.cn.fragmentnew;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,11 +18,22 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.BillCashBean;
+import com.xfyyim.cn.bean.PayOrderBean;
+import com.xfyyim.cn.helper.DialogHelper;
+import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.EasyFragment;
+import com.xfyyim.cn.util.DateUtils;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
+import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
+import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
+import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 
 public class BillCashWithdrawalFragment extends EasyFragment {
@@ -28,6 +41,10 @@ public class BillCashWithdrawalFragment extends EasyFragment {
     private RecyclerView rclBillWithdrawal;
     private SmartRefreshLayout mRefreshLayout;
     private BillCashWithdrawalAdapter billCashWithdrawalAdapter;
+    private  int  pageSize=25;
+    private int pageIndex=0;
+    private boolean more=true;
+    private     List<PayOrderBean> deviceBeanList = new ArrayList<>();
 
 
     @Override
@@ -49,12 +66,8 @@ public class BillCashWithdrawalFragment extends EasyFragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclBillWithdrawal.setLayoutManager(linearLayoutManager);
         billCashWithdrawalAdapter = new BillCashWithdrawalAdapter(getActivity());
-        List<BillCashBean> deviceBeanList = new ArrayList<>();
-        deviceBeanList.add(new BillCashBean("2020-01-14  09:12", "121", "1", "1", "12"));
-        deviceBeanList.add(new BillCashBean("2020-01-17  09:12", "11", "3", "2", "56"));
-        deviceBeanList.add(new BillCashBean("2020-02-14  09:12", "121", "4", "3", "64"));
-        deviceBeanList.add(new BillCashBean("2020-03-15  09:12", "121", "5", "4", "233"));
-        billCashWithdrawalAdapter.deviceBeanList = deviceBeanList;
+
+         billCashWithdrawalAdapter.deviceBeanList = deviceBeanList;
         rclBillWithdrawal.setAdapter(billCashWithdrawalAdapter);
         billCashWithdrawalAdapter.notifyDataSetChanged();
 
@@ -64,37 +77,29 @@ public class BillCashWithdrawalFragment extends EasyFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                deviceBeanList.add(new BillCashBean("2020-01-17  09:12", "11", "3", "2", "56"));
-                deviceBeanList.add(new BillCashBean("2020-03-15  09:12", "121", "5", "4", "233"));
-                billCashWithdrawalAdapter.notifyDataSetChanged();
 
-                mRefreshLayout.finishLoadMore(3000);
-                //      mRefreshLayout.finishLoadMore();
-
+                more=true;
+                postPayOrder();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtil.e("*******************刷新3******************");
-                deviceBeanList.add(new BillCashBean("2020-01-17  09:12", "11", "3", "2", "56"));
-                deviceBeanList.add(new BillCashBean("2020-03-15  09:12", "121", "5", "4", "233"));
-                billCashWithdrawalAdapter.notifyDataSetChanged();
-                mRefreshLayout.finishRefresh();
+                postPayOrder();
+                more=false;
             }
         });
-
+        postPayOrder();
     }
 
 
     public class BillCashWithdrawalAdapter extends RecyclerView.Adapter<BillCashWithdrawalAdapter.ViewHolder> {
         private LayoutInflater mInflater;
         private Context context;
-        public List<BillCashBean> deviceBeanList = new ArrayList<>();
+        public List<PayOrderBean> deviceBeanList = new ArrayList<>();
 
         public BillCashWithdrawalAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
             this.context = context;
-            ;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -121,13 +126,13 @@ public class BillCashWithdrawalFragment extends EasyFragment {
         @Override
         public void onBindViewHolder(final BillCashWithdrawalAdapter.ViewHolder holder, final int position) {
             if (deviceBeanList != null && deviceBeanList.size() > 0) {
-                final BillCashBean billCashBean = deviceBeanList.get(position);
+                final PayOrderBean billCashBean = deviceBeanList.get(position);
 
-                holder.tvPayType.setText(billCashBean.getBillName() + "RMB");
-                holder.tvTime.setText(billCashBean.getBillTime());
-                holder.tvMoney.setText("手续费：" + billCashBean.getBillMoney() + "RMB");
-
-
+                holder.tvPayType.setText("+"+billCashBean.getMoney() + "RMB");
+                holder.tvTime.setText( DateUtils.newTimedate(String.valueOf(billCashBean.getCreateTime())));
+                if(!TextUtils.isEmpty(billCashBean.getServiceCharge())){
+                    holder.tvMoney.setText("手续费：" + billCashBean.getServiceCharge() + "RMB");
+                }
             }
         }
 
@@ -137,6 +142,42 @@ public class BillCashWithdrawalFragment extends EasyFragment {
         }
     }
 
+    private void  postPayOrder(){
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
+        params.put("pageIndex", String.valueOf(pageIndex));
+        params.put("pageSize", String.valueOf(pageSize));
+        params.put("funType",String.valueOf(1));
+        pageIndex++;
+        HttpUtils.post().url(coreManager.getConfig().USER_QUER_PAYORDER_BYUSERID)
+                .params(params)
+                .build()
+                .execute(new ListCallback<PayOrderBean>(PayOrderBean.class) {
+                    @Override
+                    public void onResponse(ArrayResult<PayOrderBean> result) {
+                        DialogHelper.dismissProgressDialog();
+                        if (Result.checkSuccess(getActivity(), result)) {
+                            List<PayOrderBean> datas = result.getData();
+                            if (datas != null && datas.size() > 0) {
+                                deviceBeanList.addAll(datas);
+                                billCashWithdrawalAdapter.deviceBeanList=deviceBeanList;
+                                billCashWithdrawalAdapter.notifyDataSetChanged();
+                                if(more){
+                                    mRefreshLayout.finishLoadMore();
+                                }else {
+                                    mRefreshLayout.finishRefresh();
+                                }
+
+                            }
+                        }
+                    }
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                        Toast.makeText(getActivity(), R.string.check_network, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 }
 

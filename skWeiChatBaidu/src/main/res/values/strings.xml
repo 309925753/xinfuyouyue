@@ -361,6 +361,7 @@
     <string name="select_avatar">选择头像</string>
     <string name="sex_man">男</string>
     <string name="sex_woman">女</string>
+    <string name="sex_unlimited">不限</string>
     <string name="name_empty_error">昵称不能为空</string>
     <string name="live_address_empty_error">居住地不能为空</string>
     <string name="nick_name_format_error">昵称不合法，只允许中文、英文、字母和下划线，且长度为3至10个字符</string>
@@ -2419,7 +2420,6 @@
     <string name="new_device_login_sure">新设备登录确认</string>
     <string name="tip_red_packet_than_account">红包数量不可大于最大限制</string>
     <string name="location_current">我的当前定位</string>
-
 
 
 </resources>

@@ -184,7 +184,6 @@ android {
     }
 
 
-
     bundle {
         // 是否分割多语言包
         language {
@@ -274,7 +273,6 @@ dependencies {
     implementation files('libs/ormlite-core-4.48.jar')
     implementation files('libs/pinyin4j-2.5.0.jar')
     implementation files('libs/universal-image-loader-1.9.0.jar')
-
 
 
     // QQ登录，

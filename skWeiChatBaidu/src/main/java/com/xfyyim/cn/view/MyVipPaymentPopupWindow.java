@@ -91,7 +91,7 @@ public class MyVipPaymentPopupWindow extends PopupWindow implements View.OnClick
         tvPayType.setText("任意更改定位");
         tvPayType.setVisibility(View.VISIBLE);
         TextView tvPayTypeContent = (TextView) children_prerogative_location.findViewById(R.id.tvPayTypeContent);
-        tvPayType.setText(" 位置漫游，与全球朋友say嗨！");
+        tvPayTypeContent.setText(" 位置漫游，与全球朋友say嗨！");
        ImageView ivVipPoint=children_prerogative_location.findViewById(R.id.ivVipPoint);
         ivVipPoint.setImageResource(R.mipmap.my_prerogative_point_four);
 
