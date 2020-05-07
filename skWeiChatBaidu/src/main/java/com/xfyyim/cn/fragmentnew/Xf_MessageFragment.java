@@ -36,8 +36,6 @@ import com.xfyyim.cn.nocsroll.MessagePagerAdapter;
 import com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer;
 import com.xfyyim.cn.nocsroll.NoScrollViewPager;
 import com.xfyyim.cn.ui.base.EasyFragment;
-import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
-import com.xfyyim.cn.ui.me.payCompleteActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.ui.search.SearchAllActivity;
@@ -125,7 +123,7 @@ public class Xf_MessageFragment extends EasyFragment {
     private void initActionBar() {
         findViewById(R.id.iv_title_left).setVisibility(View.GONE);
         mTvTitle = (TextView) findViewById(R.id.tv_title_center);
-        mTvTitle.setText("聊天");
+        mTvTitle.setText("消息");
         mTvTitle.setTextColor(getResources().getColor(R.color.white));
         mIvTitleRight =  findViewById(R.id.iv_title_right);
         mIvTitleRight.setImageResource(R.mipmap.search_white);

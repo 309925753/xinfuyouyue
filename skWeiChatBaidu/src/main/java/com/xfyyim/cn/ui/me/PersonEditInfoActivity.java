@@ -99,7 +99,7 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
                 showSelectBirthdayDialog();
                 break;
             case R.id.tv_nickname:
-                showSignleDialog(tv_nickname,"修改昵称",tv_nickname.getText().toString());
+                showSignleDialog(tv_nickname,"修改昵称","");
 
                 break;
         }
@@ -117,6 +117,7 @@ public class PersonEditInfoActivity extends BaseActivity  implements View.OnClic
                     ToastUtil.showToast(PersonEditInfoActivity.this,"修改昵称不能为空");
                     return;
                 }
+                dialogView.getDialog().dismiss();
                 view.setText(name);
                 requestData();
             }

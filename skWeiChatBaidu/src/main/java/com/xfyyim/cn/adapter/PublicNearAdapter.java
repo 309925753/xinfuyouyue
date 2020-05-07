@@ -57,7 +57,7 @@ import com.xfyyim.cn.ui.circle.BusinessCircleActivity.ListenerAudio;
 import com.xfyyim.cn.ui.circle.LongTextShowActivity;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
-import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
+import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.ui.mucfile.DownManager;
 import com.xfyyim.cn.ui.mucfile.MucFileDetails;
 import com.xfyyim.cn.ui.mucfile.XfileUtils;
@@ -307,7 +307,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
                 if (!UiUtils.isNormalClick(v)) {
                     return;
                 }
-                Intent intent = new Intent(mContext, PersonBlumActivity.class);
+                Intent intent = new Intent(mContext, PersonInfoActivity.class);
                 intent.putExtra("FriendId", message.getUserId());
 
                 mContext.startActivity(intent);;

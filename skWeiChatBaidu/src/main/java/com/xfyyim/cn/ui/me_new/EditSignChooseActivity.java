@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.dialog.DialogView;
-import com.xfyyim.cn.ui.me.PersonEditInfoActivity;
 import com.xfyyim.cn.util.SkinUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -81,9 +79,6 @@ public class EditSignChooseActivity extends BaseActivity {
         title = getIntent().getStringExtra("title");
         textContent = getIntent().getStringExtra("context");
 
-        if (textContent != null && !TextUtils.isEmpty(textContent)) {
-            tv_add_text.setText(textContent );
-        }
         initActionBar();
         getListInfo();
 
@@ -217,11 +212,11 @@ public class EditSignChooseActivity extends BaseActivity {
         }
         return mlist;
     }
-
+    private int lastClickPosition = -1;
     public class LisetAdapter extends RecyclerView.Adapter<LisetAdapter.ListItemViewHolder> {
 
         private List<String> mList;
-        private int lastClickPosition = -1;
+
         Context context;
 
         public LisetAdapter(Context context, List<String> list) {
@@ -254,6 +249,7 @@ public class EditSignChooseActivity extends BaseActivity {
             } else {
                 holder.checkBox.setChecked(false);
             }
+
 
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -310,7 +306,10 @@ public class EditSignChooseActivity extends BaseActivity {
                     ToastUtil.showToast(EditSignChooseActivity.this, "添加标签不能为空");
                     return;
                 }
+                dialogView.getDialog().dismiss();
+
                 list.add(0, name);
+                lastClickPosition=0;
                 adapter.notifyDataSetChanged();
 
             }

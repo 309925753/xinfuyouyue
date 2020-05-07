@@ -67,13 +67,13 @@ public class EditListChooseActivity extends BaseActivity {
     @BindView(R.id.tv_title_right)
     TextView tv_title_right;
 
-    List<String> list;
+    List<HashMap<String, Object>> list;
     List<String> addList;
     ArrayList<String> selectList;
     LisetAdapter adapter;
     DialogView dialogView;
 
-    public static int MAXNUM = 6;
+    public static int MAXNUM = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class EditListChooseActivity extends BaseActivity {
         tv_title_right.setOnClickListener(v -> {
 
             String text = "";
-            if (selectList!=null&&selectList.size() > 0) {
+            if (selectList != null && selectList.size() > 0) {
                 if (selectList.size() == 1) {
                     text = selectList.get(0);
                 } else {
@@ -137,7 +137,6 @@ public class EditListChooseActivity extends BaseActivity {
                 loadDescription(text);
             } else {
                 ToastUtil.showToast(EditListChooseActivity.this, "请选择一个标签");
-
             }
         });
 
@@ -211,8 +210,8 @@ public class EditListChooseActivity extends BaseActivity {
     }
 
 
-    public List<String> getList(SginBean.DataBean dateEntity) {
-        List<String> mlist = new ArrayList<>();
+    public List<HashMap<String, Object>> getList(SginBean.DataBean dateEntity) {
+        List<HashMap<String, Object>> mlist = new ArrayList<>();
 
         if (type.equals("myTag")) {
             mlist = newList(dateEntity.getTagConfig());
@@ -233,11 +232,13 @@ public class EditListChooseActivity extends BaseActivity {
     }
 
 
-    public List<String> newList(String ms) {
+    public List<HashMap<String, Object>> newList(String ms) {
+        List<HashMap<String, Object>> mapList = new ArrayList<>();
         List<String> newList = new ArrayList<>();
         if (ms != null && !TextUtils.isEmpty(ms)) {
             String content[] = ms.split(",");
             for (String s : content) {
+
                 newList.add(s);
             }
             if (addList != null && addList.size() > 0) {
@@ -248,37 +249,55 @@ public class EditListChooseActivity extends BaseActivity {
                 }
             }
         }
-        return newList;
+
+        for (int i = 0; i < newList.size(); i++) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("isSelected", false);
+            map.put("name",newList.get(i));
+            if (i<=addList.size()-1){
+                if (newList.contains(addList.get(i))) {
+                    map.put("isSelected", true);
+                    map.put("name",addList.get(i));
+                }
+            }
+
+            mapList.add(map);
+
+        }
+
+
+        return mapList;
     }
 
 
     public class LisetAdapter extends RecyclerView.Adapter<LisetAdapter.ListItemViewHolder> {
 
-        private List<String> mList;
+        private List<HashMap<String, Object>> mList;
 
         private SparseBooleanArray mSelectedPositions = new SparseBooleanArray();
-        private boolean mIsSelectable = false;
+        private HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+        //        private boolean mIsSelectable = false;
         Context context;
 
-        public LisetAdapter(Context context, List<String> list) {
+        public LisetAdapter(Context context, List<HashMap<String, Object>> list) {
             mList = list;
             this.context = context;
         }
 
 
-        //更新adpter的数据和选择状态
-        public void updateDataSet(ArrayList<String> list) {
-            this.mList = list;
-            mSelectedPositions = new SparseBooleanArray();
-        }
+//        //更新adpter的数据和选择状态
+//        public void updateDataSet(ArrayList<String> list) {
+//            this.mList = list;
+//            mSelectedPositions = new SparseBooleanArray();
+//        }
 
 
         //获得选中条目的结果
         public ArrayList<String> getSelectedItem() {
             selectList = new ArrayList<>();
             for (int i = 0; i < mList.size(); i++) {
-                if (isItemChecked(i)) {
-                    selectList.add(mList.get(i));
+                if ((boolean)mList.get(i).get("isSelected")) {
+                    selectList.add(mList.get(i).get("name")+"");
                 }
             }
 
@@ -293,65 +312,75 @@ public class EditListChooseActivity extends BaseActivity {
         }
 
 
-        //设置给定位置条目的选择状态
-        private void setItemChecked(int position, boolean isChecked) {
-            mSelectedPositions.put(position, isChecked);
-        }
+//        //设置给定位置条目的选择状态
+//        private void setItemChecked(int position, boolean isChecked) {
+//            mSelectedPositions.put(position, isChecked);
+//        }
+//
+//        //根据位置判断条目是否选中
+//        private boolean isItemChecked(int position) {
+//            return mSelectedPositions.get(position);
+//        }
 
-        //根据位置判断条目是否选中
-        private boolean isItemChecked(int position) {
-            return mSelectedPositions.get(position);
-        }
 
-        //根据位置判断条目是否可选
-        private boolean isSelectable() {
-            return mIsSelectable;
-        }
+//        //根据位置判断条目是否可选
+//        private boolean isSelectable() {
+//            return mIsSelectable;
+//        }
 
-        //设置给定位置条目的可选与否的状态
-        private void setSelectable(boolean selectable) {
-            mIsSelectable = selectable;
-        }
+//        //设置给定位置条目的可选与否的状态
+//        private void setSelectable(boolean selectable) {
+//            mIsSelectable = selectable;
+//        }
 
         @Override
         public void onBindViewHolder(@NonNull ListItemViewHolder holder, int position) {
-            holder.name.setText(mList.get(position));
-            holder.checkBox.setChecked(isItemChecked(position));
+            HashMap<String, Object> map=mList.get(position);
 
-            holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            holder.name.setText(map.get("name")+"");
+            holder.checkBox.setChecked((boolean)map.get("isSelected"));
+
+
+            holder.rootview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
+                    getSelectedItem();
+
                     if (getSelectedItem().size() > MAXNUM) {
                         ToastUtil.showLongToast(mContext, "最多只能选择7个标签");
-                    } else {
-                        if (isItemChecked(position)) {
-                            setItemChecked(position, false);
+                        return;
+                    }else{
+
+                        if ((boolean)map.get("isSelected")){
+                            map.put("isSelected", false);
                         } else {
-                            setItemChecked(position, true);
+                            map.put("isSelected", true);
                         }
-                        getSelectedItem();
+
+                        notifyDataSetChanged();
                     }
 
-                }
-            });
 
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getSelectedItem().size() > MAXNUM) {
-                        ToastUtil.showLongToast(mContext, "最多只能选择7个标签");
-                    } else {
 
-                        if (isItemChecked(position)) {
-                            setItemChecked(position, false);
-                        } else {
-                            setItemChecked(position, true);
-                        }
-                        getSelectedItem();
-                        notifyItemChanged(position);
-                    }
-
+//                    if (isItemChecked(position)) {
+//                        setItemChecked(position, false);
+//                    } else {
+//                        setItemChecked(position, true);
+//                    }
+//
+//
+//
+//
+//                    LogUtil.e("cjh 选择  " + getSelectedItem().size());
+//                    if (getSelectedItem().size() > MAXNUM) {
+//                        ToastUtil.showLongToast(mContext, "最多只能选择7个标签");
+//                    } else {
+//                        LogUtil.e("cjh 选择1111  " + getSelectedItem().size());
+//                        notifyItemChanged(position);
+//                    }
                 }
             });
         }
@@ -400,7 +429,13 @@ public class EditListChooseActivity extends BaseActivity {
                     ToastUtil.showToast(EditListChooseActivity.this, "添加标签不能为空");
                     return;
                 }
-                list.add(0, name);
+                dialogView.getDialog().dismiss();
+
+                HashMap<String ,Object> hashMap=new HashMap<>();
+                hashMap.put("isSelected",true);
+                hashMap.put("name",name);
+
+                list.add(0, hashMap);
                 adapter.notifyDataSetChanged();
 
             }

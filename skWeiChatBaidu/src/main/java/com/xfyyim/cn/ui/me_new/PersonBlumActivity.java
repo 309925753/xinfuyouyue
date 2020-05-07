@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
-import com.xfyyim.cn.adapter.PublicNearAdapter;
+import com.xfyyim.cn.bean.AddAttentionResult;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -37,7 +36,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.Call;
 
@@ -76,8 +74,11 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     String friendId;
     private boolean more;
     private String messageId;
+    private String mLoginUserId;
     private List<PublicMessage> mMessages = new ArrayList<>();
     private PublicCareRecyclerAdapter mAdapter;
+
+    private boolean isAtt = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_person_blum);
         unbinder = ButterKnife.bind(this);
         friendId = getIntent().getStringExtra("FriendId");
+        mLoginUserId = coreManager.getSelf().getUserId();
         initActionBar();
         initView();
         getUserInfo();
@@ -99,7 +101,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         rv_blum.setLayoutManager(linearLayoutManager
         );
 
-        mAdapter = new PublicCareRecyclerAdapter(PersonBlumActivity.this, rl_root,coreManager, mMessages);
+        mAdapter = new PublicCareRecyclerAdapter(PersonBlumActivity.this, rl_root, coreManager, mMessages);
         rv_blum.setAdapter(mAdapter);
 
 
@@ -116,6 +118,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         tv_status = mHeadView.findViewById(R.id.tv_status);
         tv_my_blum = mHeadView.findViewById(R.id.tv_my_blum);
         tv_commit = mHeadView.findViewById(R.id.tv_commit);
+
+
         rv_blum.addHeaderView(mHeadView);
 
         tv_commit.setOnClickListener(this);
@@ -149,18 +153,49 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_commit:
-                Intent intent = new Intent(PersonBlumActivity.this, SendTextPicActivity.class);
-                startActivity(intent);
+                if (mLoginUserId.equals(friendId)) {
+                    Intent intent = new Intent(PersonBlumActivity.this, SendTextPicActivity.class);
+                    startActivity(intent);
+                } else {
+                    if (isAtt) {
+                        deleteFriend(friendId);
+                    } else {
+                        doAddAttention(friendId);
+                    }
+                }
+
                 break;
             case R.id.iv_title_left:
                 finish();
                 break;
+
+            case R.id.avatar_img:
+                Intent intent=new Intent(PersonBlumActivity.this,PersonInfoActivity.class);
+                intent.putExtra("FriendId", friendId);
+                startActivity(intent);
+                break;
+
 
         }
     }
 
 
     public void setUiData(User user) {
+
+        isAtt = user.getIsBeAtt() == 0 ? false : true;
+        if (mLoginUserId.equals(friendId)) {
+            tv_commit.setText("发布动态");
+        } else {
+            if (isAtt) {
+                tv_commit.setText("关注");
+                tv_commit.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
+            } else {
+                tv_commit.setText("已关注");
+                tv_commit.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
+            }
+
+        }
+
         tv_title_center.setText(user.getNickName());
         AvatarHelper.getInstance().displayAvatar(friendId, avatar_img, false);
         if (user.getFaceIdentity() == 1) {
@@ -307,5 +342,65 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+
+    /**
+     * 加关注
+     */
+    private void doAddAttention(String messageUserId) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+        params.put("toUserId", messageUserId);
+        params.put("fromAddType", messageUserId);
+
+
+        HttpUtils.get().url(coreManager.getConfig().FRIENDS_ATTENTION_ADD)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<AddAttentionResult>(AddAttentionResult.class) {
+                    @Override
+                    public void onResponse(ObjectResult<AddAttentionResult> result) {
+                        if (Result.checkSuccess(mContext, result)) {
+                            ToastUtil.showToast(mContext, "关注成功");
+                            isAtt = true;
+                            tv_commit.setText("已关注");
+                            tv_commit.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
+
+    /**
+     * 取消关注
+     */
+    private void deleteFriend(String userID) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("toUserId", userID);
+
+        HttpUtils.get().url(coreManager.getConfig().FRIENDS_ATTENTION_DELETE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        ToastUtil.showToast(mContext, "取消关注成功");
+                        isAtt = false;
+                        tv_commit.setText("关注");
+                        tv_commit.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
     }
 }

@@ -1,43 +1,27 @@
 package com.xfyyim.cn.ui.me_new;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.QuickContactBadge;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.j256.ormlite.stmt.query.In;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.QuestEntity;
-import com.xfyyim.cn.bean.QuestionEntity;
 import com.xfyyim.cn.bean.SginBean;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.dialog.DialogView;
-import com.xfyyim.cn.util.SkinUtils;
-import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -94,7 +78,7 @@ public class EditListQuestionActivity extends BaseActivity {
     private void initActionBar() {
         getSupportActionBar().hide();
         iv_title_left.setOnClickListener(v -> finish());
-        tvTitle.setText("我的问题");
+        tvTitle.setText("选择一个问题");
 
         tv_title_right.setVisibility(View.GONE);
 
@@ -246,6 +230,7 @@ public class EditListQuestionActivity extends BaseActivity {
                     return;
                 }
                 try {
+                    dialogView.getDialog().dismiss();
 
 
                     QuestEntity entity = new QuestEntity();

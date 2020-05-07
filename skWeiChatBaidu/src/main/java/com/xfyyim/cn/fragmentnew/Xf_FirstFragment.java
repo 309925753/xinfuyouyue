@@ -65,7 +65,7 @@ public class Xf_FirstFragment extends EasyFragment {
     @BindView(R.id.ll_superLight)
     LinearLayout ll_superLigth;
     private int selectItem = 0;
-    RelativeLayout  rlShow;
+    RelativeLayout rlShow;
     LinearLayout llFuction;
 
 
@@ -75,7 +75,7 @@ public class Xf_FirstFragment extends EasyFragment {
     private int pageSize = 25;
     private boolean isSliding = false;
     private int payFunction = 0;//判断支付回调功能类型
-    private boolean  isRegret=false;
+    private boolean isRegret = false;
 
     @Override
     protected int inflateLayoutId() {
@@ -148,24 +148,24 @@ public class Xf_FirstFragment extends EasyFragment {
                 }*/
                         isSliding = true;
                         LogUtil.e("cjh left " + itemLeft + "  isSwipeLeft  " + isSwipeLeft + "--swipedItemPos = " + swipedItemPos);
-                   if (isSwipeLeft) {
-                            //  ToastUtil.showToast(getActivity(),"不喜欢接口");
-                            unLike(list.get(selectItem));
-                            isRegret=true;
-                        } else {
-                            userLike(list.get(selectItem));
-                            //   ToastUtil.showToast(getActivity(),"喜欢接口");
-                            isRegret=false;
-                        }
-                        if(mUsers.size()==0){
-                        //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
-                            rlShow.setVisibility(View.VISIBLE);
-                            mStackLayout.setVisibility(View.GONE);
-                            llFuction.setVisibility(View.GONE);
-                        }
-                        if (mUsers.size() <= 3) {
-                            requestData();
-                        }
+//                        if (isSwipeLeft) {
+//                            //  ToastUtil.showToast(getActivity(),"不喜欢接口");
+//                            unLike(list.get(selectItem));
+//                            isRegret = true;
+//                        } else {
+//                            userLike(list.get(selectItem));
+//                            //   ToastUtil.showToast(getActivity(),"喜欢接口");
+//                            isRegret = false;
+//                        }
+//                        if (mUsers.size() == 0) {
+//                            //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+//                            rlShow.setVisibility(View.VISIBLE);
+//                            mStackLayout.setVisibility(View.GONE);
+//                            llFuction.setVisibility(View.GONE);
+//                        }
+//                        if (itemLeft <= 3) {
+//                            requestData();
+//                        }
                     }
                 });
 
@@ -191,7 +191,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
                             exchangeAdapter(user);
-                            isRegret=false;
+                            isRegret = false;
                         }
                     }
 
@@ -221,7 +221,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
                             exchangeAdapter(user);
-                            isRegret=true;
+                            isRegret = true;
                         }
                     }
 
@@ -303,11 +303,11 @@ public class Xf_FirstFragment extends EasyFragment {
                                 if (mUsers != null && (!isSliding)) {
                                     swithSuperSolarize(0);
                                 } else {
-                                    if(isRegret){
-                                    mUsers.remove(0);
-                                    mUsers.add(0, userSelect);
-                                    setmAdapter(mUsers);
-                                    mAdapter.notifyDataSetChanged();
+                                    if (isRegret) {
+                                        mUsers.remove(0);
+                                        mUsers.add(0, userSelect);
+                                        setmAdapter(mUsers);
+                                        mAdapter.notifyDataSetChanged();
                                     }
                                 }
                             }
@@ -342,8 +342,6 @@ public class Xf_FirstFragment extends EasyFragment {
         } else if (mUsers.size() >= 1) {
             mUsers.remove(0);
         }
-       // setmAdapter(mUsers);
-       // mAdapter.notifyDataSetChanged();
 
     }
 
@@ -382,20 +380,20 @@ public class Xf_FirstFragment extends EasyFragment {
             if (mData.get(position).getMyPhotos() != null && mData.get(position).getMyPhotos().size() >= 1) {
                 holder.tv_Likecount.setText(String.valueOf(mData.get(position).getMyPhotos().size()));
             }
-            if(mData.get(position).getFaceIdentity()==1){
+            if (mData.get(position).getFaceIdentity() == 1) {
                 holder.ivHead.setVisibility(View.VISIBLE);
             }
            /* if (mData.get(position).getMsgImgs() != null && !TextUtils.isEmpty(mData.get(position).getMsgImgs())) {
                 holder.tvLike.setText(mData.get(position).getMsgImgs().split(",").length+"");
             }*/
-            if(mData.get(position).getNotSeeFilterMyPhotos()==0){
+            if (mData.get(position).getNotSeeFilterMyPhotos() == 0) {
                 holder.ivShow.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.ivShow.setVisibility(View.INVISIBLE);
             }
-            if(mData.get(position).getVip()==-1){
+            if (mData.get(position).getVip() == -1) {
                 holder.tvVip.setVisibility(View.INVISIBLE);
-            }else {
+            } else {
                 holder.tvVip.setVisibility(View.VISIBLE);
             }
 
@@ -417,7 +415,7 @@ public class Xf_FirstFragment extends EasyFragment {
         public class ViewHolder extends StackLayout.ViewHolder {
             ImageView img_pic;
             ImageView ivHead;
-            ImageView  ivShow;
+            ImageView ivShow;
             TextView tvName;
             TextView tvCnstellation;
             TextView tvAge;
@@ -428,7 +426,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 super(itemView);
                 img_pic = itemView.findViewById(R.id.img_pic);
                 ivShow = itemView.findViewById(R.id.ivtSee);
-                ivHead= itemView.findViewById(R.id.ivHead);
+                ivHead = itemView.findViewById(R.id.ivHead);
                 tvName = itemView.findViewById(R.id.t1);
                 tvAge = itemView.findViewById(R.id.t2);
                 tvCnstellation = itemView.findViewById(R.id.t3);
@@ -453,12 +451,12 @@ public class Xf_FirstFragment extends EasyFragment {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
 
-        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            params.put("longitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
-            params.put("latitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
-        }else {
-            params.put("longitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-            params.put("latitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        if (PreferenceUtils.getBoolean(getActivity(), coreManager.getSelf().getUserId() + SpContext.ISSELECT)) {
+            params.put("longitude", PreferenceUtils.getString(getActivity(), coreManager.getSelf().getUserId() + SpContext.LON));
+            params.put("latitude", PreferenceUtils.getString(getActivity(), coreManager.getSelf().getUserId() + SpContext.LAT));
+        } else {
+            params.put("longitude", String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude", String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
         }
 
         params.put("pageIndex", String.valueOf(pageIndex));
@@ -480,8 +478,8 @@ public class Xf_FirstFragment extends EasyFragment {
                                 llFuction.setVisibility(View.VISIBLE);
                                 mUsers.addAll(datas);
                                 setmAdapter(mUsers);
-                            }else if(datas != null && datas.size() == 0) {
-                            //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                            } else if (datas != null && datas.size() == 0) {
+                                //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
                                 rlShow.setVisibility(View.VISIBLE);
                                 mStackLayout.setVisibility(View.GONE);
                                 llFuction.setVisibility(View.GONE);
@@ -522,7 +520,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     superLike(mUsers.get(selectItem));
                     break;
             }
-        }else {
+        } else {
             requestData();
         }
     }
@@ -560,12 +558,12 @@ public class Xf_FirstFragment extends EasyFragment {
                                 //判断超级喜欢每天5次
                                 if (userSuper.getUserVIPPrivilege().getQuantity() == 0) {
                                     ToastUtil.showLongToast(getContext(), "当天次数已用完");
-                                }else {
+                                } else {
                                     exchangeAdapter(user);
                                 }
                             }
 
-                        }else {
+                        } else {
                             ToastUtil.showLongToast(getContext(), "当天次数已用完");
                         }
                     }
@@ -692,8 +690,8 @@ public class Xf_FirstFragment extends EasyFragment {
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventNotifyUpdate message) {
-        LogUtil.e("message = " +message.MessageData);
-        pageIndex=0;
+        LogUtil.e("message = " + message.MessageData);
+        pageIndex = 0;
         requestData();
     }
 

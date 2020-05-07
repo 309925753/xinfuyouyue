@@ -313,7 +313,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.ll_add_movie:
                 starToListActivity("添加标签", "myMovie", user.getMyMovie());
-
+break;
             case R.id.ll_add_book:
                 starToListActivity("添加标签", "myBookAndComic", user.getMyBookAndComic());
 
@@ -450,7 +450,6 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
 
         //签名
         if (user.getDescription() != null || !TextUtils.isEmpty(user.getDescription())) {
-
             person_sign.setText(user.getDescription());
             person_sign.setTextColor(getResources().getColor(R.color.text_black_333));
         }
@@ -531,7 +530,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             }
             allQuestion.addAll(entities);
             setAdapter(allQuestion);
-        }else{
+        } else {
             setAdapter(allQuestion);
 
         }
@@ -565,6 +564,8 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                     map.put(listImage.get(i), 2);
                 }
             }
+        }else{
+            GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg,  img_blum_1);
         }
     }
 
@@ -775,7 +776,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 }
                 try {
 
-
+                    dialogView.getDialog().dismiss();
                     allQuestion.get(position).setAnswer(name);
 
                     String json = JSON.toJSONString(allQuestion);
@@ -861,11 +862,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
         HttpUtils.get().url(coreManager.getConfig().DELETEPHOTO)
                 .params(params)
                 .build()
-                .execute(new BaseCallback<PhotoEntity>(PhotoEntity.class) {
+                .execute(new BaseCallback<Void>(Void.class) {
                     @Override
-                    public void onResponse(ObjectResult<PhotoEntity> result) {
-
-//                        DialogHelper.dismissProgressDialog();
+                    public void onResponse(ObjectResult<Void> result) {
                         if (result.getResultCode() == 1) {
                             getUserInfo();
 

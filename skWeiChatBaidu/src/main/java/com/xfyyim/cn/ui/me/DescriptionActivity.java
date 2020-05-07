@@ -80,8 +80,6 @@ public class DescriptionActivity extends BaseActivity {
 
     private void initView() {
 
-        String defaultDesc = PreferenceUtils.getString(DescriptionActivity.this, "description", coreManager.getSelf().getDescription());
-        et_desc.setHint(defaultDesc);
         et_desc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

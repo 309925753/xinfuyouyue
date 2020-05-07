@@ -100,6 +100,7 @@ public class User implements Parcelable, Cloneable {
     private List<PhotoEntity> myPhotos;
 
     private int age; // 年龄
+    private int isBeAtt; // 0-没有被关注 1-是被关注的
     private int vipFlag; //是否是vip
     private String starSign; //星座
 
@@ -127,6 +128,15 @@ public class User implements Parcelable, Cloneable {
     private String myBookAndComic;
     private String mySports;
     private List<QuestionEntity> userQuestions;
+
+
+    public int getIsBeAtt() {
+        return isBeAtt;
+    }
+
+    public void setIsBeAtt(int isBeAtt) {
+        this.isBeAtt = isBeAtt;
+    }
 
     public int getLikeTimesPerDay() {
         return likeTimesPerDay;

@@ -5,13 +5,11 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.dialog.base.BaseDialog;
-import com.xfyyim.cn.ui.tool.ButtonColorChange;
 
 /**
  * Created by Administrator on 2016/4/21.
@@ -76,7 +74,7 @@ public class DialogView extends BaseDialog {
         mContentET.setFilters(new InputFilter[]{DialogHelper.mExpressionFilter, DialogHelper.mChineseEnglishNumberFilter});
 
         mCommitBtn.setOnClickListener(v -> {
-            mDialog.dismiss();
+//            mDialog.dismiss();
             if (mOnClickListener != null)
                 mOnClickListener.onClick(mContentET);
         });

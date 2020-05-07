@@ -173,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="好"
+            android:text="确定"
             android:textColor="#FC687C"
             android:textSize="12sp" />
 

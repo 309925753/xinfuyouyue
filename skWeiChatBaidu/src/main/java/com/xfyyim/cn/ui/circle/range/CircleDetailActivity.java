@@ -23,7 +23,9 @@ import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.Reporter;
 import com.xfyyim.cn.adapter.UserClickableSpan;
+import com.xfyyim.cn.bean.AddAttentionResult;
 import com.xfyyim.cn.bean.Friend;
+import com.xfyyim.cn.bean.Report;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.Praise;
 import com.xfyyim.cn.bean.circle.PublicMessage;
@@ -40,6 +42,7 @@ import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.UiUtils;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.CheckableImageView;
+import com.xfyyim.cn.view.ReportDialog;
 import com.xfyyim.cn.view.TrillCommentInputDialog;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -64,7 +67,7 @@ public class CircleDetailActivity extends BaseActivity {
     ImageView iv_title_left;
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
-   @BindView(R.id.tv_attion)
+    @BindView(R.id.tv_attion)
     TextView tv_attion;
 
     @BindView(R.id.command_listView)
@@ -91,6 +94,8 @@ public class CircleDetailActivity extends BaseActivity {
     TextView tv_comment;
     @BindView(R.id.tv_read_count)
     TextView tv_read_count;
+    @BindView(R.id.delete_tv)
+    ImageView delete_tv;
     @BindView(R.id.img_sex)
     ImageView img_sex;
     @BindView(R.id.llThumb)
@@ -129,19 +134,18 @@ public class CircleDetailActivity extends BaseActivity {
     public void initView() {
         List<String> imgesUrl = new ArrayList<>();
         message = (PublicMessage) getIntent().getSerializableExtra("PublicMessage");
-        careType = getIntent().getIntExtra("CareType",1);
+        careType = getIntent().getIntExtra("CareType", 1);
 
 
-
-        if (message.getUserId().equals(mUserId)){
+        if (message.getUserId().equals(mUserId)) {
             tv_attion.setVisibility(View.GONE);
-        }else{
+        } else {
             tv_attion.setVisibility(View.VISIBLE);
         }
-        if (careType==1){
+        if (careType == 1) {
             tv_attion.setText("已关注");
             tv_attion.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
-        }else{
+        } else {
             tv_attion.setText("关注");
             tv_attion.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
         }
@@ -175,8 +179,8 @@ public class CircleDetailActivity extends BaseActivity {
         avatar_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(CircleDetailActivity.this, PersonInfoActivity.class);
-                intent.putExtra("FriendId",message.getUserId());
+                Intent intent = new Intent(CircleDetailActivity.this, PersonInfoActivity.class);
+                intent.putExtra("FriendId", message.getUserId());
                 startActivity(intent);
             }
         });
@@ -225,6 +229,33 @@ public class CircleDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        tv_attion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (careType==2){
+                    doAddAttention(message.getUserId());
+                }else{
+
+                    deleteFriend(message.getUserId());
+                }
+            }
+        });
+
+
+
+        delete_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReportDialog mReportDialog = new ReportDialog(mContext, false, new ReportDialog.OnReportListItemClickListener() {
+                    @Override
+                    public void onReportItemClick(Report report) {
+                        report( report);
+                    }
+                });
+                mReportDialog.show();
             }
         });
         llThumb.setOnClickListener(new View.OnClickListener() {
@@ -631,7 +662,7 @@ public class CircleDetailActivity extends BaseActivity {
                         // 评论成功
                         if (Result.checkSuccess(CircleDetailActivity.this, result)) {
                             comment.setCommentId(result.getData());
-                            int conmentCount=Integer.parseInt(tv_read_count.getText().toString());
+                            int conmentCount = Integer.parseInt(tv_read_count.getText().toString());
                             tv_read_count.setText(String.valueOf(conmentCount + 1));
                             adapter.addComment(comment);
                             adapter.notifyDataSetChanged();
@@ -644,4 +675,94 @@ public class CircleDetailActivity extends BaseActivity {
                     }
                 });
     }
+
+
+    private void report(Report report) {
+        if (message == null) {
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("toUserId", message.getUserId());
+        params.put("reason", String.valueOf(report.getReportId()));
+
+        HttpUtils.get().url(CoreManager.requireConfig(MyApplication.getInstance()).USER_REPORT)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        if (Result.checkSuccess(mContext, result)) {
+                            ToastUtil.showToast(mContext, mContext.getString(R.string.report_success));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+                });
+    }
+
+    /**
+     * 加关注
+     */
+    private void doAddAttention(String messageUserId) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", coreManager.getSelf().getUserId());
+        params.put("toUserId", messageUserId);
+        params.put("fromAddType", messageUserId);
+
+
+        HttpUtils.get().url(coreManager.getConfig().FRIENDS_ATTENTION_ADD)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<AddAttentionResult>(AddAttentionResult.class) {
+                    @Override
+                    public void onResponse(ObjectResult<AddAttentionResult> result) {
+                        if (Result.checkSuccess(mContext, result)) {
+                            ToastUtil.showToast(mContext,"关注成功");
+                            careType=2;
+                            tv_attion.setText("已关注");
+                            tv_attion.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
+
+    /**
+     * 取消关注
+     */
+    private void deleteFriend(String userID) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("toUserId", userID);
+
+        HttpUtils.get().url(coreManager.getConfig().FRIENDS_ATTENTION_DELETE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<Void>(Void.class) {
+
+                    @Override
+                    public void onResponse(ObjectResult<Void> result) {
+                        ToastUtil.showToast(mContext, "取消关注成功");
+                        careType=2;
+                        tv_attion.setText("关注");
+                        tv_attion.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
+
+
 }

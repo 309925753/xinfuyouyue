@@ -137,6 +137,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     String usrId;
     QuestionInfoAdapter questionAdapter;
 
+    String mLoginId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +146,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         unbinder = ButterKnife.bind(this);
         friendId = getIntent().getStringExtra("FriendId");
         initActionBar();
-
+        mLoginId=coreManager.getSelf().getUserId();
         rl_blum.setOnClickListener(this);
     }
 
@@ -181,14 +182,22 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
             case R.id.rl_blum:
 
-                if (!user.getUserId().equals(friendId)) {
-                    if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
-                        ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
-                    } else {
-                        Intent intent1=new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
-                        intent1.putExtra("FriendId",friendId);
-                        startActivity(intent1);
-                    }
+//                if (!mLoginId.equals(friendId)) {
+//                    if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
+//                        ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
+//                    } else {
+//                        Intent intent1=new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
+//                        intent1.putExtra("FriendId",friendId);
+//                        startActivity(intent1);
+//                    }
+//                }
+
+                if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
+                    ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
+                } else {
+                    Intent intent1=new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
+                    intent1.putExtra("FriendId",friendId);
+                    startActivity(intent1);
                 }
                 break;
 
@@ -230,8 +239,10 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     }
 
     public void setUiData(User user) {
+if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
+    nick_name.setText(user.getNickName());
+}
 
-        nick_name.setText(user.getNickName());
 
 //认证中心
         if (user.getFaceIdentity() == 1) {
