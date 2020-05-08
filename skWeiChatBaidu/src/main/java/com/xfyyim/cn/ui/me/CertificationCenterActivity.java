@@ -90,12 +90,13 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
     private void initView() {
         findViewById(R.id.rlCertificationImmediately).setOnClickListener(this::onClick);
         TextView tvPrivacyPolicy = (TextView) findViewById(R.id.tvPrivacyPolicy);
-        String title1 = "认证用户可以提升信用度、推荐值。认证中将采集您的面部信息，通过百度科技人脸识别技术进行对比，详见" + "<font color=\"#FF0000\">" + "隐私政策" + " " + "</font>" + "";
+        String title1 = "认证用户可以提升信用度、推荐值。认证中将采集您的面部信息，通过百度科技人脸识别技术进行对比，详见" + "<font color=\"#FF0000\">" + "用户协议" + " " + "</font>" + "";
         tvPrivacyPolicy.setText(Html.fromHtml(title1));
         LogUtil.e("-----------------------getFaceIdentity---------------------" +CoreManager.getSelf(this).getFaceIdentity());
         if(CoreManager.getSelf(this).getFaceIdentity()==1){
             tvCertification.setText("认证成功");
         }
+        tvPrivacyPolicy.setOnClickListener(this);
 
     }
 
@@ -118,8 +119,13 @@ public class CertificationCenterActivity extends BaseActivity implements View.On
                     Intent intent = new Intent(this, FaceLivenessExpActivity.class);
                     startActivityForResult(intent, 100);
                 }
-
                 break;
+            case  R.id.tvPrivacyPolicy:
+                Intent intent = new Intent(CertificationCenterActivity.this, TicketAndUserAgentActivity.class);
+                intent.putExtra("type", "1");
+                startActivity(intent);
+                break;
+
         }
     }
 
