@@ -11,6 +11,7 @@
     <include layout="@layout/a_view_actionbar" />
 
     <RelativeLayout
+        android:id="@+id/rl_dd"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -41,16 +42,7 @@
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_empty_dt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/text_black_333"
-            android:textSize="@dimen/sp_18_text_size"
-            android:text="你还没有发布动态~"
-            android:gravity="center"
-            />
+
 
         <TextView
             android:id="@+id/load_fragment"
@@ -63,7 +55,16 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
+    <TextView
+        android:visibility="visible"
+        android:id="@+id/tv_empty_dt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/text_black_333"
+        android:textSize="@dimen/sp_18_text_size"
+        android:text="你还没有发布动态~"
+        android:gravity="center"
+        />
 
 
 </LinearLayout>
