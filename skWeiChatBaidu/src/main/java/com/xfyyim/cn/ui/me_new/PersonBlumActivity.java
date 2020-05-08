@@ -20,6 +20,7 @@ import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.range.SendTextPicActivity;
+import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -51,6 +52,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     ImageView iv_title_left;
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
+    @BindView(R.id.tv_empty_dt)
+    TextView tv_empty_dt;
     @BindView(R.id.rl_root)
     LinearLayout rl_root;
 
@@ -170,7 +173,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                 break;
 
             case R.id.avatar_img:
-                Intent intent=new Intent(PersonBlumActivity.this,PersonInfoActivity.class);
+                Intent intent = new Intent(PersonBlumActivity.this, PersonInfoActivity.class);
                 intent.putExtra("FriendId", friendId);
                 startActivity(intent);
                 break;
@@ -214,7 +217,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
             if (user.getDistance() == 0) {
                 tv_status.setText(user.getOnlineStatus());
             } else {
-                tv_status.setText(user.getDistance() + "  " + user.getOnlineStatus());
+                String time= TimeUtils.getFriendlyTimeDesc(this,user.getShowLastLoginTime());
+                tv_status.setText(user.getDistance() + "  " +time);
             }
 
         }
@@ -225,7 +229,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
 
     }
 
-    private void getUserInfo() {
+    public void getUserInfo() {
 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", UserSp.getInstance(PersonBlumActivity.this).getAccessToken());
@@ -258,7 +262,6 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         }
 
         if (!more) {
-            // ToastUtil.showToast(getContext(), getString(R.string.tip_last_item));
             mRefreshLayout.setNoMoreData(true);
             refreshComplete();
             return;
@@ -268,16 +271,6 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("pageSize", String.valueOf(PAGER_SIZE));
         params.put("pageIndex", String.valueOf(pager_index));
-//        if (distance>0){
-//            params.put("distance", String.valueOf(distance));
-//        }
-//        if (latitude>0){
-//            params.put("distance", String.valueOf(latitude));
-//        }
-//
-//        if (longitude>0){
-//            params.put("distance", String.valueOf(longitude));
-//        }
 
         HttpUtils.get().url(coreManager.getConfig().MSG_MY_LIST)
                 .params(params)
@@ -289,6 +282,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                             List<PublicMessage> data = result.getData();
 
                             if (data != null && data.size() > 0) {
+                                mMessages.clear();
                                 mMessages.addAll(data);
                                 if (data.size() == PAGER_SIZE) {
                                     more = true;

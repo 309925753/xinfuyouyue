@@ -46,7 +46,7 @@ import com.xfyyim.cn.util.CameraUtil;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
-import com.xfyyim.cn.view.TipDialog;
+import com.xfyyim.cn.view.Tip2Dialog;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -568,8 +568,10 @@ break;
             GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg,  img_blum_1);
         }
     }
+    List<QuestEntity> removelist;
 
     public void setAdapter(List<QuestEntity> entities) {
+        removelist=entities;
         if (adapter == null) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EditInfoActivity.this);
             rv_question.setLayoutManager(linearLayoutManager);
@@ -582,7 +584,7 @@ break;
 
                     if (position == (entities.size())) {
                         Intent intent1 = new Intent(EditInfoActivity.this, EditListQuestionActivity.class);
-                        intent1.putExtra("ListQuestion", (Serializable) entities);
+                        intent1.putExtra("ListQuestion", (Serializable) removelist);
                         startActivity(intent1);
                     } else {
                         showSignleDialog(position);
@@ -765,26 +767,28 @@ break;
     public void showSignleDialog(int position) {
 
         String title = allQuestion.get(position).getQuestion();
-        String text = allQuestion.get(position).getAnswer();
-        dialogView = new DialogView(this, title, text, new View.OnClickListener() {
+        dialogView = new DialogView(this, title, "", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = ((EditText) v).getText().toString().trim();
                 if (name == null || TextUtils.isEmpty(name)) {
-                    ToastUtil.showToast(EditInfoActivity.this, "问题答案不能为空");
-                    return;
+                  allQuestion.remove(position);
+                    adapter.notifyDataSetChanged();
+                }else{
+                    try {
+
+
+                        allQuestion.get(position).setAnswer(name);
+
+                        String json = JSON.toJSONString(allQuestion);
+                        updateValue(json);
+
+
+                    } catch (Exception e) {
+
+                    }
                 }
-                try {
-
-                    dialogView.getDialog().dismiss();
-                    allQuestion.get(position).setAnswer(name);
-
-                    String json = JSON.toJSONString(allQuestion);
-                    updateValue(json);
-
-
-                } catch (Exception e) {
-                }
+                dialogView.getDialog().dismiss();
 
             }
         });
@@ -854,7 +858,6 @@ break;
 
     private void deletePhoto(String imageId) {
 
-//        DialogHelper.showDefaulteMessageProgressDialog(EditInfoActivity.this);
         Map<String, String> params = new HashMap<>();
         params.put("access_token", UserSp.getInstance(EditInfoActivity.this).getAccessToken());
         params.put("id", imageId);
@@ -873,7 +876,6 @@ break;
 
                     @Override
                     public void onError(Call call, Exception e) {
-//                        DialogHelper.dismissProgressDialog();
 
                         ToastUtil.showErrorNet(mContext);
                     }
@@ -1010,8 +1012,8 @@ break;
     }
 
     public void showTip(String ImageID) {
-        TipDialog dialog = new TipDialog(EditInfoActivity.this);
-        dialog.setmConfirmOnClickListener("是否删除该相片", new TipDialog.ConfirmOnClickListener() {
+        Tip2Dialog dialog = new Tip2Dialog(EditInfoActivity.this);
+        dialog.setmConfirmOnClickListener("是否删除该相片", new Tip2Dialog.ConfirmOnClickListener() {
             @Override
             public void confirm() {
                 deletePhoto(ImageID);
@@ -1019,4 +1021,6 @@ break;
         });
         dialog.show();
     }
+
+
 }

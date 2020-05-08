@@ -28,8 +28,10 @@ import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.me.EditInfoActivity;
 import com.xfyyim.cn.util.StringUtils;
+import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -59,6 +61,11 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     ImageView iv_title_right;
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
+    @BindView(R.id.tv_state_distance)
+    TextView tv_state_distance;
+
+    @BindView(R.id.tv_last_state)
+    TextView tv_last_state;
     @BindView(R.id.banner)
     XBanner banner;
     @BindView(R.id.nick_name)
@@ -239,9 +246,26 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     }
 
     public void setUiData(User user) {
-if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
+if (user.getNickName()!=null&&!TextUtils.isEmpty(user.getNickName())){
     nick_name.setText(user.getNickName());
 }
+
+
+
+if (!friendId.equals(user.getUserId())){
+
+    if (user.getDistance()>0){
+        tv_state_distance.setVisibility(View.VISIBLE);
+        double distance= Math.rint(user.getDistance()/100)/10;
+        tv_state_distance.setText(distance+" km");
+    }
+    if (user.getShowLastLoginTime()>0){
+        tv_last_state.setVisibility(View.VISIBLE);
+        String state= TimeUtils.getFriendlyTimeDesc(mContext, (int) user.getShowLastLoginTime());
+        tv_last_state.setText(state+"活跃");
+    }
+}
+
 
 
 //认证中心
@@ -267,6 +291,9 @@ if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
             tv_age.setVisibility(View.VISIBLE);
             tv_age.setText(String.valueOf(user.getAge()));
         }
+        if (user.getStarSign() != null || !TextUtils.isEmpty(user.getStarSign())) {
+            tv_xingzuo.setText(user.getStarSign());
+        }
 
         if (user.getSex() == 1) {
             img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_man));
@@ -278,10 +305,17 @@ if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
 
         //相册
         List<String> imgesUrl = new ArrayList<>();
+
+        imgesUrl.clear();
+        long randomNum = System.currentTimeMillis();
+        String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false)+"?"+randomNum;
+
         if (user.getMyPhotos() != null && user.getMyPhotos().size() > 0) {
             for (PhotoEntity photo : user.getMyPhotos()) {
                 imgesUrl.add(photo.getPhotoUtl());
             }
+            imgesUrl.add(0,headUrl);
+
             banner.setVisibility(View.VISIBLE);
 
 
@@ -304,7 +338,6 @@ if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
 
             }
         } else {
-            String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false);
             imgesUrl.add(headUrl);
         }
 
@@ -313,6 +346,8 @@ if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
         banner.setmAdapter(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
+                LogUtil.e("cjh url "+imgesUrl.get(position));
+
                 GlideImageUtils.setImageView(PersonInfoActivity.this, imgesUrl.get(position), (ImageView) view);
             }
         });
@@ -322,11 +357,8 @@ if (user.getNickName()!=null&&TextUtils.isEmpty(user.getNickName())){
 
 
         //签名
-        if (user.getDescription() == null || TextUtils.isEmpty(user.getDescription())) {
-            person_sign.setText("这个人很懒，什么都没留下");
-            person_sign.setTextColor(getResources().getColor(R.color.text_black_999));
+        if (user.getDescription() != null || !TextUtils.isEmpty(user.getDescription())) {
 
-        } else {
             person_sign.setText(user.getDescription());
             person_sign.setTextColor(getResources().getColor(R.color.text_black_333));
         }

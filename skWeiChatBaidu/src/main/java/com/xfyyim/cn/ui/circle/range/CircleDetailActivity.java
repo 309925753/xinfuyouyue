@@ -137,10 +137,17 @@ public class CircleDetailActivity extends BaseActivity {
         careType = getIntent().getIntExtra("CareType", 1);
 
 
+
+
         if (message.getUserId().equals(mUserId)) {
             tv_attion.setVisibility(View.GONE);
         } else {
             tv_attion.setVisibility(View.VISIBLE);
+        }
+        if (message.getUserId().equals(mUserId)) {
+            delete_tv.setVisibility(View.GONE);
+        } else {
+            delete_tv.setVisibility(View.VISIBLE);
         }
         if (careType == 1) {
             tv_attion.setText("已关注");

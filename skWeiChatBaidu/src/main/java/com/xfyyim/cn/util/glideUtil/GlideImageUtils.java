@@ -30,6 +30,25 @@ public class GlideImageUtils {
         }
     }
 
+    public static void setImageView_Banner(Context mContext, String imgUrl, ImageView view) {
+        if (mContext != null) {
+            Glide.with(mContext)
+                    .load(imgUrl)
+//                    .placeholder(R.mipmap.icon)
+                    .error(R.mipmap.icon)
+                    .centerCrop()
+                    //默认淡入淡出动画
+                    .crossFade()
+                    //缓存策略,跳过内存缓存【此处应该设置为false，否则列表刷新时会闪一下】
+                    .skipMemoryCache(false)
+                    //缓存策略,硬盘缓存-仅仅缓存最终的图像，即降低分辨率后的（或者是转换后的）
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    //设置图片加载的优先级
+                    .priority(Priority.HIGH)
+                    .into(view);
+        }
+    }
+
     public static void setGlideRoundImageView(Context mContext, String imgUrl, ImageView view) {
         if (mContext != null) {
             Glide.with(mContext)
@@ -53,6 +72,7 @@ public class GlideImageUtils {
 
     /**
      * 圆角矩形
+     *
      * @param mContext
      * @param drawId
      * @param view
@@ -79,6 +99,7 @@ public class GlideImageUtils {
 
     /**
      * 圆角矩形
+     *
      * @param mContext
      * @param view
      */
@@ -108,6 +129,7 @@ public class GlideImageUtils {
 
     /**
      * 圆角矩形
+     *
      * @param mContext
      * @param view
      */
@@ -133,6 +155,7 @@ public class GlideImageUtils {
                     .into(view);
         }
     }
+
     public static void setImageView_Error(Context mContext, int errorImage, String imgUrl, ImageView view) {
         if (mContext != null) {
             Glide.with(mContext)
@@ -213,8 +236,6 @@ public class GlideImageUtils {
                 .transform(new CircleTransform(mContext))
                 .into(view);
     }
-
-
 
 
 }

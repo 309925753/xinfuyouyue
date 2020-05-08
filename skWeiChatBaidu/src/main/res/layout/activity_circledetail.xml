@@ -12,13 +12,12 @@
         layout="@layout/a_view_actionbar" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/new_main"
-
         android:layout_above="@+id/tv_comment"
-        >
+        android:layout_below="@+id/title"
+
+        android:background="@color/new_main">
 
 
         <LinearLayout
@@ -44,10 +43,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="15dp">
+                android:paddingRight="15dp"
+                android:paddingBottom="5dp">
 
 
                 <LinearLayout
@@ -82,9 +81,9 @@
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp10"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -94,9 +93,9 @@
                             android:layout_marginBottom="5dp"
                             android:gravity="center_vertical"
                             android:singleLine="true"
-                            tools:text="昵称"
                             android:textColor="@color/text_black_333"
-                            android:textSize="@dimen/bussic_nick_name_size" />
+                            android:textSize="@dimen/bussic_nick_name_size"
+                            tools:text="昵称" />
 
 
                         <LinearLayout
@@ -119,14 +118,14 @@
                                 <ImageView
                                     android:id="@+id/img_sex"
                                     android:layout_width="11dp"
-                                    android:layout_centerVertical="true"
                                     android:layout_height="11dp"
+                                    android:layout_centerVertical="true"
                                     android:src="@drawable/sex_nv" />
 
                                 <TextView
                                     android:id="@+id/tv_age"
                                     android:layout_width="wrap_content"
-                                     android:layout_height="16dp"
+                                    android:layout_height="16dp"
 
                                     android:layout_marginLeft="5dp"
                                     android:layout_toRightOf="@+id/img_sex"
@@ -172,12 +171,11 @@
                         android:id="@+id/tv_attion"
                         android:layout_width="45dp"
                         android:layout_height="22dp"
-                        android:text="关注"
                         android:background="@drawable/shape_fc607e_10"
-android:gravity="center"
-                        android:textSize="@dimen/sp_12_text_size"
+                        android:gravity="center"
+                        android:text="关注"
                         android:textColor="@color/white"
-                        />
+                        android:textSize="@dimen/sp_12_text_size" />
 
                 </LinearLayout>
 
@@ -204,9 +202,9 @@ android:gravity="center"
                     android:id="@+id/llOperator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
 
                     >
 
@@ -216,9 +214,9 @@ android:gravity="center"
                         android:layout_height="20dp"
                         android:background="@drawable/shape_bg_white_3"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:orientation="horizontal">
+                        android:paddingRight="10dp">
 
                         <com.xfyyim.cn.view.CheckableImageView
                             android:id="@+id/ivThumb"
@@ -240,10 +238,10 @@ android:gravity="center"
                     <LinearLayout
 
 
-                        android:layout_marginLeft="15dp"
                         android:id="@+id/ll_tocomment"
                         android:layout_width="60dp"
                         android:layout_height="20dp"
+                        android:layout_marginLeft="15dp"
                         android:background="@drawable/shape_bg_white_3"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -260,27 +258,25 @@ android:gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp5"
+                            android:text="0"
                             android:textColor="@color/text_black_999"
-                            android:textSize="@dimen/sp_12_text_size"
-                            android:text="0" />
+                            android:textSize="@dimen/sp_12_text_size" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="right"
-                        >
+                        android:gravity="right">
 
                         <ImageView
 
-                            android:padding="10dp"
                             android:id="@+id/delete_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:padding="10dp"
                             android:scaleType="center"
-                            android:src="@drawable/more_ver"
-                            />
+                            android:src="@drawable/more_ver" />
 
                     </LinearLayout>
 
@@ -303,25 +299,22 @@ android:gravity="center"
                 android:gravity="center"
                 android:text="@string/tip_load_more"
                 android:textColor="@color/link_nick_name_color"
-                android:visibility="gone"
-     />
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/tv_comment"
-            android:padding="10dp"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:hint="走心评论，说点好听的~"
-            android:textColor="@color/text_black_333"
-            android:textColorHint="@color/text_black_999"
-            />
-
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:hint="走心评论，说点好听的~"
+        android:padding="10dp"
+        android:textColor="@color/text_black_333"
+        android:textColorHint="@color/text_black_999" />
 
 
 </RelativeLayout>

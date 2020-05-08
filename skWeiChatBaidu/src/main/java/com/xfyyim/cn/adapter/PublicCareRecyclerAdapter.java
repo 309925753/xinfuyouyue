@@ -141,6 +141,7 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
         setHasStableIds(true);
         mContext = context;
         this.coreManager = coreManager;
+        this.view=view;
         mMessages = messages;
         setHasStableIds(true);
         mInflater = LayoutInflater.from(mContext);

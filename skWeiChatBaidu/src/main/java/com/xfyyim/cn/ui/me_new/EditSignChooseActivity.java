@@ -104,8 +104,7 @@ public class EditSignChooseActivity extends BaseActivity {
         tv_title_right.setTextColor(getResources().getColor(R.color.white));
         tv_title_right.setText(getResources().getString(R.string.save));
         tv_title_right.setOnClickListener(v -> {
-
-
+text=list.get(lastClickPosition);
             if (text != null && !TextUtils.isEmpty(text)) {
                 loadDescription(text);
             } else {

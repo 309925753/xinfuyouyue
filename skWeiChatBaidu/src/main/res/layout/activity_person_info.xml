@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 app:AutoPlayTime="3000"
+                app:isAutoPlay="false"
                 app:isShowIndicatorOnlyOne="true"
                 app:isShowNumberIndicator="false"
                 app:pageChangeDuration="800"
@@ -47,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Eblisfly"
+                    tools:text="Eblisfly"
                     android:textColor="#FFCA7D"
                     android:textSize="15sp"
 
@@ -114,17 +115,35 @@
                         android:textSize="10sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_state_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="0km,18小时前活跃"
+
+                    tools:text="0km"
                     android:textColor="@color/text_black_999"
 
                     android:textSize="10sp" />
 
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:visibility="gone"
+                        android:id="@+id/tv_last_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="1小时前活跃"
+                        android:textColor="@color/text_black_999"
 
+                        android:textSize="10sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <RelativeLayout
@@ -152,7 +171,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/private_v"
                     android:gravity="center_vertical"
-                    android:text="他已完成真实头像认证，加速推荐中"
+                    android:text="Ta已完成真实头像认证，加速推荐中"
                     android:textColor="#64E399"
                     android:textSize="12sp" />
 
