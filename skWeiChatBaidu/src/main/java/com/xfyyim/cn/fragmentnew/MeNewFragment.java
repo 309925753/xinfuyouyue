@@ -66,6 +66,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @BindView(R.id.tv_name)
     TextView tv_name;
     @BindView(R.id.tv_edit_info)
+
     TextView tv_edit_info;
 
     @BindView(R.id.tv_vip)
