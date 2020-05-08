@@ -1,18 +1,24 @@
 package com.xfyyim.cn.ui.me_new;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.AttentionAdapter;
 import com.xfyyim.cn.bean.AttentionEntity;
+import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.util.TimeUtils;
+import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
@@ -161,6 +167,28 @@ public class AttentionActivity extends BaseActivity {
         super.onDestroy();
         if (unbinder != null) {
             unbinder.unbind();
+        }
+    }
+    public class AttentionAdapter extends BaseQuickAdapter<AttentionEntity, BaseViewHolder> {
+
+
+        Context context;
+
+        public AttentionAdapter(@Nullable List<AttentionEntity> data, Context context) {
+            super(R.layout.item_list_custom,data);
+            this.context = context;
+        }
+
+        @Override
+        protected void convert(BaseViewHolder helper, AttentionEntity item) {
+            String time= TimeUtils.getFriendlyTimeDesc(mContext, item.getCreateTime());
+            helper.setText(R.id.tv_time,time);
+            helper.setText(R.id.nick_name_tv,item.getToNickname());
+            String url = AvatarHelper.getAvatarUrl(String.valueOf(item.getToUserId()), false);
+
+            GlideImageUtils.setImageView(mContext,url,helper.getView(R.id.avatar_img));
+
+
         }
     }
 }

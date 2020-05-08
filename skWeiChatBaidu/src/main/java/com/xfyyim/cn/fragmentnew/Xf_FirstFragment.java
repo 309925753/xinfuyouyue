@@ -141,6 +141,7 @@ public class Xf_FirstFragment extends EasyFragment {
 
         mStackLayout.setOnSwipeListener(
                 new StackLayout.OnSwipeListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onSwiped(View swipedView, int swipedItemPos, boolean isSwipeLeft, int itemLeft) {
               /*  if(itemLeft>=1){
@@ -148,24 +149,34 @@ public class Xf_FirstFragment extends EasyFragment {
                 }*/
                         isSliding = true;
                         LogUtil.e("cjh left " + itemLeft + "  isSwipeLeft  " + isSwipeLeft + "--swipedItemPos = " + swipedItemPos);
-//                        if (isSwipeLeft) {
-//                            //  ToastUtil.showToast(getActivity(),"不喜欢接口");
-//                            unLike(list.get(selectItem));
-//                            isRegret = true;
-//                        } else {
-//                            userLike(list.get(selectItem));
-//                            //   ToastUtil.showToast(getActivity(),"喜欢接口");
-//                            isRegret = false;
-//                        }
-//                        if (mUsers.size() == 0) {
-//                            //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
-//                            rlShow.setVisibility(View.VISIBLE);
-//                            mStackLayout.setVisibility(View.GONE);
-//                            llFuction.setVisibility(View.GONE);
-//                        }
-//                        if (itemLeft <= 3) {
-//                            requestData();
-//                        }
+                   if (isSwipeLeft) {
+                            //  ToastUtil.showToast(getActivity(),"不喜欢接口");
+                            unLike(list.get(selectItem));
+                            isRegret=true;
+                        } else {
+                            //如果为-1普通用户否则VIP用户
+                          if(coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
+                              if(coreManager.getSelf().getLikeTimesPerDay()>0){
+                                  userLike(list.get(selectItem));
+                                  //   ToastUtil.showToast(getActivity(),"喜欢接口");
+                              }else {
+                                  BuyMember(list.get(selectItem));
+                              }
+                            }else {
+                              userLike(list.get(selectItem));
+                              //   ToastUtil.showToast(getActivity(),"喜欢接口");
+                          }
+
+                        }
+                        if(mUsers.size()==0){
+                        //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                            rlShow.setVisibility(View.VISIBLE);
+                            mStackLayout.setVisibility(View.GONE);
+                            llFuction.setVisibility(View.GONE);
+                        }
+                        if (mUsers.size() <= 1) {
+                          //  requestData();
+                        }
                     }
                 });
 
@@ -186,12 +197,19 @@ public class Xf_FirstFragment extends EasyFragment {
         HttpUtils.post().url(coreManager.getConfig().USER_LIKE)
                 .params(params)
                 .build()
-                .execute(new BaseCallback<String>(String.class) {
+                .execute(new BaseCallback<User>(User.class) {
                     @Override
-                    public void onResponse(ObjectResult<String> result) {
+                    public void onResponse(ObjectResult<User> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
+                            User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
                             exchangeAdapter(user);
-                            isRegret = false;
+                            isRegret=false;
                         }
                     }
 
@@ -221,7 +239,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
                             exchangeAdapter(user);
-                            isRegret = true;
+                            isRegret=true;
                         }
                     }
 
@@ -297,20 +315,16 @@ public class Xf_FirstFragment extends EasyFragment {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(user);
                             }
-                            if (user.getUserVIPPrivilege().getVipLevel().equals("-1")) {
-                                BuyMember(user);
-                            } else {
                                 if (mUsers != null && (!isSliding)) {
                                     swithSuperSolarize(0);
                                 } else {
-                                    if (isRegret) {
-                                        mUsers.remove(0);
-                                        mUsers.add(0, userSelect);
-                                        setmAdapter(mUsers);
-                                        mAdapter.notifyDataSetChanged();
+                                    if(isRegret){
+                                    mUsers.remove(0);
+                                    mUsers.add(0, userSelect);
+                                    setmAdapter(mUsers);
+                                    mAdapter.notifyDataSetChanged();
                                     }
                                 }
-                            }
                         }
                     }
 
@@ -342,6 +356,8 @@ public class Xf_FirstFragment extends EasyFragment {
         } else if (mUsers.size() >= 1) {
             mUsers.remove(0);
         }
+        setmAdapter(mUsers);
+        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -371,7 +387,18 @@ public class Xf_FirstFragment extends EasyFragment {
             String url = AvatarHelper.getAvatarUrl(mData.get(position).getUserId(), false);
             GlideImageUtils.setImageView(getActivity(), url, holder.img_pic);
             holder.tvName.setText(mData.get(position).getNickName());
+
+            if (mData.get(position).getSex() == 1) {
+                holder. img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_man));
+                holder.ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_qing));
+            } else {
+                holder.img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_nv));
+                holder.ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_pink));
+            }
+
             holder.tvAge.setText(mData.get(position).getAge() + "");
+
+
             if (!TextUtils.isEmpty(mData.get(position).getStarSign())) {
                 holder.tvCnstellation.setText(mData.get(position).getStarSign());
                 holder.tvCnstellation.setVisibility(View.VISIBLE);
@@ -380,21 +407,25 @@ public class Xf_FirstFragment extends EasyFragment {
             if (mData.get(position).getMyPhotos() != null && mData.get(position).getMyPhotos().size() >= 1) {
                 holder.tv_Likecount.setText(String.valueOf(mData.get(position).getMyPhotos().size()));
             }
-            if (mData.get(position).getFaceIdentity() == 1) {
+            if(mData.get(position).getFaceIdentity()==1){
                 holder.ivHead.setVisibility(View.VISIBLE);
             }
            /* if (mData.get(position).getMsgImgs() != null && !TextUtils.isEmpty(mData.get(position).getMsgImgs())) {
                 holder.tvLike.setText(mData.get(position).getMsgImgs().split(",").length+"");
             }*/
-            if (mData.get(position).getNotSeeFilterMyPhotos() == 0) {
+            if(mData.get(position).getNotSeeFilterMyPhotos()==0){
                 holder.ivShow.setVisibility(View.VISIBLE);
-            } else {
+            }else {
                 holder.ivShow.setVisibility(View.INVISIBLE);
             }
-            if (mData.get(position).getVip() == -1) {
+            if(mData.get(position).getUserVIPPrivilege().getVipLevel().equals("-1")){
                 holder.tvVip.setVisibility(View.INVISIBLE);
-            } else {
+            }else {
                 holder.tvVip.setVisibility(View.VISIBLE);
+            }
+            if(!TextUtils.isEmpty(mData.get(position).getCityName())){
+
+                holder.tv_city.setText(mData.get(position).getCityName());
             }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -414,24 +445,31 @@ public class Xf_FirstFragment extends EasyFragment {
 
         public class ViewHolder extends StackLayout.ViewHolder {
             ImageView img_pic;
+            ImageView img_sex;
+            LinearLayout ll_sex_bg;
             ImageView ivHead;
-            ImageView ivShow;
+            ImageView  ivShow;
             TextView tvName;
             TextView tvCnstellation;
             TextView tvAge;
             TextView tvVip;
             TextView tv_Likecount;
+            TextView tv_city;
+
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 img_pic = itemView.findViewById(R.id.img_pic);
                 ivShow = itemView.findViewById(R.id.ivtSee);
-                ivHead = itemView.findViewById(R.id.ivHead);
+                ivHead= itemView.findViewById(R.id.ivHead);
+                img_sex= itemView.findViewById(R.id.img_sex);
                 tvName = itemView.findViewById(R.id.t1);
                 tvAge = itemView.findViewById(R.id.t2);
                 tvCnstellation = itemView.findViewById(R.id.t3);
                 tvVip = itemView.findViewById(R.id.t4);
                 tv_Likecount = itemView.findViewById(R.id.tv_Likecount);
+                ll_sex_bg = itemView.findViewById(R.id.ll_sex_bg);
+                tv_city = itemView.findViewById(R.id.tv_city);
             }
         }
 
@@ -441,6 +479,7 @@ public class Xf_FirstFragment extends EasyFragment {
     public void onResume() {
         super.onResume();
         requestData();
+        getUserInfo();
     }
 
     private void requestData() {
@@ -451,12 +490,12 @@ public class Xf_FirstFragment extends EasyFragment {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
 
-        if (PreferenceUtils.getBoolean(getActivity(), coreManager.getSelf().getUserId() + SpContext.ISSELECT)) {
-            params.put("longitude", PreferenceUtils.getString(getActivity(), coreManager.getSelf().getUserId() + SpContext.LON));
-            params.put("latitude", PreferenceUtils.getString(getActivity(), coreManager.getSelf().getUserId() + SpContext.LAT));
-        } else {
-            params.put("longitude", String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
-            params.put("latitude", String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
+        }else {
+            params.put("longitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
         }
 
         params.put("pageIndex", String.valueOf(pageIndex));
@@ -478,8 +517,8 @@ public class Xf_FirstFragment extends EasyFragment {
                                 llFuction.setVisibility(View.VISIBLE);
                                 mUsers.addAll(datas);
                                 setmAdapter(mUsers);
-                            } else if (datas != null && datas.size() == 0) {
-                                //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
+                            }else if(datas != null && datas.size() == 0) {
+                            //    ToastUtil.showLongToast(getContext(),"请去设置中心修改位置范围");
                                 rlShow.setVisibility(View.VISIBLE);
                                 mStackLayout.setVisibility(View.GONE);
                                 llFuction.setVisibility(View.GONE);
@@ -495,6 +534,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         LogUtil.e("selectItem  = " + selectItem + "***mUsers.size()  = " + mUsers.size());
@@ -504,7 +544,11 @@ public class Xf_FirstFragment extends EasyFragment {
             }*/
             switch (v.getId()) {
                 case R.id.llRegretsUnLike:
-                    RegretsUnLike(mUsers.get(selectItem));
+                    if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                        BuyMember(mUsers.get(selectItem));
+                    }else {
+                        RegretsUnLike(mUsers.get(selectItem));
+                    }
                     break;
                 case R.id.llUnLike:
                     unLike(mUsers.get(selectItem));
@@ -514,13 +558,32 @@ public class Xf_FirstFragment extends EasyFragment {
                     openSuperSolarize();
                     break;
                 case R.id.llUserLike:
-                    userLike(mUsers.get(selectItem));
+                    if(coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
+                        if(coreManager.getSelf().getLikeTimesPerDay()>0){
+                            userLike(mUsers.get(selectItem));
+                        }else {
+                            BuyMember(mUsers.get(selectItem));
+                        }
+                    }else {
+                        userLike(mUsers.get(selectItem));
+                    }
+                   // userLike(mUsers.get(selectItem));
                     break;
                 case R.id.llSuperLike:
-                    superLike(mUsers.get(selectItem));
+                    if (mUsers.get(selectItem).getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                        BuyMember(mUsers.get(selectItem));
+                    } else {
+                        //判断超级喜欢每天5次
+                        if (mUsers.get(selectItem).getUserVIPPrivilege().getQuantity() == 0) {
+                            ToastUtil.showLongToast(getContext(), "当天次数已用完");
+                        }else {
+                            superLike(mUsers.get(selectItem));
+                        }
+                    }
+
                     break;
             }
-        } else {
+        }else {
             requestData();
         }
     }
@@ -551,20 +614,21 @@ public class Xf_FirstFragment extends EasyFragment {
                             if (updateSuccess) {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(userSuper);
+                                exchangeAdapter(user);
                             }
-                            if (userSuper.getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                           /* if (userSuper.getUserVIPPrivilege().getVipLevel().equals("-1")) {
                                 BuyMember(userSuper);
                             } else {
                                 //判断超级喜欢每天5次
                                 if (userSuper.getUserVIPPrivilege().getQuantity() == 0) {
                                     ToastUtil.showLongToast(getContext(), "当天次数已用完");
-                                } else {
+                                }else {
                                     exchangeAdapter(user);
                                 }
-                            }
+                            }*/
 
-                        } else {
-                            ToastUtil.showLongToast(getContext(), "当天次数已用完");
+                        }else {
+                          //  ToastUtil.showLongToast(getContext(), "当天次数已用完");
                         }
                     }
 
@@ -690,8 +754,8 @@ public class Xf_FirstFragment extends EasyFragment {
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventNotifyUpdate message) {
-        LogUtil.e("message = " + message.MessageData);
-        pageIndex = 0;
+        LogUtil.e("message = " +message.MessageData);
+        pageIndex=0;
         requestData();
     }
 
@@ -727,4 +791,36 @@ public class Xf_FirstFragment extends EasyFragment {
                     }
                 });
     }
+
+    private void getUserInfo() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", UserSp.getInstance(getActivity()).getAccessToken());
+        params.put("userId", coreManager.getSelf().getUserId());
+
+        HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+
+                        if (result.getResultCode() == 1 && result.getData() != null) {
+                           User user = result.getData();
+                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+                            // 设置登陆用户信息
+                            if (updateSuccess) {
+                                // 如果成功，保存User变量，
+                                coreManager.setSelf(user);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+                        ToastUtil.showErrorNet(getActivity());
+                    }
+                });
+    }
+
 }

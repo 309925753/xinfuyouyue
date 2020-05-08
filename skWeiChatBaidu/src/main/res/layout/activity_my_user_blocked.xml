@@ -7,12 +7,27 @@
     android:background="#FEF7F8">
     <include layout="@layout/a_view_actionbar" />
 
+
+
+    <TextView
+        android:id="@+id/tv_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="无屏蔽中的朋友圈"
+        android:textSize="@dimen/sp_15_text_size"
+        android:textColor="@color/text_black_333"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp200"
+        android:visibility="gone"
+        />
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlEnableAutoLoadMore="true"
         app:srlEnableLoadMore="true">
+
 
         <com.xfyyim.cn.view.PullRefreshHeader
             android:layout_width="match_parent"
@@ -22,6 +37,7 @@
             android:id="@+id/rcvUserBlocked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:background="#FEF7F8" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

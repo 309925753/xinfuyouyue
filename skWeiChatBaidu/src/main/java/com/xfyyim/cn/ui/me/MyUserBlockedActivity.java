@@ -18,16 +18,12 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.bean.BillCashBean;
-import com.xfyyim.cn.bean.LikeMeBean;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
-import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
-import com.xfyyim.cn.view.SuperSolarizePopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -64,8 +60,10 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
     SkinTextView tvTitleRight;
     @BindView(R.id.mergerStatus)
     MergerStatus mergerStatus;
+    @BindView(R.id.tv_show)
+    TextView tvShow;
     private SmartRefreshLayout mRefreshLayout;
-    private   List<User> deviceBeanList = new ArrayList<>();
+    private List<User> deviceBeanList = new ArrayList<>();
     private UserBlockedAdapter billCashWithdrawalAdapter;
 
     @Override
@@ -88,8 +86,12 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
                     @Override
                     public void onResponse(ArrayResult<User> result) {
                         if (Result.checkSuccess(getApplicationContext(), result)) {
-                            billCashWithdrawalAdapter.deviceBeanList.addAll(result.getData());
-                            billCashWithdrawalAdapter.notifyDataSetChanged();
+                            if(result.getData()!=null &&  result.getData().size()>0){
+                                billCashWithdrawalAdapter.deviceBeanList.addAll(result.getData());
+                                billCashWithdrawalAdapter.notifyDataSetChanged();
+                            }else {
+                                tvShow.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                     @Override
@@ -108,7 +110,7 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rcvUserBlocked.setLayoutManager(linearLayoutManager);
-         billCashWithdrawalAdapter = new UserBlockedAdapter(this);
+        billCashWithdrawalAdapter = new UserBlockedAdapter(this);
 
         billCashWithdrawalAdapter.deviceBeanList = deviceBeanList;
         rcvUserBlocked.setAdapter(billCashWithdrawalAdapter);
@@ -143,38 +145,39 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
     public void onClick(View v) {
         finish();
     }
-    private void filterUserCircle(String  toUserId){
+
+    private void filterUserCircle(String toUserId) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
         params.put("shieldType", "-1");
         params.put("type", "-1");
         params.put("toUserId", toUserId);
-            HttpUtils.post().url(coreManager.getConfig().USER_SHOW_FILTER_CIRCLE)
-                    .params(params)
-                    .build()
-                    .execute(new BaseCallback<String>(String.class) {
-                        @Override
-                        public void onResponse(ObjectResult<String> result) {
-                            if (Result.checkSuccess(MyUserBlockedActivity.this, result)) {
-                                deviceBeanList.clear();
-                                initData();
-                            }
-                        }
-                        @Override
-                        public void onError(Call call, Exception e) {
-                        }
-                    });
-        }
+        HttpUtils.post().url(coreManager.getConfig().USER_SHOW_FILTER_CIRCLE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<String>(String.class) {
+                    @Override
+                    public void onResponse(ObjectResult<String> result) {
+                        if (Result.checkSuccess(MyUserBlockedActivity.this, result)) {
+                            deviceBeanList.clear();
+                            initData();
 
+                        }
+                    }
 
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
 
 
     public static class UserBlockedAdapter extends RecyclerView.Adapter<UserBlockedAdapter.ViewHolder> implements View.OnClickListener {
         private LayoutInflater mInflater;
         private Context context;
         public List<User> deviceBeanList = new ArrayList<>();
-        private UserBlockedAdapter.BtnOnClick btnOnClick;
+        private BtnOnClick btnOnClick;
 
         @Override
         public void onClick(View v) {
@@ -185,7 +188,7 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
             void btnOnClick(User user);
         }
 
-        public void setBtnOnClice(UserBlockedAdapter.BtnOnClick btnOnClick) {
+        public void setBtnOnClice(BtnOnClick btnOnClick) {
             this.btnOnClick = btnOnClick;
 
         }
@@ -222,7 +225,7 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             if (deviceBeanList != null && deviceBeanList.size() > 0) {
                 final User user = deviceBeanList.get(position);
-                AvatarHelper.getInstance().displayAvatar(user.getUserId(),  holder.ivUserHead, true);
+                AvatarHelper.getInstance().displayAvatar(user.getUserId(), holder.ivUserHead, true);
                 holder.tvShowType.setText("显示");
                 holder.tvUserName.setText(user.getNickName());
                 holder.tvShowType.setOnClickListener(new View.OnClickListener() {

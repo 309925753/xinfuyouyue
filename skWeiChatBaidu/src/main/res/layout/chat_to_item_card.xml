@@ -6,6 +6,9 @@
     android:paddingTop="@dimen/chat_item_padding_top"
     android:paddingRight="@dimen/chat_item_padding_right"
     android:paddingBottom="@dimen/chat_item_padding_bottom">
+    <include
+        layout="@layout/chat_user_cards"
+        />
 
     <TextView
         android:id="@+id/time_tv"

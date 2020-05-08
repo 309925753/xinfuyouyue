@@ -11,17 +11,23 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
 import com.xfyyim.cn.bean.AddAttentionResult;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.circle.PublicMessage;
+import com.xfyyim.cn.bean.event.EventDeleteDynamic;
+import com.xfyyim.cn.bean.event.EventOnlieChat;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.range.SendTextPicActivity;
 import com.xfyyim.cn.util.TimeUtils;
+import com.xfyyim.cn.ui.other.BasicInfoActivity;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -38,7 +44,11 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
+
+import static com.xfyyim.cn.ui.other.BasicInfoActivity.KEY_FROM_ADD_TYPE;
 
 public class PersonBlumActivity extends BaseActivity implements View.OnClickListener {
 
@@ -62,7 +72,9 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     ImageView avatar_img;
     ImageView img_vip;
 
-    LinearLayout ll_fan, ll_att, ll_blum;
+    LinearLayout ll_fan;
+    LinearLayout ll_att;
+    LinearLayout ll_zan;
     TextView tv_fans;
     TextView tv_att;
     TextView tv_zan;
@@ -82,6 +94,9 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     private PublicCareRecyclerAdapter mAdapter;
 
     private boolean isAtt = false;
+       User user;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +112,16 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
 
     }
 
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventDeleteDynamic message) {
+       getUserInfo();
+           if(user.getMsgCount()==1){
+               tv_my_blum.setText("我的相册0");
+           }else {
+               tv_my_blum.setText("我的相册 " + (user.getMsgCount()-1));
+           }
+    }
     public void initView() {
 
 
@@ -113,7 +138,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         img_vip = mHeadView.findViewById(R.id.img_vip);
         ll_fan = mHeadView.findViewById(R.id.ll_fan);
         ll_att = mHeadView.findViewById(R.id.ll_att);
-        ll_blum = mHeadView.findViewById(R.id.ll_blum);
+        ll_zan = mHeadView.findViewById(R.id.ll_zan);
         tv_fans = mHeadView.findViewById(R.id.tv_fans);
         tv_att = mHeadView.findViewById(R.id.tv_att);
         tv_zan = mHeadView.findViewById(R.id.tv_zan);
@@ -126,6 +151,10 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         rv_blum.addHeaderView(mHeadView);
 
         tv_commit.setOnClickListener(this);
+       ll_fan.setOnClickListener(this);
+        ll_att.setOnClickListener(this);
+        ll_zan.setOnClickListener(this);
+
 
 
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
@@ -139,7 +168,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
             requestData(false);
             mRefreshLayout.finishLoadMore(true);
         });
-
+        EventBusHelper.register(this);
     }
 
 
@@ -177,8 +206,31 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra("FriendId", friendId);
                 startActivity(intent);
                 break;
-
-
+            case R.id.ll_fan:
+                if (user.getFansCount() == 0) {
+                    ToastUtil.showLongToast(PersonBlumActivity.this, "暂无粉丝");
+                } else {
+                    Intent intent2 = new Intent(PersonBlumActivity.this, FansActivity.class);
+                    startActivity(intent2);
+                }
+                break;
+            case R.id.ll_att:
+                if (user.getAttCount() == 0) {
+                    ToastUtil.showLongToast(PersonBlumActivity.this, "暂无关注的人");
+                } else {
+                    Intent intent2 = new Intent(PersonBlumActivity.this, AttentionActivity.class);
+                    startActivity(intent2);
+                }
+                break;
+            case R.id.ll_blum:
+                if (user.getFriendsCount() == 0) {
+                    ToastUtil.showLongToast(PersonBlumActivity.this, "暂无获赞的人");
+                } else {
+                    Intent intentperson = new Intent(PersonBlumActivity.this, PersonBlumActivity.class);
+                    intentperson.putExtra("FriendId", user.getUserId());
+                    startActivity(intentperson);
+                }
+                break;
         }
     }
 
@@ -207,9 +259,9 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
             img_vip.setVisibility(View.GONE);
         }
 
-        tv_fans.setText(String.valueOf(user.getFansCount()));
-        tv_att.setText(String.valueOf(user.getAttCount()));
-        tv_zan.setText(String.valueOf(user.getFriendsCount()));
+        tv_fans.setText(String.valueOf(user.getFansCount()));//粉丝
+        tv_att.setText(String.valueOf(user.getAttCount()));//关注
+        tv_zan.setText(String.valueOf(user.getGetPraisesCount()));//获赞数
 
         if (user.getUserId().equals(friendId)) {
             tv_status.setVisibility(View.GONE);
@@ -225,7 +277,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         tv_age.setText(user.getAge() + "  " + user.getStarSign());
 
         tv_my_blum.setText("我的相册 " + user.getMsgCount());
-        tv_zan.setText(String.valueOf(user.getPraiseCount()));
+    //   tv_zan.setText(String.valueOf(user.getPraiseCount()));
 
     }
 
@@ -242,7 +294,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onResponse(ObjectResult<User> result) {
                         if (result.getResultCode() == 1 && result.getData() != null) {
-                            User user = result.getData();
+                             user = result.getData();
                             setUiData(user);
 
                         }

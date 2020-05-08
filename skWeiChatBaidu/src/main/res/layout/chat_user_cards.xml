@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/color_white"
     app:cardCornerRadius="5dp">
     <RelativeLayout
@@ -14,8 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="225dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/my_set_log"/>
+        android:src="@mipmap/background_layer"/>
         <RelativeLayout
+            android:id="@+id/rl_tekan"
             android:layout_width="130dp"
             android:layout_height="35dp"
             android:background="@drawable/bg_new_my_wallet_balance"
@@ -47,7 +48,18 @@
                 />
             </LinearLayout>
         </RelativeLayout>
-    <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="使用偷看特权，立刻查看他的头像"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10_text_size"
+            android:layout_below="@+id/rl_tekan"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp5"
+            />
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp10"
@@ -59,6 +71,7 @@
         android:background="@color/color_white"
         >
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="星辰  25  上海"
@@ -66,6 +79,7 @@
             android:textSize="@dimen/sp_15_text_size"
             />
         <TextView
+            android:id="@+id/tv_interest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="谢谢你喜欢了我！咱们一起聊聊羽毛球、滑雪或者火锅吧！"

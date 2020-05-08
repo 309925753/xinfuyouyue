@@ -31,6 +31,7 @@ import com.xfyyim.cn.ui.circle.range.SendTextPicActivity;
 import com.xfyyim.cn.ui.contacts.ContactsMsgInviteActivity;
 import com.xfyyim.cn.ui.me.CertificationCenterActivity;
 import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
+import com.xfyyim.cn.ui.me.EditInfoActivity;
 import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
 import com.xfyyim.cn.ui.me.NewSettingsActivity;
@@ -169,7 +170,9 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         ll_fan.setOnClickListener(this);
         ll_blum.setOnClickListener(this);
         tv_history.setOnClickListener(this);
-        rlInfoBackground.setOnClickListener(this);
+    //    rlInfoBackground.setOnClickListener(this);
+        avatar_img.setOnClickListener(this);
+        tv_edit_info.setOnClickListener(this);
         EventBusHelper.register(this);
     }
 
@@ -184,11 +187,16 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.rlInfoBackground:
-                Intent intent = new Intent(getActivity(), PersonInfoActivity.class);
-                intent.putExtra("FriendId", coreManager.getSelf().getUserId());
+            case R.id.tv_edit_info:
+                Intent intent = new Intent(getActivity(), EditInfoActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.avatar_img:
+                Intent intent1 = new Intent(getActivity(), PersonInfoActivity.class);
+                intent1.putExtra("FriendId", coreManager.getSelf().getUserId());
+                startActivity(intent1);
+                break;
+
             case R.id.rl_pyq:
                 startToPersonBlum();
                 break;
@@ -196,7 +204,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 startActivity(new Intent(getActivity(), MyPrerogativeActivity.class));
                 break;
             case R.id.rl_likeme:
-                if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v0") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v1") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v2") || coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("v3")) {
+                //查看喜欢我特权按月：0无权 1有权"
+                if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag()==1) {
                     startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
                 } else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
@@ -368,8 +377,9 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         tv_guanzhu.setText(String.valueOf(user.getAttCount()));
 
         tv_name.setText(user.getNickName());
+        tv_blum.setText(String.valueOf(coreManager.getSelf().getMsgCount()));
 
-        if (user.getVipFlag() == -1) {
+        if (user.getUserVIPPrivilege().getVipLevel().equals("-1")) {
             tv_vip.setVisibility(View.INVISIBLE);
         } else {
             tv_vip.setVisibility(View.VISIBLE);
@@ -389,7 +399,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
             }
 
             if (blumList != null && blumList.size() > 0) {
-                tv_blum.setText(String.valueOf(blumList.size()));
+
 
                 int index = blumList.size() == 3 ? 3 : blumList.size();
                 ll_my_blum.removeAllViews();
@@ -416,7 +426,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
         //谁喜欢我，在线聊天  购买
-        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1, "查看谁喜欢我", "哇，99+个小姐姐喜欢我!她们是谁？", userVIPPrivilegePrice);
+        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1, "查看谁喜欢我", "哇，99+个人喜欢我！TA们是谁？", userVIPPrivilegePrice);
         LogUtil.e("BuyMember  BuyMember");
         myBuy.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override

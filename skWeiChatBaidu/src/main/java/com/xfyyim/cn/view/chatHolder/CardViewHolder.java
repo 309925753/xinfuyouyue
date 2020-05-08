@@ -1,13 +1,27 @@
 package com.xfyyim.cn.view.chatHolder;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.event.EventFlashChat;
+import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
 import com.xfyyim.cn.bean.message.ChatMessage;
 import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.ui.me.MyNewWalletActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
+import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
+import com.xfyyim.cn.view.MyWalletPopupWindow;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 class CardViewHolder extends AChatHolderInterface {
 
@@ -15,6 +29,10 @@ class CardViewHolder extends AChatHolderInterface {
     TextView tvPersonName;
     TextView tvPersonSex;
     ImageView ivUnRead;
+    ImageView iv_User_Head;
+    RelativeLayout rl_tekan;
+    TextView tv_name;
+    TextView tv_interest;
 
     @Override
     public int itemLayoutId(boolean isMysend) {
@@ -28,12 +46,19 @@ class CardViewHolder extends AChatHolderInterface {
         tvPersonSex = view.findViewById(R.id.person_sex);
         ivUnRead = view.findViewById(R.id.unread_img_view);
         mRootView = view.findViewById(R.id.chat_warp_view);
+        rl_tekan = view.findViewById(R.id.rl_tekan);
+        tv_name = view.findViewById(R.id.tv_name);
+        tv_interest = view.findViewById(R.id.tv_interest);
+        iv_User_Head=view.findViewById(R.id.iv_User_Head);
+
     }
 
     @Override
     public void fillData(ChatMessage message) {
         AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), ivCardImage, true);
+        AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), iv_User_Head, true);
         tvPersonName.setText(String.valueOf(message.getContent()));
+        tv_name.setText(String.valueOf(message.getContent()));
 
         if (!isMysend) {
             ivUnRead.setVisibility(message.isSendRead() ? View.GONE : View.VISIBLE);
@@ -44,8 +69,12 @@ class CardViewHolder extends AChatHolderInterface {
     protected void onRootClick(View v) {
         sendReadMessage(mdata);
         ivUnRead.setVisibility(View.GONE);
-        BasicInfoActivity.start(mContext, mdata.getObjectId(), BasicInfoActivity.FROM_ADD_TYPE_CARD);
+    // BasicInfoActivity.start(mContext, mdata.getObjectId(), BasicInfoActivity.FROM_ADD_TYPE_CARD);
+        EventBus.getDefault().post(new EventFlashChat(mdata.getToUserId()));
+      //  PersonBlumActivity.start(mContext, mdata.getObjectId());
     }
+
+
 
     /**
      * 重写该方法，return true 表示显示红点

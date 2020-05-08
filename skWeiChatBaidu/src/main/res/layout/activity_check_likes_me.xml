@@ -7,6 +7,19 @@
     android:background="#FFFEF7F8">
 
     <include layout="@layout/a_view_actionbar" />
+
+    <TextView
+        android:id="@+id/tv_rmot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂无喜欢的人"
+        android:layout_below="@+id/mergerStatus"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dp200"
+        android:textSize="@dimen/sp_15_text_size"
+        android:visibility="gone"
+        />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -18,10 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+
         <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rclCheck"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+            />
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <ImageView

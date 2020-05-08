@@ -46,6 +46,8 @@ import com.xfyyim.cn.bean.circle.PublicMessage.Body;
 import com.xfyyim.cn.bean.circle.PublicMessage.Resource;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.collection.CollectionEvery;
+import com.xfyyim.cn.bean.event.EventDeleteDynamic;
+import com.xfyyim.cn.bean.event.EventOnlieChat;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -356,8 +358,11 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
         });
 
         // 设置发布时间 MyCollection
-        viewHolder.time_tv.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) message.getTime()));
-
+        String location="";
+        if(!TextUtils.isEmpty(message.getLocation())){
+            location=message.getLocation();
+        }
+        viewHolder.time_tv.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) message.getTime())+" "+location);
 
 //        viewHolder.delete_tv.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -803,6 +808,8 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
                             // 删除成功，停止正在播放的视频、音频
                             JCVideoPlayer.releaseAllVideos();
                             stopVoice();
+                            //删除回调页面数据
+                            EventBus.getDefault().post(new EventDeleteDynamic("1"));
 
 
                         }

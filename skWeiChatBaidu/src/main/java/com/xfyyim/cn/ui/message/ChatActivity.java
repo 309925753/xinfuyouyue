@@ -41,7 +41,10 @@ import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.VideoFile;
 import com.xfyyim.cn.bean.assistant.GroupAssistantDetail;
 import com.xfyyim.cn.bean.collection.CollectionEvery;
+import com.xfyyim.cn.bean.event.EventFlashChat;
 import com.xfyyim.cn.bean.event.EventNotifyByTag;
+import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.bean.event.EventSyncFriendOperating;
 import com.xfyyim.cn.bean.event.EventTransfer;
 import com.xfyyim.cn.bean.event.EventUploadCancel;
@@ -83,8 +86,11 @@ import com.xfyyim.cn.ui.contacts.SendContactsActivity;
 import com.xfyyim.cn.ui.dialog.CreateCourseDialog;
 import com.xfyyim.cn.ui.map.MapPickerActivity;
 import com.xfyyim.cn.ui.me.MyCollection;
+import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.redpacket.RedDetailsActivity;
 import com.xfyyim.cn.ui.me.redpacket.SendRedPacketActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
+import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.message.single.PersonSettingActivity;
 import com.xfyyim.cn.ui.mucfile.XfileUtils;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
@@ -111,12 +117,15 @@ import com.xfyyim.cn.view.ChatBottomView;
 import com.xfyyim.cn.view.ChatBottomView.ChatBottomListener;
 import com.xfyyim.cn.view.ChatContentView;
 import com.xfyyim.cn.view.ChatContentView.MessageEventListener;
+import com.xfyyim.cn.view.MyWalletPopupWindow;
 import com.xfyyim.cn.view.NoDoubleClickListener;
 import com.xfyyim.cn.view.PullDownListView;
 import com.xfyyim.cn.view.SelectCardPopupWindow;
 import com.xfyyim.cn.view.SelectFileDialog;
 import com.xfyyim.cn.view.SelectionFrame;
+import com.xfyyim.cn.view.WaitingChatPopupWindow;
 import com.xfyyim.cn.view.chatHolder.MessageEventClickFire;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.view.photopicker.PhotoPickerActivity;
 import com.xfyyim.cn.view.photopicker.SelectModel;
 import com.xfyyim.cn.view.photopicker.intent.PhotoPickerIntent;
@@ -156,6 +165,8 @@ import okhttp3.Call;
 import pl.droidsonroids.gif.GifDrawable;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
+
+import static com.xfyyim.cn.MyApplication.getContext;
 
 /**
  * 单聊界面
@@ -3104,4 +3115,68 @@ public class ChatActivity extends BaseActivity implements
             }
         }
     }
+    String  toUserId=null;
+    /**
+     * 闪聊偷看
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventFlashChat message) {
+        toUserId=message.MessageData;
+        if(coreManager.getSelf().getUserVIPPrivilege().getChatLookQuantity()>=0){
+            Intent intentperson = new Intent(ChatActivity.this, PersonBlumActivity.class);
+            intentperson.putExtra("FriendId", message.MessageData);
+            startActivity(intentperson);
+            finish();
+        }else {
+            MyWalletPopupWindow myWalletPeek = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                myWalletPeek = new MyWalletPopupWindow(this, coreManager.getSelf().getUserVIPPrivilegeConfig(), 4);
+            }
+            myWalletPeek.setBtnOnClice(new MyWalletPopupWindow.BtnOnClick() {
+                @Override
+                public void btnOnClick(String payType, int selectCounts, int oncePrice, int Frequency10More, int Frequency10MorePrice) {
+                    LogUtil.e("payType =  " + payType + "-------------selectCounts = " + selectCounts + "--oncePrice-" + oncePrice + "--Frequency10More-" + Frequency10More + "--Frequency10MorePrice--" + Frequency10MorePrice);
+                    confirmPay(4,payType,selectCounts,oncePrice,Frequency10More,Frequency10MorePrice);
+                }
+            });
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        //支付成功
+        ToastUtil.showLongToast(getContext(),"支付成功");
+        Intent intentperson = new Intent(ChatActivity.this, PersonBlumActivity.class);
+        intentperson.putExtra("FriendId", toUserId);
+        startActivity(intentperson);
+        finish();
+    }
+    /**
+     * 支付给的数据  支付功能类型 支付方式  选中次数 单次价格 自定价格  自定次数
+     * @param functionType
+     * @param payType
+     * @param selectCounts
+     * @param oncePrice
+     * @param Frequency10More
+     * @param Frequency10MorePrice
+     */
+    private void confirmPay(int functionType,String payType, int selectCounts, int oncePrice,int Frequency10More, int Frequency10MorePrice) {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("funType", String.valueOf(functionType));
+        if(Frequency10More==0){
+            params.put("price", String.valueOf(oncePrice));
+            params.put("num", String.valueOf(selectCounts));
+        }else if(Frequency10More>=0) {
+            params.put("price", String.valueOf(Frequency10MorePrice));
+            params.put("num", String.valueOf(Frequency10More));
+        }
+        params.put("mon", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        params.put("payType", payType);
+        AlipayHelper.rechargePay(ChatActivity.this, coreManager,params);
+    }
+
 }

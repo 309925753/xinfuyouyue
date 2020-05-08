@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +38,8 @@ import com.xfyyim.cn.Reporter;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.RoomMember;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.bean.message.ChatMessage;
 import com.xfyyim.cn.bean.message.XmppMessage;
 import com.xfyyim.cn.broadcast.MsgBroadcast;
@@ -52,7 +56,9 @@ import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.groupchat.FaceToFaceGroup;
 import com.xfyyim.cn.ui.groupchat.SelectContactsActivity;
+import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.NearPersonActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.ui.message.MucChatActivity;
 import com.xfyyim.cn.ui.message.multi.RoomInfoActivity;
@@ -62,6 +68,7 @@ import com.xfyyim.cn.ui.other.BasicInfoActivity;
 import com.xfyyim.cn.ui.search.SearchAllActivity;
 import com.xfyyim.cn.util.Constants;
 import com.xfyyim.cn.util.DisplayUtil;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.HtmlUtils;
 import com.xfyyim.cn.util.HttpUtil;
 import com.xfyyim.cn.util.PreferenceUtils;
@@ -72,8 +79,10 @@ import com.xfyyim.cn.util.UiUtils;
 import com.xfyyim.cn.view.ChatBottomView;
 import com.xfyyim.cn.view.HeadView;
 import com.xfyyim.cn.view.MessagePopupWindow;
+import com.xfyyim.cn.view.MyPrivilegePopupWindow;
 import com.xfyyim.cn.view.SelectionFrame;
 import com.xfyyim.cn.view.VerifyDialog;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.xmpp.ListenerManager;
 import com.xfyyim.cn.xmpp.XmppConnectionManager;
 import com.xfyyim.cn.xmpp.listener.AuthStateListener;
@@ -94,6 +103,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -388,6 +399,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 //         mNetErrorLl.setOnClickListener(this);
 //         mIvNoData = mHeadView.findViewById(R.id.iv_no_nearly_msg);
         TextView     nick_name_desc= mHeadView.findViewById(R.id.nick_name_desc);
+         RelativeLayout  rl_like_chat = mHeadView.findViewById(R.id.rl_like_chat);
          if (!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount() + "")) {
              nick_name_desc.setText("查看谁喜欢我："+coreManager.getSelf().getLikeMeCount()+"人等你撩");
          }
@@ -396,6 +408,18 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
          mAdapter = new MessageListAdapter();
          mAdapter.setHasStableIds(true);
          mListView.setAdapter(mAdapter);
+         rl_like_chat.setOnClickListener(new View.OnClickListener() {
+             @RequiresApi(api = Build.VERSION_CODES.O)
+             @Override
+             public void onClick(View v) {
+                 //查看喜欢我特权按月：0无权 1有权"
+                 if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag()==1) {
+                     startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
+                 } else {
+                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                 }
+             }
+         });
          mRefreshLayout.setOnRefreshListener(rl -> {
              refresh();
          });
@@ -430,6 +454,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
          intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);// 网络发生改变
          intentFilter.addAction(Constants.NOT_AUTHORIZED);// XMPP密码错误
          getActivity().registerReceiver(mUpdateReceiver, intentFilter);
+         EventBusHelper.register(this);
      }
 
      /**
@@ -1137,5 +1162,55 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
                          });
              });
          }
+     }
+     //购买会员
+     @RequiresApi(api = Build.VERSION_CODES.O)
+     private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
+         //谁喜欢我，在线聊天  购买
+         MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1, "查看谁喜欢我", "哇，99+个人喜欢我！TA们是谁？", userVIPPrivilegePrice);
+         LogUtil.e("BuyMember  BuyMember");
+         myBuy.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
+             @Override
+             public void btnOnClick(String type, int vip) {
+                 LogUtil.e("**********************************************************");
+                 LogUtil.e("type = " + type + "---vip = " + vip);
+                 LogUtil.e("**********************************************************");
+                 submitPay(type, vip, userVIPPrivilegePrice);
+             }
+         });
+     }
+
+     /**
+      * 转支付类型返回支付签名数据
+      *
+      * @param type
+      * @param vip
+      */
+     private void submitPay(String type, int vip, UserVIPPrivilegePrice _userVIPPrivilegePrice) {
+         Map<String, String> params = new HashMap<>();
+         params.put("access_token", coreManager.getSelfStatus().accessToken);
+         params.put("payType", type);
+
+         if (vip == 1) {
+             params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice1() + "");
+             params.put("mon", "1");
+         } else if (vip == 2) {
+             params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice2() + "");
+             params.put("mon", "3");
+         } else if (vip == 3) {
+             params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice3() + "");
+             params.put("mon", "12");
+         }
+         params.put("funType", String.valueOf(6));
+         params.put("num", String.valueOf(-1));
+         params.put("level", String.valueOf(-1));
+         AlipayHelper.rechargePay(getActivity(), coreManager, params);
+
+     }
+
+     @SuppressWarnings("unused")
+     @Subscribe(threadMode = ThreadMode.MainThread)
+     public void helloEventBus(EventPaySuccess message) {
+         startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
      }
  }
