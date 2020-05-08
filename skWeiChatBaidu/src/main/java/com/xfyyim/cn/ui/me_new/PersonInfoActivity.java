@@ -147,7 +147,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.line_question)
     View line_question;
     @BindView(R.id.line_sign)
-    View line_sign;  @BindView(R.id.line)
+    View line_sign;
+    @BindView(R.id.line)
     View line;
     User user;
     MyInAdapter adapter;
@@ -163,12 +164,13 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         unbinder = ButterKnife.bind(this);
         friendId = getIntent().getStringExtra("FriendId");
         initActionBar();
-        mLoginId=coreManager.getSelf().getUserId();
+        mLoginId = coreManager.getSelf().getUserId();
         rl_blum.setOnClickListener(this);
         rl_seelike.setOnClickListener(this);
         EventBusHelper.register(this);
 
     }
+
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventPaySuccess message) {
@@ -183,8 +185,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         iv_title_left.setVisibility(View.VISIBLE);
         iv_title_left.setOnClickListener(this);
         tv_title_center.setText("个人资料");
-
-        if (friendId.equals(usrId)) {
+        if (friendId.equals(mLoginId)) {
             iv_title_right.setVisibility(View.VISIBLE);
             iv_title_right.setImageDrawable(getResources().getDrawable(R.mipmap.pen_edit));
             iv_title_right.setOnClickListener(this);
@@ -206,7 +207,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.rl_seelike:
-                if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag()==1) {
+                if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag() == 1) {
                     startActivity(new Intent(PersonInfoActivity.this, CheckLikesMeActivity.class));
                 } else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
@@ -215,21 +216,12 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
             case R.id.rl_blum:
 
-//                if (!mLoginId.equals(friendId)) {
-//                    if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
-//                        ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
-//                    } else {
-//                        Intent intent1=new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
-//                        intent1.putExtra("FriendId",friendId);
-//                        startActivity(intent1);
-//                    }
-//                }
 
                 if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
                     ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
                 } else {
-                    Intent intent1=new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
-                    intent1.putExtra("FriendId",friendId);
+                    Intent intent1 = new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
+                    intent1.putExtra("FriendId", friendId);
                     startActivity(intent1);
                 }
                 break;
@@ -272,26 +264,24 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     }
 
     public void setUiData(User user) {
-if (user.getNickName()!=null&&!TextUtils.isEmpty(user.getNickName())){
-    nick_name.setText(user.getNickName());
-}
+        if (user.getNickName() != null && !TextUtils.isEmpty(user.getNickName())) {
+            nick_name.setText(user.getNickName());
+        }
 
 
+        if (!friendId.equals(mLoginId) ){
 
-if (!friendId.equals(user.getUserId())){
-
-    if (user.getDistance()>0){
-        tv_state_distance.setVisibility(View.VISIBLE);
-        double distance= Math.rint(user.getDistance()/100)/10;
-        tv_state_distance.setText(distance+" km");
-    }
-    if (user.getShowLastLoginTime()>0){
-        tv_last_state.setVisibility(View.VISIBLE);
-        String state= TimeUtils.getFriendlyTimeDesc(mContext, (int) user.getShowLastLoginTime());
-        tv_last_state.setText(state+"活跃");
-    }
-}
-
+            if (user.getDistance() > 0) {
+                tv_state_distance.setVisibility(View.VISIBLE);
+                double distance = Math.rint(user.getDistance() / 100) / 10;
+                tv_state_distance.setText(distance + " km");
+            }
+            if (user.getShowLastLoginTime() > 0) {
+                tv_last_state.setVisibility(View.VISIBLE);
+                String state = TimeUtils.getFriendlyTimeDesc(mContext, (int) user.getShowLastLoginTime());
+                tv_last_state.setText(state + "活跃");
+            }
+        }
 
 
 //认证中心
@@ -302,15 +292,17 @@ if (!friendId.equals(user.getUserId())){
         }
 
         //未开通VIP，不显示VIP标志，昵称显示为黑色
-        if(user.getUserVIPPrivilege().getVipLevel().equals("-1")){
-            tv_vip.setVisibility(View.INVISIBLE);
+        if (user.getUserVIPPrivilege().getVipLevel().equals("-1")) {
+            tv_vip.setVisibility(View.GONE);
             nick_name.setTextColor(getResources().getColor(R.color.text_black_333));
-        }else {
+        } else {
+            nick_name.setTextColor(getResources().getColor(R.color.text_vip_color));
+
             tv_vip.setVisibility(View.VISIBLE);
         }
 
         //喜欢我的人数
-        if (friendId.equals(user.getUserId())) {
+        if (friendId.equals(mLoginId)) {
             line.setVisibility(View.VISIBLE);
             rl_seelike.setVisibility(View.VISIBLE);
         } else {
@@ -342,16 +334,15 @@ if (!friendId.equals(user.getUserId())){
 
         imgesUrl.clear();
         long randomNum = System.currentTimeMillis();
-        String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false)+"?"+randomNum;
+        String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false) + "?" + randomNum;
 
         if (user.getMyPhotos() != null && user.getMyPhotos().size() > 0) {
             for (PhotoEntity photo : user.getMyPhotos()) {
                 imgesUrl.add(photo.getPhotoUtl());
             }
-            imgesUrl.add(0,headUrl);
+            imgesUrl.add(0, headUrl);
 
             banner.setVisibility(View.VISIBLE);
-
 
 
             int index = user.getMyPhotos().size() > 3 ? 3 : user.getMyPhotos().size();
@@ -380,14 +371,14 @@ if (!friendId.equals(user.getUserId())){
         banner.setmAdapter(new XBanner.XBannerAdapter() {
             @Override
             public void loadBanner(XBanner banner, Object model, View view, int position) {
-                LogUtil.e("cjh url "+imgesUrl.get(position));
+                LogUtil.e("cjh url " + imgesUrl.get(position));
 
                 GlideImageUtils.setImageView(PersonInfoActivity.this, imgesUrl.get(position), (ImageView) view);
             }
         });
 
 
-        private_wechat_like.setText(String.valueOf(user.getLikeMeCount()) + "人喜欢了你");
+        private_wechat_like.setText(user.getLikeMeCount() + "人喜欢了你");
 
 
         //签名
@@ -601,6 +592,7 @@ if (!friendId.equals(user.getUserId())){
         skillTextView.setPadding(leftRightPadding, topBottomPadding, leftRightPadding, topBottomPadding);
         return skillTextView;
     }
+
     //购买会员
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {

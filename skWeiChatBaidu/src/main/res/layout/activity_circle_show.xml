@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/et_content"
-                android:background="@color/white"
+                android:background="@color/new_main"
                 android:orientation="horizontal"
                 android:padding="10dp">
 

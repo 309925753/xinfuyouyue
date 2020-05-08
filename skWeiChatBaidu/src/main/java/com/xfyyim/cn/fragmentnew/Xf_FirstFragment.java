@@ -428,8 +428,6 @@ public class Xf_FirstFragment extends EasyFragment {
             }
 
             if (mData.get(position).getUserVIPPrivilege() != null) {
-
-
                 if (mData.get(position).getUserVIPPrivilege().getVipLevel().equals("-1")) {
                     holder.tvVip.setVisibility(View.INVISIBLE);
                 } else {
@@ -559,10 +557,14 @@ public class Xf_FirstFragment extends EasyFragment {
             }*/
             switch (v.getId()) {
                 case R.id.llRegretsUnLike:
+                    if (coreManager.getSelf().getUserVIPPrivilege()!=null){
+
+
                     if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
                         BuyMember(mUsers.get(selectItem));
                     }else {
                         RegretsUnLike(mUsers.get(selectItem));
+                    }
                     }
                     break;
                 case R.id.llUnLike:
@@ -573,14 +575,16 @@ public class Xf_FirstFragment extends EasyFragment {
                     openSuperSolarize();
                     break;
                 case R.id.llUserLike:
-                    if(coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
-                        if(coreManager.getSelf().getLikeTimesPerDay()>0){
+                    if (coreManager.getSelf().getUserVIPPrivilege()!=null) {
+                        if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                            if (coreManager.getSelf().getLikeTimesPerDay() > 0) {
+                                userLike(mUsers.get(selectItem));
+                            } else {
+                                BuyMember(mUsers.get(selectItem));
+                            }
+                        } else {
                             userLike(mUsers.get(selectItem));
-                        }else {
-                            BuyMember(mUsers.get(selectItem));
                         }
-                    }else {
-                        userLike(mUsers.get(selectItem));
                     }
                    // userLike(mUsers.get(selectItem));
                     break;
@@ -588,18 +592,20 @@ public class Xf_FirstFragment extends EasyFragment {
                     if(coreManager.getSelf()==null){
                         return;
                     }
-                    if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
-                        if((coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity()==0)){
-                            BuyMember(mUsers.get(selectItem));
-                        }
-                    } else {
-                        if(coreManager.getSelf().getUserVIPPrivilege().getQuantity()>=1||coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity()>=1){
-                            tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
-                            superLike(mUsers.get(selectItem));
-                        }else {
-                            ToastUtil.showLongToast(getContext(), "当天次数已用完");
-                        }
+                    if (coreManager.getSelf().getUserVIPPrivilege()!=null) {
+                        if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                            if ((coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() == 0)) {
+                                BuyMember(mUsers.get(selectItem));
+                            }
+                        } else {
+                            if (coreManager.getSelf().getUserVIPPrivilege().getQuantity() >= 1 || coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
+                                tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
+                                superLike(mUsers.get(selectItem));
+                            } else {
+                                ToastUtil.showLongToast(getContext(), "当天次数已用完");
+                            }
 
+                        }
                     }
 
                     break;
@@ -638,8 +644,10 @@ public class Xf_FirstFragment extends EasyFragment {
                                 exchangeAdapter(user);
                             }
 
-                            if(userSuper.getUserVIPPrivilege().getQuantity()>=1||userSuper.getUserVIPPrivilege().getSuperLikeQuantity()>=1){
-                                tvlikeTimes.setText(String.valueOf(userSuper.getUserVIPPrivilege().getQuantity()+userSuper.getUserVIPPrivilege().getSuperLikeQuantity()));
+                            if (userSuper.getUserVIPPrivilege()!=null) {
+                                if (userSuper.getUserVIPPrivilege().getQuantity() >= 1 || userSuper.getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
+                                    tvlikeTimes.setText(String.valueOf(userSuper.getUserVIPPrivilege().getQuantity() + userSuper.getUserVIPPrivilege().getSuperLikeQuantity()));
+                                }
                             }
                            /* if (userSuper.getUserVIPPrivilege().getVipLevel().equals("-1")) {
                                 BuyMember(userSuper);
@@ -668,6 +676,9 @@ public class Xf_FirstFragment extends EasyFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember(User user) {
         //显示VIP购买会员
+        if ( user.getUserVIPPrivilege()!=null){
+
+
         MyVipPaymentPopupWindow myVipPaymentPopupWindow = new MyVipPaymentPopupWindow(getActivity(), user.getUserVIPPrivilegeConfig(), coreManager.getSelf().getUserId(), coreManager.getSelf().getNickName(), user.getUserVIPPrivilege().getVipLevel());
         myVipPaymentPopupWindow.setBtnOnClice(new MyVipPaymentPopupWindow.BtnOnClick() {
             @Override
@@ -676,6 +687,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 submitPay(type, vip, user.getUserVIPPrivilegeConfig());
             }
         });
+        }
     }
 
     /**
@@ -732,18 +744,20 @@ public class Xf_FirstFragment extends EasyFragment {
      * 支付成功回调同时再弹出超级爆光页面
      */
     private void openSuperSolarize() {
-        SuperCriticalLightWindow superCriticalLightWindow = new SuperCriticalLightWindow(getActivity(), coreManager.getSelf().getUserVIPPrivilegeConfig());
-        superCriticalLightWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
-            @Override
-            public void btnOnClick(String type) {
-                LogUtil.e("type =  " + type);
+       if (coreManager.getSelf().getUserVIPPrivilegeConfig()!=null) {
+           SuperCriticalLightWindow superCriticalLightWindow = new SuperCriticalLightWindow(getActivity(), coreManager.getSelf().getUserVIPPrivilegeConfig());
+           superCriticalLightWindow.setBtnOnClice(new SuperCriticalLightWindow.BtnOnClick() {
+               @Override
+               public void btnOnClick(String type) {
+                   LogUtil.e("type =  " + type);
                         /*Intent intent = new Intent(MyNewWalletActivity.this, WxPayAdd.class);
                         startActivity(intent);*/
-                //   AlipayHelper.recharge(getActivity(), coreManager, userVIPPrivilegePrice.getOutPrice()+"");
-                //
-                superLightPay(type, coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice());
-            }
-        });
+                   //   AlipayHelper.recharge(getActivity(), coreManager, userVIPPrivilegePrice.getOutPrice()+"");
+                   //
+                   superLightPay(type, coreManager.getSelf().getUserVIPPrivilegeConfig().getOutPrice());
+               }
+           });
+       }
     }
 
     /**

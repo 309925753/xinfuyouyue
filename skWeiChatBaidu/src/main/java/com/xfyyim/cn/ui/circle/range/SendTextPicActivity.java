@@ -46,6 +46,7 @@ import com.xfyyim.cn.bean.UploadFileResult;
 import com.xfyyim.cn.bean.VideoFile;
 import com.xfyyim.cn.bean.circle.TopicEntity;
 import com.xfyyim.cn.bean.event.MessageVideoFile;
+import com.xfyyim.cn.bean.event.SendTextSucc;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.ChoosePop;
 import com.xfyyim.cn.helper.DialogHelper;
@@ -359,8 +360,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             switch (v.getId()) {
                 case R.id.select_video:
 
-                    ll_video.setVisibility(View.VISIBLE);
-                    rcvImg.setVisibility(View.GONE);
                     selectVideo();
                     mChoosePop.dismiss();
 
@@ -514,6 +513,8 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                             Intent intent = new Intent();
                             intent.putExtra(AppConstant.EXTRA_MSG_ID, result.getData());
                             setResult(RESULT_OK, intent);
+                            EventBus.getDefault().post(new SendTextSucc());
+
                             finish();
                         }
                     }
@@ -697,6 +698,9 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             if(data==null){
                 return;
             }
+
+            ll_video.setVisibility(View.VISIBLE);
+            rcvImg.setVisibility(View.GONE);
             String json = data.getStringExtra(AppConstant.EXTRA_VIDEO_LIST);
             List<VideoFile> fileList = JSON.parseArray(json, VideoFile.class);
             if (fileList == null || fileList.size() == 0) {

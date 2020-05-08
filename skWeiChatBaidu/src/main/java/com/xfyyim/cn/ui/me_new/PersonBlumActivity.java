@@ -17,6 +17,7 @@ import com.xfyyim.cn.bean.AddAttentionResult;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.event.EventDeleteDynamic;
+import com.xfyyim.cn.bean.event.SendTextSucc;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
@@ -116,6 +117,13 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                tv_my_blum.setText("我的相册 " + (user.getMsgCount()-1));
            }
     }
+
+ @Subscribe(threadMode = ThreadMode.MainThread)
+    public void refreshData( SendTextSucc sendTextSucc){
+                requestData(true);
+    }
+
+
     public void initView() {
 
 
@@ -315,6 +323,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("forUserId", friendId);
         params.put("pageSize", String.valueOf(PAGER_SIZE));
         params.put("pageIndex", String.valueOf(pager_index));
 
@@ -443,4 +452,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                     }
                 });
     }
+
+
+
 }

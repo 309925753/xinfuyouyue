@@ -313,7 +313,7 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.ll_add_movie:
                 starToListActivity("添加标签", "myMovie", user.getMyMovie());
-break;
+                break;
             case R.id.ll_add_book:
                 starToListActivity("添加标签", "myBookAndComic", user.getMyBookAndComic());
 
@@ -564,14 +564,15 @@ break;
                     map.put(listImage.get(i), 2);
                 }
             }
-        }else{
-            GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg,  img_blum_1);
+        } else {
+            GlideImageUtils.setImageDrawable(EditInfoActivity.this, R.drawable.blum_bg, img_blum_1);
         }
     }
+
     List<QuestEntity> removelist;
 
     public void setAdapter(List<QuestEntity> entities) {
-        removelist=entities;
+        removelist = entities;
         if (adapter == null) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EditInfoActivity.this);
             rv_question.setLayoutManager(linearLayoutManager);
@@ -770,26 +771,27 @@ break;
         dialogView = new DialogView(this, title, "", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = ((EditText) v).getText().toString().trim();
-                if (name == null || TextUtils.isEmpty(name)) {
-                  allQuestion.remove(position);
-                    adapter.notifyDataSetChanged();
-                }else{
-                    try {
+                try {
+                    String name = ((EditText) v).getText().toString().trim();
 
-
+                    if (name == null || TextUtils.isEmpty(name)) {
+                        allQuestion.remove(position);
+                        adapter.notifyDataSetChanged();
+                    } else {
                         allQuestion.get(position).setAnswer(name);
-
-                        String json = JSON.toJSONString(allQuestion);
-                        updateValue(json);
-
-
-                    } catch (Exception e) {
-
                     }
-                }
-                dialogView.getDialog().dismiss();
 
+                    String json = JSON.toJSONString(allQuestion);
+                    updateValue(json);
+                } catch (Exception e) {
+
+                }
+
+
+
+                dialogView.getDialog().
+
+            dismiss();
             }
         });
         dialogView.show();

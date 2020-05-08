@@ -76,7 +76,7 @@ public class ZanActivity extends BaseActivity {
                 finish();
             }
         });
-        tv_title_center.setText("获赞列表");
+        tv_title_center.setText("评论列表");
         iv_title_right.setVisibility(View.GONE);
 
     }

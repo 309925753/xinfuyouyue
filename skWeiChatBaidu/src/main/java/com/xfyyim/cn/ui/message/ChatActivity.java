@@ -2498,6 +2498,7 @@ public class ChatActivity extends BaseActivity implements
         }
 
         ImageView mMore = (ImageView) findViewById(R.id.iv_title_right);
+        mMore.setVisibility(View.GONE);
         mMore.setImageResource(R.mipmap.set_icon);
         mMore.setOnClickListener(new NoDoubleClickListener() {
             @Override
