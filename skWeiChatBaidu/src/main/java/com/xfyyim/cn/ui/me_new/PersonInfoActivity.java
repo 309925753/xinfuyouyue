@@ -275,6 +275,13 @@ if (!friendId.equals(user.getUserId())){
             ll_renzheng.setVisibility(View.GONE);
         }
 
+        //未开通VIP，不显示VIP标志，昵称显示为黑色
+        if(user.getUserVIPPrivilege().getVipLevel().equals("-1")){
+            tv_vip.setVisibility(View.INVISIBLE);
+            nick_name.setTextColor(getResources().getColor(R.color.text_black_333));
+        }else {
+            tv_vip.setVisibility(View.VISIBLE);
+        }
 
         //喜欢我的人数
         if (friendId.equals(user.getUserId())) {

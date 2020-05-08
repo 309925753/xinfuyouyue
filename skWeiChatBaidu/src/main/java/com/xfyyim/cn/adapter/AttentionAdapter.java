@@ -28,8 +28,8 @@ public class AttentionAdapter extends BaseQuickAdapter<AttentionEntity, BaseView
     protected void convert(BaseViewHolder helper, AttentionEntity item) {
         String time= TimeUtils.getFriendlyTimeDesc(mContext, item.getCreateTime());
              helper.setText(R.id.tv_time,time);
-             helper.setText(R.id.nick_name_tv,item.getToNickname());
-        String url = AvatarHelper.getAvatarUrl(String.valueOf(item.getToUserId()), false);
+             helper.setText(R.id.nick_name_tv,item.getNickname());
+        String url = AvatarHelper.getAvatarUrl(String.valueOf(item.getUserId()), false);
 
         GlideImageUtils.setImageView(mContext,url,helper.getView(R.id.avatar_img));
 

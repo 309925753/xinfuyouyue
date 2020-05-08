@@ -139,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="清理本地缓存数据只会移除所有媒体文件以减轻当前应用使用的缓存空间，在
-        \n                                      需要时候所有内容将会重新从服务器下载到本地."
+        \n需要时候所有内容将会重新从服务器下载到本地."
         android:textColor="@color/text_black_999"
         android:textSize="10sp"
         android:layout_alignParentBottom="true"

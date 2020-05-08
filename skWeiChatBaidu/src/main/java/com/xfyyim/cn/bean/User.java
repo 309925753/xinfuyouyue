@@ -112,6 +112,21 @@ public class User implements Parcelable, Cloneable {
     private int  msgCount ;// 个人发布动态数
     private int  isMatch; // 是否匹配 0- 匹配 1- 未匹配
 
+
+
+    private int praise;//
+
+
+    public int getGetPraisesCount() {
+        return getPraisesCount;
+    }
+
+    public void setGetPraisesCount(int getPraisesCount) {
+        this.getPraisesCount = getPraisesCount;
+    }
+
+    private int getPraisesCount;//获赞数只统计点赞数
+
     //我的兴趣爱好
     private String myIndustry;
     private String myWork;
@@ -129,6 +144,13 @@ public class User implements Parcelable, Cloneable {
     private String mySports;
     private List<QuestionEntity> userQuestions;
 
+    public int getPraise() {
+        return praise;
+    }
+
+    public void setPraise(int praise) {
+        this.praise = praise;
+    }
 
     public int getIsBeAtt() {
         return isBeAtt;

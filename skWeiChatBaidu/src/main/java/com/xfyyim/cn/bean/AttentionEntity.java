@@ -52,6 +52,15 @@ public class AttentionEntity {
     private int isOpenSnapchat;
     private List<?> toFriendsRole;
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    private String  nickname;//别人的姓名
     public String getRsaMsgPublicKey() {
         return rsaMsgPublicKey;
     }

@@ -19,6 +19,16 @@ public class LikeMeBean {
     private String nickname;
     private int userId;
 
+    public String getMyNickname() {
+        return myNickname;
+    }
+
+    public void setMyNickname(String myNickname) {
+        this.myNickname = myNickname;
+    }
+
+    private String myNickname;
+
     public int getAge() {
         return age;
     }

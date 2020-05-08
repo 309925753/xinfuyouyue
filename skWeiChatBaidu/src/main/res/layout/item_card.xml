@@ -126,17 +126,32 @@
 
             />
 
-        <TextView
+            <LinearLayout
+                android:id="@+id/ll_sex_bg"
+                android:layout_width="@dimen/card_width"
+                android:layout_height="@dimen/card_height"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/share_sign_pink"
+                android:gravity="center">
 
-            android:id="@+id/t2"
-            android:layout_width="@dimen/card_width"
-            android:layout_height="@dimen/card_height"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/share_sign_pink"
-            android:gravity="center"
-            android:text="19"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
+                <ImageView
+                    android:id="@+id/img_sex"
+                    android:layout_width="10dp"
+
+                    android:layout_height="10dp"
+                    android:src="@drawable/sex_man" />
+
+
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:id="@+id/t2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="19"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
         <TextView
 
@@ -153,7 +168,6 @@
 
 
         <TextView
-
             android:id="@+id/t4"
             android:layout_width="@dimen/card_width"
             android:layout_height="@dimen/card_height"
@@ -176,6 +190,7 @@
 
             />
         <TextView
+            android:id="@+id/tv_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
