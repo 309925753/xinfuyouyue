@@ -195,7 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="卢湾  (100m)"
+            tools:text="卢湾  (100m)"
             android:textColor="@color/text_black_666"
             android:textSize="10sp"
 

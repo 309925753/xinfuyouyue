@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me_new;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +14,6 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.AttentionAdapter;
 import com.xfyyim.cn.bean.AddAttentionResult;
 import com.xfyyim.cn.bean.AttentionEntity;
-import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.util.ToastUtil;
@@ -22,7 +22,6 @@ import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
-import com.xuan.xuanhttplibrary.okhttp.result.Result;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import java.io.IOException;
@@ -140,7 +139,9 @@ public class FansActivity extends BaseActivity {
             attentionAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                    Intent intent=new Intent(FansActivity.this,PersonInfoActivity.class);
+                    intent.putExtra("FriendId",String.valueOf(list.get(position).getUserId()));
+                    startActivity(intent);
                 }
             });
 
@@ -150,7 +151,7 @@ public class FansActivity extends BaseActivity {
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                     if (R.id.tv_att==view.getId()){
                         ToastUtil.showLongToast(FansActivity.this,"关注");
-                        doAddAttention(String.valueOf(list.get(position).getToUserId()));
+                        doAddAttention(String.valueOf(list.get(position).getUserId()));
                     }
                 }
             });

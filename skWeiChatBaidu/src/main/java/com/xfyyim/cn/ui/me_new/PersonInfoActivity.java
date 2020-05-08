@@ -163,8 +163,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_person_info);
         unbinder = ButterKnife.bind(this);
         friendId = getIntent().getStringExtra("FriendId");
-        initActionBar();
         mLoginId = coreManager.getSelf().getUserId();
+        initActionBar();
         rl_blum.setOnClickListener(this);
         rl_seelike.setOnClickListener(this);
         EventBusHelper.register(this);

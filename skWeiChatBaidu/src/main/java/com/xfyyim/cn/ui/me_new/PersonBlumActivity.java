@@ -57,8 +57,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
     ImageView iv_title_left;
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
-    @BindView(R.id.tv_empty_dt)
-    TextView tv_empty_dt;
+
     @BindView(R.id.rl_root)
     LinearLayout rl_root;
 

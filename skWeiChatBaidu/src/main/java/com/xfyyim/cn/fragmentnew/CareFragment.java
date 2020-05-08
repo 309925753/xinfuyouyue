@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,6 +79,9 @@ public class CareFragment extends EasyFragment {
     private SwipeRecyclerView mListView;
     private PublicCareRecyclerAdapter mAdapter;
     private List<PublicMessage> mMessages = new ArrayList<>();
+
+    private TextView tv_empty_dt;
+
     private boolean more;
     private String messageId;
     private boolean showTitle = true;
@@ -123,7 +128,7 @@ private RelativeLayout root;
     public void initViews() {
         more = true;
         mUserId = coreManager.getSelf().getUserId();
-
+        tv_empty_dt=findViewById(R.id.tv_empty_dt);
         mUserName = coreManager.getSelf().getNickName();
         mListView = findViewById(R.id.recyclerView);
         mListView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -262,6 +267,10 @@ private RelativeLayout root;
                                 mMessages.clear();
                             }
                             if (data != null && data.size() > 0) {
+
+                                tv_empty_dt.setVisibility(View.GONE);
+                                mRefreshLayout.setVisibility(View.VISIBLE);
+
                                 mMessages.addAll(data);
                                 // 记录最后一条说说的id
                                 messageId = data.get(data.size() - 1).getMessageId();
@@ -273,6 +282,8 @@ private RelativeLayout root;
                                     more = false;
                                 }
                             } else {
+                                tv_empty_dt.setVisibility(View.VISIBLE);
+                                mRefreshLayout.setVisibility(View.GONE);
                                 // 服务器未返回数据，下拉不再去请求
                                 more = false;
                             }
