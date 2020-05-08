@@ -381,7 +381,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         tv_blum.setText(String.valueOf(coreManager.getSelf().getMsgCount()));
 
         if (user.getUserVIPPrivilege().getVipLevel().equals("-1")) {
-            tv_vip.setVisibility(View.INVISIBLE);
+            tv_vip.setVisibility(View.GONE);
         } else {
             tv_vip.setVisibility(View.VISIBLE);
         }

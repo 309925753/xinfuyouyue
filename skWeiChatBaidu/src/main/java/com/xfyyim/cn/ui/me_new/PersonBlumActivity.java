@@ -11,23 +11,19 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
 import com.xfyyim.cn.bean.AddAttentionResult;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.event.EventDeleteDynamic;
-import com.xfyyim.cn.bean.event.EventOnlieChat;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.range.SendTextPicActivity;
-import com.xfyyim.cn.util.TimeUtils;
-import com.xfyyim.cn.ui.other.BasicInfoActivity;
 import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
-import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -47,8 +43,6 @@ import butterknife.Unbinder;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
-
-import static com.xfyyim.cn.ui.other.BasicInfoActivity.KEY_FROM_ADD_TYPE;
 
 public class PersonBlumActivity extends BaseActivity implements View.OnClickListener {
 
