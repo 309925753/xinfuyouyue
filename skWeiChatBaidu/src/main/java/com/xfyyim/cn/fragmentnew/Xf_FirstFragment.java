@@ -395,6 +395,12 @@ public class Xf_FirstFragment extends EasyFragment {
                 holder.img_sex.setImageDrawable(getResources().getDrawable(R.drawable.sex_nv));
                 holder.ll_sex_bg.setBackground(getResources().getDrawable(R.drawable.share_sign_pink));
             }
+            if(!TextUtils.isEmpty(mData.get(position).getDescription())){
+                holder.tv_description.setText(String.valueOf(mData.get(position).getDescription()));
+            }else {
+                holder.tv_description.setText(String.valueOf("这个人很懒，什么都没有留下!"));
+                holder.tv_description.setTextColor(getResources().getColor(R.color.text_black_999));
+            }
 
             holder.tvAge.setText(mData.get(position).getAge() + "");
 
@@ -455,6 +461,7 @@ public class Xf_FirstFragment extends EasyFragment {
             TextView tvVip;
             TextView tv_Likecount;
             TextView tv_city;
+            TextView tv_description;
 
 
             public ViewHolder(View itemView) {
@@ -470,6 +477,7 @@ public class Xf_FirstFragment extends EasyFragment {
                 tv_Likecount = itemView.findViewById(R.id.tv_Likecount);
                 ll_sex_bg = itemView.findViewById(R.id.ll_sex_bg);
                 tv_city = itemView.findViewById(R.id.tv_city);
+                tv_description=itemView.findViewById(R.id.tv_description);
             }
         }
 

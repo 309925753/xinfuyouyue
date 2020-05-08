@@ -1,6 +1,7 @@
 package com.xfyyim.cn.ui.me_new;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,16 +23,22 @@ import com.xfyyim.cn.bean.MyInEntity;
 import com.xfyyim.cn.bean.PhotoEntity;
 import com.xfyyim.cn.bean.QuestEntity;
 import com.xfyyim.cn.bean.User;
+import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
+import com.xfyyim.cn.bean.event.EventPaySuccess;
 import com.xfyyim.cn.customer.FlowLayout;
 import com.xfyyim.cn.customer.SkillTextView;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.sp.UserSp;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.me.CheckLikesMeActivity;
 import com.xfyyim.cn.ui.me.EditInfoActivity;
+import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
+import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
+import com.xfyyim.cn.view.MyPrivilegePopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
@@ -45,6 +53,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import okhttp3.Call;
 
 public class PersonInfoActivity extends BaseActivity implements View.OnClickListener {
@@ -155,6 +165,14 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         initActionBar();
         mLoginId=coreManager.getSelf().getUserId();
         rl_blum.setOnClickListener(this);
+        rl_seelike.setOnClickListener(this);
+        EventBusHelper.register(this);
+
+    }
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventPaySuccess message) {
+        startActivity(new Intent(PersonInfoActivity.this, CheckLikesMeActivity.class));
     }
 
 
@@ -176,6 +194,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -185,6 +204,13 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_title_right:
                 Intent intent = new Intent(PersonInfoActivity.this, EditInfoActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.rl_seelike:
+                if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag()==1) {
+                    startActivity(new Intent(PersonInfoActivity.this, CheckLikesMeActivity.class));
+                } else {
+                    BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                }
                 break;
 
             case R.id.rl_blum:
@@ -291,6 +317,7 @@ if (!friendId.equals(user.getUserId())){
             line.setVisibility(View.GONE);
             rl_seelike.setVisibility(View.GONE);
         }
+
 
         if (user.getAge() == 0) {
             tv_age.setVisibility(View.GONE);
@@ -574,4 +601,49 @@ if (!friendId.equals(user.getUserId())){
         skillTextView.setPadding(leftRightPadding, topBottomPadding, leftRightPadding, topBottomPadding);
         return skillTextView;
     }
+    //购买会员
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
+        //谁喜欢我，在线聊天  购买
+        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(PersonInfoActivity.this, 1, "查看谁喜欢我", "哇，99+个人喜欢我！TA们是谁？", userVIPPrivilegePrice);
+        LogUtil.e("BuyMember  BuyMember");
+        myBuy.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
+            @Override
+            public void btnOnClick(String type, int vip) {
+                LogUtil.e("**********************************************************");
+                LogUtil.e("type = " + type + "---vip = " + vip);
+                LogUtil.e("**********************************************************");
+                submitPay(type, vip, userVIPPrivilegePrice);
+            }
+        });
+    }
+
+    /**
+     * 转支付类型返回支付签名数据
+     *
+     * @param type
+     * @param vip
+     */
+    private void submitPay(String type, int vip, UserVIPPrivilegePrice _userVIPPrivilegePrice) {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("payType", type);
+
+        if (vip == 1) {
+            params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice1() + "");
+            params.put("mon", "1");
+        } else if (vip == 2) {
+            params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice2() + "");
+            params.put("mon", "3");
+        } else if (vip == 3) {
+            params.put("price", _userVIPPrivilegePrice.getLikePrivilegePrice3() + "");
+            params.put("mon", "12");
+        }
+        params.put("funType", String.valueOf(6));
+        params.put("num", String.valueOf(-1));
+        params.put("level", String.valueOf(-1));
+        AlipayHelper.rechargePay(PersonInfoActivity.this, coreManager, params);
+
+    }
+
 }
