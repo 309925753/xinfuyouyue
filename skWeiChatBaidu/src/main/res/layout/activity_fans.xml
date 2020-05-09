@@ -9,6 +9,19 @@
     <include
         android:id="@+id/title"
         layout="@layout/a_view_actionbar" />
+    <TextView
+        android:id="@+id/tv_rmot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="你现在还没有邀请人哦"
+        android:layout_below="@+id/mergerStatus"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dp200"
+        android:textSize="@dimen/sp_15_text_size"
+        android:visibility="invisible"
+
+        />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_below="@+id/title"
         android:id="@+id/refreshLayout"

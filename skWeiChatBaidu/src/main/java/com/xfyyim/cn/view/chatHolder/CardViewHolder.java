@@ -1,6 +1,7 @@
 package com.xfyyim.cn.view.chatHolder;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -57,8 +58,11 @@ class CardViewHolder extends AChatHolderInterface {
     public void fillData(ChatMessage message) {
         AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), ivCardImage, true);
         AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), iv_User_Head, true);
-        tvPersonName.setText(String.valueOf(message.getContent()));
-        tv_name.setText(String.valueOf(message.getContent()));
+        if(!TextUtils.isEmpty(message.getContent())){
+            tvPersonName.setText(String.valueOf(message.getContent()));
+            tv_name.setText(String.valueOf(message.getContent()));
+
+        }
 
         if (!isMysend) {
             ivUnRead.setVisibility(message.isSendRead() ? View.GONE : View.VISIBLE);

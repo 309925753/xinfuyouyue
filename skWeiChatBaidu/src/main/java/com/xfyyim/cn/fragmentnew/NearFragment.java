@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.AppConstant;
@@ -26,13 +27,18 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.PublicMessageRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicNearAdapter;
 import com.xfyyim.cn.adapter.SendTopicAdapter;
+import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.circle.TopicEntity;
+import com.xfyyim.cn.bean.event.EventNotifyAttionNear;
+import com.xfyyim.cn.bean.event.EventNotifyMatching;
+import com.xfyyim.cn.bean.event.EventNotifyNear;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.downloader.Downloader;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
+import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventNotifyDynamic;
@@ -40,10 +46,12 @@ import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.circle.range.TopicDetailActivity;
+import com.xfyyim.cn.ui.me.MatchingSuccessfulActivity;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.TrillCommentInputDialog;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -87,7 +95,7 @@ public class NearFragment extends EasyFragment {
     private boolean more;
     private String messageId;
     private boolean showTitle = true;
-RelativeLayout rl_root;
+    RelativeLayout rl_root;
 
     RecyclerView rv_topic_hor;
     TextView tv_like;
@@ -128,6 +136,52 @@ RelativeLayout rl_root;
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyNear message) {
+        List<PublicMessage> mMes = new ArrayList<>();
+        if(mMessages!=null && mMessages.size()>0){
+            for(int i=0;i<mMessages.size();i++){
+                if(message.MessageData.equals(mMessages.get(i).getUserId())){
+                    PublicMessage   publicMessage= mMessages.get(i);
+                    publicMessage.setIsAttion(1);
+                    mMes.add(publicMessage);
+                }else {
+                    mMes.add(mMessages.get(i));
+                }
+            }
+        }
+        mMessages.clear();
+        mMessages.addAll(mMes);
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+
+    /**
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(EventNotifyAttionNear message) {
+        List<PublicMessage> mMes = new ArrayList<>();
+        if(mMessages!=null && mMessages.size()>0){
+            for(int i=0;i<mMessages.size();i++){
+                if(message.MessageData.equals(mMessages.get(i).getUserId())){
+                    PublicMessage   publicMessage= mMessages.get(i);
+                    publicMessage.setIsAttion(-1);
+                    mMes.add(publicMessage);
+                }else {
+                    mMes.add(mMessages.get(i));
+                }
+            }
+        }
+        mMessages.clear();
+        mMessages.addAll(mMes);
+        mAdapter.notifyDataSetChanged();
+
+    }
 
     public void initViews() {
         more = true;

@@ -30,8 +30,7 @@
                 app:isShowIndicatorOnlyOne="true"
                 app:isShowNumberIndicator="false"
                 app:pageChangeDuration="800"
-                app:pointNormal="@drawable/appdes_shape_fffffca7d"
-                app:pointSelect="@drawable/appdes_shape_fffffca7d"
+
                 app:pointsPosition="CENTER"
                 app:tipTextSize="12sp" />
 

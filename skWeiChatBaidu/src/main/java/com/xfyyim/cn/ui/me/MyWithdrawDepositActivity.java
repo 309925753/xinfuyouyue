@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,6 +27,8 @@ import com.xfyyim.cn.view.SkinTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.xfyyim.cn.MyApplication.getContext;
 
 public class MyWithdrawDepositActivity extends BaseActivity implements View.OnClickListener {
 
@@ -79,8 +85,6 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
 
     private void initData() {
         tvPoundage.setText("手续费：按照0.03%收取");
-
-
     }
     private void intEvent() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -166,12 +170,12 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.tv_sumbit:
                 String moneyStr = tixianmoney.getText().toString();
+                showData(v);
                 if (checkMoney(moneyStr)) {
                     //如果是支付宝 得去输入手机号和密码
                     /**
                      * to do
                      */
-
                 }
                 break;
             case R.id.iv_title_left:
@@ -192,5 +196,38 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
             }
         }
         return false;
+    }
+
+    /**
+     * 显示数据
+     * @param v
+     */
+    private void showData(View  v){
+        View contentView =this.getLayoutInflater().inflate(
+                R.layout.dialog_zfb_layout, null);
+        PopupWindow    popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        //设置SelectPicPopupWindow弹出窗体的背景
+        popupWindow.setBackgroundDrawable(getContext().getDrawable(R.drawable.dialog_style_bg));
+        //点击外部消失
+        popupWindow.setOutsideTouchable(true);
+        int width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        //   int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2+((int) context.getResources().getDisplayMetrics().heightPixels / 11); // 高度
+        popupWindow.setWidth(width - 100);
+        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp =getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
+
     }
 }

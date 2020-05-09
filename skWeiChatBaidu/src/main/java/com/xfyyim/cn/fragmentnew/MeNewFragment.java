@@ -22,6 +22,7 @@ import com.xfyyim.cn.bean.ShareEntity;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
 import com.xfyyim.cn.bean.event.EventPaySuccess;
+import com.xfyyim.cn.bean.event.MessageEventHongdian;
 import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
@@ -134,6 +135,10 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     TextView tv2;
     @BindView(R.id.tv_balance)
     TextView tvBalance;
+    @BindView(R.id.tv_like_times)
+    TextView tvLikeTimes;
+    @BindView(R.id.tv_like_fans)
+    TextView tvLikeFans;
 
     @Override
     protected int inflateLayoutId() {
@@ -171,7 +176,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         ll_fan.setOnClickListener(this);
         ll_blum.setOnClickListener(this);
         tv_history.setOnClickListener(this);
-    //    rlInfoBackground.setOnClickListener(this);
+        //    rlInfoBackground.setOnClickListener(this);
         avatar_img.setOnClickListener(this);
         tv_edit_info.setOnClickListener(this);
         EventBusHelper.register(this);
@@ -207,11 +212,11 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
             case R.id.rl_likeme:
                 //查看喜欢我特权按月：0无权 1有权"
                 if (coreManager.getSelf().getUserVIPPrivilege() != null) {
-                if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag()==1) {
-                    startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
-                } else {
-                    BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
-                }
+                    if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag() == 1) {
+                        startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
+                    } else {
+                        BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                    }
                 }
                 break;
             case R.id.rl_wallet:
@@ -264,8 +269,16 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
             case R.id.tv_history:
                 Intent inten = new Intent(getActivity(), CommentActivity.class);
                 startActivity(inten);
+                tvLikeTimes.setVisibility(View.INVISIBLE);
                 break;
         }
+    }
+
+    // 更新发现模块新消息数量
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(MessageEventHongdian message) {
+        tvLikeTimes.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -378,7 +391,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), avatar_img, true);
         tv_fans.setText(String.valueOf(user.getFansCount()));
         tv_guanzhu.setText(String.valueOf(user.getAttCount()));
-        if(!TextUtils.isEmpty(user.getNickName())){
+        if (!TextUtils.isEmpty(user.getNickName())) {
             tv_name.setText(user.getNickName());
         }
         tv_blum.setText(String.valueOf(coreManager.getSelf().getMsgCount()));

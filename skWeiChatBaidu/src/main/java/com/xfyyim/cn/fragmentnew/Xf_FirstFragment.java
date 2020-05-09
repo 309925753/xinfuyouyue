@@ -593,13 +593,19 @@ public class Xf_FirstFragment extends EasyFragment {
                         return;
                     }
                     if (coreManager.getSelf().getUserVIPPrivilege()!=null) {
-                        if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
-                            if ((coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() == 0)) {
-                                BuyMember(mUsers.get(selectItem));
+                        if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")|| coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
+                            if (coreManager.getSelf().getUserVIPPrivilege().getQuantity() >= 1 || coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
+                              //  tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
+                                superLike(mUsers.get(selectItem));
+                            } else {
+                                if ((coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() == 0)) {
+                                    BuyMember(mUsers.get(selectItem));
+                                }
                             }
+
                         } else {
                             if (coreManager.getSelf().getUserVIPPrivilege().getQuantity() >= 1 || coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
-                                tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
+                            //    tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
                                 superLike(mUsers.get(selectItem));
                             } else {
                                 ToastUtil.showLongToast(getContext(), "当天次数已用完");

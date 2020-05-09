@@ -241,6 +241,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         isAtt = user.getIsBeAtt() == 0 ? false : true;
         if (mLoginUserId.equals(friendId)) {
             tv_commit.setText("发布动态");
+
+
         } else {
             if (isAtt) {
                 tv_commit.setText("关注");

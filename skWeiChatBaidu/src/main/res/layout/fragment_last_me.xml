@@ -101,30 +101,41 @@
                     android:text="设置签名"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_history"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/shape_gray_me_bg"
-                    android:padding="5dp"
-                    android:text="查看历史消息"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
+                    >
+                    <TextView
+                        android:id="@+id/tv_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_gray_me_bg"
+                        android:padding="5dp"
+                        android:text="查看历史消息"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:layout_toRightOf="@+id/tv_history"
+                        android:id="@+id/tv_like_times"
+                        android:layout_width="@dimen/dp10"
+                        android:layout_height="@dimen/dp10"
+                        tools:text="12"
+                        android:background="@drawable/red_my_circle_dot"
+                        android:textColor="@color/white"
+                        android:textSize="9sp"
+                        android:visibility="invisible"
+                        />
+                </RelativeLayout>
             </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:padding="10dp">
-
-
                 <LinearLayout
                     android:id="@+id/ll_blum"
                     android:layout_width="0dp"
@@ -132,7 +143,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
-
                     <TextView
                         android:id="@+id/tv_blum"
                         android:layout_width="wrap_content"
@@ -140,7 +150,6 @@
                         android:text="0"
                         android:textColor="@color/text_black_333"
                         android:textSize="18sp" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -149,15 +158,12 @@
                         android:text="相册"
                         android:textColor="@color/text_black_999"
                         android:textSize="10sp" />
-
-
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="#F2F2F2" />
-
                 <LinearLayout
                     android:id="@+id/ll_fan"
                     android:layout_width="0dp"
@@ -165,14 +171,29 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_fans"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/text_black_333"
-                        android:textSize="18sp" />
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tv_fans"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/text_black_333"
+                            android:textSize="18sp" />
+                        <TextView
+                            android:layout_toRightOf="@+id/tv_fans"
+                            android:id="@+id/tv_like_fans"
+                            android:layout_width="@dimen/dp5"
+                            android:layout_height="@dimen/dp5"
+                            tools:text="12"
+                            android:background="@drawable/red_my_circle_dot"
+                            android:textColor="@color/white"
+                            android:textSize="9sp"
+                            android:visibility="invisible"
+                            />
+                    </RelativeLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -180,7 +201,6 @@
                         android:layout_marginTop="5dp"
                         android:gravity="center"
                         android:text="粉丝"
-
                         android:textColor="@color/text_black_999"
                         android:textSize="10sp" />
 

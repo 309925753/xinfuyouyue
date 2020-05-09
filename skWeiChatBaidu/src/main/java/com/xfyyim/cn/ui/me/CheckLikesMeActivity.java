@@ -1,6 +1,7 @@
 package com.xfyyim.cn.ui.me;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
+import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.MergerStatus;
@@ -115,6 +117,16 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         checkLikesMeAdapter.likeMeBeanList = likeMeBeanList;
         rclBill.setAdapter(checkLikesMeAdapter);
         checkLikesMeAdapter.notifyDataSetChanged();
+
+        checkLikesMeAdapter.setBtnOnClice(new CheckLikesMeAdapter.BtnOnClick() {
+            @Override
+            public void btnOnClick(LikeMeBean likeMeBean) {
+                //跳转个人资料页面
+                Intent intent1 = new Intent(CheckLikesMeActivity.this, PersonInfoActivity.class);
+                intent1.putExtra("FriendId", coreManager.getSelf().getUserId());
+                startActivity(intent1);
+            }
+        });
 
         findViewById(R.id.ivSolarize).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,16 +236,31 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    public class CheckLikesMeAdapter extends RecyclerView.Adapter<CheckLikesMeAdapter.ViewHolder> {
+    public static class CheckLikesMeAdapter extends RecyclerView.Adapter<CheckLikesMeAdapter.ViewHolder> implements View.OnClickListener {
         private LayoutInflater mInflater;
         private Context context;
         private List<LikeMeBean> likeMeBeanList = new ArrayList<LikeMeBean>();
+        private BtnOnClick btnOnClick;
 
         public CheckLikesMeAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
             this.context = context;
-            ;
         }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+
+        public interface BtnOnClick {
+            void btnOnClick(LikeMeBean likeMeBean);
+        }
+
+        public void setBtnOnClice(BtnOnClick btnOnClick) {
+            this.btnOnClick = btnOnClick;
+
+        }
+
 
         class ViewHolder extends RecyclerView.ViewHolder {
             ImageView ivlike;
@@ -262,17 +289,24 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
                 String url = AvatarHelper.getAvatarUrl(likeMeBean.getUserId() + "", false);
 
                 //   GlideImageUtils.setImageView(context, url, holder.ivlike);
-                GlideImageUtils.setImageDrawableCirCle(mContext, url, holder.ivlike);
-
+                GlideImageUtils.setImageDrawableCirCle(context, url, holder.ivlike);
+                holder.ivlike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        btnOnClick.btnOnClick(likeMeBean);
+                    }
+                });
+            }
 
             }
-        }
 
         @Override
         public int getItemCount() {
             return likeMeBeanList.size();
         }
     }
+
+
 
     private void swithSuperSolarize(int switchType) {
         SuperSolarizePopupWindow RegretsUnLikePopupWindow = new SuperSolarizePopupWindow(this, switchType, false);

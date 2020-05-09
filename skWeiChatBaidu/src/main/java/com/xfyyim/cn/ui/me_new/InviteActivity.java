@@ -48,7 +48,9 @@ public class InviteActivity extends BaseActivity {
 
     InviteAdapter attentionAdapter;
     private static int PAGER_SIZE = 10;
-    int pageIndex=0;
+    int pageIndex = 0;
+    @BindView(R.id.tv_rmot)
+    TextView tvRmot;
     private boolean more;
 
     @Override
@@ -69,11 +71,12 @@ public class InviteActivity extends BaseActivity {
 
         });
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
-            pageIndex=0;
+            pageIndex = 0;
             requestData();
         });
 
     }
+
     private void initActionBar() {
 
         getSupportActionBar().hide();
@@ -106,35 +109,39 @@ public class InviteActivity extends BaseActivity {
         HttpUtils.get().url(coreManager.getConfig().INVITE_LIST)
                 .params(params)
                 .build()
-                 .execute(new ListCallback<InviteEntity>(InviteEntity.class) {
-                     @Override
-                     public void onResponse(ArrayResult<InviteEntity> result) {
-                         refreshComplete();
-                         if (Result.checkSuccess(InviteActivity.this, result)){
-                             List<InviteEntity> data = result.getData();
-                             if (data != null && data.size() > 0){
-                                 setAdapter(data);
-                             }
-                         }
+                .execute(new ListCallback<InviteEntity>(InviteEntity.class) {
+                    @Override
+                    public void onResponse(ArrayResult<InviteEntity> result) {
+                        refreshComplete();
+                        if (Result.checkSuccess(InviteActivity.this, result)) {
+                            List<InviteEntity> data = result.getData();
+                            if (data != null && data.size() > 0) {
+                                setAdapter(data);
+                                tvRmot.setVisibility(View.GONE);
+                            }else {
+                                tvRmot.setVisibility(View.VISIBLE);
+                                mRefreshLayout.setVisibility(View.INVISIBLE);
+                            }
+                        }
 
-                     }
+                    }
 
-                     @Override
-                     public void onError(Call call, Exception e) {
-                         refreshComplete();
-                     }
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        refreshComplete();
+                    }
 
-                     @Override
-                     public void onFailure(Call call, IOException e) {
-                         super.onFailure(call, e);
-                         refreshComplete();
-                     }
-                 });
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        super.onFailure(call, e);
+                        refreshComplete();
+                    }
+                });
 
     }
 
 
-    public void setAdapter( List<InviteEntity> list){
+    public void setAdapter(List<InviteEntity> list) {
         if (attentionAdapter == null) {
 
             LinearLayoutManager linearLayout = new LinearLayoutManager(InviteActivity.this);

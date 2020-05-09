@@ -12,7 +12,7 @@
         android:id="@+id/tv_rmot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="暂无喜欢的人"
+        android:text="暂时没有喜欢你的人"
         android:layout_below="@+id/mergerStatus"
         android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/dp200"

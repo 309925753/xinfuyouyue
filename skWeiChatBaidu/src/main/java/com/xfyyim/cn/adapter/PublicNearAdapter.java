@@ -45,6 +45,9 @@ import com.xfyyim.cn.bean.circle.PublicMessage.Body;
 import com.xfyyim.cn.bean.circle.PublicMessage.Resource;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.collection.CollectionEvery;
+import com.xfyyim.cn.bean.event.EventNotifyAttionNear;
+import com.xfyyim.cn.bean.event.EventNotifyMatching;
+import com.xfyyim.cn.bean.event.EventNotifyNear;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -298,6 +301,16 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
             viewHolder.img_vip.setVisibility(View.VISIBLE);
         }
 
+        if( message.getIsAttion()==1){
+            viewHolder.tv_att.setText("已关注");
+            viewHolder.tv_att.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
+        }else {
+            viewHolder.tv_att.setText("关注");
+            viewHolder.tv_att.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
+        }
+
+
+
 
 
         // 设置头像的点击事件
@@ -381,7 +394,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
 viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        if (!isAttion){
+        if (!(message.getIsAttion()==1)){
             doAddAttention(message.getUserId(),viewHolder.tv_att,position);
         }else{
             deleteFriend(message.getUserId(),viewHolder.tv_att,position);
@@ -942,6 +955,7 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                             mMessages.get(positon).setIsAttion(1);
                             tv_att.setText("已关注");
                             tv_att.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
+                            EventBus.getDefault().post(new EventNotifyNear(mRoomUserId));
                         }
                     }
 
@@ -972,6 +986,7 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                         mMessages.get(positon).setIsAttion(2);
                         tv_att.setText("关注");
                         tv_att.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
+                        EventBus.getDefault().post(new EventNotifyAttionNear(userID));
                     }
 
                     @Override

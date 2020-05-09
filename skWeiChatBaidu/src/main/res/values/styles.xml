@@ -589,7 +589,7 @@
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">20dp</item>
         <item name="android:layout_marginRight">8dp</item>
-        <item name="android:background">@mipmap/lg_see</item>
+        <item name="android:background">@drawable/toggle_eye</item>
         <item name="android:textOn" />
         <item name="android:textOff" />
     </style>
