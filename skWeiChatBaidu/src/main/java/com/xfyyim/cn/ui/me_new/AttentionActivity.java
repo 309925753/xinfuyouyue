@@ -1,6 +1,7 @@
 package com.xfyyim.cn.ui.me_new;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +14,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.adapter.AttentionAdapter;
 import com.xfyyim.cn.bean.AttentionEntity;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
@@ -139,7 +139,9 @@ public class AttentionActivity extends BaseActivity {
             attentionAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                    Intent intent=new Intent(AttentionActivity.this,PersonInfoActivity.class);
+                    intent.putExtra("FriendId",String.valueOf(list.get(position).getUserId()));
+                    startActivity(intent);
                 }
             });
 

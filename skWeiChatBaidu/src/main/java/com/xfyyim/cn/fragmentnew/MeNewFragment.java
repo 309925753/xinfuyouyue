@@ -37,11 +37,11 @@ import com.xfyyim.cn.ui.me.MyPrerogativeActivity;
 import com.xfyyim.cn.ui.me.NewSettingsActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.AttentionActivity;
+import com.xfyyim.cn.ui.me_new.CommentActivity;
 import com.xfyyim.cn.ui.me_new.FansActivity;
 import com.xfyyim.cn.ui.me_new.InviteActivity;
 import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
-import com.xfyyim.cn.ui.me_new.ZanActivity;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
@@ -262,7 +262,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 }
                 break;
             case R.id.tv_history:
-                Intent inten = new Intent(getActivity(), ZanActivity.class);
+                Intent inten = new Intent(getActivity(), CommentActivity.class);
                 startActivity(inten);
                 break;
         }

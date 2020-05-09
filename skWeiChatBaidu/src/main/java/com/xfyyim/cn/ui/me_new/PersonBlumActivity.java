@@ -227,7 +227,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                 if (user.getFriendsCount() == 0) {
                     ToastUtil.showLongToast(PersonBlumActivity.this, "暂无获赞的人");
                 } else {
-                    Intent intentperson = new Intent(PersonBlumActivity.this, PersonBlumActivity.class);
+                    Intent intentperson = new Intent(PersonBlumActivity.this, ZanActivity.class);
                     intentperson.putExtra("FriendId", user.getUserId());
                     startActivity(intentperson);
                 }
@@ -267,10 +267,14 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         if (user.getUserId().equals(friendId)) {
             tv_status.setVisibility(View.GONE);
         } else {
+            String time="";
+            if (user.getShowLastLoginTime()>0){
+                 time = TimeUtils.getFriendlyTimeDesc(this,user.getShowLastLoginTime());
+            }
+
             if (user.getDistance() == 0) {
-                tv_status.setText(user.getOnlineStatus());
+                tv_status.setText(time);
             } else {
-                String time= TimeUtils.getFriendlyTimeDesc(this,user.getShowLastLoginTime());
                 tv_status.setText(user.getDistance() + "  " +time);
             }
 
@@ -322,6 +326,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
+
+        params.put("userId", mLoginUserId);
         params.put("forUserId", friendId);
         params.put("pageSize", String.valueOf(PAGER_SIZE));
         params.put("pageIndex", String.valueOf(pager_index));

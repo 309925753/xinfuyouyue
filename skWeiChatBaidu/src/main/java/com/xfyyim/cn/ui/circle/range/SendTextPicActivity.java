@@ -385,8 +385,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.select_video:
-                    ll_video.setVisibility(View.VISIBLE);
-                    rcvImg.setVisibility(View.GONE);
+
                     takeVideo();
                     mChoosePop1.dismiss();
                     break;
@@ -1260,7 +1259,8 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(final MessageVideoFile message) {
         img_delete_video.setVisibility(View.VISIBLE);
-
+        ll_video.setVisibility(View.VISIBLE);
+        rcvImg.setVisibility(View.GONE);
         mVideoFilePath = message.path;
         mThumbBmp = AvatarHelper.getInstance().displayVideoThumb(mVideoFilePath, mImageView);
         mTimeLen = message.length;

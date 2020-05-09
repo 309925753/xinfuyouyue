@@ -29,7 +29,7 @@ import butterknife.Unbinder;
 import okhttp3.Call;
 
 
-public class ZanActivity extends BaseActivity {
+public class CommentActivity extends BaseActivity {
 
 
     Unbinder unbinder;
@@ -76,7 +76,7 @@ public class ZanActivity extends BaseActivity {
                 finish();
             }
         });
-        tv_title_center.setText("获赞列表");
+        tv_title_center.setText("评论列表");
         iv_title_right.setVisibility(View.GONE);
 
     }
@@ -124,10 +124,10 @@ public class ZanActivity extends BaseActivity {
     public void setAdapter( List<AttentionEntity> list){
         if (attentionAdapter == null) {
 
-            LinearLayoutManager linearLayout = new LinearLayoutManager(ZanActivity.this);
+            LinearLayoutManager linearLayout = new LinearLayoutManager(CommentActivity.this);
             rv_list.setLayoutManager(linearLayout);
 
-            attentionAdapter = new AttentionAdapter(list, ZanActivity.this);
+            attentionAdapter = new AttentionAdapter(list, CommentActivity.this);
             rv_list.setAdapter(attentionAdapter);
 
             attentionAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

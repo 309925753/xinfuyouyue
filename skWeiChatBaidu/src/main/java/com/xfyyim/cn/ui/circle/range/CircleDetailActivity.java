@@ -294,6 +294,7 @@ public class CircleDetailActivity extends BaseActivity {
                                 comment = new Comment();
                             comment.setBody(str);
                             comment.setUserId(mUserId);
+                            comment.setToUserId(message.getUserId());
                             comment.setNickName(mUserName);
                             comment.setTime(TimeUtils.sk_time_current_time());
                             addComment(comment);
@@ -653,8 +654,10 @@ public class CircleDetailActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("messageId", messageId);
+        params.put("toUserId", comment.getToUserId() );
+
         if (comment.isReplaySomeBody()) {
-            params.put("toUserId", comment.getToUserId() + "");
+
             params.put("toNickname", comment.getToNickname());
             params.put("toBody", comment.getToBody());
         }
