@@ -21,6 +21,8 @@
          android:shadowColor="#FC697B"
         android:background="@null"
         android:layout_below="@+id/mergerStatus"
+        android:inputType="textPassword"
+
         />
     <View style="@style/View_Line"
         android:id="@+id/vLine"

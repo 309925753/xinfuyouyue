@@ -222,14 +222,16 @@ public class Xf_MessageFragment extends EasyFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.llOnlineChat:
                 //判断用户有没有闪聊特权次数没有去支付
-                if (coreManager.getSelf().getUserVIPPrivilege().getIsChatByMonthQuantity() == 1||(coreManager.getSelf().getUserVIPPrivilege().getChatQuantity()+coreManager.getSelf().getUserVIPPrivilege().getChatByMonthQuantity()>=1)) {
+                if (coreManager.getSelf().getUserVIPPrivilege() != null) {
+                if (coreManager.getSelf().getUserVIPPrivilege().getIsChatByMonthQuantity() == 1 || (coreManager.getSelf().getUserVIPPrivilege().getChatQuantity() + coreManager.getSelf().getUserVIPPrivilege().getChatByMonthQuantity() >= 1)) {
                     OnlineChat();
-                }else {
+                } else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
                 }
+                  }
                 break;
             case R.id.img_1:
                 break;

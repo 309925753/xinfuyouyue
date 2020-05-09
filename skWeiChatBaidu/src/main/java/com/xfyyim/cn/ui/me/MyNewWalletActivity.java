@@ -193,7 +193,7 @@ public class MyNewWalletActivity extends BaseActivity implements View.OnClickLis
                 startActivity(new Intent(this, MyWalletBillDetailsActivity.class));
                 break;
             case R.id.tvCashWithdrawal://提现
-                startActivity(new Intent(this, MyCashWithdrawalActivity.class));
+                startActivity(new Intent(this, MyWithdrawDepositActivity.class));
                 break;
             case R.id.rlSuperexPosure://超级曝光
                 openSuperSolarize();

@@ -163,7 +163,7 @@ public class MyPrerogativeLikeFragment extends EasyFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember() {
         //谁喜欢我，在线聊天  购买
-        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1,"查看谁喜欢我", "哇，99+个小姐姐喜欢我!她们是谁？",userVIPPrivilegePrice);
+        MyPrivilegePopupWindow myBuy = new MyPrivilegePopupWindow(getActivity(), 1,"查看谁喜欢我", "哇，99+个小姐姐喜欢我!TA们是谁？",userVIPPrivilegePrice);
         LogUtil.e("BuyMember  BuyMember");
         myBuy.setBtnOnClice(new MyPrivilegePopupWindow.BtnOnClick() {
             @Override

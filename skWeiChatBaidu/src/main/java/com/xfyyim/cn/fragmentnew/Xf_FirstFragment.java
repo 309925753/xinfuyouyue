@@ -851,8 +851,11 @@ public class Xf_FirstFragment extends EasyFragment {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(user);
                             }
-                           tvlikeTimes.setText(String.valueOf(user.getUserVIPPrivilege().getQuantity()+user.getUserVIPPrivilege().getSuperLikeQuantity()));
-                        }
+                            if(!(user.getUserVIPPrivilege().getQuantity()+user.getUserVIPPrivilege().getSuperLikeQuantity()==0)){
+                                tvlikeTimes.setText(String.valueOf(user.getUserVIPPrivilege().getQuantity()+user.getUserVIPPrivilege().getSuperLikeQuantity()));
+
+                            }
+                  }
                     }
 
                     @Override

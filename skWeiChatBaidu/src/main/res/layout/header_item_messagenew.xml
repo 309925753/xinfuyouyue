@@ -58,7 +58,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/img_sex"
                 android:gravity="center"
-                android:text="妹子们正焦急等待你的回应呢!"
+                android:text="又有人被你迷倒啦，想知道是谁么"
                 android:textColor="@color/text_black_999"
                 android:textSize="12sp" />
 

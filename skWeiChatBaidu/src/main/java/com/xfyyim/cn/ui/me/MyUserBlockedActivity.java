@@ -62,6 +62,7 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
     MergerStatus mergerStatus;
     @BindView(R.id.tv_show)
     TextView tvShow;
+    RecyclerView rcvUserBlocked;
     private SmartRefreshLayout mRefreshLayout;
     private List<User> deviceBeanList = new ArrayList<>();
     private UserBlockedAdapter billCashWithdrawalAdapter;
@@ -87,7 +88,8 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
                     public void onResponse(ArrayResult<User> result) {
                         if (Result.checkSuccess(getApplicationContext(), result)) {
                             if(result.getData()!=null &&  result.getData().size()>0){
-                                billCashWithdrawalAdapter.deviceBeanList.addAll(result.getData());
+                                rcvUserBlocked.setVisibility(View.VISIBLE);
+                                billCashWithdrawalAdapter.deviceBeanList=result.getData();
                                 billCashWithdrawalAdapter.notifyDataSetChanged();
                             }else {
                                 tvShow.setVisibility(View.VISIBLE);
@@ -105,7 +107,7 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
         ivTitleLeft.setVisibility(View.VISIBLE);
         ivTitleLeft.setOnClickListener(this);
         tvTitleCenter.setText("已屏蔽用户");
-        RecyclerView rcvUserBlocked = (RecyclerView) findViewById(R.id.rcvUserBlocked);
+         rcvUserBlocked = (RecyclerView) findViewById(R.id.rcvUserBlocked);
         mRefreshLayout = findViewById(R.id.refreshLayout);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

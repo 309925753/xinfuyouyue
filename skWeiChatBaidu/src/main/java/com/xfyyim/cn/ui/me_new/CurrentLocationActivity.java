@@ -146,6 +146,7 @@ public class CurrentLocationActivity extends BaseActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                if (coreManager.getSelf().getUserVIPPrivilege() != null) {
                 if(!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
                     //todo -1没有会员
                     Intent intent = new Intent(CurrentLocationActivity.this, MapPickerAddressActivity.class);
@@ -153,7 +154,7 @@ public class CurrentLocationActivity extends BaseActivity {
                 }else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
                 }
-
+                }
 
             }
         });

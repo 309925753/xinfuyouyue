@@ -206,10 +206,12 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
             case R.id.rl_likeme:
                 //查看喜欢我特权按月：0无权 1有权"
+                if (coreManager.getSelf().getUserVIPPrivilege() != null) {
                 if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag()==1) {
                     startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
                 } else {
                     BuyMember(coreManager.getSelf().getUserVIPPrivilegeConfig());
+                }
                 }
                 break;
             case R.id.rl_wallet:

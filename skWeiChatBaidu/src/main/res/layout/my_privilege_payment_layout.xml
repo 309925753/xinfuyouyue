@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp10"
-            android:text="哇，99+个小姐姐喜欢我!她们是谁？"
+            android:text="哇，99+个小姐姐喜欢我!TA们是谁？"
             android:textColor="@color/text_black_999"
             android:textSize="@dimen/sp_12_text_size" />
 
@@ -289,7 +289,7 @@
                 android:paddingTop="@dimen/dp10"
                 android:paddingRight="@dimen/dp5"
                 android:paddingBottom="@dimen/dp10"
-                android:text="立即查看她们是谁"
+                android:text="立即查看TA们是谁"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_12_text_size" />
         </RelativeLayout>
@@ -336,7 +336,7 @@
                 android:paddingTop="@dimen/dp10"
                 android:paddingRight="@dimen/dp5"
                 android:paddingBottom="@dimen/dp10"
-                android:text="立即查看她们是谁"
+                android:text="立即查看TA们是谁"
                 android:textColor="@color/text_black_fd9e14"
                 android:textSize="@dimen/sp_12_text_size" />
         </RelativeLayout>
@@ -383,7 +383,7 @@
                 android:paddingTop="@dimen/dp10"
                 android:paddingRight="@dimen/dp5"
                 android:paddingBottom="@dimen/dp10"
-                android:text="立即查看她们是谁"
+                android:text="立即查看TA们是谁"
                 android:textColor="@color/text_black_fd9e14"
                 android:textSize="@dimen/sp_12_text_size" />
         </RelativeLayout>
