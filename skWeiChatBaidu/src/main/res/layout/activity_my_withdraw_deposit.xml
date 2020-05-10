@@ -139,7 +139,7 @@
                 android:id="@+id/iv_wx_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/pay_checked"
+                android:src="@mipmap/pay_check"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginRight="@dimen/dp15"

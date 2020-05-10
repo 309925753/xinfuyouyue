@@ -140,7 +140,7 @@ public class AttentionActivity extends BaseActivity {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     Intent intent=new Intent(AttentionActivity.this,PersonInfoActivity.class);
-                    intent.putExtra("FriendId",String.valueOf(list.get(position).getUserId()));
+                    intent.putExtra("FriendId",String.valueOf(list.get(position).getToUserId()));
                     startActivity(intent);
                 }
             });

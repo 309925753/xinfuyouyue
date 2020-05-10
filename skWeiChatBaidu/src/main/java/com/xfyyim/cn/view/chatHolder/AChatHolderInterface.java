@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import com.bumptech.glide.Glide;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.RoomMember;
@@ -25,6 +26,11 @@ import com.xfyyim.cn.view.HeadView;
 import com.xfyyim.cn.xmpp.listener.ChatMessageListener;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
+import static com.xfyyim.cn.MyApplication.getContext;
+import static com.xfyyim.cn.helper.AvatarHelper.getAvatarUrl;
 
 public abstract class AChatHolderInterface implements View.OnLongClickListener, View.OnClickListener {
 
@@ -113,6 +119,8 @@ public abstract class AChatHolderInterface implements View.OnLongClickListener, 
             String toId = message.getToId();
             String types = !TextUtils.isEmpty(toId) && toId.length() < 8 ? message.getFromId() : message.getFromUserId();
             AvatarHelper.getInstance().displayAvatar(message.getFromUserName(), types, mIvHead.getHeadImage(), true);
+          //  Glide.with(getContext()).load(getAvatarUrl(types, true)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(mIvHead.getHeadImage());
+
             // 显示昵称
             changeNickName(message, secret);
 

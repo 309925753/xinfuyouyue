@@ -69,7 +69,7 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.tv_sumbit)
     TextView tvSumbit;
     private Unbinder unbinder;
-    private boolean isWxSeletect = true;
+    private boolean isWxSeletect = false;
     private boolean isZfbSeletect = false;
     private  String  _userMobile="";
     private String  _userName="";
@@ -261,8 +261,8 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
                     DialogHelper.tip(MyWithdrawDepositActivity.this, "手机号不能为空");
                     return ;
                 }
-                if (userMobile.length()<10) {
-                    DialogHelper.tip(MyWithdrawDepositActivity.this, "手机号长度不能小于10位");
+                if (userMobile.length()<13) {
+                    DialogHelper.tip(MyWithdrawDepositActivity.this, "手机号长度不能小于12位");
                     return ;
                 }
                 if (TextUtils.isEmpty(userName)) {

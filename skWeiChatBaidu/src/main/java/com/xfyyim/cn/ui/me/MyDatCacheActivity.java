@@ -89,7 +89,10 @@ public class MyDatCacheActivity extends BaseActivity implements View.OnClickList
         sbCleanUpData.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                clearCache();
+                long cacheSize =GetFileSizeUtil.getFileSize(new File(MyApplication.getInstance().mAppDir));
+                if(!(cacheSize==0.00)){
+                    clearCache();
+                }
             }
         });
 
