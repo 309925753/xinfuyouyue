@@ -188,6 +188,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_commit:
                 if (mLoginUserId.equals(friendId)) {
                     Intent intent = new Intent(PersonBlumActivity.this, SendTextPicActivity.class);
+                    intent.putExtra("topicType", "0");
                     startActivity(intent);
                 } else {
                     if (isAtt) {

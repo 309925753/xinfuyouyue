@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.xfyyim.cn.ui.tool.WebViewActivity;
 import com.xfyyim.cn.util.HttpUtil;
 import com.xfyyim.cn.util.LinkMovementClickMethod;
+import com.xfyyim.cn.util.StringUtils;
 
 import java.util.LinkedList;
 import java.util.regex.Matcher;
@@ -58,6 +60,21 @@ public class HttpTextView extends TextView {
         } else {
             super.setText(text);
         }
+    }
+
+    public void setTopicText(Context context,String  topictext,String text) {
+        String newText;
+        topictext=StringUtils.editTextHtmlErrorTip(context,topictext).toString();
+        if (text!=null&&! TextUtils.isEmpty(text)){
+            newText=topictext+" "+text;
+        }else{
+            newText=topictext;
+        }
+
+
+
+
+            super.setText(newText);
     }
 
     public boolean getIsNeedToRegionUrl() {

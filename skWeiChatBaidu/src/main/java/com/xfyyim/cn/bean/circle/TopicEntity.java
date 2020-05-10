@@ -125,6 +125,9 @@ public class TopicEntity  {
             }
 
             public String getTitle() {
+                if (!title.contains("#")){
+                    title="#"+title;
+                }
                 return title;
             }
 

@@ -246,7 +246,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
             case R.id.ll_showdt:
                 Intent intentDt = new Intent(getActivity(), SendTextPicActivity.class);
-                intentDt.putExtra("topicType", "1");
+                intentDt.putExtra("topicType", "0");
                 startActivity(intentDt);
                 break;
             case R.id.ll_att:

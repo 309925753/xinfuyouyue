@@ -174,8 +174,8 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     List<TopicEntity.DataBean.ListBean> selectTopicList = new ArrayList<>();
     public int isSeLectPic = 0;
     String topicType = "0";
-    String topicId;
-    String topicName;
+    String topicId="";
+    String topicName="";
 
 
     private double latitude;
@@ -226,14 +226,12 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         if(topicType.equals("1")){
             tv_topic_name.setVisibility(View.VISIBLE);
             rv_add_topic.setVisibility(View.GONE);
+
             if (topicName.contains("#")){
                 tv_topic_name.setText(topicName);
             }else{
                 tv_topic_name.setText("#"+topicName);
             }
-
-
-
         }else{
             getTopicList();
             tv_topic_name.setVisibility(View.GONE);
@@ -456,6 +454,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             } else {
                 for (int i = 0; i < selectTopicList.size(); i++) {
                     if (i == selectTopicList.size() - 1) {
+
                         topicStr = topicStr + selectTopicList.get(i).getTitle();
                         topicSelectId = topicSelectId + selectTopicList.get(i).getId();
 
@@ -473,7 +472,12 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
 
         if (topicName!=null&&!TextUtils.isEmpty(topicName)){
-            topicStr=topicName;
+            if (topicName.contains("#")){
+                topicStr=topicName;
+            }else{
+                topicStr="#"+topicName;
+            }
+
 
             params.put("topicStr", topicStr);
         }

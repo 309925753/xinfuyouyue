@@ -391,7 +391,7 @@ dependencies {
     implementation project(path: ':ocr_ui')
     implementation project(path: ':faceplatform')
     implementation project(path: ':faceplatform-ui')
-
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
 
 }
 

@@ -46,7 +46,6 @@ import com.xfyyim.cn.bean.circle.PublicMessage.Resource;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.collection.CollectionEvery;
 import com.xfyyim.cn.bean.event.EventNotifyAttionNear;
-import com.xfyyim.cn.bean.event.EventNotifyMatching;
 import com.xfyyim.cn.bean.event.EventNotifyNear;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.FriendDao;
@@ -262,7 +261,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
         });
         return viewHolder;
     }
-
+    String redText;
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         int viewType = getItemViewType(position);
@@ -338,12 +337,26 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
 
         // 设置body_tv
         // todo 注释掉的代码为 展开/全文的方式显示文本，文本长度过长时会卡顿，先隐藏这种方式，换种方式(最多显示6行，操作的跳转显示)
-        if (TextUtils.isEmpty(body.getText())) {
+
+
+        if (TextUtils.isEmpty(body.getText())&&TextUtils.isEmpty(message.getTopicStr())) {
             viewHolder.body_tv.setVisibility(View.GONE);
         } else {
-            // 支持emoji显示
+            if (message.getTopicType()!=null&&message.getTopicType().equals("1")){
+                String topicText=message.getTopicStr().replace("," ," ");
+
+                if (TextUtils.isEmpty(body.getText())){
+                    viewHolder.body_tv.setTopicText(mContext,topicText,"");
+                }else{
+                    viewHolder.body_tv.setTopicText(mContext,topicText,body.getText());
+                }
+            }else{
+                viewHolder.body_tv.setUrlText(body.getText());
+            }
+
+
             viewHolder.body_tv.setFilters(new InputFilter[]{new EmojiInputFilter(mContext)});
-            viewHolder.body_tv.setUrlText(body.getText());
+
             viewHolder.body_tv.setVisibility(View.VISIBLE);
         }
         // 判断是否超出6行限制，超过则显示"全文"
