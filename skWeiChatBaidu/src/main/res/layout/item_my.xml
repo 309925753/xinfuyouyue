@@ -15,7 +15,7 @@
         android:id="@+id/flowLayout_tags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginRight="20dp"
         android:layout_weight="1"
         android:minWidth="80dp"

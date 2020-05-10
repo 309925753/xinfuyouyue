@@ -309,9 +309,8 @@ android:id="@+id/line"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="不约不约，左滑右滑都是不归路"
-                        android:textColor="@color/text_black_999"
-                        android:textSize="10sp" />
+                        android:textColor="@color/text_black_333"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <View
@@ -345,12 +344,12 @@ android:id="@+id/line"
                         android:id="@+id/tv_position"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="40dp"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
                         tools:text="银行"
-                        android:textColor="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -372,13 +371,13 @@ android:id="@+id/line"
                         android:id="@+id/tv_work"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="40dp"
 
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
                         tools:text="银行"
-                        android:textColor="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -400,11 +399,11 @@ android:id="@+id/line"
                         android:id="@+id/tv_company"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="40dp"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:textColor="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -426,12 +425,12 @@ android:id="@+id/line"
                         android:id="@+id/tv_hometown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="40dp"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
                         tools:text="美丽安徽"
-                        android:textColor="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -453,12 +452,12 @@ android:id="@+id/line"
                         android:id="@+id/tv_place"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="40dp"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:maxLines="1"
                         tools:text="网吧"
-                        android:textColor="@color/text_black_999"
+                        android:textColor="@color/text_black_333"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -497,7 +496,7 @@ android:id="@+id/line"
                         android:id="@+id/flowLayout_tags"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="40dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
                         android:minWidth="80dp"

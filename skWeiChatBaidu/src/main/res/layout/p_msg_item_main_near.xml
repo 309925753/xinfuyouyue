@@ -122,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp">
 
+
                 <com.xfyyim.cn.util.link.HttpTextView
                     android:id="@+id/body_tv"
                     android:layout_width="wrap_content"

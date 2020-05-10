@@ -438,10 +438,13 @@ public class Xf_FirstFragment extends EasyFragment {
             if(!TextUtils.isEmpty(mData.get(position).getCityName())){
                 cityDistance=mData.get(position).getCityName();
             }
-            if(mData.get(position).getDistance()>=1000){
-                cityDistance=cityDistance+"("+mData.get(position).getDistance()/1000+"km)";
-            }else {
-                cityDistance=cityDistance+"("+mData.get(position).getDistance()+"km)";
+
+            double distance = Math.rint(mData.get(position).getDistance() / 100) / 10;
+
+            if(distance>0){
+                cityDistance=cityDistance+"("+distance+"km)";
+            }else{
+                cityDistance=cityDistance;
             }
             holder.tv_city.setText(cityDistance);
 

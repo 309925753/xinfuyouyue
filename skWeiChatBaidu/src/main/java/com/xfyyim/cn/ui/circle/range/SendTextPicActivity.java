@@ -150,8 +150,10 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.img_delete_video)
     ImageView img_delete_video;
     @BindView(R.id.icon_image_view)
-
     ImageView mIconImageView;
+
+    @BindView(R.id.tv_topic_name)
+            TextView tv_topic_name;
 
     SendTopicAdapter adapter;
     SendRedTopicAdapter adapter1;
@@ -171,7 +173,9 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
     List<TopicEntity.DataBean.ListBean> selectTopicList = new ArrayList<>();
     public int isSeLectPic = 0;
-    String  topicType="1";
+    String topicType = "0";
+    String topicId;
+    String topicName;
 
 
     private double latitude;
@@ -183,7 +187,9 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_circle_show);
         unbinder = ButterKnife.bind(this);
 
-        topicType=getIntent().getStringExtra("topicType");
+        topicType = getIntent().getStringExtra("topicType");
+        topicId = getIntent().getStringExtra("topicId");
+        topicName = getIntent().getStringExtra("topicName");
 
         initActionBar();
         mPhotoList = new ArrayList<>();
@@ -217,6 +223,22 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
+        if(topicType.equals("1")){
+            tv_topic_name.setVisibility(View.VISIBLE);
+            rv_add_topic.setVisibility(View.GONE);
+            if (topicName.contains("#")){
+                tv_topic_name.setText(topicName);
+            }else{
+                tv_topic_name.setText("#"+topicName);
+            }
+
+
+
+        }else{
+            getTopicList();
+            tv_topic_name.setVisibility(View.GONE);
+            rv_add_topic.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -243,7 +265,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
 
             case R.id.img_delete_video:
-                mVideoFilePath="";
+                mVideoFilePath = "";
                 mImageView.setImageBitmap(null);
                 img_delete_video.setVisibility(View.GONE);
                 break;
@@ -253,7 +275,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             case R.id.tv_title_right:
 
                 if (mPhotoList.size() <= 0 && TextUtils.isEmpty(editText.getText().toString()) && TextUtils.isEmpty(mVideoFilePath)) {
-                    ToastUtil.showToast(this,"发布的内容不能为空!");
+                    ToastUtil.showToast(this, "发布的内容不能为空!");
                     return;
                 }
                 if (mVideoFilePath != null && !TextUtils.isEmpty(mVideoFilePath)) {
@@ -424,18 +446,41 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         }
         // 消息标记：1：求职消息；2：招聘消息；3：普通消息；
         params.put("flag", "3");
+        String topicStr = "";
+        String topicSelectId="";
 
-        if (selectTopicList.size()>0){
-            String topicStr="";
-            String text="";
-            for (TopicEntity.DataBean.ListBean bean:selectTopicList){
-                    text=bean.getTitle().contains("#")?bean.getTitle():"#"+bean.getTitle();
-                topicStr=topicStr +text;
+        if (selectTopicList != null && selectTopicList.size() > 0) {
+            if (selectTopicList.size() == 1) {
+                topicStr = selectTopicList.get(0).getTitle();
+                topicSelectId = selectTopicList.get(0).getId();
+            } else {
+                for (int i = 0; i < selectTopicList.size(); i++) {
+                    if (i == selectTopicList.size() - 1) {
+                        topicStr = topicStr + selectTopicList.get(i).getTitle();
+                        topicSelectId = topicSelectId + selectTopicList.get(i).getId();
+
+                    } else {
+                        topicStr = topicStr + selectTopicList.get(i).getTitle() + ",";
+                        topicSelectId = topicSelectId + selectTopicList.get(i).getId() + ",";
+                    }
+                }
             }
             params.put("topicStr", topicStr);
-            topicType="1";
+            params.put("parentTopicId", topicSelectId);
+            topicType = "1";
+
         }
 
+
+        if (topicName!=null&&!TextUtils.isEmpty(topicName)){
+            topicStr=topicName;
+
+            params.put("topicStr", topicStr);
+        }
+
+        if (topicId!=null&&!TextUtils.isEmpty(topicId)){
+            params.put("parentTopicId", topicId);
+        }
         params.put("topicType", topicType);
 //        // 消息隐私范围：1=公开；2=私密；3=部分选中好友可见；4=不给谁看
 //        params.put("visible", String.valueOf(visible));
@@ -603,8 +648,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-
-
     /**
      * 相册
      * 可以多选的图片选择器
@@ -694,7 +737,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             }
         } else if (requestCode == REQUEST_CODE_PICK_VIDEO) {
             // 选择视频的返回
-            if(data==null){
+            if (data == null) {
                 return;
             }
 
@@ -726,8 +769,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             mThumbBmp = AvatarHelper.getInstance().displayVideoThumb(filePath, mImageView);
             mTimeLen = videoFile.getFileLength();
             mSelectedId = videoFile.get_id();
-        }
-        else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SELECT_LOCATE) {
+        } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SELECT_LOCATE) {
             // 选择位置返回
             latitude = data.getDoubleExtra(AppConstant.EXTRA_LATITUDE, 0);
             longitude = data.getDoubleExtra(AppConstant.EXTRA_LONGITUDE, 0);
@@ -870,7 +912,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                 @Override
                 public void onClick(View v) {
                     mPhotoList.remove(position);
-                  notifyDataSetChanged();
+                    notifyDataSetChanged();
 
 
                 }
@@ -989,7 +1031,8 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        getTopicList();
+
+
 
     }
 
@@ -1007,14 +1050,14 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
                     TextView tv_address = view.findViewById(R.id.tv_topic_name);
-                    if (!list.get(position).isSelectTopic()){
+                    if (!list.get(position).isSelectTopic()) {
                         list.get(position).setSelectTopic(true);
                         tv_address.setTextColor(getResources().getColor(R.color.main_color_red1));
                         selectTopicList.add(list.get(position));
-                    }else{
+                    } else {
                         tv_address.setTextColor(getResources().getColor(R.color.text_black_999));
                         list.get(position).setSelectTopic(false);
-                        selectTopicList.remove( list.get(position));
+                        selectTopicList.remove(list.get(position));
                     }
 
 
@@ -1040,7 +1083,6 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             rv_topic.setLayoutManager(linearLayoutManager);
             adapter1 = new SendRedTopicAdapter(list, SendTextPicActivity.this);
             rv_topic.setAdapter(adapter1);
-
 
 
         } else {
@@ -1234,26 +1276,26 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
         HttpUtils.post().url(coreManager.getConfig().FILTER_TOPIC_LIST)
                 .params(params)
                 .build()
-               .execute(new BaseCallback<TopicEntity.DataBean>(TopicEntity.DataBean.class) {
-                   @Override
-                   public void onResponse(ObjectResult<TopicEntity.DataBean> result) {
-                       DialogHelper.dismissProgressDialog();
-                       if (Result.checkSuccess(SendTextPicActivity.this, result)) {
-                           List<TopicEntity.DataBean.ListBean> listBeans=result.getData().getList();
-                           setTopicAdapter(listBeans);
-                       }
-                   }
+                .execute(new BaseCallback<TopicEntity.DataBean>(TopicEntity.DataBean.class) {
+                    @Override
+                    public void onResponse(ObjectResult<TopicEntity.DataBean> result) {
+                        DialogHelper.dismissProgressDialog();
+                        if (Result.checkSuccess(SendTextPicActivity.this, result)) {
+                            List<TopicEntity.DataBean.ListBean> listBeans = result.getData().getList();
+                            setTopicAdapter(listBeans);
+                        }
+                    }
 
-                   @Override
-                   public void onError(Call call, Exception e) {
+                    @Override
+                    public void onError(Call call, Exception e) {
 
-                   }
+                    }
 
-                   @Override
-                   public void onFailure(Call call, IOException e) {
-                       super.onFailure(call, e);
-                   }
-               });
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        super.onFailure(call, e);
+                    }
+                });
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)

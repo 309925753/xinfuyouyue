@@ -4,7 +4,7 @@
     android:id="@+id/mergerStatus"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main_color_red">
+    android:background="@drawable/bg_new_my_wallet_red">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -68,6 +68,8 @@ public class PublicMessage implements Serializable {
     private int faceIdentity ;     // 0 - 未认证， 1 - 已认证
     private int age;
     private int sex;    // 性别  0 女 1:男
+    private  String topicType;
+    private String topicStr;
     private List<Comment> comments;// 回复数组
     private List<Praise> praises;  // 赞的列表
     private List<Gift> gifts;      // 收到的礼物列表
@@ -123,6 +125,22 @@ public class PublicMessage implements Serializable {
         return 0;
     }
 
+
+    public String getTopicType() {
+        return topicType;
+    }
+
+    public void setTopicType(String topicType) {
+        this.topicType = topicType;
+    }
+
+    public String getTopicStr() {
+        return topicStr;
+    }
+
+    public void setTopicStr(String topicStr) {
+        this.topicStr = topicStr;
+    }
 
     public int getIsAttion() {
         return isAttion;

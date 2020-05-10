@@ -447,6 +447,9 @@ public class EditInfoActivity extends BaseActivity implements View.OnClickListen
             tv_xingzuo.setText(user.getStarSign());
         }
 
+        if (user.getUserVIPPrivilege().getVipLevel().equals("-1")){
+            tv_vip.setVisibility(View.GONE);
+        }
 
         //签名
         if (user.getDescription() != null || !TextUtils.isEmpty(user.getDescription())) {

@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,26 +21,18 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.Reporter;
-import com.xfyyim.cn.adapter.PublicCareRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicMessageRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicNearAdapter;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.circle.TopicEntity;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
-import com.xfyyim.cn.db.dao.UserDao;
 import com.xfyyim.cn.downloader.Downloader;
-import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
-import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventNotifyDynamic;
 import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
-import com.xfyyim.cn.ui.mucfile.UploadingHelper;
-import com.xfyyim.cn.util.CameraUtil;
-import com.xfyyim.cn.util.LogUtils;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
@@ -110,6 +101,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     private TopicEntity.DataBean.ListBean dataBean;
     @BindView(R.id.tv_fabu)
     TextView tv_fabu;
+    private int pageIndex=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +159,9 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_fabu:
                 Intent intent = new Intent(TopicDetailActivity.this, SendTextPicActivity.class);
-                intent.putExtra("topicType", 1);
+                intent.putExtra("topicType", "1");
+                intent.putExtra("topicId",dataBean.getId());
+                intent.putExtra("topicName",dataBean.getTitle());
                 startActivity(intent);
                 break;
         }
@@ -209,8 +203,10 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
         mRefreshLayout = findViewById(R.id.refreshLayout);
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
             requestData(true);
+            pageIndex=0;
         });
         mRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            pageIndex++;
             requestData(false);
         });
 
@@ -240,53 +236,6 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    private void updateBackgroundImage(String path) {
-        File bg = new File(path);
-        if (!bg.exists()) {
-            LogUtils.log(path);
-            Reporter.unreachable();
-            ToastUtil.showToast(TopicDetailActivity.this, R.string.image_not_found);
-            return;
-        }
-        DialogHelper.showDefaulteMessageProgressDialog(TopicDetailActivity.this);
-        UploadingHelper.upfile(coreManager.getSelfStatus().accessToken, coreManager.getSelf().getUserId(), new File(path), new UploadingHelper.OnUpFileListener() {
-            @Override
-            public void onSuccess(String url, String filePath) {
-                Map<String, String> params = new HashMap<>();
-                params.put("access_token", coreManager.getSelfStatus().accessToken);
-                params.put("msgBackGroundUrl", url);
-
-                HttpUtils.get().url(coreManager.getConfig().USER_UPDATE)
-                        .params(params)
-                        .build()
-                        .execute(new BaseCallback<Void>(Void.class) {
-
-                            @Override
-                            public void onResponse(ObjectResult<Void> result) {
-                                DialogHelper.dismissProgressDialog();
-                                coreManager.getSelf().setMsgBackGroundUrl(url);
-                                UserDao.getInstance().updateMsgBackGroundUrl(coreManager.getSelf().getUserId(), url);
-                            }
-
-                            @Override
-                            public void onError(Call call, Exception e) {
-                                DialogHelper.dismissProgressDialog();
-                                ToastUtil.showErrorNet(TopicDetailActivity.this);
-                            }
-                        });
-            }
-
-            @Override
-            public void onFailure(String err, String filePath) {
-                DialogHelper.dismissProgressDialog();
-                if (TopicDetailActivity.this == null) {
-                    return;
-                }
-                ToastUtil.showErrorNet(TopicDetailActivity.this);
-            }
-        });
-
-    }
 
     public void initData() {
         mAdapter = new PublicNearAdapter(TopicDetailActivity.this,rl_root, coreManager, mMessages);
@@ -320,6 +269,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("parentTopicId", dataBean.getId());
         params.put("pageSize", String.valueOf(PAGER_SIZE));
+        params.put("pageIndex", String.valueOf(pageIndex));
         if (messageId != null) {
             params.put("messageId", messageId);
         }
@@ -377,13 +327,6 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
             String messageId = data.getStringExtra(AppConstant.EXTRA_MSG_ID);
             CircleMessageDao.getInstance().addMessage(mUserId, messageId);
             requestData(true);
-        } else if (requestCode == REQUEST_CODE_PICK_PHOTO) {
-            if (data != null) {
-                String path = CameraUtil.parsePickImageResult(data);
-                updateBackgroundImage(path);
-            } else {
-                ToastUtil.showToast(TopicDetailActivity.this, R.string.c_photo_album_failed);
-            }
         }
     }
 

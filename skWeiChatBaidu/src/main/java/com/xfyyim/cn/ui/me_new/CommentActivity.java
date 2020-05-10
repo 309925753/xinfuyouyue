@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me_new;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.adapter.AttentionAdapter;
-import com.xfyyim.cn.bean.AttentionEntity;
+import com.xfyyim.cn.adapter.CommentAdapter;
+import com.xfyyim.cn.adapter.CommentEntity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -43,11 +44,13 @@ public class CommentActivity extends BaseActivity {
     @BindView(R.id.iv_title_right)
     ImageView iv_title_right;
     @BindView(R.id.tv_title_center)
-    TextView tv_title_center;
+    TextView tv_title_center;   @BindView(R.id.tv_empty)
+    TextView tv_empty;
 
-    AttentionAdapter attentionAdapter;
+    CommentAdapter mAdapter;
     private static int PAGER_SIZE = 10;
     private boolean more;
+    private int pageIndex=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +63,13 @@ public class CommentActivity extends BaseActivity {
 
 
     public void initView() {
-        mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
             requestData();
+            pageIndex=0;
+        });
+        mRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            pageIndex++;
+           requestData();
         });
 
     }
@@ -91,18 +98,24 @@ public class CommentActivity extends BaseActivity {
 
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
-        params.put("userId", coreManager.getSelf().getUserId());
+        params.put("pageSize", "20");
+        params.put("pageIndex", String.valueOf(pageIndex));
 
-        HttpUtils.get().url(coreManager.getConfig().FRIENDS_PRAISE_LIST)
+        HttpUtils.get().url(coreManager.getConfig().FRIENDS_COMMENT_LIST)
                 .params(params)
                 .build()
-                 .execute(new ListCallback<AttentionEntity>(AttentionEntity.class) {
+                 .execute(new ListCallback<CommentEntity>(CommentEntity.class) {
                      @Override
-                     public void onResponse(ArrayResult<AttentionEntity> result) {
+                     public void onResponse(ArrayResult<CommentEntity> result) {
                          refreshComplete();
-                         List<AttentionEntity> data = result.getData();
+                         List<CommentEntity> data = result.getData();
                          if (data != null && data.size() > 0){
+                             tv_empty.setVisibility(View.GONE);
+                             rv_list.setVisibility(View.VISIBLE);
                              setAdapter(data);
+                         }else{
+                             tv_empty.setVisibility(View.VISIBLE);
+                             rv_list.setVisibility(View.GONE);
                          }
                      }
 
@@ -121,24 +134,26 @@ public class CommentActivity extends BaseActivity {
     }
 
 
-    public void setAdapter( List<AttentionEntity> list){
-        if (attentionAdapter == null) {
+    public void setAdapter( List<CommentEntity> list){
+        if (mAdapter == null) {
 
             LinearLayoutManager linearLayout = new LinearLayoutManager(CommentActivity.this);
             rv_list.setLayoutManager(linearLayout);
 
-            attentionAdapter = new AttentionAdapter(list, CommentActivity.this);
-            rv_list.setAdapter(attentionAdapter);
+            mAdapter = new CommentAdapter(list, CommentActivity.this);
+            rv_list.setAdapter(mAdapter);
 
-            attentionAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                    Intent intent=new Intent(CommentActivity.this,PersonInfoActivity.class);
+                    intent.putExtra("FriendId",String.valueOf(list.get(position).getUserId()));
+                    startActivity(intent);
                 }
             });
 
         } else {
-            attentionAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
     }
 

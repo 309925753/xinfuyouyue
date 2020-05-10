@@ -31,6 +31,7 @@ import com.xfyyim.cn.bean.circle.Praise;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
+import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.base.CoreManager;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
@@ -734,6 +735,7 @@ public class CircleDetailActivity extends BaseActivity {
         params.put("toUserId", messageUserId);
         params.put("fromAddType", messageUserId);
 
+        DialogHelper.showDefaulteMessageProgressDialog(this);
 
         HttpUtils.get().url(coreManager.getConfig().FRIENDS_ATTENTION_ADD)
                 .params(params)
@@ -741,6 +743,8 @@ public class CircleDetailActivity extends BaseActivity {
                 .execute(new BaseCallback<AddAttentionResult>(AddAttentionResult.class) {
                     @Override
                     public void onResponse(ObjectResult<AddAttentionResult> result) {
+                        DialogHelper.dismissProgressDialog();
+
                         if (Result.checkSuccess(mContext, result)) {
                             ToastUtil.showToast(mContext,"关注成功");
                             careType=2;
@@ -751,6 +755,8 @@ public class CircleDetailActivity extends BaseActivity {
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+
                     }
                 });
     }
@@ -759,7 +765,7 @@ public class CircleDetailActivity extends BaseActivity {
      * 取消关注
      */
     private void deleteFriend(String userID) {
-
+        DialogHelper.showDefaulteMessageProgressDialog(this);
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("toUserId", userID);
@@ -771,6 +777,8 @@ public class CircleDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(ObjectResult<Void> result) {
+                        DialogHelper.dismissProgressDialog();
+
                         ToastUtil.showToast(mContext, "取消关注成功");
                         careType=2;
                         tv_attion.setText("关注");
@@ -779,6 +787,8 @@ public class CircleDetailActivity extends BaseActivity {
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        DialogHelper.dismissProgressDialog();
+
                     }
                 });
     }

@@ -14,13 +14,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.fragment.FriendCircleActivity;
 import com.xfyyim.cn.nocsroll.MessagePagerAdapter;
 import com.xfyyim.cn.nocsroll.MyNavigationLayoutContainer;
 import com.xfyyim.cn.nocsroll.NoScrollViewPager;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
-import com.xfyyim.cn.ui.circle.range.SendShuoshuoActivity;
 import com.xfyyim.cn.ui.circle.range.SendTextPicActivity;
 import com.xfyyim.cn.ui.circle.range.TopicActivity;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
@@ -174,7 +172,7 @@ public class FindFriendFragment extends EasyFragment  implements View.OnClickLis
                 break;
             case R.id.img_camera:
                 Intent intent1=new Intent(getActivity(), SendTextPicActivity.class);
-                intent1.putExtra("topicType","1");
+                intent1.putExtra("topicType","0");
                 startActivity(intent1);
                 break;
         }

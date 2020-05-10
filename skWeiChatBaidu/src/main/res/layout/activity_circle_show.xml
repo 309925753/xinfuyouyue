@@ -23,17 +23,37 @@
             android:layout_height="match_parent"
             android:clipChildren="false">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_topic"
+                <RelativeLayout
+                    android:id="@+id/rl_topic_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+
+                >
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_topic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_topic_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/main_color_red1"
+                        android:text="#HUTI"
+                        android:textSize="@dimen/sp_15_text_size"
+                        />
+            </RelativeLayout>
+
+
+
 
             <EditText
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_below="@+id/rv_topic"
+                android:layout_height="190dp"
+                android:layout_below="@+id/rl_topic_show"
                 android:layout_marginTop="5dp"
                 android:background="@null"
                 android:gravity="top"
@@ -140,6 +160,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_topic_show_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -148,14 +169,14 @@
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="添加话题"
+                android:text="选择话题"
                 android:textColor="#FC697B"
                 android:textSize="15sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_add_topic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp" />
         </LinearLayout>
 
         <View
