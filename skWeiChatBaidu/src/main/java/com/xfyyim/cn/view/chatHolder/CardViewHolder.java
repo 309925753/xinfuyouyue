@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.event.EventFlashChat;
 import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
@@ -16,6 +17,7 @@ import com.xfyyim.cn.ui.me.MyNewWalletActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
+import com.xfyyim.cn.util.glideUtil.CircleRoundTransform;
 import com.xfyyim.cn.view.MyWalletPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 
@@ -23,6 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
+import static com.xfyyim.cn.MyApplication.getContext;
+import static com.xfyyim.cn.helper.AvatarHelper.getAvatarUrl;
 
 class CardViewHolder extends AChatHolderInterface {
 
@@ -58,6 +64,9 @@ class CardViewHolder extends AChatHolderInterface {
     public void fillData(ChatMessage message) {
         AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), ivCardImage, true);
         AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), iv_User_Head, true);
+       // Glide.with(getContext()).load(getAvatarUrl(message.getObjectId(), true)).transform(new CircleRoundTransform(mContext)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(iv_User_Head);
+        Glide.with(getContext()).load(getAvatarUrl(message.getObjectId(), true)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(iv_User_Head);
+
         if(!TextUtils.isEmpty(message.getContent())){
             tvPersonName.setText(String.valueOf(message.getContent()));
             tv_name.setText(String.valueOf(message.getContent()));

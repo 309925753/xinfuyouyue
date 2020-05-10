@@ -20,6 +20,16 @@ public class Comment implements Serializable {
     private String toNickname;// 被评论者的名字
     private String body;// 评论内容
     private String toBody;// 被评论内容
+
+    public int getFaceIdentity() {
+        return faceIdentity;
+    }
+
+    public void setFaceIdentity(int faceIdentity) {
+        this.faceIdentity = faceIdentity;
+    }
+
+    private int faceIdentity;//人脸认证  0没有认证
     private long time;
 
     public String getCommentId() {

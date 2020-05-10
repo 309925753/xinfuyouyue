@@ -190,7 +190,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                     Intent intent = new Intent(PersonBlumActivity.this, SendTextPicActivity.class);
                     startActivity(intent);
                 } else {
-                    if (!isAtt) {
+                    if (isAtt) {
                         deleteFriend(friendId);
                     } else {
                         doAddAttention(friendId);

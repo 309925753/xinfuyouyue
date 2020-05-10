@@ -194,7 +194,11 @@ public class CircleDetailActivity extends BaseActivity {
 
         nick_name_tv.setText(message.getNickName());
 
-
+        if (message.getFaceIdentity()==0){
+           img_vip.setVisibility(View.GONE);
+        }else{
+           img_vip.setVisibility(View.VISIBLE);
+        }
         if (message.getSex() == 1) {
             img_sex.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sex_man));
             rl_img.setBackground(mContext.getResources().getDrawable(R.drawable.share_sign_qing));
@@ -509,7 +513,11 @@ public class CircleDetailActivity extends BaseActivity {
             //todo 评论者的认证 if (comment.)
             holder.tv_time.setText(TimeUtils.getFriendlyTimeDesc(mContext, (int) comment.getTime()));
             holder.nick_name_tv.setText(comment.getNickName());
-
+            if (comment.getFaceIdentity()==0){
+                holder.img_vip.setVisibility(View.INVISIBLE);
+            }else{
+                holder.img_vip.setVisibility(View.VISIBLE);
+            }
             // 设置头像的点击事件
             holder.avatar_img.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -674,6 +682,7 @@ public class CircleDetailActivity extends BaseActivity {
                             comment.setCommentId(result.getData());
                             int conmentCount = Integer.parseInt(tv_read_count.getText().toString());
                             tv_read_count.setText(String.valueOf(conmentCount + 1));
+                            comment.setFaceIdentity(1);
                             adapter.addComment(comment);
                             adapter.notifyDataSetChanged();
                         }

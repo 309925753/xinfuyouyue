@@ -30,6 +30,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:background="@color/transparent1" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </RelativeLayout>
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/avatar_img"
@@ -51,6 +55,14 @@
                     app:riv_oval="true"
                     tools:src="@drawable/default_head"
                     />
+                <ImageView
+                    android:id="@+id/img_vip"
+                    android:layout_width="@dimen/dp10"
+                    android:layout_height="@dimen/dp10"
+                    android:layout_alignBottom="@+id/avatar_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="25dp"
+                    android:src="@drawable/icon_vip" />
 
 
                 <LinearLayout

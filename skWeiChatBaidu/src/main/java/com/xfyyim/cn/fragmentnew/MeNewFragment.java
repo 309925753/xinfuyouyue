@@ -139,6 +139,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     TextView tvLikeTimes;
     @BindView(R.id.tv_like_fans)
     TextView tvLikeFans;
+    @BindView(R.id.img_vip)
+    ImageView imgVip;
 
     @Override
     protected int inflateLayoutId() {
@@ -389,6 +391,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         }
 
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), avatar_img, true);
+        // Glide.with(getContext()).load(getAvatarUrl(coreManager.getSelf().getUserId(), true)).transform(new CircleRoundTransform(getContext())).bitmapTransform(new BlurTransformation(getContext(), 50)).into(avatar_img);
         tv_fans.setText(String.valueOf(user.getFansCount()));
         tv_guanzhu.setText(String.valueOf(user.getAttCount()));
         if (!TextUtils.isEmpty(user.getNickName())) {
@@ -401,6 +404,12 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         } else {
             tv_vip.setVisibility(View.VISIBLE);
         }
+        if (user.getFaceIdentity()==0) {
+            imgVip.setVisibility(View.GONE);
+        } else {
+            imgVip.setVisibility(View.VISIBLE);
+        }
+
 
         //相册
         if (user.getMsgImgs() != null && !TextUtils.isEmpty(user.getMsgImgs())) {

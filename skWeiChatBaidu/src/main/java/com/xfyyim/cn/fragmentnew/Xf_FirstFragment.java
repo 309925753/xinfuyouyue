@@ -434,10 +434,16 @@ public class Xf_FirstFragment extends EasyFragment {
                     holder.tvVip.setVisibility(View.VISIBLE);
                 }
             }
+            String  cityDistance="";
             if(!TextUtils.isEmpty(mData.get(position).getCityName())){
-
-                holder.tv_city.setText(mData.get(position).getCityName());
+                cityDistance=mData.get(position).getCityName();
             }
+            if(mData.get(position).getDistance()>=1000){
+                cityDistance=cityDistance+"("+mData.get(position).getDistance()/1000+"km)";
+            }else {
+                cityDistance=cityDistance+"("+mData.get(position).getDistance()+"km)";
+            }
+            holder.tv_city.setText(cityDistance);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
