@@ -336,6 +336,10 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         long randomNum = System.currentTimeMillis();
         String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false) + "?" + randomNum;
 
+        if(user.getMyPhotos().size()==0){
+            banner.setPointsIsVisible(false);
+        }
+
         if (user.getMyPhotos() != null && user.getMyPhotos().size() > 0) {
             for (PhotoEntity photo : user.getMyPhotos()) {
                 imgesUrl.add(photo.getPhotoUtl());
@@ -343,6 +347,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             imgesUrl.add(0, headUrl);
 
             banner.setVisibility(View.VISIBLE);
+
+
 
 
             int index = user.getMyPhotos().size() > 3 ? 3 : user.getMyPhotos().size();
