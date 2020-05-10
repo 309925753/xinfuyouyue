@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -68,8 +69,10 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.tv_sumbit)
     TextView tvSumbit;
     private Unbinder unbinder;
-    private boolean isWxSeletect = false;
-    private boolean isZfbSeletect = true;
+    private boolean isWxSeletect = true;
+    private boolean isZfbSeletect = false;
+    private  String  _userMobile="";
+    private String  _userName="";
 
 
     @Override
@@ -149,10 +152,12 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
             case R.id.iv_zfb_select:
                 if (!isZfbSeletect) {
                     isZfbSeletect = true;
+                    isWxSeletect = false;
                     ivZfbSelect.setImageResource(R.mipmap.pay_checked);
                     ivWxSelect.setImageResource(R.mipmap.pay_check);
                 } else {
                     isZfbSeletect = false;
+                    isWxSeletect = true;
                   ivZfbSelect.setImageResource(R.mipmap.pay_check);
                   ivWxSelect.setImageResource(R.mipmap.pay_checked);
                 }
@@ -160,22 +165,30 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
             case R.id.iv_wx_select:
                 if (!isWxSeletect) {
                     isWxSeletect = true;
+                    isZfbSeletect = false;
                   ivWxSelect.setImageResource(R.mipmap.pay_checked);
                   ivZfbSelect.setImageResource(R.mipmap.pay_check);
                 } else {
                     isWxSeletect = false;
+                    isZfbSeletect = true;
                    ivWxSelect.setImageResource(R.mipmap.pay_check);
                     ivZfbSelect.setImageResource(R.mipmap.pay_checked);
                 }
                 break;
             case R.id.tv_sumbit:
                 String moneyStr = tixianmoney.getText().toString();
-                showData(v);
                 if (checkMoney(moneyStr)) {
                     //如果是支付宝 得去输入手机号和密码
                     /**
                      * to do
                      */
+                    if(isWxSeletect){
+                    }else if(isZfbSeletect){
+                        /**
+                         * 微信 第三方登录或取openid
+                         */
+                        showData(v);
+                    }
                 }
                 break;
             case R.id.iv_title_left:
@@ -189,9 +202,9 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
         } else {
             if (Double.valueOf(moneyStr) < 1) {
                 DialogHelper.tip(MyWithdrawDepositActivity.this, getString(R.string.tip_withdraw_too_little));
-            } else if (Double.valueOf(moneyStr) > coreManager.getSelf().getBalance()) {
+            }/* else if (Double.valueOf(moneyStr) > coreManager.getSelf().getBalance()) {
                 DialogHelper.tip(MyWithdrawDepositActivity.this, getString(R.string.tip_balance_not_enough));
-            } else {// 获取用户code
+            }*/ else {// 获取用户code
                 return true;
             }
         }
@@ -211,10 +224,17 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
         popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);// 取得焦点
+        ColorDrawable dw = new ColorDrawable(getContext().getResources().getColor(R.color.alp_background));
+        popupWindow.setBackgroundDrawable(dw);
+
         //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
         //设置SelectPicPopupWindow弹出窗体的背景
         popupWindow.setBackgroundDrawable(getContext().getDrawable(R.drawable.dialog_style_bg));
         //点击外部消失
+        WindowManager.LayoutParams lp =getWindow().getAttributes();
+        lp.alpha = 0.7f;
+        getWindow().setAttributes(lp);
+
         popupWindow.setOutsideTouchable(true);
         int width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
         //   int height = (int) context.getResources().getDisplayMetrics().heightPixels / 2+((int) context.getResources().getDisplayMetrics().heightPixels / 11); // 高度
@@ -228,6 +248,55 @@ public class MyWithdrawDepositActivity extends BaseActivity implements View.OnCl
                 getWindow().setAttributes(lp);
             }
         });
+      EditText   et_user_mobile= (EditText)contentView.findViewById(R.id.et_user_mobile);
+        EditText   et_user_name=(EditText) contentView.findViewById(R.id.et_user_name);
+        TextView   tvPayVip=(TextView) contentView.findViewById(R.id.tvPayVip);
+        tvPayVip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String    userMobile=et_user_mobile.getText().toString();
+                String    userName=et_user_name.getText().toString();
+             //   checkUser(userMobile,userName);
+                if (TextUtils.isEmpty(userMobile)) {
+                    DialogHelper.tip(MyWithdrawDepositActivity.this, "手机号不能为空");
+                    return ;
+                }
+                if (userMobile.length()<10) {
+                    DialogHelper.tip(MyWithdrawDepositActivity.this, "手机号长度不能小于10位");
+                    return ;
+                }
+                if (TextUtils.isEmpty(userName)) {
+                    DialogHelper.tip(MyWithdrawDepositActivity.this, "支付宝姓名不能为空");
+                    return ;
+                }
+                popupWindow.dismiss();
+                _userMobile=userMobile;
+                _userName=userMobile;
+                String moneyStr = tixianmoney.getText().toString();
+
+                /**
+                 * to  do  请求支付还是微信
+                 */
+
+                if(isZfbSeletect){
+
+
+                }
+                if(isWxSeletect){
+                    /**
+                     * 微信 第三方登录或取openid
+                     */
+                }
+
+
+            }
+        });
+
+    }
+
+
+    private  void  checkUser(String userMobile,String userName){
+
 
     }
 }

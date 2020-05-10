@@ -58,8 +58,8 @@
                     />
                 <ImageView
                     android:id="@+id/img_vip"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/dp20"
+                    android:layout_height="@dimen/dp20"
                     android:layout_alignBottom="@+id/avatar_img"
                     android:layout_marginLeft="50dp"
                     android:visibility="invisible"
