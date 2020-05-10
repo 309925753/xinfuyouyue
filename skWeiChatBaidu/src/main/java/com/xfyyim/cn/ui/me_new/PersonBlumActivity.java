@@ -190,7 +190,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                     Intent intent = new Intent(PersonBlumActivity.this, SendTextPicActivity.class);
                     startActivity(intent);
                 } else {
-                    if (isAtt) {
+                    if (!isAtt) {
                         deleteFriend(friendId);
                     } else {
                         doAddAttention(friendId);
@@ -244,7 +244,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
 
 
         } else {
-            if (isAtt) {
+            if (!isAtt) {
                 tv_commit.setText("关注");
                 tv_commit.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
             } else {
@@ -293,6 +293,7 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         Map<String, String> params = new HashMap<>();
         params.put("access_token", UserSp.getInstance(PersonBlumActivity.this).getAccessToken());
         params.put("userId", friendId);
+        params.put("forUserId", friendId);
 
         HttpUtils.get().url(coreManager.getConfig().USER_GET_URL)
                 .params(params)
@@ -329,8 +330,10 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
 
-        params.put("userId", mLoginUserId);
-        params.put("forUserId", friendId);
+        params.put("userId", friendId);
+
+      //  params.put("userId", mLoginUserId);
+    //   params.put("forUserId", friendId);
         params.put("pageSize", String.valueOf(PAGER_SIZE));
         params.put("pageIndex", String.valueOf(pager_index));
 
