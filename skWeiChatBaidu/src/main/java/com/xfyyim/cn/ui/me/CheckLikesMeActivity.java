@@ -123,7 +123,7 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
             public void btnOnClick(LikeMeBean likeMeBean) {
                 //跳转个人资料页面
                 Intent intent1 = new Intent(CheckLikesMeActivity.this, PersonInfoActivity.class);
-                intent1.putExtra("FriendId", coreManager.getSelf().getUserId());
+                intent1.putExtra("FriendId", String.valueOf(likeMeBean.getUserId()));
                 startActivity(intent1);
             }
         });
@@ -284,7 +284,10 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             if (likeMeBeanList != null && likeMeBeanList.size() > 0) {
                 final LikeMeBean likeMeBean = likeMeBeanList.get(position);
-                holder.tvLikeName.setText("" + likeMeBean.getMyNickname() + "");
+                /**
+                 * to  do  少年龄
+                 */
+                holder.tvLikeName.setText("" + likeMeBean.getMyNickname()+", "+likeMeBean.getAge());
 
                 String url = AvatarHelper.getAvatarUrl(likeMeBean.getUserId() + "", false);
 
