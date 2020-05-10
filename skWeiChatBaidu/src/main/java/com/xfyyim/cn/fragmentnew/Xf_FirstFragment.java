@@ -430,6 +430,7 @@ public class Xf_FirstFragment extends EasyFragment {
             if (mData.get(position).getUserVIPPrivilege() != null) {
                 if (mData.get(position).getUserVIPPrivilege().getVipLevel().equals("-1")) {
                     holder.tvVip.setVisibility(View.INVISIBLE);
+                    holder.tvVip.setTextColor(getResources().getColor(R.color.text_black_333));
                 } else {
                     holder.tvVip.setVisibility(View.VISIBLE);
                 }
