@@ -280,7 +280,6 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(MessageEventHongdian message) {
         tvLikeTimes.setVisibility(View.VISIBLE);
-
     }
 
 

@@ -162,7 +162,8 @@ public class MyUserBlockedActivity extends BaseActivity implements View.OnClickL
                     @Override
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(MyUserBlockedActivity.this, result)) {
-                            deviceBeanList.clear();
+                            billCashWithdrawalAdapter.deviceBeanList.clear();
+                            billCashWithdrawalAdapter.notifyDataSetChanged();
                             initData();
 
                         }

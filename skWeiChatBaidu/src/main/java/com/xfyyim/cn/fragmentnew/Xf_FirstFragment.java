@@ -157,6 +157,7 @@ public class Xf_FirstFragment extends EasyFragment {
                             isRegret=true;
                         } else {
                             //如果为-1普通用户否则VIP用户
+                       if(coreManager.getSelf().getUserVIPPrivilege()!=null){
                           if(coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
                               if(coreManager.getSelf().getLikeTimesPerDay()>0){
                                   userLike(list.get(selectItem));
@@ -168,6 +169,7 @@ public class Xf_FirstFragment extends EasyFragment {
                               userLike(list.get(selectItem));
                               //   ToastUtil.showToast(getActivity(),"喜欢接口");
                           }
+                       }
 
                         }
                         if(mUsers.size()==0){
@@ -177,7 +179,7 @@ public class Xf_FirstFragment extends EasyFragment {
                             llFuction.setVisibility(View.GONE);
                         }
                         if (mUsers.size() <= 1) {
-                          //  requestData();
+                           requestData();
                         }
                     }
                 });
@@ -350,7 +352,7 @@ public class Xf_FirstFragment extends EasyFragment {
             mUsers.add(0,user);
         }*/
         if (mUsers != null && mUsers.size() <= 3) {
-            requestData();
+          requestData();
         }
         if (mUsers.size() == 3) {
             mUsers.remove(0);
