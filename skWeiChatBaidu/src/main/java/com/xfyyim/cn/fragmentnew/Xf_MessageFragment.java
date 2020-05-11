@@ -329,13 +329,13 @@ public class Xf_MessageFragment extends EasyFragment {
                     @Override
                     public void onResponse(ObjectResult<String> result) {
                         //  DialogHelper.dismissProgressDialog();
-                        Timer timer = new Timer();// 实例化Timer类
+                     /*   Timer timer = new Timer();// 实例化Timer类
                         timer.schedule(new TimerTask() {
                             public void run() {
                                 DialogHelper.dismissProgressDialog();
                                 this.cancel();
                             }
-                        }, 5000);
+                        }, 5000);*/
                         if (Result.checkSuccess(getActivity(), result)) {
                             DialogHelper.dismissProgressDialog();
                         }

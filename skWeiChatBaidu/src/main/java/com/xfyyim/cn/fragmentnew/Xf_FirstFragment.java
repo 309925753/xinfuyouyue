@@ -665,6 +665,9 @@ public class Xf_FirstFragment extends EasyFragment {
                             if (userSuper.getUserVIPPrivilege()!=null) {
                                 if (userSuper.getUserVIPPrivilege().getQuantity() >= 1 || userSuper.getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
                                     tvlikeTimes.setText(String.valueOf(userSuper.getUserVIPPrivilege().getQuantity() + userSuper.getUserVIPPrivilege().getSuperLikeQuantity()));
+                                    tvlikeTimes.setVisibility(View.INVISIBLE);
+                                }else {
+                                    tvlikeTimes.setVisibility(View.GONE);
                                 }
                             }
                            /* if (userSuper.getUserVIPPrivilege().getVipLevel().equals("-1")) {
@@ -871,7 +874,7 @@ public class Xf_FirstFragment extends EasyFragment {
                             }
                             if(!(user.getUserVIPPrivilege().getQuantity()+user.getUserVIPPrivilege().getSuperLikeQuantity()==0)){
                                 tvlikeTimes.setText(String.valueOf(user.getUserVIPPrivilege().getQuantity()+user.getUserVIPPrivilege().getSuperLikeQuantity()));
-
+                                tvlikeTimes.setVisibility(View.VISIBLE);
                             }
                   }
                     }

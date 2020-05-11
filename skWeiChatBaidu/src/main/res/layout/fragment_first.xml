@@ -138,6 +138,7 @@
                     android:background="@drawable/red_my_circle_dot"
                     android:textColor="@color/white"
                     android:textSize="9sp"
+                    android:visibility="invisible"
                     />
         </RelativeLayout>
 
