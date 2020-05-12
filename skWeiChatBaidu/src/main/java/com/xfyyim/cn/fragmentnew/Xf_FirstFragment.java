@@ -665,7 +665,7 @@ public class Xf_FirstFragment extends EasyFragment {
                             if (userSuper.getUserVIPPrivilege()!=null) {
                                 if (userSuper.getUserVIPPrivilege().getQuantity() >= 1 || userSuper.getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
                                     tvlikeTimes.setText(String.valueOf(userSuper.getUserVIPPrivilege().getQuantity() + userSuper.getUserVIPPrivilege().getSuperLikeQuantity()));
-                                    tvlikeTimes.setVisibility(View.INVISIBLE);
+                                    tvlikeTimes.setVisibility(View.VISIBLE);
                                 }else {
                                     tvlikeTimes.setVisibility(View.GONE);
                                 }
