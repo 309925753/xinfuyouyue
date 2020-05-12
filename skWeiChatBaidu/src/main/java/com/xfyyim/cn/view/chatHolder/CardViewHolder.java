@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import com.bumptech.glide.Glide;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.event.EventFlashChat;
@@ -40,6 +42,7 @@ class CardViewHolder extends AChatHolderInterface {
     RelativeLayout rl_tekan;
     TextView tv_name;
     TextView tv_interest;
+    CardView  cvShow;
 
     @Override
     public int itemLayoutId(boolean isMysend) {
@@ -57,20 +60,25 @@ class CardViewHolder extends AChatHolderInterface {
         tv_name = view.findViewById(R.id.tv_name);
         tv_interest = view.findViewById(R.id.tv_interest);
         iv_User_Head=view.findViewById(R.id.iv_User_Head);
+        cvShow=view.findViewById(R.id.cv_show);
 
     }
 
     @Override
     public void fillData(ChatMessage message) {
         AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), ivCardImage, true);
-        AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), iv_User_Head, true);
-       // Glide.with(getContext()).load(getAvatarUrl(message.getObjectId(), true)).transform(new CircleRoundTransform(mContext)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(iv_User_Head);
-        Glide.with(getContext()).load(getAvatarUrl(message.getObjectId(), true)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(iv_User_Head);
+        if(message.getToUserName().equals("8")){
+            cvShow.setVisibility(View.VISIBLE);
+            AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getObjectId(), iv_User_Head, true);
+            // Glide.with(getContext()).load(getAvatarUrl(message.getObjectId(), true)).transform(new CircleRoundTransform(mContext)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(iv_User_Head);
+            Glide.with(getContext()).load(getAvatarUrl(message.getObjectId(), true)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(iv_User_Head);
+            tv_name.setText(String.valueOf(message.getContent()));
+        }else {
+            cvShow.setVisibility(View.GONE);
+        }
 
         if(!TextUtils.isEmpty(message.getContent())){
             tvPersonName.setText(String.valueOf(message.getContent()));
-            tv_name.setText(String.valueOf(message.getContent()));
-
         }
 
         if (!isMysend) {
