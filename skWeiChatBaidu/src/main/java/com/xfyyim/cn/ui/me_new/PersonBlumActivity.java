@@ -224,8 +224,8 @@ public class PersonBlumActivity extends BaseActivity implements View.OnClickList
                     startActivity(intent2);
                 }
                 break;
-            case R.id.ll_blum:
-                if (user.getFriendsCount() == 0) {
+            case R.id.ll_zan:
+                if (user.getGetPraisesCount() == 0) {
                     ToastUtil.showLongToast(PersonBlumActivity.this, "暂无获赞的人");
                 } else {
                     Intent intentperson = new Intent(PersonBlumActivity.this, ZanActivity.class);

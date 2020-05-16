@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginBottom="@dimen/mainall_padding_bottom"
     android:background="@mipmap/my_privilege_slperror_bg"
     >
     <TextView

@@ -7,9 +7,9 @@
         <shape android:shape="rectangle" >
 
             <gradient
-                android:angle="270"
+                android:angle="0"
                 android:endColor="#FC607E"
-                android:startColor="#FC607E" />
+                android:startColor="#FC7079" />
 
             <corners
                 android:bottomLeftRadius="5dp"
@@ -19,25 +19,4 @@
         </shape>
     </item>
 
-
-
-    <!-- 背景部分 -->
-    <!-- 形象的表达：bottom代表背景部分在上边缘超出阴影的高度，right代表背景部分在左边超出阴影的宽度（相对应的offset） -->
-    <item
-        >
-        <shape android:shape="rectangle" >
-
-            <gradient
-                android:angle="270"
-                android:endColor="#FC607E"
-                android:startColor="#FC607E"
-                />
-
-            <corners
-                android:bottomLeftRadius="5dp"
-                android:bottomRightRadius="5dp"
-                android:topLeftRadius="5dp"
-                android:topRightRadius="5dp" />
-        </shape>
-    </item>
 </layer-list>

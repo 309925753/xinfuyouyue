@@ -18,27 +18,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.adapter.PublicMessageRecyclerAdapter;
 import com.xfyyim.cn.adapter.PublicNearAdapter;
 import com.xfyyim.cn.adapter.SendTopicAdapter;
-import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.circle.Comment;
 import com.xfyyim.cn.bean.circle.PublicMessage;
 import com.xfyyim.cn.bean.circle.TopicEntity;
 import com.xfyyim.cn.bean.event.EventNotifyAttionNear;
-import com.xfyyim.cn.bean.event.EventNotifyMatching;
 import com.xfyyim.cn.bean.event.EventNotifyNear;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.downloader.Downloader;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.sp.UserSp;
-import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.EasyFragment;
 import com.xfyyim.cn.ui.circle.MessageEventComment;
 import com.xfyyim.cn.ui.circle.MessageEventNotifyDynamic;
@@ -46,12 +43,11 @@ import com.xfyyim.cn.ui.circle.MessageEventReply;
 import com.xfyyim.cn.ui.circle.SelectPicPopupWindow;
 import com.xfyyim.cn.ui.circle.range.CircleDetailActivity;
 import com.xfyyim.cn.ui.circle.range.TopicDetailActivity;
-import com.xfyyim.cn.ui.me.MatchingSuccessfulActivity;
+import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.TrillCommentInputDialog;
-import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -99,6 +95,7 @@ public class NearFragment extends EasyFragment {
 
     RecyclerView rv_topic_hor;
     TextView tv_like;
+    TextView tv_empty_dt;
     RelativeLayout rl_like;
     ImageView img_likefirst;
     private View mHeadView;
@@ -146,7 +143,7 @@ public class NearFragment extends EasyFragment {
             for(int i=0;i<mMessages.size();i++){
                 if(message.MessageData.equals(mMessages.get(i).getUserId())){
                     PublicMessage   publicMessage= mMessages.get(i);
-                    publicMessage.setIsAttion(1);
+                    publicMessage.setIsBeAtt(1);
                     mMes.add(publicMessage);
                 }else {
                     mMes.add(mMessages.get(i));
@@ -170,7 +167,7 @@ public class NearFragment extends EasyFragment {
             for(int i=0;i<mMessages.size();i++){
                 if(message.MessageData.equals(mMessages.get(i).getUserId())){
                     PublicMessage   publicMessage= mMessages.get(i);
-                    publicMessage.setIsAttion(-1);
+                    publicMessage.setIsBeAtt(-1);
                     mMes.add(publicMessage);
                 }else {
                     mMes.add(mMessages.get(i));
@@ -185,6 +182,7 @@ public class NearFragment extends EasyFragment {
 
     public void initViews() {
         more = true;
+        tv_empty_dt=findViewById(R.id.tv_empty_dt);
         rl_root=findViewById(R.id.rl_root);
         mUserId = coreManager.getSelf().getUserId();
         mUserName = coreManager.getSelf().getNickName();
@@ -299,7 +297,7 @@ public class NearFragment extends EasyFragment {
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), CircleDetailActivity.class);
                 intent.putExtra("PublicMessage",mMessages.get(position));
-                intent.putExtra("CareType",mMessages.get(position).getIsAttion());
+                intent.putExtra("CareType",mMessages.get(position).getIsBeAtt());
                 getActivity().startActivity(intent);
             }
         });
@@ -324,16 +322,14 @@ public class NearFragment extends EasyFragment {
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("pageSize", String.valueOf(PAGER_SIZE));
         params.put("pageIndex", String.valueOf(pageIndex));
-//        if (distance>0){
-//            params.put("distance", String.valueOf(distance));
-//        }
-//        if (latitude>0){
-//            params.put("distance", String.valueOf(latitude));
-//        }
-//
-//        if (longitude>0){
-//            params.put("distance", String.valueOf(longitude));
-//        }
+        if (PreferenceUtils.getBoolean(getActivity(),coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
+            params.put("longitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LON));
+            params.put("latitude",PreferenceUtils.getString(getActivity(),coreManager.getSelf().getUserId()+ SpContext.LAT));
+        }else {
+            params.put("longitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLongitude()));
+            params.put("latitude",String.valueOf(MyApplication.getInstance().getBdLocationHelper().getLatitude()));
+        }
+
 
         HttpUtils.get().url(coreManager.getConfig().MSG_NEAR_LIST)
                 .params(params)
@@ -347,11 +343,19 @@ public class NearFragment extends EasyFragment {
                                 mMessages.clear();
                             }
                             if (data != null && data.size() > 0) {
+
+
+                                tv_empty_dt.setVisibility(View.GONE);
+                                mRefreshLayout.setVisibility(View.VISIBLE);
+
+
                                 mMessages.addAll(data);
                                 if (data.size() == PAGER_SIZE) {
                                     more = true;
                                     mRefreshLayout.resetNoMoreData();
                                 } else {
+                                    tv_empty_dt.setVisibility(View.VISIBLE);
+                                    mRefreshLayout.setVisibility(View.GONE);
                                     // 服务器返回未满10条，下拉不在去请求
                                     more = false;
                                 }

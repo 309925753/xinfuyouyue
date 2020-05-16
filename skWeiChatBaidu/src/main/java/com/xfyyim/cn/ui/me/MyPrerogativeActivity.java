@@ -1,14 +1,12 @@
 package com.xfyyim.cn.ui.me;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.xfyyim.cn.R;
@@ -71,10 +69,7 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
         ivTitleLeft.setVisibility(View.VISIBLE);
         ivTitleLeft.setOnClickListener(this);
         tvTitleCenter.setText("我的特权");
-        mergerStatus.setBackground(getDrawable(R.drawable.bg_new_my_wallet_red));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            tvTitleRight.setTextColor(getColor(R.color.white));
-        }
+            tvTitleRight.setTextColor(getResources().getColor(R.color.white));
        /* ivTitleRight.setVisibility(View.VISIBLE);
         ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
 
@@ -95,9 +90,6 @@ public class MyPrerogativeActivity extends BaseActivity implements View.OnClickL
         mFragmentList.add(new MyPrerogativeLikeFragment());
         mFragmentList.add(new myOnlineChatFragment());
 
-     /*   mFragmentList.add(new MyPrerogativeFragment());
-        mFragmentList.add(new MyPrerogativeLikeFragment());
-        mFragmentList.add(new myOnlineChatFragment());*/
 
         mViewPager.setCurrentItem(0);
         mViewPager.setOffscreenPageLimit(2);

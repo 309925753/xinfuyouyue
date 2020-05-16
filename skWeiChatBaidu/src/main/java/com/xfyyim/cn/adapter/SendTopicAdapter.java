@@ -27,7 +27,11 @@ public class SendTopicAdapter  extends BaseQuickAdapter<TopicEntity.DataBean.Lis
     @Override
     protected void convert(TopicViewHolder helper, TopicEntity.DataBean.ListBean item) {
         if (item.getTitle()!=null&&! TextUtils.isEmpty(item.getTitle())){
-            helper.tv_topic_name.setText("#"+item.getTitle());
+            if (item.getTitle().contains("#")&&item.getTitle().startsWith("#")){
+                helper.tv_topic_name.setText(item.getTitle());
+            }else {
+                helper.tv_topic_name.setText("#" + item.getTitle());
+            }
         }
     }
 

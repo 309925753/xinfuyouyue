@@ -88,7 +88,7 @@
             <LinearLayout
                 android:layout_width="@dimen/dp30"
                 android:layout_height="@dimen/dp15"
-                android:background="@drawable/appdes_shape_fc687c_2"
+                android:background="@drawable/shape_main_bottom_commit_bg"
                 android:layout_toRightOf="@+id/tv_zfb"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp5"
@@ -146,26 +146,20 @@
                 />
         </RelativeLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp45"
-        android:background="@drawable/appdes_shape_fc687c_2"
-        android:layout_marginTop="@dimen/dp25"
-        android:layout_marginLeft="@dimen/dp15"
-        android:layout_marginRight="@dimen/dp15"
-        >
         <TextView
             android:id="@+id/tv_sumbit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp45"
             android:text="确认提现"
+            android:background="@drawable/shape_main_bottom_commit_bg"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp15"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15_text_size"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp10"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
             />
 
-    </LinearLayout>
 
 
 </LinearLayout>

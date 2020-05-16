@@ -32,6 +32,7 @@
         <activity android:name=".ui.me_new.InviteActivity" />
         <activity android:name=".ui.me_new.ZanActivity" />
         <activity android:name=".ui.me_new.CommentActivity" />
+        <activity android:name=".ui.circle.range.CircleDetailFromZanActivity" />
         <activity android:name=".ui.me.DescriptionActivity" />
         <activity android:name=".ui.me_new.PersonBlumActivity" />
         <activity android:name=".ui.backup.ReceiveChatHistoryActivity" />

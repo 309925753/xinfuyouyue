@@ -11,23 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSON;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
 import com.xfyyim.cn.bean.Friend;
 import com.xfyyim.cn.bean.UserVIPPrivilege;
 import com.xfyyim.cn.bean.UserVIPPrivilegePrice;
-import com.xfyyim.cn.bean.event.EventNotifyByTag;
 import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
-import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
-import com.xfyyim.cn.bean.event.EventPaySuccess;
-import com.xfyyim.cn.bean.message.XmppMessage;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.helper.DialogHelper;
-import com.xfyyim.cn.ui.MainActivity;
 import com.xfyyim.cn.ui.base.EasyFragment;
-import com.xfyyim.cn.ui.me.payCompleteActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.message.ChatActivity;
 import com.xfyyim.cn.util.ArithUtils;
@@ -36,7 +29,6 @@ import com.xfyyim.cn.util.PreferenceUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.view.ImmediateiyChatPopupWindow;
 import com.xfyyim.cn.view.MyPrivilegePopupWindow;
-import com.xfyyim.cn.view.WaitingChatPopupWindow;
 import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -109,7 +101,7 @@ public class myOnlineChatFragment extends EasyFragment {
     private void initView() {
         AvatarHelper.getInstance().displayAvatar(coreManager.getSelf().getUserId(), ivUserHead, true);
 
-        findViewById(R.id.rlGetChat).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.ivChat).setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {

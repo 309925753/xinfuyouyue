@@ -227,7 +227,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
             tv_topic_name.setVisibility(View.VISIBLE);
             rv_add_topic.setVisibility(View.GONE);
 
-            if (topicName.contains("#")){
+            if (topicName.contains("#")&&topicName.startsWith("#")){
                 tv_topic_name.setText(topicName);
             }else{
                 tv_topic_name.setText("#"+topicName);
@@ -449,17 +449,31 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
         if (selectTopicList != null && selectTopicList.size() > 0) {
             if (selectTopicList.size() == 1) {
-                topicStr = selectTopicList.get(0).getTitle();
+
+                if (selectTopicList.get(0).getTitle().contains("#")&&selectTopicList.get(0).getTitle().startsWith("#")){
+                    topicStr = topicStr + selectTopicList.get(0).getTitle();
+                }else{
+                    topicStr = topicStr + "#"+selectTopicList.get(0).getTitle();
+                }
                 topicSelectId = selectTopicList.get(0).getId();
             } else {
                 for (int i = 0; i < selectTopicList.size(); i++) {
                     if (i == selectTopicList.size() - 1) {
+                            if (selectTopicList.get(i).getTitle().contains("#")&&selectTopicList.get(i).getTitle().startsWith("#")){
+                                topicStr = topicStr + selectTopicList.get(i).getTitle();
+                            }else{
+                                topicStr = topicStr + "#"+selectTopicList.get(i).getTitle();
+                            }
 
-                        topicStr = topicStr + selectTopicList.get(i).getTitle();
+
                         topicSelectId = topicSelectId + selectTopicList.get(i).getId();
 
                     } else {
-                        topicStr = topicStr + selectTopicList.get(i).getTitle() + ",";
+                        if (selectTopicList.get(i).getTitle().contains("#")&&selectTopicList.get(i).getTitle().startsWith("#")){
+                            topicStr = topicStr + selectTopicList.get(i).getTitle()+ ",";
+                        }else{
+                            topicStr = topicStr + "#"+selectTopicList.get(i).getTitle()+ ",";
+                        }
                         topicSelectId = topicSelectId + selectTopicList.get(i).getId() + ",";
                     }
                 }
@@ -472,7 +486,7 @@ public class SendTextPicActivity extends BaseActivity implements View.OnClickLis
 
 
         if (topicName!=null&&!TextUtils.isEmpty(topicName)){
-            if (topicName.contains("#")){
+            if (topicName.contains("#")&&topicName.startsWith("#")){
                 topicStr=topicName;
             }else{
                 topicStr="#"+topicName;

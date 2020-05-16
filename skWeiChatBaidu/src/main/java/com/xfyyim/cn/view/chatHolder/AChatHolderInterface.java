@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import com.bumptech.glide.Glide;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.PrivacySetting;
 import com.xfyyim.cn.bean.RoomMember;
@@ -26,11 +25,6 @@ import com.xfyyim.cn.view.HeadView;
 import com.xfyyim.cn.xmpp.listener.ChatMessageListener;
 
 import java.util.List;
-
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
-import static com.xfyyim.cn.MyApplication.getContext;
-import static com.xfyyim.cn.helper.AvatarHelper.getAvatarUrl;
 
 public abstract class AChatHolderInterface implements View.OnLongClickListener, View.OnClickListener {
 
@@ -108,6 +102,7 @@ public abstract class AChatHolderInterface implements View.OnLongClickListener, 
         if (enableNormal()) {
             // 显示消息状态
             changeMessageState(message);
+            mIvHead.setRound(true);
 //            if (isDevice) {
 //                mIvHead.setRound(false);// 我的设备不裁剪为圆形
 //            }

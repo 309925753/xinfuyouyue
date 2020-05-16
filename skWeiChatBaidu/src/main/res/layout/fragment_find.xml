@@ -12,7 +12,7 @@
         android:paddingTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/main_color_red"
+        android:background="@drawable/bg_new_my_wallet_red"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"

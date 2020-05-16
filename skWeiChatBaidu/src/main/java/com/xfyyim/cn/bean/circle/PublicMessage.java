@@ -73,10 +73,10 @@ public class PublicMessage implements Serializable {
     private List<Comment> comments;// 回复数组
     private List<Praise> praises;  // 赞的列表
     private List<Gift> gifts;      // 收到的礼物列表
+    private int isBeAtt; // 0-没有被关注 1-是被关注的
 
     private int isAllowComment; //生活圈禁止评论
 
-    private int isAttion;
 
 
 
@@ -126,6 +126,14 @@ public class PublicMessage implements Serializable {
     }
 
 
+    public int getIsBeAtt() {
+        return isBeAtt;
+    }
+
+    public void setIsBeAtt(int isBeAtt) {
+        this.isBeAtt = isBeAtt;
+    }
+
     public String getTopicType() {
         return topicType;
     }
@@ -142,13 +150,7 @@ public class PublicMessage implements Serializable {
         this.topicStr = topicStr;
     }
 
-    public int getIsAttion() {
-        return isAttion;
-    }
 
-    public void setIsAttion(int isAttion) {
-        this.isAttion = isAttion;
-    }
 
     public int getFaceIdentity() {
         return faceIdentity;

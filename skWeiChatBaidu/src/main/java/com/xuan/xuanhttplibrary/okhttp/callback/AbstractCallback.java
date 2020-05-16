@@ -87,7 +87,7 @@ public abstract class AbstractCallback<T> implements Callback {
     private void callOnResponse(T t) {
         if (t instanceof Result) {
             int resultCode = ((Result) t).getResultCode();
-            if (resultCode == Result.CODE_TOKEN_ERROR) {
+            if (resultCode == Result.CODE_TOKEN_ERROR||resultCode ==Result.CODE_NO_USER) {
                 MyApplication.getInstance().mUserStatus = LoginHelper.STATUS_USER_TOKEN_OVERDUE;
                 LoginHelper.broadcastLogout(MyApplication.getContext());
             }

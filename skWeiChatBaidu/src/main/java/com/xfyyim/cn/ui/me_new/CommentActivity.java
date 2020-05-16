@@ -14,6 +14,8 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.CommentAdapter;
 import com.xfyyim.cn.adapter.CommentEntity;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.circle.range.CircleDetailFromZanActivity;
+import com.xfyyim.cn.util.ToastUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
@@ -64,8 +66,9 @@ public class CommentActivity extends BaseActivity {
 
     public void initView() {
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
-            requestData();
             pageIndex=0;
+            requestData();
+
         });
         mRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
             pageIndex++;
@@ -114,8 +117,13 @@ public class CommentActivity extends BaseActivity {
                              rv_list.setVisibility(View.VISIBLE);
                              setAdapter(data);
                          }else{
-                             tv_empty.setVisibility(View.VISIBLE);
-                             rv_list.setVisibility(View.GONE);
+                             if (pageIndex>0){
+                                 ToastUtil.showToast(CommentActivity.this,"没有更多评论了");
+                             }else{
+                                 tv_empty.setVisibility(View.VISIBLE);
+                                 rv_list.setVisibility(View.GONE);
+                             }
+
                          }
                      }
 
@@ -146,8 +154,8 @@ public class CommentActivity extends BaseActivity {
             mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    Intent intent=new Intent(CommentActivity.this,PersonInfoActivity.class);
-                    intent.putExtra("FriendId",String.valueOf(list.get(position).getUserId()));
+                    Intent intent=new Intent(CommentActivity.this, CircleDetailFromZanActivity.class);
+                    intent.putExtra("MessageData",list.get(position).getMsg());
                     startActivity(intent);
                 }
             });

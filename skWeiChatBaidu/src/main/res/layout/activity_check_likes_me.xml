@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFEF7F8">
+    android:background="@color/new_main">
 
     <include layout="@layout/a_view_actionbar" />
 
@@ -24,6 +24,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="15dp"
         android:layout_below="@+id/mergerStatus"
         app:srlEnableAutoLoadMore="true"
         app:srlEnableLoadMore="true">
@@ -38,7 +39,9 @@
         android:layout_height="match_parent"
         android:visibility="invisible"
             />
-
+        <com.xfyyim.cn.view.PullRefreshFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <ImageView

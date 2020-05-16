@@ -202,27 +202,26 @@ public class XChatMessageListener implements IncomingChatMessageListener {
         //发名片
         if (type == XmppMessage.TYPE_CARD) {
 
-            NewFriendMessage mNewMessage = new NewFriendMessage(chatMessage.toJsonString());
-            mNewMessage.setOwnerId(mLoginUserId);
-            mNewMessage.setUserId(chatMessage.getFromUserId());
-            mNewMessage.setRead(false);
-            mNewMessage.setMySend(false);
-            mNewMessage.setPacketId(chatMessage.getPacketId());
-            String content = "";
-            NewFriendDao.getInstance().createOrUpdateNewFriend(mNewMessage);
-            NewFriendDao.getInstance().changeNewFriendState(mNewMessage.getUserId(), Friend.STATUS_11);
-
+//            NewFriendMessage mNewMessage = new NewFriendMessage(chatMessage.toJsonString());
+//            mNewMessage.setOwnerId(mLoginUserId);
+//            mNewMessage.setUserId(chatMessage.getFromUserId());
+//            mNewMessage.setRead(false);
+//            mNewMessage.setMySend(false);
+//            mNewMessage.setPacketId(chatMessage.getPacketId());
+//            String content = "";
+//            NewFriendDao.getInstance().createOrUpdateNewFriend(mNewMessage);
+//            NewFriendDao.getInstance().changeNewFriendState(mNewMessage.getUserId(), Friend.STATUS_11);
+            LogUtil.e("cjh  名片 "+chatMessage);
             ChatMessage sayHelloMessage = new ChatMessage();
-            sayHelloMessage.setType(XmppMessage.TYPE_CARD); //文本类型
+            sayHelloMessage.setType(XmppMessage.TYPE_CARD); //名片
             sayHelloMessage.setFromUserId(chatMessage.getFromUserId());
             sayHelloMessage.setFromUserName(chatMessage.getFromUserName());
-            sayHelloMessage.setContent(getContext().getString(R.string.say_hello_default));
+            sayHelloMessage.setContent(chatMessage.getContent());
             sayHelloMessage.setMySend(false);
             sayHelloMessage.setMessageState(ChatMessageListener.MESSAGE_SEND_SUCCESS);
             sayHelloMessage.setPacketId(chatMessage.getPacketId());
             sayHelloMessage.setDoubleTimeSend(chatMessage.getTimeSend());
             ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, chatMessage.getFromUserId(), sayHelloMessage);
-            ListenerManager.getInstance().notifyNewFriend(mLoginUserId, mNewMessage, true);
         return;
     }
 

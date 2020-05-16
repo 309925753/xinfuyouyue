@@ -226,6 +226,13 @@
                             android:text="VIP"
                             android:textColor="@color/white"
                             android:textSize="10sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableRight="@mipmap/right_arrow_icon"
+                            />
                     </LinearLayout>
 
                     <TextView
@@ -243,12 +250,9 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    style="@style/text_person_info_sign"
                     android:text="个人签名"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="10sp" />
+                 />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -274,7 +278,7 @@
 
                         android:hint="请编写个人签名"
                         android:textColor="@color/text_black_999"
-                        android:textSize="10sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
@@ -282,12 +286,9 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    style="@style/text_person_info_sign"
                     android:text="我的信息"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="10sp" />
+                 />
 
                 <LinearLayout
 
@@ -454,12 +455,9 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    style="@style/text_person_info_sign"
                     android:text="我的标签"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="10sp" />
+                     />
 
 
                 <LinearLayout
@@ -518,12 +516,9 @@
                     android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    style="@style/text_person_info_sign"
                     android:text="我的兴趣"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="10sp" />
+                   />
 
 
                 <LinearLayout
@@ -802,12 +797,9 @@
 
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    style="@style/text_person_info_sign"
                     android:text="我的问答"
-                    android:textColor="@color/text_black_999"
-                    android:textSize="12sp" />
+                     />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_question"

@@ -321,7 +321,7 @@ public class MessageFragment extends EasyFragment implements AuthStateListener {
 
     @Override
     public void onResume() {
-        super.onResume();
+
         foreground = true;
         int authState = XmppConnectionManager.mXMPPCurrentState;
         if (authState == 0 || authState == 1) {
@@ -334,6 +334,7 @@ public class MessageFragment extends EasyFragment implements AuthStateListener {
             findViewById(R.id.pb_title_center).setVisibility(View.GONE);
             mTvTitle.setText(getString(R.string.msg_view_controller_off_line));
         }
+        super.onResume();
     }
 
     @Override

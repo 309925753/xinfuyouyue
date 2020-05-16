@@ -33,8 +33,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.bumptech.glide.Glide;
+import com.coloros.mcssdk.PushManager;
+import com.example.qrcode.Constant;
+import com.example.qrcode.ScannerActivity;
+import com.fanjun.keeplive.KeepLive;
+import com.fanjun.keeplive.config.KeepLiveService;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.xfyyim.cn.AppConstant;
 import com.xfyyim.cn.BuildConfig;
 import com.xfyyim.cn.MyApplication;
@@ -49,7 +55,6 @@ import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.event.EventCreateGroupFriend;
 import com.xfyyim.cn.bean.event.EventNotifyMatching;
-import com.xfyyim.cn.bean.event.EventNotifyOnlineChat;
 import com.xfyyim.cn.bean.event.EventNotifyWaitMatching;
 import com.xfyyim.cn.bean.event.EventNotifyWaitOnlineChat;
 import com.xfyyim.cn.bean.event.EventQRCodeReady;
@@ -89,7 +94,6 @@ import com.xfyyim.cn.fragmentnew.Xf_FirstFragment;
 import com.xfyyim.cn.fragmentnew.Xf_MessageFragment;
 import com.xfyyim.cn.helper.DialogHelper;
 import com.xfyyim.cn.helper.LoginHelper;
-import com.xfyyim.cn.helper.LoginSecureHelper;
 import com.xfyyim.cn.helper.PrivacySettingHelper;
 import com.xfyyim.cn.map.MapHelper;
 import com.xfyyim.cn.pay.PaymentReceiptMoneyActivity;
@@ -136,13 +140,6 @@ import com.xfyyim.cn.xmpp.helloDemon.MeizuPushMsgReceiver;
 import com.xfyyim.cn.xmpp.helloDemon.OppoPushMessageService;
 import com.xfyyim.cn.xmpp.helloDemon.VivoPushMessageReceiver;
 import com.xfyyim.cn.xmpp.listener.ChatMessageListener;
-import com.coloros.mcssdk.PushManager;
-import com.example.qrcode.Constant;
-import com.example.qrcode.ScannerActivity;
-import com.fanjun.keeplive.KeepLive;
-import com.fanjun.keeplive.config.KeepLiveService;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
@@ -487,6 +484,8 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
 //
 //
 //        });
+        login();
+        updateSelfData();
         initOther();// 初始化第三方
         checkTime();
         mUserId = loginUser.getUserId();
@@ -531,6 +530,7 @@ public class MainActivity extends BaseActivity implements PermissionUtil.OnReque
             switch (checkedId) {
                 case R.id.rb_tab_1:
                     fragment = new Xf_FirstFragment();
+//                    fragment = new MessageFragment();
                     break;
                 case R.id.rb_tab_2:
                     fragment = new Xf_MessageFragment();

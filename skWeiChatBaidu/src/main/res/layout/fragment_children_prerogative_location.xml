@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:layout_marginBottom="@dimen/mainall_padding_bottom"
     android:background="@mipmap/my_prerogative_city_bg">
     <TextView
         android:layout_width="wrap_content"

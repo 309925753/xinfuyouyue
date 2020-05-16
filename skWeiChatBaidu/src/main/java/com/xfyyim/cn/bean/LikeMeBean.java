@@ -14,7 +14,9 @@ public class LikeMeBean {
     private String id;
     private int isSuperLike;
     private int isUnLike;
+    private int likeUserAge;
     private long likeTime;
+
     private int likeUserId;
     private String nickname;
     private int userId;
@@ -27,7 +29,7 @@ public class LikeMeBean {
         this.likeUserAge = likeUserAge;
     }
 
-    private int likeUserAge;
+
 
     public String getMyNickname() {
         return myNickname;

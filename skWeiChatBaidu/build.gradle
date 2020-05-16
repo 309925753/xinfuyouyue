@@ -392,7 +392,7 @@ dependencies {
     implementation project(path: ':faceplatform')
     implementation project(path: ':faceplatform-ui')
     implementation 'jp.wasabeef:glide-transformations:2.0.1'
-
+    implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
 }
 
 configurations {

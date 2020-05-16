@@ -125,7 +125,7 @@ public class TopicEntity  {
             }
 
             public String getTitle() {
-                if (!title.contains("#")){
+                if (!title.contains("#")&&title.startsWith("#")){
                     title="#"+title;
                 }
                 return title;

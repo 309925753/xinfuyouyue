@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#FEF7F8"
 
-    android:orientation="vertical">
+>
 
-    <include layout="@layout/a_view_actionbar" />
+    <include
+        android:id="@+id/title"
+        layout="@layout/a_view_actionbar" />
 
     <com.xfyyim.cn.customer.StackLayout
+        android:layout_below="@id/title"
+        android:layout_above="@+id/ll_fuction"
         android:id="@+id/stack_layout"
         android:layout_width="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_height="380dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
         android:orientation="vertical" />
     <RelativeLayout
         android:id="@+id/rl_Show"
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:layout_marginTop="10dp"
+        android:layout_centerInParent="true"
         android:visibility="gone"
        >
         <TextView
@@ -37,10 +43,11 @@
 
 
     <LinearLayout
+        android:layout_alignParentBottom="true"
         android:id="@+id/ll_fuction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/dp40"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -138,7 +145,7 @@
                     android:background="@drawable/red_my_circle_dot"
                     android:textColor="@color/white"
                     android:textSize="9sp"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     />
         </RelativeLayout>
 
@@ -146,4 +153,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,169 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/new_main">
-    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_main"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitXY"
-            />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:background="@color/new_main">
+
         <RelativeLayout
-            android:id="@+id/rlOnlineChat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginRight="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp15"
-            android:background="@mipmap/my_online_chat"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/mainall_padding_bottom"
+
             >
-            <TextView
-                android:id="@+id/tvVip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_18_text_size"
-                android:text="在线闪聊"
-                android:layout_marginTop="@dimen/dp15"
-                android:textColor="@color/color_white"
-                android:layout_marginLeft="@dimen/dp15"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_19_text_size"
-                android:text="年费享有更多"
-                android:textColor="@color/color_white"
-                android:layout_toRightOf="@+id/tvVip"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="@dimen/dp15"
-                android:background="@color/orange"
-                android:visibility="gone"
-                />
-            <TextView
-                android:id="@+id/tvExclusive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_12_text_size"
-                android:text="立刻获得神秘配对，实时互动畅聊无阻！"
-                android:textColor="@color/color_white"
-                android:layout_below="@+id/tvVip"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginTop="@dimen/dp5"
-                />
-            <TextView
-                android:id="@+id/tvMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_15_text_size"
-                android:text="5项专属特权，限身份"
-                android:textColor="@color/color_white"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_below="@+id/tvExclusive"
-                android:background="@color/orange"
-                android:layout_marginTop="@dimen/dp5"
-                android:visibility="gone"
-                />
-            <LinearLayout
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:paddingBottom="@dimen/dp15"
-                android:layout_marginTop="@dimen/dp20"
-                >
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/ivUserHead"
-                    android:layout_width="@dimen/dp20"
-                    android:layout_height="@dimen/dp20"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_head"
-                    android:visibility="visible"
-                    app:riv_border_color="#fff"
-                    app:riv_border_width="1dip"
-                    app:riv_corner_radius="6dp"
-                    app:riv_oval="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitXY" />
+
+            <RelativeLayout
+                android:id="@+id/rlOnlineChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp15"
+                android:background="@mipmap/my_online_chat">
+
+                <TextView
+                    android:id="@+id/tvVip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginTop="@dimen/dp15"
+                    android:text="在线闪聊"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_18_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginTop="@dimen/dp15"
+                    android:layout_toRightOf="@+id/tvVip"
+                    android:background="@color/orange"
+                    android:text="年费享有更多"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_19_text_size"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvExclusive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvVip"
                     android:layout_marginLeft="@dimen/dp15"
                     android:layout_marginTop="@dimen/dp5"
-                    />
-                <TextView
-                    android:id="@+id/tvDataTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/sp_15_text_size"
-                    tools:text="暂未开通 剩余9次"
+                    android:text="立刻获得神秘配对，实时互动畅聊无阻！"
                     android:textColor="@color/color_white"
-                    android:layout_marginLeft="@dimen/dp10"
-                    />
+                    android:textSize="@dimen/sp_12_text_size" />
+
                 <TextView
-                    android:id="@+id/tvImmediatelyChat"
+                    android:id="@+id/tvMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/red_my_button"
-                    android:text="立即闪聊"
-                    android:textColor="@color/white"
-                    android:paddingHorizontal="@dimen/dp15"
-                    android:gravity="center"
-                    android:layout_marginRight="@dimen/dp15"
+                    android:layout_below="@+id/tvExclusive"
                     android:layout_marginLeft="@dimen/dp15"
-                    android:paddingTop="@dimen/dp5"
-                    android:paddingBottom="@dimen/dp5"
-                    android:visibility="invisible"
-                    />
+                    android:layout_marginTop="@dimen/dp5"
+                    android:background="@color/orange"
+                    android:text="5项专属特权，限身份"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_15_text_size"
+                    android:visibility="gone" />
 
-            </LinearLayout>
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/dp15">
 
-        <ImageView
-            android:id="@+id/ivChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/my_online_chat_bg"
-             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp15"
-            android:layout_below="@+id/rlOnlineChat"
-            />
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="每日3个蒙脸的在线配对，实时互动，畅通无\n          阻，通过聊天解锁对方头像"
-        android:textColor="@color/text_black_333"
-        android:textSize="@dimen/sp_12_text_size"
-        android:layout_below="@+id/ivChat"
-        android:layout_marginTop="@dimen/dp15"
-        android:layout_centerHorizontal="true"
-        />
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivUserHead"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginLeft="@dimen/dp15"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_head"
+                        android:visibility="visible"
+                        app:riv_border_color="#fff"
+                        app:riv_border_width="1dip"
+                        app:riv_corner_radius="6dp"
+                        app:riv_oval="true" />
+
+                    <TextView
+                        android:id="@+id/tvDataTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="@dimen/dp10"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/tvImmediatelyChat"
+                        android:layout_toRightOf="@+id/ivUserHead"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/sp_12_text_size"
+                        tools:text="暂未开通 剩余9次" />
 
 
-        <RelativeLayout
-            android:id="@+id/rlGetChat"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/ivChat"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="125dp"
-            >
+                    <TextView
+                        android:id="@+id/tvImmediatelyChat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:background="@drawable/red_my_button"
+                        android:gravity="center"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:text="立即闪聊"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_10_text_size"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/ivChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlOnlineChat"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp15"
+                android:src="@mipmap/my_online_chat_bg" />
+
             <TextView
-                android:id="@+id/tvFlashChat"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@drawable/red_my_button"
-                tools:text="￥38获取闪聊特权"
-                android:textColor="@color/white"
-                android:paddingHorizontal="@dimen/dp15"
-                android:gravity="center"
-                android:layout_marginRight="@dimen/dp15"
-                android:layout_marginLeft="@dimen/dp15"
-                />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivChat"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp15"
+                android:text="每日3个蒙脸的在线配对，实时互动，畅通无\n          阻，通过聊天解锁对方头像"
+                android:textColor="@color/text_black_333"
+                android:textSize="@dimen/sp_12_text_size" />
+
+
         </RelativeLayout>
 
 
-    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/tvFlashChat"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/mainall_padding_bottom"
+        android:background="@drawable/shape_main_bottom_commit_bg"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dp15"
+        android:textColor="@color/white"
+        tools:text="￥38获取闪聊特权" />
+
+</RelativeLayout>

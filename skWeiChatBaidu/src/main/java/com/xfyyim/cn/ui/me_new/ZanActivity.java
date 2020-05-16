@@ -1,5 +1,6 @@
 package com.xfyyim.cn.ui.me_new;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,9 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
-import com.xfyyim.cn.adapter.AttentionAdapter;
-import com.xfyyim.cn.bean.AttentionEntity;
+import com.xfyyim.cn.adapter.ZanAdapter;
+import com.xfyyim.cn.bean.ZanEntivity;
 import com.xfyyim.cn.ui.base.BaseActivity;
+import com.xfyyim.cn.ui.circle.range.CircleDetailFromZanActivity;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ArrayResult;
@@ -45,7 +47,7 @@ public class ZanActivity extends BaseActivity {
     @BindView(R.id.tv_title_center)
     TextView tv_title_center;
 
-    AttentionAdapter attentionAdapter;
+    ZanAdapter attentionAdapter;
     private static int PAGER_SIZE = 10;
     private boolean more;
 
@@ -96,11 +98,11 @@ public class ZanActivity extends BaseActivity {
         HttpUtils.get().url(coreManager.getConfig().FRIENDS_PRAISE_LIST)
                 .params(params)
                 .build()
-                 .execute(new ListCallback<AttentionEntity>(AttentionEntity.class) {
+                 .execute(new ListCallback<ZanEntivity>(ZanEntivity.class) {
                      @Override
-                     public void onResponse(ArrayResult<AttentionEntity> result) {
+                     public void onResponse(ArrayResult<ZanEntivity> result) {
                          refreshComplete();
-                         List<AttentionEntity> data = result.getData();
+                         List<ZanEntivity> data = result.getData();
                          if (data != null && data.size() > 0){
                              setAdapter(data);
                          }
@@ -121,19 +123,21 @@ public class ZanActivity extends BaseActivity {
     }
 
 
-    public void setAdapter( List<AttentionEntity> list){
+    public void setAdapter( List<ZanEntivity> list){
         if (attentionAdapter == null) {
 
             LinearLayoutManager linearLayout = new LinearLayoutManager(ZanActivity.this);
             rv_list.setLayoutManager(linearLayout);
 
-            attentionAdapter = new AttentionAdapter(list, ZanActivity.this);
+            attentionAdapter = new ZanAdapter(list, ZanActivity.this);
             rv_list.setAdapter(attentionAdapter);
 
             attentionAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                    Intent intent=new Intent(ZanActivity.this, CircleDetailFromZanActivity.class);
+                    intent.putExtra("MessageData",list.get(position).getMsg());
+                    startActivity(intent);
                 }
             });
 

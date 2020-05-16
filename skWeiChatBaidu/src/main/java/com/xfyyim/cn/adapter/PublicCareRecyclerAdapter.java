@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -47,7 +48,6 @@ import com.xfyyim.cn.bean.circle.PublicMessage.Resource;
 import com.xfyyim.cn.bean.collection.Collectiion;
 import com.xfyyim.cn.bean.collection.CollectionEvery;
 import com.xfyyim.cn.bean.event.EventDeleteDynamic;
-import com.xfyyim.cn.bean.event.EventOnlieChat;
 import com.xfyyim.cn.db.dao.CircleMessageDao;
 import com.xfyyim.cn.db.dao.FriendDao;
 import com.xfyyim.cn.helper.AvatarHelper;
@@ -329,14 +329,32 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
 
         // 设置body_tv
         // todo 注释掉的代码为 展开/全文的方式显示文本，文本长度过长时会卡顿，先隐藏这种方式，换种方式(最多显示6行，操作的跳转显示)
-        if (TextUtils.isEmpty(body.getText())) {
+
+
+        if (TextUtils.isEmpty(body.getText())&&TextUtils.isEmpty(message.getTopicStr())) {
             viewHolder.body_tv.setVisibility(View.GONE);
         } else {
-            // 支持emoji显示
+            if (message.getTopicType() != null && message.getTopicType().equals("1")) {
+                String topicText = message.getTopicStr().replace(",", " ");
+
+                if (TextUtils.isEmpty(body.getText())) {
+                    viewHolder.body_tv.setText(StringUtils.editTextHtmlErrorTip(mContext, topicText));
+
+                } else {
+
+                    String newText = "<font color='red'>" + topicText + "</font>" + " " + body.getText();
+                    viewHolder.body_tv.setText(Html.fromHtml(newText));
+                }
+            } else {
+                viewHolder.body_tv.setUrlText(body.getText());
+            }
+
+
             viewHolder.body_tv.setFilters(new InputFilter[]{new EmojiInputFilter(mContext)});
-            viewHolder.body_tv.setUrlText(body.getText());
+
             viewHolder.body_tv.setVisibility(View.VISIBLE);
         }
+
         // 判断是否超出6行限制，超过则显示"全文"
         viewHolder.body_tv.post(() -> {
             Layout layout = viewHolder.body_tv.getLayout();
@@ -1491,6 +1509,9 @@ public class PublicCareRecyclerAdapter extends RecyclerView.Adapter<PublicCareRe
             super(itemView);
         }
     }
+
+
+
 
     /* 转载的单张图片 */
     static class FwSingleImageHolder extends ViewHolder {

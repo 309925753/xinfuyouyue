@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:layout_marginBottom="@dimen/mainall_padding_bottom"
     android:background="@mipmap/my_privilege_vip_bg">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,6 +13,7 @@
         android:layout_marginTop="@dimen/dp15"
         android:textColor="@color/text_black_333"
         android:text="会员身份标识" />
+
     <RelativeLayout
         android:layout_width="230dp"
         android:layout_height="@dimen/dp300"
@@ -22,8 +23,7 @@
         android:layout_marginRight="@dimen/dp80"
         android:layout_marginTop="@dimen/dp15"
         android:elevation="@dimen/dp5"
-        android:layout_gravity="center_horizontal"
-        >
+        android:layout_gravity="center_horizontal">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -32,15 +32,16 @@
             android:layout_marginTop="@dimen/dp15"
             android:layout_marginBottom="@dimen/dp30"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="@dimen/dp40"
-            >
+            android:paddingBottom="@dimen/dp40">
+
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_15_text_size"
                 android:textColor="@color/text_black_fd9e14"
-                android:text="Eblist"/>
+                android:text="Eblist" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="15dp"
@@ -52,16 +53,18 @@
                 android:layout_marginTop="@dimen/dp5"
                 android:paddingRight="@dimen/dp10"
                 android:paddingLeft="@dimen/dp10"
-                android:text="Vip"/>
+                android:text="Vip" />
         </RelativeLayout>
     </RelativeLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp_13_text_size"
         android:textColor="@color/text_black_333"
         android:layout_gravity="center_horizontal"
-        android:text="让你的卡片更受欢迎，配对更容易！"/>
+        android:text="让你的卡片更受欢迎，配对更容易！" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,7 +72,7 @@
         android:textColor="@color/text_black_999"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp5"
-        android:text="香槟金昵称、卡片角标、会员专属标签、多重维度彰显身份"/>
+        android:text="香槟金昵称、卡片角标、会员专属标签、多重维度彰显身份" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -78,8 +81,7 @@
         android:layout_marginLeft="@dimen/dp60"
         android:layout_marginRight="@dimen/dp60"
         android:layout_marginTop="@dimen/dp20"
-        android:layout_gravity="center_horizontal"
-        />
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/tvPayVip"

@@ -10,13 +10,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.LikeMeBean;
 import com.xfyyim.cn.bean.User;
@@ -27,13 +24,13 @@ import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.util.EventBusHelper;
+import com.xfyyim.cn.util.RecyclerSpace;
 import com.xfyyim.cn.util.glideUtil.GlideImageUtils;
 import com.xfyyim.cn.view.MergerStatus;
 import com.xfyyim.cn.view.SkinImageView;
 import com.xfyyim.cn.view.SkinTextView;
 import com.xfyyim.cn.view.SuperCriticalLightWindow;
 import com.xfyyim.cn.view.SuperSolarizePopupWindow;
-import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.callback.ListCallback;
@@ -77,6 +74,9 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
     MergerStatus mergerStatus;
     @BindView(R.id.tv_rmot)
     TextView tvRmot;
+
+    @BindView(R.id.ivSolarize)
+    ImageView ivSolarize;
     private SmartRefreshLayout mRefreshLayout;
     private CheckLikesMeAdapter checkLikesMeAdapter;
     private Unbinder unbinder;
@@ -100,8 +100,6 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         ivTitleLeft.setVisibility(View.VISIBLE);
         ivTitleLeft.setOnClickListener(this);
         tvTitleCenter.setText("喜欢我的人");
-       /* ivTitleRight.setVisibility(View.VISIBLE);
-        ivTitleRight.setImageDrawable(getResources().getDrawable(R.drawable.me_edit_pen));*/
 
     }
 
@@ -111,8 +109,11 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         mRefreshLayout = findViewById(R.id.refreshLayout);
          rclBill = (RecyclerView) findViewById(R.id.rclCheck);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, 2);
-        linearLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        rclBill.addItemDecoration(new RecyclerSpace(20));
+//        rclBill.addItemDecoration(new RecycleItemSpance(15,2));
+
         rclBill.setLayoutManager(linearLayoutManager);
+
         checkLikesMeAdapter = new CheckLikesMeAdapter(this);
         checkLikesMeAdapter.likeMeBeanList = likeMeBeanList;
         rclBill.setAdapter(checkLikesMeAdapter);
@@ -124,11 +125,13 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
                 //跳转个人资料页面
                 Intent intent1 = new Intent(CheckLikesMeActivity.this, PersonInfoActivity.class);
                 intent1.putExtra("FriendId", String.valueOf(likeMeBean.getUserId()));
+                intent1.putExtra("isShowLike",1);
+                likeMeBeanList.clear();
                 startActivity(intent1);
             }
         });
 
-        findViewById(R.id.ivSolarize).setOnClickListener(new View.OnClickListener() {
+        ivSolarize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //爆光
@@ -138,33 +141,18 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
             }
         });
 
-      /*  mRefreshLayout.setOnRefreshListener(rl -> {
-           //刷新
-            LogUtil.e("*******************刷新1******************");
+     mRefreshLayout.setOnRefreshListener(rl -> {
+         pageIndex=0;
+         getWhoLikeMe();
 
-        });*/
-
-
-        mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                more = true;
-
-                pageIndex++;
-                getWhoLikeMe();
-
-            }
-
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                more = false;
-                pageIndex++;
-                getWhoLikeMe();
-
-            }
         });
 
-        getWhoLikeMe();
+     mRefreshLayout.setOnLoadMoreListener(rl->{
+         pageIndex++;
+         getWhoLikeMe();
+     });
+
+
     }
 
     @SuppressWarnings("unused")
@@ -185,7 +173,7 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
         params.put("pageIndex", pageIndex + "");
-        params.put("pageSize", 10 + "");
+        params.put("pageSize", "20");
 
         HttpUtils.post().url(coreManager.getConfig().USER_WHO_LIKE_ME)
                 .params(params)
@@ -193,21 +181,25 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
                 .execute(new ListCallback<LikeMeBean>(LikeMeBean.class) {
                     @Override
                     public void onResponse(ArrayResult<LikeMeBean> result) {
+                        refreshComplete();
                         if (Result.checkSuccess(getApplicationContext(), result)) {
-                            LogUtil.e("likeMeBeanList = " + likeMeBeanList.size());
                             if(result.getData()!=null && result.getData().size()>0){
+                                likeMeBeanList.clear();
+
                                 rclBill.setVisibility(View.VISIBLE);
                                 tvRmot.setVisibility(View.GONE);
+                                ivSolarize.setVisibility(View.VISIBLE);
                                 checkLikesMeAdapter.likeMeBeanList.addAll(result.getData());
                                 tvTitleCenter.setText("喜欢我的人(" + likeMeBeanList.size() + ")");
                                 checkLikesMeAdapter.notifyDataSetChanged();
-                                if (more) {
-                                    mRefreshLayout.finishLoadMore();
-                                } else {
-                                    mRefreshLayout.finishRefresh();
-                                }
                             }else {
-                                tvRmot.setVisibility(View.VISIBLE);
+                                if (likeMeBeanList==null||likeMeBeanList.size()==0){
+                                    tvRmot.setVisibility(View.VISIBLE);
+                                    rclBill.setVisibility(View.GONE);
+                                    ivSolarize.setVisibility(View.GONE);
+
+                                }
+
                             }
 
                         }
@@ -215,10 +207,23 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        refreshComplete();
                     }
                 });
     }
 
+    /**
+     * 停止刷新动画
+     */
+    private void refreshComplete() {
+        rclBill.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.finishLoadMore();
+            }
+        }, 200);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -234,6 +239,12 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWhoLikeMe();
     }
 
     public static class CheckLikesMeAdapter extends RecyclerView.Adapter<CheckLikesMeAdapter.ViewHolder> implements View.OnClickListener {
@@ -284,10 +295,13 @@ CheckLikesMeActivity extends BaseActivity implements View.OnClickListener {
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             if (likeMeBeanList != null && likeMeBeanList.size() > 0) {
                 final LikeMeBean likeMeBean = likeMeBeanList.get(position);
-                /**
-                 * to  do  少年龄
-                 */
-                holder.tvLikeName.setText("" + likeMeBean.getMyNickname()+", "+likeMeBean.getAge());
+
+                if (likeMeBean.getLikeUserAge()==0){
+
+                    holder.tvLikeName.setText(likeMeBean.getMyNickname());
+                }else{
+                    holder.tvLikeName.setText( likeMeBean.getMyNickname()+", "+likeMeBean.getLikeUserAge());
+                }
 
                 String url = AvatarHelper.getAvatarUrl(likeMeBean.getUserId() + "", false);
 

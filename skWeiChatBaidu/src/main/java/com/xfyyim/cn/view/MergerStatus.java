@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.xfyyim.cn.util.SkinUtils;
-
 /**
  * Created by Administrator on 2017/12/14 0014.
  * 兼容沉浸式状态栏
@@ -35,7 +33,7 @@ public class MergerStatus extends Toolbar {
         }
         this.setPadding(getPaddingLeft(), getPaddingTop() + mCompatPaddingTop, getPaddingRight(), getPaddingBottom());
         // 更换Toolbar背景颜色
-        this.setBackgroundColor(SkinUtils.getSkin(getContext()).getPrimaryColor());
+// 统一控制titlebarYanse        this.setBackgroundColor(SkinUtils.getSkin(getContext()).getPrimaryColor());
     }
 
     private int getStatusHeight() {

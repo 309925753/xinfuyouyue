@@ -101,7 +101,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     private TopicEntity.DataBean.ListBean dataBean;
     @BindView(R.id.tv_fabu)
     TextView tv_fabu;
-    private int pageIndex=0;
+    private int pageIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
                 + File.separator + Environment.DIRECTORY_MOVIES);// 初始化视频下载目录
         initActionBar();
         initViews();
-        initData();
+
 
     }
 
@@ -160,8 +160,8 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
             case R.id.tv_fabu:
                 Intent intent = new Intent(TopicDetailActivity.this, SendTextPicActivity.class);
                 intent.putExtra("topicType", "1");
-                intent.putExtra("topicId",dataBean.getId());
-                intent.putExtra("topicName",dataBean.getTitle());
+                intent.putExtra("topicId", dataBean.getId());
+                intent.putExtra("topicName", dataBean.getTitle());
                 startActivity(intent);
                 break;
         }
@@ -202,8 +202,9 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
         // ---------------------------初始化主视图-----------------------
         mRefreshLayout = findViewById(R.id.refreshLayout);
         mRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            pageIndex = 0;
             requestData(true);
-            pageIndex=0;
+
         });
         mRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
             pageIndex++;
@@ -236,20 +237,22 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
 
+    public void initData(List<PublicMessage> mMessages) {
+        if (mAdapter == null) {
+            mAdapter = new PublicNearAdapter(TopicDetailActivity.this, rl_root, coreManager, mMessages);
+            mListView.setAdapter(mAdapter);
 
-    public void initData() {
-        mAdapter = new PublicNearAdapter(TopicDetailActivity.this,rl_root, coreManager, mMessages);
-        mListView.setAdapter(mAdapter);
-
-        mAdapter.setOnItemToClickListener(new PublicNearAdapter.OnItemToClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(TopicDetailActivity.this, CircleDetailActivity.class);
-                intent.putExtra("PublicMessage", mMessages.get(position));
-                startActivity(intent);
-            }
-        });
-        requestData(true);
+            mAdapter.setOnItemToClickListener(new PublicNearAdapter.OnItemToClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Intent intent = new Intent(TopicDetailActivity.this, CircleDetailActivity.class);
+                    intent.putExtra("PublicMessage", mMessages.get(position));
+                    startActivity(intent);
+                }
+            });
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void requestData(boolean isPullDownToRefresh) {
@@ -289,6 +292,8 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
                                 mMessages.addAll(data);
                                 // 记录最后一条说说的id
                                 messageId = data.get(data.size() - 1).getMessageId();
+                                initData(mMessages);
+
                                 if (data.size() == PAGER_SIZE) {
                                     more = true;
                                     mRefreshLayout.resetNoMoreData();

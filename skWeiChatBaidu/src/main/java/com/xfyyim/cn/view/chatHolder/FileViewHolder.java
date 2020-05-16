@@ -35,8 +35,6 @@ class FileViewHolder extends AChatHolderInterface {
     @Override
     public void initView(View view) {
         ivCardImage = view.findViewById(R.id.iv_card_head);
-        tvPersonName = view.findViewById(R.id.person_name);
-        progressPar = view.findViewById(R.id.chat_card_light);
         ivUploadCancel = view.findViewById(R.id.chat_upload_cancel_iv);
         TextView tvType = view.findViewById(R.id.person_title);
         tvType.setText(getString(R.string.chat_file));

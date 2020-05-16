@@ -55,8 +55,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
@@ -121,6 +119,7 @@ public class Xf_MessageFragment extends EasyFragment {
     }
 
     private void initActionBar() {
+
         findViewById(R.id.iv_title_left).setVisibility(View.GONE);
         mTvTitle = (TextView) findViewById(R.id.tv_title_center);
         mTvTitle.setText("消息");

@@ -170,15 +170,6 @@ public class User implements Parcelable, Cloneable {
 
     private   int likeTimesPerDay;//-1代表支付弹框喜欢次数
 
-    public int getNotSeeFilterMyPhotos() {
-        return notSeeFilterMyPhotos;
-    }
-
-    public void setNotSeeFilterMyPhotos(int notSeeFilterMyPhotos) {
-        this.notSeeFilterMyPhotos = notSeeFilterMyPhotos;
-    }
-
-    private int notSeeFilterMyPhotos;//未让配对人查看用户相册
 
 
     public int getIsMatch() {

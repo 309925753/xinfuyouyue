@@ -150,17 +150,8 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState, boolean createView) {
         initView();
-        initData();
     }
 
-    private void initData() {
-        if (!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount() + "")) {
-            tv2.setText(coreManager.getSelf().getLikeMeCount() + "人喜欢我");
-        }
-        if (!TextUtils.isEmpty(coreManager.getSelf().getBalance() + "")) {
-            tvBalance.setText(coreManager.getSelf().getBalance() + "RMB");
-        }
-    }
 
     public void initView() {
         rl_pyq.setOnClickListener(this);
@@ -206,13 +197,14 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                 break;
 
             case R.id.rl_pyq:
+
                 startToPersonBlum();
                 break;
             case R.id.rl_mytequan:
                 startActivity(new Intent(getActivity(), MyPrerogativeActivity.class));
                 break;
             case R.id.rl_likeme:
-                //查看喜欢我特权按月：0无权 1有权"
+//                查看喜欢我特权按月：0无权 1有权"
                 if (coreManager.getSelf().getUserVIPPrivilege() != null) {
                     if (coreManager.getSelf().getUserVIPPrivilege().getLikePrivilegeFlag() == 1) {
                         startActivity(new Intent(getActivity(), CheckLikesMeActivity.class));
@@ -295,11 +287,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
         getUserInfo();
     }
 
-    public void startTo(Class<?> cc) {
-        Intent intent = new Intent(getActivity(), cc);
-        startActivity(intent);
 
-    }
 
 
     private void getUserInfo() {
@@ -382,6 +370,11 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
     public void setUserDate(User user) {
 
 
+        if (!TextUtils.isEmpty(user.getBalance() + "")) {
+            tvBalance.setText(user.getBalance() + "RMB");
+        }
+
+        tv2.setText(user.getLikeMeCount() + "人喜欢我");
         if (user.getDescription() != null & !TextUtils.isEmpty(user.getDescription())) {
             tv_edit_info.setVisibility(View.VISIBLE);
             tv_edit_info.setText(user.getDescription());
@@ -426,7 +419,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
             if (blumList != null && blumList.size() > 0) {
 
 
-                int index = blumList.size() == 3 ? 3 : blumList.size();
+                int index = blumList.size() >= 3 ? 3 : blumList.size();
                 ll_my_blum.removeAllViews();
                 for (int i = 0; i < index; i++) {
                     ImageView imageView = new ImageView(getActivity());

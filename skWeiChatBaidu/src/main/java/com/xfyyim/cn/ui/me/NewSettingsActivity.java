@@ -9,11 +9,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.jaygoo.widget.OnRangeChangedListener;
+import com.jaygoo.widget.RangeSeekBar;
 import com.xfyyim.cn.MyApplication;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.SpContext;
@@ -94,19 +95,22 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.ivPlane)
     ImageView ivPlane;
     @BindView(R.id.sbDistance)
-    SeekBar sbDistance;
+    RangeSeekBar sbDistance;
     @BindView(R.id.tvRange)
     TextView tvRange;
     @BindView(R.id.sbBExpandScope)
     SwitchButton sbBExpandScope;
     @BindView(R.id.tvCurrentSex)
     TextView tvCurrentSex;
-    @BindView(R.id.tvCurrentAge)
-    TextView tvCurrentAge;
+
+    @BindView(R.id.tvCurrentMinAge)
+    TextView tvCurrentMinAge;
+    @BindView(R.id.tvCurrentMaxMinAge)
+    TextView tvCurrentMaxMinAge;
     @BindView(R.id.ivSetMin)
     ImageView ivSetMin;
     @BindView(R.id.seekbar)
-    SeekBar seekbar;
+    RangeSeekBar seekbar;
     @BindView(R.id.ivSetMax)
     ImageView ivSetMax;
     RelativeLayout rlPersonal;
@@ -179,17 +183,17 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             tvSetCity.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
         }
 
-        if (coreManager.getSelf().getSettings().getDisplaySex() == 1) {
+        if (user.getSettings().getDisplaySex() == 1) {
             sex=1;
             tvCurrentSex.setText(R.string.sex_man);
-        } else if(coreManager.getSelf().getSettings().getDisplaySex()==0) {
+        } else if(user.getSettings().getDisplaySex()==0) {
             sex=0;
             tvCurrentSex.setText(R.string.sex_woman);
         }else {
             sex=-1;
             tvCurrentSex.setText(R.string.sex_unlimited);
         }
-        if(coreManager.getSelf().getSettings().getIsAutoExpandRange()==1){
+        if(user.getSettings().getIsAutoExpandRange()==1){
             sbBExpandScope.setChecked(true);
         }else {
             sbBExpandScope.setChecked(false);
@@ -203,43 +207,55 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        sbDistance.setProgress(coreManager.getSelf().getSettings().getDistance());
-        tvCurrentDistance.setText(coreManager.getSelf().getSettings().getDistance()+"km+");
-        //范围
-        sbDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sbDistance.setProgress(user.getSettings().getDistance());
+        tvCurrentDistance.setText(user.getSettings().getDistance()+"km+");
+
+//        范围
+        sbDistance.setOnRangeChangedListener(new OnRangeChangedListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvCurrentDistance.setText(progress+"km+");
+            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
+                tvCurrentDistance.setText((int)leftValue+"km");
                 isRefreshHome=true;
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        tvCurrentAge.setText("18-"+coreManager.getSelf().getSettings().getAgeDistance());
-        seekbar.setProgress(coreManager.getSelf().getSettings().getAgeDistance());
-        //年龄
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvCurrentAge.setText("18-"+progress);
-                isRefreshHome=true;
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
 
             }
         });
+
+
+        seekbar.setProgress(user.getSettings().getMinAge(),user.getSettings().getMaxAge());
+             tvCurrentMinAge.setText(String.valueOf(user.getSettings().getMinAge()));
+             tvCurrentMaxMinAge.setText(String.valueOf(user.getSettings().getMaxAge()));
+        seekbar.setOnRangeChangedListener(new OnRangeChangedListener() {
+            @Override
+            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
+                LogUtil.e(leftValue+"   "+rightValue);
+             String  minAge=String.valueOf(((int)leftValue));
+             String  maxAge=String.valueOf(((int)rightValue));
+
+                 tvCurrentMinAge.setText(minAge);
+                 tvCurrentMaxMinAge.setText(maxAge);
+            }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+        });
+
+
     }
 
 
@@ -292,6 +308,11 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.tvCurrentSex).setOnClickListener(this::onClick);
         rlCurrentLocation.setOnClickListener(this);
         EventBusHelper.register(this);
+
+
+        seekbar.setRange(18f,100f);
+        sbDistance.setRange(0f,10000f);
+
     }
 
 
@@ -364,10 +385,10 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("distance", sbDistance.getProgress()+"");
-        params.put("ageDistance", seekbar.getProgress()+"");
+        params.put("distance",String.valueOf((int)sbDistance.getLeftSeekBar().getProgress()) );
+        params.put("maxAge", tvCurrentMaxMinAge.getText().toString());
+        params.put("minAge", tvCurrentMinAge.getText().toString());
         params.put("displaySex", sex+"");
-        params.put("sex", sex+"");
 
         if(isAutoExpandRange){
             params.put("isAutoExpandRange", "1");
@@ -383,6 +404,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     public void onResponse(ObjectResult<Void> result) {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(NewSettingsActivity.this, result)) {
+
                             if(isRefreshHome){
                                 EventBus.getDefault().post(new EventNotifyUpdate("isRefreshHome"));
                             }

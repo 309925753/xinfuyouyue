@@ -28,7 +28,7 @@ public class SendRedTopicAdapter extends BaseQuickAdapter<TopicEntity.DataBean.L
     protected void convert(TopicViewHolder helper, TopicEntity.DataBean.ListBean item) {
         if (item.getTitle()!=null&&! TextUtils.isEmpty(item.getTitle())){
             helper.tv_topic_name.setTextColor(context.getResources().getColor(R.color.main_color_red1));
-            if (item.getTitle().contains("#")){
+            if (item.getTitle().contains("#")&&item.getTitle().startsWith("#")){
             helper.tv_topic_name.setText(item.getTitle());
             }else{
                 helper.tv_topic_name.setText("#"+item.getTitle());

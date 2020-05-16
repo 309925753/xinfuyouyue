@@ -91,6 +91,7 @@ import com.xfyyim.cn.ui.me.redpacket.RedDetailsActivity;
 import com.xfyyim.cn.ui.me.redpacket.SendRedPacketActivity;
 import com.xfyyim.cn.ui.me.redpacket.alipay.AlipayHelper;
 import com.xfyyim.cn.ui.me_new.PersonBlumActivity;
+import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.ui.message.single.PersonSettingActivity;
 import com.xfyyim.cn.ui.mucfile.XfileUtils;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
@@ -716,8 +717,8 @@ public class ChatActivity extends BaseActivity implements
         mChatBottomView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(mContext, BasicInfoActivity.class);
-                intent.putExtra(AppConstant.EXTRA_USER_ID, mLoginUserId);
+                Intent intent = new Intent(mContext, PersonInfoActivity.class);
+                intent.putExtra("FriendId", mLoginUserId);
                 startActivity(intent);
             }
         }, 100);
@@ -730,8 +731,8 @@ public class ChatActivity extends BaseActivity implements
         mChatBottomView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(mContext, BasicInfoActivity.class);
-                intent.putExtra(AppConstant.EXTRA_USER_ID, friendUserId);
+                Intent intent = new Intent(mContext, PersonInfoActivity.class);
+                intent.putExtra("FriendId", friendUserId);
                 startActivity(intent);
             }
         }, 100);

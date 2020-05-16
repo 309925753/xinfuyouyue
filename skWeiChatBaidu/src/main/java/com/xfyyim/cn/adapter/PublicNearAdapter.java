@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -300,7 +301,12 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
             viewHolder.img_vip.setVisibility(View.VISIBLE);
         }
 
-        if( message.getIsAttion()==1){
+        if (mLoginUserId.equals(message.getUserId())){
+            viewHolder.tv_att.setVisibility(View.GONE);
+        }else{
+            viewHolder.tv_att.setVisibility(View.VISIBLE);
+        }
+        if( message.getIsBeAtt()==1){
             viewHolder.tv_att.setText("已关注");
             viewHolder.tv_att.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
         }else {
@@ -346,9 +352,12 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
                 String topicText=message.getTopicStr().replace("," ," ");
 
                 if (TextUtils.isEmpty(body.getText())){
-                    viewHolder.body_tv.setTopicText(mContext,topicText,"");
+                    viewHolder.body_tv.setText(StringUtils.editTextHtmlErrorTip(mContext,topicText));
+
                 }else{
-                    viewHolder.body_tv.setTopicText(mContext,topicText,body.getText());
+
+                  String newText=  "<font color='red'>" + topicText + "</font>"+" "+body.getText();
+                    viewHolder.body_tv.setText(Html.fromHtml(newText));
                 }
             }else{
                 viewHolder.body_tv.setUrlText(body.getText());
@@ -407,7 +416,7 @@ public class PublicNearAdapter extends RecyclerView.Adapter<PublicNearAdapter.Vi
 viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        if (!(message.getIsAttion()==1)){
+        if (!(message.getIsBeAtt()==1)){
             doAddAttention(message.getUserId(),viewHolder.tv_att,position);
         }else{
             deleteFriend(message.getUserId(),viewHolder.tv_att,position);
@@ -965,7 +974,7 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                         if (Result.checkSuccess(mContext, result)) {
                             ToastUtil.showToast(mContext,"关注成功");
                             isAttion=true;
-                            mMessages.get(positon).setIsAttion(1);
+                            mMessages.get(positon).setIsBeAtt(1);
                             tv_att.setText("已关注");
                             tv_att.setBackground(mContext.getDrawable(R.drawable.shape_e5e5e5_10));
                             EventBus.getDefault().post(new EventNotifyNear(mRoomUserId));
@@ -996,7 +1005,7 @@ viewHolder.tv_att.setOnClickListener(new View.OnClickListener() {
                     public void onResponse(ObjectResult<Void> result) {
                             ToastUtil.showToast(mContext, "取消关注成功");
                             isAttion=false;
-                        mMessages.get(positon).setIsAttion(2);
+                        mMessages.get(positon).setIsBeAtt(2);
                         tv_att.setText("关注");
                         tv_att.setBackground(mContext.getDrawable(R.drawable.shape_fc607e_10));
                         EventBus.getDefault().post(new EventNotifyAttionNear(userID));

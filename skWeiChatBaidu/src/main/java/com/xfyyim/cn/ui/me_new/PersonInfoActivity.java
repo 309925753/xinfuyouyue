@@ -44,6 +44,7 @@ import com.xfyyim.cn.view.cjt2325.cameralibrary.util.ScreenUtils;
 import com.xuan.xuanhttplibrary.okhttp.HttpUtils;
 import com.xuan.xuanhttplibrary.okhttp.callback.BaseCallback;
 import com.xuan.xuanhttplibrary.okhttp.result.ObjectResult;
+import com.xuan.xuanhttplibrary.okhttp.result.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,9 +151,19 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     View line_sign;
     @BindView(R.id.line)
     View line;
+
+
+    @BindView(R.id.ll_unlike)
+    LinearLayout ll_unlike;
+    @BindView(R.id.ll_like)
+    LinearLayout ll_like;
+  @BindView(R.id.ll_showlike)
+    LinearLayout ll_showlike;
+
     User user;
     MyInAdapter adapter;
     String usrId;
+    int isShowLike = 0;
     QuestionInfoAdapter questionAdapter;
 
     String mLoginId;
@@ -163,8 +174,18 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_person_info);
         unbinder = ButterKnife.bind(this);
         friendId = getIntent().getStringExtra("FriendId");
+        isShowLike = getIntent().getIntExtra("isShowLike", 0);
         mLoginId = coreManager.getSelf().getUserId();
         initActionBar();
+
+        if (isShowLike == 1) {
+            ll_showlike.setVisibility(View.VISIBLE);
+        } else {
+            ll_showlike.setVisibility(View.GONE);
+        }
+
+        ll_like.setOnClickListener(this);
+        ll_unlike.setOnClickListener(this);
         rl_blum.setOnClickListener(this);
         rl_seelike.setOnClickListener(this);
         EventBusHelper.register(this);
@@ -215,16 +236,18 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
                 break;
 
             case R.id.rl_blum:
-
-
-                if (user.getSettings().getNotSeeFilterMyPhotos() == 1 && user.getIsMatch() == 1) {
-                    ToastUtil.showToast(PersonInfoActivity.this, "您还不是对方好友，无法查看");
-                } else {
                     Intent intent1 = new Intent(PersonInfoActivity.this, PersonBlumActivity.class);
                     intent1.putExtra("FriendId", friendId);
                     startActivity(intent1);
-                }
                 break;
+
+            case  R.id.ll_unlike:
+                unLike();
+                break;
+                  case  R.id.ll_like:
+                      userLike();
+                break;
+
 
 
         }
@@ -264,12 +287,19 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     }
 
     public void setUiData(User user) {
+
+
+        if (user.getSettings().getNotSeeFilterMyPhotos() == 1 ){
+            rl_blum.setVisibility(View.GONE);
+        }else{
+            rl_blum.setVisibility(View.VISIBLE);
+        }
         if (user.getNickName() != null && !TextUtils.isEmpty(user.getNickName())) {
             nick_name.setText(user.getNickName());
         }
 
 
-        if (!friendId.equals(mLoginId) ){
+        if (!friendId.equals(mLoginId)) {
 
             if (user.getDistance() > 0) {
                 tv_state_distance.setVisibility(View.VISIBLE);
@@ -336,7 +366,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         long randomNum = System.currentTimeMillis();
         String headUrl = AvatarHelper.getAvatarUrl(user.getUserId(), false) + "?" + randomNum;
 
-        if(user.getMyPhotos().size()==0){
+        if (user.getMyPhotos() == null || user.getMyPhotos().size() == 0) {
             banner.setPointsIsVisible(false);
         }
 
@@ -347,8 +377,6 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             imgesUrl.add(0, headUrl);
 
             banner.setVisibility(View.VISIBLE);
-
-
 
 
             int index = user.getMyPhotos().size() > 3 ? 3 : user.getMyPhotos().size();
@@ -431,6 +459,18 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
             ll_place.setVisibility(View.GONE);
         }
 
+
+        if (TextUtils.isEmpty(user.getMyIndustry()) &&
+                TextUtils.isEmpty(user.getMyIndustry()) &&
+                TextUtils.isEmpty(user.getMyIndustry()) &&
+                TextUtils.isEmpty(user.getMyIndustry()) &&
+                TextUtils.isEmpty(user.getMyIndustry())) {
+            my_info.setVisibility(View.GONE);
+            line_info.setVisibility(View.GONE);
+        } else {
+            line_info.setVisibility(View.VISIBLE);
+            my_info.setVisibility(View.VISIBLE);
+        }
 
         //我的标签
 
@@ -642,6 +682,58 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         params.put("level", String.valueOf(-1));
         AlipayHelper.rechargePay(PersonInfoActivity.this, coreManager, params);
 
+    }
+
+
+
+    /**
+     * 喜欢
+     *
+     */
+    private void userLike() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", mLoginId);
+        params.put("likeUserId",friendId);
+        HttpUtils.post().url(coreManager.getConfig().USER_LIKE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<User>(User.class) {
+                    @Override
+                    public void onResponse(ObjectResult<User> result) {
+                        if (Result.checkSuccess(PersonInfoActivity.this, result)) {
+                            ll_showlike.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
+    }
+
+    /**
+     * 不喜欢
+     *
+     */
+    private void unLike() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", coreManager.getSelfStatus().accessToken);
+        params.put("userId", mLoginId);
+        params.put("likeUserId",friendId);
+        HttpUtils.post().url(coreManager.getConfig().USER_UN_LIKE)
+                .params(params)
+                .build()
+                .execute(new BaseCallback<String>(String.class) {
+                    @Override
+                    public void onResponse(ObjectResult<String> result) {
+                        ll_showlike.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+                });
     }
 
 }

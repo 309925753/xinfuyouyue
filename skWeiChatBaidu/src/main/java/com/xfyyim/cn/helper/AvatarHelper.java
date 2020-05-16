@@ -332,7 +332,7 @@ public class AvatarHelper {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "displayAvatar: <" + friend.getNickName() + ">");
         }
-        headView.setRound(false);
+        headView.setRound(true);
         ImageView view = headView.getHeadImage();
         if (friend.getRoomFlag() == 0) {// 个人
             if (friend.getIsDevice() == 1) {// 我的设备头像不裁剪为圆形

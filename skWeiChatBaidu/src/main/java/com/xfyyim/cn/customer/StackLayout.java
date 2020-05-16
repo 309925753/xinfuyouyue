@@ -250,7 +250,25 @@ public class StackLayout extends FrameLayout {
                 });
             }
         }
+
+
     });
+
+
+    public void OnLeft(){
+
+        ScrollManager    mScrollManager = new ScrollManager(getViewDragHelper());
+
+//        getScrollManager().smoothScrollTo(releasedChild, 0, 0, new ScrollManager.Callback() {
+//            @Override
+//            public void onComplete(View view) {
+//                Log.d(TAG, "onViewReleased: cancel" + ViewHolder.getPosition(releasedChild));
+//                if(mItemObserver.isDataChangedWhileScrolling)
+//                    mItemObserver.dataChanged(mAdapter);
+//            }
+//        });
+    }
+
 
     private ViewDragHelper getViewDragHelper(){
         return mViewDragHelper;
@@ -279,8 +297,7 @@ public class StackLayout extends FrameLayout {
      */
     public static abstract class PageTransformer {
         /**
-         * 根据 position 做相应的动画, 其中 position:
-         *  [-1, -1]                -> 完全移出屏幕, 待remove状态
+         * 根据 position 做相应的动画, 其中 position:         *  [-1, -1]                -> 完全移出屏幕, 待remove状态
          *  (-1, 0)                 -> 手指拖动状态
          *  [0, 栈内页面数)           -> 栈中状态
          *  [栈内页面数, 总页面数)     -> 显示不下, 待显示状态

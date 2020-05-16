@@ -59,7 +59,8 @@ public class PrivacySetting {
     private int distance;//范围设置（km）
     private int isAutoExpandRange;//是否开启自动扩大范围,1:开启，0:关闭
     private int displaySex;//显示性别,0 女 1:男
-    private int ageDistance;//年龄范围
+    private int minAge;//最小年龄
+    private int maxAge;//最大范围
 
     public int getNotSeeFilterMyPhotos() {
         return notSeeFilterMyPhotos;
@@ -95,14 +96,24 @@ public class PrivacySetting {
         this.displaySex = displaySex;
     }
 
-    public int getAgeDistance() {
-        return ageDistance;
+    public int getMinAge() {
+        if (minAge<18){
+            minAge=18;
+        }
+        return minAge;
     }
 
-    public void setAgeDistance(int ageDistance) {
-        this.ageDistance = ageDistance;
+    public void setMinAge(int minAge) {
+        this.minAge = minAge;
     }
 
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
+    }
 
     public List<String> getThroughoutShowLastLoginTimeList() {
         return throughoutShowLastLoginTimeList;
