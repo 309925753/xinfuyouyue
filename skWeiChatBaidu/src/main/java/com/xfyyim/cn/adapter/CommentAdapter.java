@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.bean.CommentEntity;
 import com.xfyyim.cn.helper.AvatarHelper;
 import com.xfyyim.cn.ui.me_new.PersonInfoActivity;
 import com.xfyyim.cn.util.TimeUtils;

@@ -121,16 +121,17 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@mipmap/my_set_plane" />
+
                     <com.jaygoo.widget.RangeSeekBar
                         android:id="@+id/sbDistance"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp5"
                         android:layout_toLeftOf="@+id/ivPlane"
                         android:layout_toRightOf="@+id/ivBicycle"
-                        android:layout_height="wrap_content"
                         app:rsb_gravity="center"
-                        app:rsb_progress_color="@color/main_color_red1"
                         app:rsb_mode="single"
+                        app:rsb_progress_color="@color/main_color_red1"
                         app:rsb_thumb_drawable="@drawable/bg_new_my_set_seek_bar"
                         app:rsb_thumb_height="20dp"
                         app:rsb_thumb_inactivated_drawable="@drawable/seekbar_thum"
@@ -169,6 +170,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         app:sb_background="@color/app_white"
+                        app:sb_checked="true"
                         app:sb_checked_color="@color/main_color_red"
                         app:sb_effect_duration="100"
                         app:sb_shadow_radius="4dp"
@@ -196,7 +198,6 @@
                         android:gravity="right"
                         android:paddingLeft="10dip"
                         android:paddingRight="@dimen/dp10"
-                        android:text="女"
                         android:textColor="#FC607E"
                         android:textSize="@dimen/sp_12_text_size" />
                 </RelativeLayout>
@@ -219,29 +220,29 @@
                         android:id="@+id/tvCurrentMinAge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_toLeftOf="@+id/hor_hor"
-                        android:text="0"
                         android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/hor_hor"
+                        android:gravity="center_vertical"
                         android:textColor="#FC607E"
                         android:textSize="@dimen/sp_12_text_size" />
+
                     <TextView
                         android:id="@+id/hor_hor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
                         android:layout_toLeftOf="@+id/tvCurrentMaxMinAge"
-android:layout_marginRight="3dp"
                         android:gravity="center_vertical"
                         android:text="-"
                         android:textColor="#FC607E"
                         android:textSize="@dimen/sp_12_text_size" />
+
                     <TextView
                         android:id="@+id/tvCurrentMaxMinAge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:gravity="center_vertical"
-                        android:text="100"
                         android:textColor="#FC607E"
                         android:textSize="@dimen/sp_12_text_size" />
 
@@ -269,6 +270,7 @@ android:layout_marginRight="3dp"
                         android:src="@mipmap/my_set_age_max" />
 
                     <com.jaygoo.widget.RangeSeekBar
+                        app:rsb_gravity="center"
                         android:id="@+id/seekbar"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -279,12 +281,10 @@ android:layout_marginRight="3dp"
                         app:rsb_mode="range"
                         app:rsb_progress_color="@color/main_color_red1"
                         app:rsb_progress_height="2dp"
+                        app:rsb_thumb_drawable="@drawable/bg_new_my_set_seek_bar"
                         app:rsb_thumb_height="20dp"
                         app:rsb_thumb_width="20dp"
-                        app:rsb_thumb_drawable="@drawable/bg_new_my_set_seek_bar"
-                        app:rsb_tick_mark_text_array="@array/markArray5"
-                        app:rsb_tick_mark_text_margin="20dp" />
-
+/>
                 </RelativeLayout>
             </LinearLayout>
 

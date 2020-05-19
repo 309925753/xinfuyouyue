@@ -34,7 +34,7 @@
 
     <string-array name="markArray5">
         <item>18</item>
-        <item>100</item>
+        <item>50</item>
     </string-array>
     <string-array name="negativeMarkArray">
         <item>-100</item>

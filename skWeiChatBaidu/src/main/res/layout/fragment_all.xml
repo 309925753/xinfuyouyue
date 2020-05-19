@@ -51,7 +51,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="查看谁喜欢我：4人等你撩"
+                android:text="查看谁喜欢我：0人等你撩"
                 android:textColor="@color/text_black_333"
                 android:textSize="15sp" />
 

@@ -10,17 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.text.Editable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,14 +61,11 @@ import com.xfyyim.cn.ui.message.multi.RoomInfoActivity;
 import com.xfyyim.cn.ui.nearby.PublicNumberSearchActivity;
 import com.xfyyim.cn.ui.nearby.UserSearchActivity;
 import com.xfyyim.cn.ui.other.BasicInfoActivity;
-import com.xfyyim.cn.ui.search.SearchAllActivity;
 import com.xfyyim.cn.util.Constants;
 import com.xfyyim.cn.util.DisplayUtil;
 import com.xfyyim.cn.util.EventBusHelper;
 import com.xfyyim.cn.util.HtmlUtils;
-import com.xfyyim.cn.util.HttpUtil;
 import com.xfyyim.cn.util.PreferenceUtils;
-import com.xfyyim.cn.util.StringUtils;
 import com.xfyyim.cn.util.TimeUtils;
 import com.xfyyim.cn.util.ToastUtil;
 import com.xfyyim.cn.util.UiUtils;
@@ -393,11 +386,6 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
          mListView.setLayoutManager(new LinearLayoutManager(requireContext()));
          mRefreshLayout = findViewById(R.id.refreshLayout);
          mHeadView = inflater.inflate(R.layout.header_item_messagenew, mRefreshLayout, false);
-//         mEditText = mHeadView.findViewById(R.id.search_edit);
-//         mEditText.setOnClickListener(v -> SearchAllActivity.start(requireActivity(), "friend"));
-//         mNetErrorLl = (LinearLayout) mHeadView.findViewById(R.id.net_error_ll);
-//         mNetErrorLl.setOnClickListener(this);
-//         mIvNoData = mHeadView.findViewById(R.id.iv_no_nearly_msg);
         TextView     nick_name_desc= mHeadView.findViewById(R.id.nick_name_desc);
          RelativeLayout  rl_like_chat = mHeadView.findViewById(R.id.rl_like_chat);
          if (!TextUtils.isEmpty(coreManager.getSelf().getLikeMeCount() + "")) {
@@ -424,26 +412,6 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
              refresh();
          });
 
-//         mEditText.setHint(getString(R.string.search_chatlog));
-//         mEditText.addTextChangedListener(new TextWatcher() {
-//             @Override
-//             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//             }
-//
-//             @Override
-//             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//             }
-//
-//             @Override
-//             public void afterTextChanged(Editable s) {
-//                 String str = s.toString().trim();
-//                 if (!TextUtils.isEmpty(str)) {
-//                     queryChatMessage(str);
-//                 } else {
-//                     loadDatas();
-//                 }
-//             }
-//         });
 
          ListenerManager.getInstance().addAuthStateChangeListener(this);
 

@@ -13,12 +13,16 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.customview.widget.ViewDragHelper;
 
-
 import com.xfyyim.cn.R;
+import com.xfyyim.cn.fragmentnew.Xf_FirstFragment;
+import com.xfyyim.cn.view.cjt2325.cameralibrary.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import fm.jiecao.jcvideoplayer_lib.MessageEvent;
 
 
 /**
@@ -109,6 +113,7 @@ public class StackLayout extends FrameLayout {
         public void unregisterDataSetObserver(DataSetObserver observer) {
             mObservable.unregisterObserver(observer);
         }
+
     }
 
     public static abstract class ViewHolder {
@@ -244,6 +249,8 @@ public class StackLayout extends FrameLayout {
                         setCurrentItem(getCurrentItem() + 1);
                         mOnSwipeListener.onSwiped(view, ViewHolder.getPosition(view), left < 0, mAdapter.getItemCount() - getCurrentItem());
 
+                        LogUtil.e("cjh 滑动333 "+mItemObserver.isDataChangedWhileScrolling);
+
                         if(mItemObserver.isDataChangedWhileScrolling)
                             mItemObserver.dataChanged(mAdapter);
                     }
@@ -255,19 +262,7 @@ public class StackLayout extends FrameLayout {
     });
 
 
-    public void OnLeft(){
 
-        ScrollManager    mScrollManager = new ScrollManager(getViewDragHelper());
-
-//        getScrollManager().smoothScrollTo(releasedChild, 0, 0, new ScrollManager.Callback() {
-//            @Override
-//            public void onComplete(View view) {
-//                Log.d(TAG, "onViewReleased: cancel" + ViewHolder.getPosition(releasedChild));
-//                if(mItemObserver.isDataChangedWhileScrolling)
-//                    mItemObserver.dataChanged(mAdapter);
-//            }
-//        });
-    }
 
 
     private ViewDragHelper getViewDragHelper(){
@@ -288,6 +283,47 @@ public class StackLayout extends FrameLayout {
     // ------ PageTransformer ------
     private List<PageTransformer> mPageTransformerList = new ArrayList<>();
 
+
+    public  void OnLeft() {
+        LogUtil.e("cjh left1111 "+(mAdapter.getItemCount() - getCurrentItem()+" :getCurrentItem:   "+getCurrentItem()));
+        if ((mAdapter.getItemCount() - getCurrentItem())-1>0){
+
+//            int totalRange = mParent.getWidth();
+//            float position = (1.0f * (left - 0))/totalRange;
+//            transformPage(position, );
+            ViewHolder viewHolder = getAdapter().getViewHolder(StackLayout.this, getCurrentItem());
+            removeView(viewHolder.itemView);
+            setCurrentItem(getCurrentItem() + 1);
+            LogUtil.e("cjh 点击 stack  :getCurrentItem:   "+getCurrentItem());
+            Xf_FirstFragment.index= getCurrentItem()-1;
+            LogUtil.e("cjh 点击  stack: Xf_FirstFragment.index:   "+ Xf_FirstFragment.index);
+            mAdapter.notifyDataSetChanged();
+
+        }else{
+            EventBus.getDefault().post(new MessageEvent("HomeLike"));
+        }
+    }
+
+//    public void onRight(){
+//        int totalRange = StackLayout.this.getWidth();
+//
+//        ScrollManager scrollManager=new ScrollManager(getViewDragHelper());
+//        ViewHolder viewHolder = getAdapter().getViewHolder(StackLayout.this, getCurrentItem());
+//        scrollManager.smoothScrollTo(viewHolder.itemView, -totalRange , viewHolder.itemView.getTop(), new ScrollManager.Callback() {
+//            @Override
+//            public void onComplete(View view) {
+//                Log.d(TAG, "onViewReleased: remove" + ViewHolder.getPosition(viewHolder.itemView));
+//                removeView(view);
+//                setCurrentItem(getCurrentItem() + 1);
+//                mOnSwipeListener.onSwiped(view, ViewHolder.getPosition(view), true, mAdapter.getItemCount() - getCurrentItem());
+//
+//                LogUtil.e("cjh 滑动333 "+mItemObserver.isDataChangedWhileScrolling);
+//
+//                if(mItemObserver.isDataChangedWhileScrolling)
+//                    mItemObserver.dataChanged(mAdapter);
+//            }
+//        });
+//    }
     public void addPageTransformer(PageTransformer... pageTransformerList) {
         mPageTransformerList.addAll(Arrays.asList(pageTransformerList));
     }
@@ -309,7 +345,7 @@ public class StackLayout extends FrameLayout {
         public abstract void transformPage(View page, float position, boolean isSwipeLeft);
     }
 
-    private void transformPage(float topPagePos, boolean isSwipeLeft) {
+    public void transformPage(float topPagePos, boolean isSwipeLeft) {
         List<PageTransformer> list = new ArrayList<>(mPageTransformerList); // 保护性复制, 防止污染原来的list
         if(list.isEmpty())
             list.add(new StackPageTransformer());   // default PageTransformer

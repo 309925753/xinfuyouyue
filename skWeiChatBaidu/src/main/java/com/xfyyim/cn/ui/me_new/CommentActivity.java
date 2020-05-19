@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xfyyim.cn.R;
 import com.xfyyim.cn.adapter.CommentAdapter;
-import com.xfyyim.cn.adapter.CommentEntity;
+import com.xfyyim.cn.bean.CommentEntity;
 import com.xfyyim.cn.ui.base.BaseActivity;
 import com.xfyyim.cn.ui.circle.range.CircleDetailFromZanActivity;
 import com.xfyyim.cn.util.ToastUtil;

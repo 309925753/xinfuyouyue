@@ -355,7 +355,7 @@ public class MeNewFragment extends EasyFragment implements View.OnClickListener 
                             });
 
                         } else {
-                            ToastUtil.showToast(getActivity(), "服务没数据");
+                            ToastUtil.showToast(getActivity(), result.getResultMsg());
                         }
                     }
 

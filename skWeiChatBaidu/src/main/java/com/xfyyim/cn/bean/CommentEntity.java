@@ -1,6 +1,4 @@
-package com.xfyyim.cn.adapter;
-
-import com.xfyyim.cn.bean.MsgBean;
+package com.xfyyim.cn.bean;
 
 import java.io.Serializable;
 

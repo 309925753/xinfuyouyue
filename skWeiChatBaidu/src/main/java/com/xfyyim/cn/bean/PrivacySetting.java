@@ -108,6 +108,9 @@ public class PrivacySetting {
     }
 
     public int getMaxAge() {
+        if (maxAge>50){
+            maxAge=50;
+        }
         return maxAge;
     }
 

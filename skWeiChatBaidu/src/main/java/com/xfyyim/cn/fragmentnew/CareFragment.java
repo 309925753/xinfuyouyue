@@ -269,7 +269,7 @@ private RelativeLayout root;
                             if (data != null && data.size() > 0) {
 
                                 tv_empty_dt.setVisibility(View.GONE);
-                                mRefreshLayout.setVisibility(View.VISIBLE);
+                                mListView.setVisibility(View.VISIBLE);
 
                                 mMessages.addAll(data);
                                 // 记录最后一条说说的id
@@ -283,7 +283,7 @@ private RelativeLayout root;
                                 }
                             } else {
                                 tv_empty_dt.setVisibility(View.VISIBLE);
-                                mRefreshLayout.setVisibility(View.GONE);
+                                mListView.setVisibility(View.GONE);
                                 // 服务器未返回数据，下拉不再去请求
                                 more = false;
                             }

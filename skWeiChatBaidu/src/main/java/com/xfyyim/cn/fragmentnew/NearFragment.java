@@ -346,7 +346,7 @@ public class NearFragment extends EasyFragment {
 
 
                                 tv_empty_dt.setVisibility(View.GONE);
-                                mRefreshLayout.setVisibility(View.VISIBLE);
+                                mListView.setVisibility(View.VISIBLE);
 
 
                                 mMessages.addAll(data);
@@ -355,7 +355,7 @@ public class NearFragment extends EasyFragment {
                                     mRefreshLayout.resetNoMoreData();
                                 } else {
                                     tv_empty_dt.setVisibility(View.VISIBLE);
-                                    mRefreshLayout.setVisibility(View.GONE);
+                                    mListView.setVisibility(View.GONE);
                                     // 服务器返回未满10条，下拉不在去请求
                                     more = false;
                                 }

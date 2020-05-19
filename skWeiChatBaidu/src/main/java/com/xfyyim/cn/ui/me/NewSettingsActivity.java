@@ -157,9 +157,23 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.tvVersionNumber)
     TextView tvVersionNumber;
     private Unbinder unbinder;
-    private  boolean  isAutoExpandRange;
-    private boolean  isRefreshHome=false;
+    private boolean isAutoExpandRange;
+    private boolean isRefreshHome = false;
+
+
+    public static final String MAXAGE = "set_maxAge";
+    public static final String MINAGE = "set_minAge";
+    public static final String DISTANCE = "set_distance";
+    public static final String ISAUTO = "set_auto";
+    public static final String SEX = "set_sex";
+
+    int maxAge;
+    int minAge;
+    int distance;
+    int auto;
+    int sex;
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,88 +190,6 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         updateSelfData();
     }
 
-    private void initData() {
-        if (PreferenceUtils.getBoolean(NewSettingsActivity.this,coreManager.getSelf().getUserId()+ SpContext.ISSELECT)){
-            tvSetCity.setText(PreferenceUtils.getString(NewSettingsActivity.this,coreManager.getSelf().getUserId()+ SpContext.CITY));
-        }else{
-            tvSetCity.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
-        }
-
-        if (user.getSettings().getDisplaySex() == 1) {
-            sex=1;
-            tvCurrentSex.setText(R.string.sex_man);
-        } else if(user.getSettings().getDisplaySex()==0) {
-            sex=0;
-            tvCurrentSex.setText(R.string.sex_woman);
-        }else {
-            sex=-1;
-            tvCurrentSex.setText(R.string.sex_unlimited);
-        }
-        if(user.getSettings().getIsAutoExpandRange()==1){
-            sbBExpandScope.setChecked(true);
-        }else {
-            sbBExpandScope.setChecked(false);
-        }
-
-        sbBExpandScope.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                isAutoExpandRange=isChecked;
-                isRefreshHome=true;
-            }
-        });
-
-        sbDistance.setProgress(user.getSettings().getDistance());
-        tvCurrentDistance.setText(user.getSettings().getDistance()+"km+");
-
-//        范围
-        sbDistance.setOnRangeChangedListener(new OnRangeChangedListener() {
-            @Override
-            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
-                tvCurrentDistance.setText((int)leftValue+"km");
-                isRefreshHome=true;
-            }
-
-            @Override
-            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
-
-            }
-        });
-
-
-        seekbar.setProgress(user.getSettings().getMinAge(),user.getSettings().getMaxAge());
-             tvCurrentMinAge.setText(String.valueOf(user.getSettings().getMinAge()));
-             tvCurrentMaxMinAge.setText(String.valueOf(user.getSettings().getMaxAge()));
-        seekbar.setOnRangeChangedListener(new OnRangeChangedListener() {
-            @Override
-            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
-                LogUtil.e(leftValue+"   "+rightValue);
-             String  minAge=String.valueOf(((int)leftValue));
-             String  maxAge=String.valueOf(((int)rightValue));
-
-                 tvCurrentMinAge.setText(minAge);
-                 tvCurrentMaxMinAge.setText(maxAge);
-            }
-
-            @Override
-            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
-
-            }
-        });
-
-
-    }
-
 
     private void initActionBar() {
         getSupportActionBar().hide();
@@ -266,6 +198,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         tvTitleCenter.setText("设置中心");
 
     }
+
     private void updateSelfData() {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
@@ -277,13 +210,13 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onResponse(ObjectResult<User> result) {
                         if (result.getResultCode() == 1 && result.getData() != null) {
-                             user = result.getData();
+                            user = result.getData();
                             boolean updateSuccess = UserDao.getInstance().updateByUser(user);
                             // 设置登陆用户信息
                             if (updateSuccess) {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(user);
-                                initData();
+                                setData();
                             }
                         }
                     }
@@ -309,12 +242,165 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         rlCurrentLocation.setOnClickListener(this);
         EventBusHelper.register(this);
 
+        maxAge = PreferenceUtils.getInt(this, MAXAGE, 0);
+        minAge = PreferenceUtils.getInt(this, MINAGE, 0);
+        distance = PreferenceUtils.getInt(this, DISTANCE, 0);
+        auto = PreferenceUtils.getInt(this, ISAUTO, 0);
+        sex = PreferenceUtils.getInt(this, SEX, 0);
 
-        seekbar.setRange(18f,100f);
-        sbDistance.setRange(0f,10000f);
+        seekbar.setRange(18f, 50f);
+        sbDistance.setRange(0f, 1000f);
+
+
+        if (sex == 1) {
+            tvCurrentSex.setText(R.string.sex_man);
+        } else if (sex == 0) {
+            tvCurrentSex.setText(R.string.sex_woman);
+        } else {
+            tvCurrentSex.setText(R.string.sex_unlimited);
+        }
+
+        if (auto == 1) {
+            sbBExpandScope.setChecked(true);
+        } else {
+            sbBExpandScope.setChecked(false);
+        }
+
+        if (maxAge > 0 && minAge > 0) {
+            tvCurrentMinAge.setText(String.valueOf(minAge));
+            if (maxAge==50){
+                tvCurrentMaxMinAge.setText(String.valueOf(maxAge)+"+");
+            }else{
+                tvCurrentMaxMinAge.setText(String.valueOf(maxAge));
+
+            }
+
+            seekbar.setProgress(minAge, maxAge);
+        }
+        if (distance > 0) {
+            sbDistance.setProgress(distance);
+            tvCurrentDistance.setText(distance + "km+");
+
+        }
 
     }
 
+    private void setData() {
+        if (PreferenceUtils.getBoolean(NewSettingsActivity.this, coreManager.getSelf().getUserId() + SpContext.ISSELECT)) {
+            tvSetCity.setText(PreferenceUtils.getString(NewSettingsActivity.this, coreManager.getSelf().getUserId() + SpContext.CITY));
+        } else {
+            tvSetCity.setText(MyApplication.getInstance().getBdLocationHelper().getCityName());
+        }
+
+        if (sex != user.getSettings().getDisplaySex()) {
+
+
+            if (user.getSettings().getDisplaySex() == 1) {
+                sex = 1;
+                tvCurrentSex.setText(R.string.sex_man);
+            } else if (user.getSettings().getDisplaySex() == 0) {
+                sex = 0;
+                tvCurrentSex.setText(R.string.sex_woman);
+            } else {
+                sex = -1;
+                tvCurrentSex.setText(R.string.sex_unlimited);
+            }
+
+        }
+
+
+        if (auto != user.getSettings().getIsAutoExpandRange()) {
+            if (user.getSettings().getIsAutoExpandRange() == 1) {
+                sbBExpandScope.setChecked(true);
+            } else {
+                sbBExpandScope.setChecked(false);
+            }
+        }
+
+
+        sbBExpandScope.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                isAutoExpandRange = isChecked;
+                isRefreshHome = true;
+            }
+        });
+
+
+        if (distance != user.getSettings().getDistance()) {
+            sbDistance.setProgress(user.getSettings().getDistance());
+            String dis=String.valueOf(user.getSettings().getDistance());
+            if (dis.equals("1000")){
+                dis=dis+"km+";
+            }else{
+                dis=dis+"km";
+            }
+            tvCurrentDistance.setText(dis);
+        }
+
+
+//        范围
+        sbDistance.setOnRangeChangedListener(new OnRangeChangedListener() {
+            @Override
+            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
+                if (leftValue==1000){
+                    tvCurrentDistance.setText((int) leftValue + "km+");
+                }else{
+                    tvCurrentDistance.setText((int) leftValue + "km");
+
+                }
+
+                isRefreshHome = true;
+            }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+        });
+
+
+        if (maxAge != user.getSettings().getMaxAge() || minAge != user.getSettings().getMinAge()) {
+            seekbar.setProgress(user.getSettings().getMinAge(), user.getSettings().getMaxAge());
+            tvCurrentMinAge.setText(String.valueOf(user.getSettings().getMinAge()));
+            String maxA=String.valueOf(user.getSettings().getMaxAge());
+            if (maxA.equals("50")){
+                maxA=maxA+"+";
+            }
+            tvCurrentMaxMinAge.setText(maxA);
+        }
+
+        seekbar.setOnRangeChangedListener(new OnRangeChangedListener() {
+            @Override
+            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
+                String minAge = String.valueOf(((int) leftValue));
+                String maxAge = String.valueOf(((int) rightValue));
+
+                tvCurrentMinAge.setText(minAge);
+                if (maxAge.equals("50")){
+                   maxAge=maxAge+"+";
+                }
+                tvCurrentMaxMinAge.setText(maxAge);
+            }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+        });
+
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -322,7 +408,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.iv_title_left:
                 update();
-                finish();
+
                 break;
             case R.id.tvLoginOut:
                 //退出登录
@@ -373,6 +459,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -381,19 +468,29 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void update(){
+    private void update() {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("distance",String.valueOf((int)sbDistance.getLeftSeekBar().getProgress()) );
-        params.put("maxAge", tvCurrentMaxMinAge.getText().toString());
-        params.put("minAge", tvCurrentMinAge.getText().toString());
-        params.put("displaySex", sex+"");
+        params.put("distance", String.valueOf((int) sbDistance.getLeftSeekBar().getProgress()));
+        params.put("maxAge", String.valueOf((int) seekbar.getRightSeekBar().getProgress()));
+        params.put("minAge", String.valueOf((int) seekbar.getLeftSeekBar().getProgress()));
+        params.put("displaySex", sex + "");
 
-        if(isAutoExpandRange){
+
+        PreferenceUtils.putInt(this, MAXAGE, (int) seekbar.getRightSeekBar().getProgress());
+        PreferenceUtils.putInt(this, MINAGE, (int) seekbar.getLeftSeekBar().getProgress());
+        PreferenceUtils.putInt(this, DISTANCE, (int) sbDistance.getLeftSeekBar().getProgress());
+        PreferenceUtils.putInt(this, SEX,sex);
+
+
+        if (isAutoExpandRange) {
             params.put("isAutoExpandRange", "1");
-        }else {
+            PreferenceUtils.putInt(this, ISAUTO, 1);
+
+        } else {
             params.put("isAutoExpandRange", "0");
+            PreferenceUtils.putInt(this, ISAUTO, 0);
         }
 
         HttpUtils.get().url(coreManager.getConfig().USER_UPDATE_SETTINGS_CORE)
@@ -404,10 +501,12 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     public void onResponse(ObjectResult<Void> result) {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(NewSettingsActivity.this, result)) {
-
-                            if(isRefreshHome){
+                            finish();
+                            if (isRefreshHome) {
                                 EventBus.getDefault().post(new EventNotifyUpdate("isRefreshHome"));
                             }
+                        } else {
+                            ToastUtil.showToast(mContext, result.getResultMsg());
                         }
                     }
 
@@ -418,6 +517,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
+
     // 退出当前账号
     private void showExitDialog() {
         SelectionFrame mSF = new SelectionFrame(this);
@@ -443,6 +543,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         });
         mSF.show();
     }
+
     private void logout() {
         HashMap<String, String> params = new HashMap<String, String>();
         // 得到电话
@@ -468,25 +569,34 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
-    int sex;
+
     private void showSelectSexDialog() {
-        String[] sexs = new String[]{getString(R.string.sex_man), getString(R.string.sex_woman), getString(R.string.sex_unlimited)};
+        String[] sexs = new String[]{ getString(R.string.sex_woman),getString(R.string.sex_man), getString(R.string.sex_unlimited)};
+        int index;
+        if (sex==0){
+            index=0;
+        }else if(sex==1){
+            index=1;
+        }else{
+            index=2;
+        }
+
         new AlertDialog.Builder(this).setTitle(R.string.select_sex)
-                .setSingleChoiceItems(sexs, sex == 1 ? 0 : 1, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(sexs, index, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            sex=1;
-                            tvCurrentSex.setText(R.string.sex_man);
-                            isRefreshHome=true;
-                        } else if(which == 1) {
-                            sex=0;
+                            sex = 0;
                             tvCurrentSex.setText(R.string.sex_woman);
-                            isRefreshHome=true;
+                            isRefreshHome = true;
+                        } else if (which == 1) {
+                            sex = 1;
+                            tvCurrentSex.setText(R.string.sex_man);
+                            isRefreshHome = true;
                         } else {
-                            sex=-1;
+                            sex = -1;
                             tvCurrentSex.setText(R.string.sex_unlimited);
-                            isRefreshHome=true;
+                            isRefreshHome = true;
                         }
 
 
@@ -495,6 +605,7 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
                     }
                 }).setCancelable(true).create().show();
     }
+
     //购买会员
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void BuyMember(UserVIPPrivilegePrice userVIPPrivilegePrice) {
@@ -523,23 +634,23 @@ public class NewSettingsActivity extends BaseActivity implements View.OnClickLis
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("payType", type);
-        if(vip==1){
-            params.put("price",vipPrivilegePriceList.getV0Price()+"");
+        if (vip == 1) {
+            params.put("price", vipPrivilegePriceList.getV0Price() + "");
             params.put("level", vipPrivilegePriceList.getV0());
-        }else if(vip==2){
-            params.put("price",vipPrivilegePriceList.getV1Price()+"");
+        } else if (vip == 2) {
+            params.put("price", vipPrivilegePriceList.getV1Price() + "");
             params.put("level", vipPrivilegePriceList.getV1());
-        }else if(vip==3){
-            params.put("price", vipPrivilegePriceList.getV2Price()+"");
+        } else if (vip == 3) {
+            params.put("price", vipPrivilegePriceList.getV2Price() + "");
             params.put("level", vipPrivilegePriceList.getV2());
-        }else if(vip==4){
-            params.put("price", vipPrivilegePriceList.getV3Price()+"");
+        } else if (vip == 4) {
+            params.put("price", vipPrivilegePriceList.getV3Price() + "");
             params.put("level", vipPrivilegePriceList.getV3());
         }
         params.put("funType", String.valueOf(5));
         params.put("num", String.valueOf(-1));
         params.put("mon", String.valueOf(-1));
-        AlipayHelper.rechargePay(NewSettingsActivity.this, coreManager,params);
+        AlipayHelper.rechargePay(NewSettingsActivity.this, coreManager, params);
     }
 
     @SuppressWarnings("unused")

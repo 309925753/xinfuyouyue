@@ -56,14 +56,15 @@ import java.util.Map;
 import butterknife.BindView;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+import fm.jiecao.jcvideoplayer_lib.MessageEvent;
 import okhttp3.Call;
 
 public class Xf_FirstFragment extends EasyFragment {
     private TextView mTvTitle;
     private List<User> mUsers;
+    List<User> listTest = new ArrayList<>();
     @BindView(R.id.ll_superLight)
     LinearLayout ll_superLigth;
-    private int selectItem = 0;
     RelativeLayout rlShow;
     LinearLayout llFuction;
     TextView tvlikeTimes;
@@ -71,13 +72,16 @@ public class Xf_FirstFragment extends EasyFragment {
     StackLayout mStackLayout;
     Adapter mAdapter;
     private int pageIndex = 0;
-    private int pageSize = 25;
+    private int pageSize = 50;
     private boolean isSliding = false;
     private int payFunction = 0;//判断支付回调功能类型
     private boolean isRegret = false;
 
-    User lastUnLikeUser ;
+    User lastUnLikeUser;
     User user;
+
+    public static int index;
+
     @Override
     protected int inflateLayoutId() {
         return R.layout.fragment_first;
@@ -116,8 +120,6 @@ public class Xf_FirstFragment extends EasyFragment {
     }
 
 
-
-
     public void setmAdapter(List<User> list) {
         mStackLayout.setAdapter(mAdapter = new Adapter(list));
         mStackLayout.addPageTransformer(
@@ -126,38 +128,25 @@ public class Xf_FirstFragment extends EasyFragment {
                 new AngleTransformer()          // 角度
         );
 
+
         mStackLayout.setOnSwipeListener(
                 new StackLayout.OnSwipeListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onSwiped(View swipedView, int swipedItemPos, boolean isSwipeLeft, int itemLeft) {
                         isSliding = true;
-                        selectItem=swipedItemPos;
-                        LogUtil.e("cjh left " + itemLeft + "  isSwipeLeft  " + isSwipeLeft + "--swipedItemPos = " + swipedItemPos+"  数据： "+mUsers.size());
+                        index = swipedItemPos;
+                        LogUtil.e("cjh 滑动111 index  " + index);
+                        LogUtil.e("cjh 滑动111222 " + itemLeft + "  isSwipeLeft  " + isSwipeLeft + "--swipedItemPos = " + swipedItemPos + "  数据： " + mUsers.size());
                         if (isSwipeLeft) {
-                            //  ToastUtil.showToast(getActivity(),"不喜欢接口");
                             unLike(list.get(swipedItemPos));
                             isRegret = true;
                         } else {
                             userLike(list.get(swipedItemPos));
-                            //如果为-1普通用户 否则VIP用户
-//                            if (coreManager.getSelf().getUserVIPPrivilege() != null) {
-//                                if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
-//                                    if (coreManager.getSelf().getLikeTimesPerDay() > 0) {
-//                                        userLike(list.get(selectItem));
-//                                        //   ToastUtil.showToast(getActivity(),"喜欢接口");
-//                                    } else {
-//                                        BuyMember(list.get(selectItem));
-//                                    }
-//                                } else {
-//                                    userLike(list.get(selectItem));
-//                                    //   ToastUtil.showToast(getActivity(),"喜欢接口");
-//                                }
-//                            }
-
                         }
 
-                        if (itemLeft== 0) {
+                        if (itemLeft == 0) {
+                            LogUtil.e("cjh 滑动ddddd  " + index);
                             requestData();
                         }
                     }
@@ -189,7 +178,6 @@ public class Xf_FirstFragment extends EasyFragment {
                                 // 如果成功，保存User变量，
                                 coreManager.setSelf(user);
                             }
-//                            exchangeAdapter(user);
                             isRegret = false;
                         }
                     }
@@ -217,7 +205,9 @@ public class Xf_FirstFragment extends EasyFragment {
                     @Override
                     public void onResponse(ObjectResult<String> result) {
                         if (Result.checkSuccess(getActivity(), result)) {
-                            lastUnLikeUser=user;
+                            lastUnLikeUser = user;
+                            LogUtil.e("cjh 不喜欢请求   " + listTest.size());
+
                         }
                     }
 
@@ -229,13 +219,12 @@ public class Xf_FirstFragment extends EasyFragment {
 
     /**
      * 超级爆光
-     *
      */
-    private void superLight(String  userId) {
+    private void superLight(String userId) {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("userId", coreManager.getSelf().getUserId());
-        params.put("likeUserId",userId);
+        params.put("likeUserId", userId);
         HttpUtils.post().url(coreManager.getConfig().USER_OPEN_SUPEREXPOSURE)
                 .params(params)
                 .build()
@@ -282,21 +271,21 @@ public class Xf_FirstFragment extends EasyFragment {
                     @Override
                     public void onResponse(ObjectResult<User> result) {
                         if (result.getResultCode() == 1 && result.getData() != null) {
-                            User user = result.getData();
-                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
-                            // 设置登陆用户信息
-                            if (updateSuccess) {
-                                // 如果成功，保存User变量，
-                                coreManager.setSelf(user);
-                            }
-                            if (mUsers != null && (!isSliding)) {
-                                swithSuperSolarize(0);
-                            } else {
-                                if (lastUnLikeUser!=null) {
-                                    mUsers.add(0, lastUnLikeUser);
-                                    mAdapter.notifyDataSetChanged();
-                                }
-                            }
+//                            User user = result.getData();
+//                            boolean updateSuccess = UserDao.getInstance().updateByUser(user);
+//                            // 设置登陆用户信息
+//                            if (updateSuccess) {
+//                                // 如果成功，保存User变量，
+//                                coreManager.setSelf(user);
+//                            }
+//                            if (mUsers != null && (!isSliding)) {
+//                                swithSuperSolarize(0);
+//                            } else {
+//                                if (lastUnLikeUser!=null) {
+//                                    mUsers.add(0, lastUnLikeUser);
+//                                    mAdapter.notifyDataSetChanged();
+//                                }
+//                            }
                         }
                     }
 
@@ -305,7 +294,6 @@ public class Xf_FirstFragment extends EasyFragment {
                     }
                 });
     }
-
 
 
     class Adapter extends StackLayout.Adapter<Adapter.ViewHolder> {
@@ -464,7 +452,7 @@ public class Xf_FirstFragment extends EasyFragment {
     }
 
     private void requestData() {
-        pageIndex++ ;
+        pageIndex++;
         mUsers = new ArrayList<>();
 
         HashMap<String, String> params = new HashMap<String, String>();
@@ -490,6 +478,9 @@ public class Xf_FirstFragment extends EasyFragment {
                         DialogHelper.dismissProgressDialog();
                         if (Result.checkSuccess(getActivity(), result)) {
                             List<User> datas = result.getData();
+                            listTest.clear();
+                            index=0;
+                            listTest = result.getData();
                             if (datas != null && datas.size() > 0) {
                                 rlShow.setVisibility(View.GONE);
                                 mStackLayout.setVisibility(View.VISIBLE);
@@ -516,63 +507,89 @@ public class Xf_FirstFragment extends EasyFragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
-        if (mUsers != null && mUsers.size() > 0) {
             switch (v.getId()) {
                 case R.id.llRegretsUnLike:
                     if (coreManager.getSelf().getUserVIPPrivilege() != null) {
                         if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
-                            BuyMember(user);
+                            BuyMember(listTest.get(index));
                         } else {
-                            RegretsUnLike(mUsers.get(selectItem));
+                            RegretsUnLike(listTest.get(index));
                         }
                     }
                     break;
                 case R.id.llUnLike:
-                    unLike(mUsers.get(selectItem));
+                    LogUtil.e("cjh 点击  index  " + index + "   size  " + listTest.size());
+                    if (listTest.size()==0) {
+                        requestData();
+                    } else {
+                        mStackLayout.OnLeft();
+                        unLike(listTest.get(index));
+
+                    }
+
+
                     break;
                 case R.id.ll_superLight:
                     payFunction = 1;
                     openSuperSolarize();
                     break;
                 case R.id.llUserLike:
+                    if (listTest.size()==0) {
+                        requestData();
+                    } else {
 
-                    if (coreManager.getSelf().getUserVIPPrivilege() != null&&!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
-                        userLike(mUsers.get(selectItem));
-                    }else{
-                        if (coreManager.getSelf().getLikeTimesPerDay() > 0) {
-                            userLike(mUsers.get(selectItem));
+                        if (coreManager.getSelf().getUserVIPPrivilege() != null && !coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                            mStackLayout.OnLeft();
+                            userLike(listTest.get(index));
                         } else {
-                            BuyMember(user);
+                            if (coreManager.getSelf().getLikeTimesPerDay() > 0) {
+                                mStackLayout.OnLeft();
+                                userLike(listTest.get(index));
+                            } else {
+                                BuyMember(listTest.get(index));
+                            }
                         }
                     }
                     break;
                 case R.id.llSuperLike:
-                    if (coreManager.getSelf().getUserVIPPrivilege() != null&&! coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")){
-                        int num=coreManager.getSelf().getUserVIPPrivilege().getQuantity()+coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity();
-                        if (coreManager.getSelf().getUserVIPPrivilege().getQuantity()==0){
-                            BuyMember(user);
+                    if (listTest.size()==0) {
+                        requestData();
+                    } else {
+
+                        if (coreManager.getSelf().getUserVIPPrivilege() != null && !coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
+                            int num = coreManager.getSelf().getUserVIPPrivilege().getQuantity() + coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity();
+                            if (coreManager.getSelf().getUserVIPPrivilege().getQuantity() == 0) {
+                                BuyMember(listTest.get(index));
+                            } else {
+                                mStackLayout.OnLeft();
+                                superLike(listTest.get(index));
+                            }
+                        } else {
+                            if (coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() == 0) {
+                                BuyMember(listTest.get(index));
+                            } else {
+                                mStackLayout.OnLeft();
+                                superLike(listTest.get(index));
+                            }
                         }
                     }
-
-
-
 
 
 //                    if (coreManager.getSelf().getUserVIPPrivilege() != null&&!coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1")) {
 //                        if (coreManager.getSelf().getUserVIPPrivilege().getVipLevel().equals("-1") || coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
 //                            if (coreManager.getSelf().getUserVIPPrivilege().getQuantity() >= 1 || coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
 //                                //  tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
-//                                superLike(mUsers.get(selectItem));
+//                                superLike(mUsers.get(index));
 //                            } else {
 //                                if ((coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() == 0)) {
-//                                    BuyMember(mUsers.get(selectItem));
+//                                    BuyMember(mUsers.get(index));
 //                                }
 //                            }
 //
 //                        } else {
 //                            if (coreManager.getSelf().getUserVIPPrivilege().getQuantity() >= 1 || coreManager.getSelf().getUserVIPPrivilege().getSuperLikeQuantity() >= 1) {
 //                                //    tvlikeTimes.setText(String.valueOf(coreManager.getSelf().getUserVIPPrivilege().getQuantity()));
-//                                superLike(mUsers.get(selectItem));
+//                                superLike(mUsers.get(index));
 //                            } else {
 //                                ToastUtil.showLongToast(getContext(), "当天次数已用完");
 //                            }
@@ -582,9 +599,7 @@ public class Xf_FirstFragment extends EasyFragment {
 
                     break;
             }
-        } else {
-            requestData();
-        }
+
     }
 
     /**
@@ -755,9 +770,25 @@ public class Xf_FirstFragment extends EasyFragment {
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void helloEventBus(EventNotifyUpdate message) {
-        LogUtil.e("message = " + message.MessageData);
+        LogUtil.e("cjhhelle 111= " + message.MessageData);
+
         pageIndex = 0;
         requestData();
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(MessageEvent message) {
+
+        LogUtil.e("cjhhelle"        );
+        if (message.message.equals("HomeLike")) {
+            rlShow.setVisibility(View.VISIBLE);
+            mStackLayout.setVisibility(View.GONE);
+            llFuction.setVisibility(View.GONE);
+            pageIndex = 0;
+            requestData();
+        }
+
     }
 
 
@@ -806,7 +837,7 @@ public class Xf_FirstFragment extends EasyFragment {
                     public void onResponse(ObjectResult<User> result) {
 
                         if (result.getResultCode() == 1 && result.getData() != null) {
-                             user = result.getData();
+                            user = result.getData();
                             boolean updateSuccess = UserDao.getInstance().updateByUser(user);
                             // 设置登陆用户信息
                             if (updateSuccess) {

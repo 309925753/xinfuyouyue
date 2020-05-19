@@ -12,6 +12,7 @@ import com.xfyyim.cn.R;
 import com.xfyyim.cn.bean.User;
 import com.xfyyim.cn.bean.event.EventFlashChat;
 import com.xfyyim.cn.bean.message.ChatMessage;
+import com.xfyyim.cn.helper.AvatarHelper;
 
 import de.greenrobot.event.EventBus;
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -45,14 +46,19 @@ class CardViewHolder extends AChatHolderInterface {
 
     @Override
     public void fillData(ChatMessage message) {
-//        AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getFromUserId(), ivCardImage, true);
-        Glide.with(getContext()).load(getAvatarUrl(message.getFromUserId(), true)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(ivCardImage);
 
+if (message.getToUserName().equals("8888")){
+    Glide.with(getContext()).load(getAvatarUrl(message.getFromUserId(), true)).bitmapTransform(new BlurTransformation(getContext(), 40)).into(ivCardImage);
 
+}else{
+            AvatarHelper.getInstance().displayAvatar(message.getContent(), message.getFromUserId(), ivCardImage, true);
+
+}
 
         if(!TextUtils.isEmpty(message.getContent())){
             User user= JSON.parseObject(message.getContent(),User.class);
             tv_card_name.setText(user.getNickName()+"  "+user.getCityName()+"  "+user.getAge());
+
 
         }
 
